@@ -3,6 +3,7 @@ title: 'UofT Hiring TAs'
 description: 'How to hire Teaching Assistants at the University of Toronto'
 pubDate: 'Sep 3 2024'
 heroImage: '/uoft-placeholder-default.jpg'
+tags: ['teaching-assistantships']
 ---
 
 # Exciting Opportunity: Teaching Assistant Positions Available!
@@ -31,4 +32,4 @@ Best of luck!
 <!-- Use 2 spaces to create a new line without the crazy line spacing -->
 Sincerely,  
 Maurice Pasternak    
-Communications Director
+GRC Director

@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import BlogPostCard from '../../components/BlogPostCard.astro'
+
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.tags.includes('career-planning-exploration'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout title="Career Planning/Exploration">
+	<main class="container mx-auto min-h-screen px-4 py-8">
+		<h1 class="mb-4 text-center text-4xl font-bold">Career Planning/Exploration</h1>
+		<!-- Add content for career planning/exploration resources -->
+
+		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
+			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
+			<p class="text-justify">
+				The content for Career Planning/Exploration is currently under development. We're working hard to bring you
+				valuable information and resources. Please check back soon for updates!
+			</p>
+		</div>
+		<p class="text-justify text-gray-600">
+			Our team is compiling a comprehensive list of career planning/exploration resources available to students. This
+			section will include information on career planning/exploration resources available to students.
+		</p>
+		<section class="my-12">
+			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Career Planning/Exploration</h2>
+			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{posts.map((post) => <BlogPostCard post={post} />)}
+			</ul>
+		</section>
+	</main>
+</BaseLayout>

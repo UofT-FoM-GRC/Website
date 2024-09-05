@@ -3,42 +3,47 @@ import { getCollection } from 'astro:content'
 import FormattedDate from '../../components/FormattedDate.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { Image } from 'astro:assets'
+import TagBadge from '../../components/TagBadge.astro'
+import BlogPostCard from '../../components/BlogPostCard.astro'
 
 const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
+// Group posts by month and year
+const groupedPosts = posts.reduce(
+	(acc, post) => {
+		const date = post.data.pubDate
+		const key = `${date.getFullYear()}-${date.getMonth()}`
+		if (!acc[key]) acc[key] = []
+		acc[key].push(post)
+		return acc
+	},
+	{} as Record<string, typeof posts>
+)
+
+// Sort keys in descending order
+const sortedKeys = Object.keys(groupedPosts).sort((a, b) => b.localeCompare(a))
 ---
 
 <BaseLayout>
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<section>
-			<ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{
-					posts.map((post) => (
-						<li class="card overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1">
-							<a
-								href={`/blog/${post.slug}/`}
-								class="focus-visible:ring-3 block focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-								aria-labelledby={`post-title-${post.slug}`}
-							>
-								<Image
-									width={720}
-									height={360}
-									src={post.data.heroImage || '/uoft-placeholder-default.jpg'}
-									alt={post.data.title}
-									class="aspect-video min-h-[18rem] w-full object-cover object-center"
-								/>
-								<div class="p-4">
-									<h4 id={`post-title-${post.slug}`} class="mb-2 text-xl font-bold">
-										{post.data.title}
-									</h4>
-									<p class="text-sm text-gray-600">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</div>
-							</a>
-						</li>
-					))
-				}
-			</ul>
-		</section>
+		{
+			sortedKeys.map((key) => {
+				const [year, month] = key.split('-')
+				const sectionTitle = new Date(parseInt(year), parseInt(month)).toLocaleString('default', {
+					month: 'long',
+					year: 'numeric'
+				})
+				return (
+					<section class="mb-12">
+						<h2 class="mb-6 text-2xl font-bold">{sectionTitle}</h2>
+						<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+							{groupedPosts[key].map((post) => (
+								<BlogPostCard post={post} />
+							))}
+						</ul>
+					</section>
+				)
+			})
+		}
 	</main>
 </BaseLayout>

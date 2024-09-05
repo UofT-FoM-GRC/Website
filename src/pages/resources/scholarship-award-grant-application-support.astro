@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+import BlogPostCard from '../../components/BlogPostCard.astro'
+
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.tags.includes('scholarship-award-grant-application-support'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout title="Health & Wellness">
+	<main class="container mx-auto min-h-screen px-4 py-8">
+		<h1 class="mb-4 text-center text-4xl font-bold">Scholarship/Award/Grant Application Support</h1>
+		<!-- Add content for health & wellness resources -->
+
+		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
+			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
+			<p class="text-justify">
+				The content for Scholarship/Award/Grant Application Support is currently under development. We're working hard
+				to bring you valuable information and resources. Please check back soon for updates!
+			</p>
+		</div>
+		<p class="text-justify text-gray-600">
+			Our team is compiling a comprehensive list of health & wellness resources available to students. This section will
+			include information on scholarship/award/grant application support resources available to students.
+		</p>
+		<section class="my-12">
+			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Scholarship/Award/Grant Application Support</h2>
+			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{posts.map((post) => <BlogPostCard post={post} />)}
+			</ul>
+		</section>
+	</main>
+</BaseLayout>
