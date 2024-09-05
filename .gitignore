@@ -1,5 +1,8 @@
 # build output
 dist/
+.vercel/
+.netlify/
+.netlify/*
 
 # generated types
 .astro/
@@ -22,3 +25,4 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content'
+import FormattedDate from '../../components/FormattedDate.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout>
+	<main class="container mx-auto min-h-screen px-4 py-8">
+		<section>
+			<ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					posts.map((post) => (
+						<li class="card overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1">
+							<a
+								href={`/blog/${post.slug}/`}
+								class="focus-visible:ring-3 block focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+								aria-labelledby={`post-title-${post.slug}`}
+							>
+								<Image
+									width={720}
+									height={360}
+									src={post.data.heroImage || '/uoft-placeholder-default.jpg'}
+									alt={post.data.title}
+									class="aspect-video min-h-[18rem] w-full object-cover object-center"
+								/>
+								<div class="p-4">
+									<h4 id={`post-title-${post.slug}`} class="mb-2 text-xl font-bold">
+										{post.data.title}
+									</h4>
+									<p class="text-sm text-gray-600">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</main>
+</BaseLayout>

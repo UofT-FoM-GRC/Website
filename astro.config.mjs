@@ -1,14 +1,16 @@
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
-import { defineConfig } from "astro/config";
+import alpinejs from '@astrojs/alpinejs'
+import mdx from '@astrojs/mdx'
+import sitemap from '@astrojs/sitemap'
+import tailwind from '@astrojs/tailwind'
+import icon from 'astro-icon'
+import { defineConfig } from 'astro/config'
+
+import netlify from '@astrojs/netlify';
+
 // https://astro.build/config
 export default defineConfig({
-	integrations: [
-		react(),
-		tailwind({
-			// Example: Allow writing nested CSS declarations
-			// alongside Tailwind's syntax
-			nesting: true,
-		}),
-	],
-});
+  site: 'https://example.com',
+  integrations: [mdx(), sitemap(), tailwind(), icon(), alpinejs()],
+  output: 'static',
+  adapter: netlify()
+})
