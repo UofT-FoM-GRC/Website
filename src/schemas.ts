@@ -4,11 +4,12 @@ import { z } from 'astro:content'
 export const blogTagSchema = z.enum([
 	'teaching-assistantships',
 	'career-planning-exploration',
-	'financial-education',
+	'continuing-education',
 	'health-wellness',
 	'housing',
 	'scholarships-bursaries-awards',
-	'scholarship-award-grant-application-support'
+	'scholarship-award-grant-application-support',
+	'other'
 ])
 export type BlogTag = z.infer<typeof blogTagSchema>
 

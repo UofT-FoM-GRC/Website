@@ -1,68 +1,140 @@
-# Astro Starter Kit: Blog
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="public/uoft-coa.webp" style="border-radius: 50%; border: 1px solid #002e62;" alt="UofT Logo"></a>
+</p>
 
-```sh
-npm create astro@latest -- --template blog
+<h3 align="center"></h3>
+
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/UofT-FoM-GRC/Website.svg)](https://github.com/UofT-FoM-GRC/Website/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/UofT-FoM-GRC/Website.svg)](https://github.com/UofT-FoM-GRC/Website/pulls)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a9e898e9-69bc-4f45-bd5e-26992e2a08ab/deploy-status)](https://app.netlify.com/sites/uoft-fom-grc/deploys)
+
+</div>
+
+---
+
+<p align="center"> Website for the University of Toronto Faculty of Management Graduate Representation Committee.
+    <br> 
+    <strong style="font-size: 1.5em;"><a href="https://uoft-fom-grc.netlify.app/" target="_blank">View Live Site</a></strong>
+</p>
+
+## 📝 Table of Contents
+
+- [About](#🧐-about)
+- [Getting Started](#🏁-getting_started)
+- [Deployment](#🚀-deployment)
+- [Built Using](#⛏️-built_using)
+- [Authors](#✍️-authors)
+- [Acknowledgments](#🎉-acknowledgements)
+
+## 🧐 About
+
+The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all graduate students in the University of Toronto Faculty of Medicine. We support and advocate for graduate students, keep them informed about important policies, and actively seek their feedback to ensure our advocacy aligns with their needs.
+
+## 🏁 Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+You will need a GitHub account to access the repository.
+
+### Installing (for developers)
+
+Standard `git clone` to download the repository:
+
+```bash
+git clone https://github.com/UofT-FoM-GRC/Website.git
+cd Website
+```
+It's recommended to use [pnpm](https://pnpm.io/installation) to install the dependencies.
+
+```bash
+pnpm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+Never work on `main`. At minimum, go to `dev` first:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```bash
+git checkout dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+More preferably, create feature braches off of `dev`:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```bash
+git checkout -b <feature-branch-name>
+```
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+### Adding/Updating Blog Posts (for writers)
 
-Any static assets, like images, can be placed in the `public/` directory.
+Blog posts are stored in `src/content/blog`. They are written in Markdown, just like this `README.md` file. Please refer to the following cheatsheet for Markdown syntax: 
 
-## 🧞 Commands
+[Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
 
-All commands are run from the root of the project, from a terminal:
+The following rules apply to blog posts:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+1. All blog post markdown files **must be** in lower kebab case (i.e. `this-is-a-blog-post.md`) and avoid special characters (i.e. `&` should be `and`).
+2. The start of the Markdown file contains the following syntax referred to as a "frontmatter" block:
 
-## 👀 Want to learn more?
+```
+---
+title: Title of Blog Post
+description: Short description of what the blog post is about
+pubDate: Date of publication, ideally in ISO 8601 format (YYYY-MM-DD)
+updatedDate: Date of last update, ideally in ISO 8601 format (YYYY-MM-DD)
+heroImage: Local relative path or URL to main banner image for blog post.
+tags: An array of tags relevant to the blog post. These will be rendered as buttons on blog post cards.
+---
+```
+This **must be** included at the top of every blog post and is used to generate the blog post card on the blogs page.
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+3. The heroImage **is optional**. It can also be an external URL, for example: https://en.wikipedia.org/wiki/University_of_Toronto#/media/File:UofTConvocationHall.jpg. If not provided, a placeholder image will be used:
 
-## Credit
+<img src="public/uoft-placeholder-default.webp" alt="GRC Blog Post Placeholder Image" width="240" height="200">
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+4. **At least one tag must be provided**. They assist with blog post organization and linking to relevant resource pages. The following tags are available:
+
+- **`teaching-assistantships`** - For blog posts related to Teaching Assistantships (i.e. listing, help with applications, etc.)
+- **`career-planning-exploration`** - For blog posts related to career planning and exploration (i.e. resume tips, interview advice, etc.)
+- **`continuing-education`** - For blog posts related to continuing education (i.e. courses, workshops, etc.)
+- **`health-wellness`** - For blog posts related to health and wellness (i.e. mental health, fitness, etc.)
+- **`housing`** - For blog posts related to housing (i.e. listings, tips, etc.)
+- **`scholarships-bursaries-awards`** - For blog posts related to scholarships, bursaries, and awards (i.e. listing etc.)
+- **`scholarship-award-grant-application-support`** - For blog posts related to scholarship, award, and grant application support (i.e. workshops, help with applications, etc.)
+- **`other`** - For blog posts that don't fit into the above categories.
+
+So, for example the following is the frontmatter for this blog post:
+
+```
+---
+title: 'UofT Hiring TAs'
+description: 'How to hire Teaching Assistants at the University of Toronto'
+pubDate: 'Sep 3 2024'
+heroImage: '/uoft-career-fair-banner.webp'
+tags: ['teaching-assistantships']
+---
+```
+
+
+## 🚀 Deployment
+
+Everything is automated to deploy to Netlify once changes on `main` are detected. Keep it simple. No manual deployment steps are required.
+
+## ⛏️ Built Using
+
+- [Astro](https://astro.build/) - Web Framework
+- [TailwindCSS](https://tailwindcss.com/) - CSS Framework
+
+## ✍️ Authors
+
+- [@MauricePasternak](https://github.com/MauricePasternak) - Idea & Initial work
+
+See also the list of [contributors](https://github.com/UofT-FoM-GRC/Website/contributors) who participated in this project.
+
+## 🎉 Acknowledgements
+
+- All the members of the GRC, past and present, for their hard work and dedication to the graduate student body.

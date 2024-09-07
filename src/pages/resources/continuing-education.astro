@@ -1,28 +1,27 @@
 ---
-import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
 import BlogPostCard from '../../components/BlogPostCard.astro'
 
-// Filter blogs that have the teaching-assistantships tag
 const posts = (await getCollection('blog'))
-	.filter((post) => post.data.tags.includes('teaching-assistantships'))
+	.filter((post) => post.data.tags.includes('continuing-education'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<BaseLayout title="Teaching Assistantships">
+<BaseLayout title="Continuing Education">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-4 text-center text-4xl font-bold">Teaching Assistantships</h1>
-		<!-- Add content for teaching assistantships resources -->
+		<h1 class="mb-4 text-center text-4xl font-bold">Continuing Education</h1>
+		<!-- Add content for financial education resources -->
 
 		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
 			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
 			<p class="text-justify">
-				The content for Teaching Assistantships is currently under development. We're working hard to bring you valuable
+				The content for Continuing Education is currently under development. We're working hard to bring you valuable
 				information and resources. Please check back soon for updates!
 			</p>
 		</div>
 		<section class="my-12">
-			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Teaching Assistantships</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Continuing Education</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

@@ -1,6 +1,6 @@
 import type { BlogTag } from '../schemas'
 
-function slugify(text: string): string {
+export function slugify(text: string): string {
 	return text
 		.toString()
 		.toLowerCase()
@@ -17,10 +17,11 @@ export function prettifyTag(tag: BlogTag) {
 	return {
 		'teaching-assistantships': 'Teaching Assistantships',
 		'career-planning-exploration': 'Career Planning & Exploration',
-		'financial-education': 'Financial Education',
 		'health-wellness': 'Health & Wellness',
+		'continuing-education': 'Continuing Education',
 		housing: 'Housing',
 		'scholarships-bursaries-awards': 'Scholarships, Bursaries, and Awards',
-		'scholarship-award-grant-application-support': 'Scholarship/Award/Grant Application Support'
+		'scholarship-award-grant-application-support': 'Scholarship/Award/Grant Application Support',
+		other: 'Other'
 	}[tag]
 }

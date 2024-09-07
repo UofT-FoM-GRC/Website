@@ -1,0 +1,59 @@
+---
+import { Icon } from 'astro-icon/components'
+import ProfileCard from './ProfileCard.astro'
+import { slugify } from '../utils/strings'
+
+export type ProfileAccordionItem = {
+	year: string
+	profiles: Profile[]
+}
+
+type Profile = {
+	name: string
+	position: string
+	hasImage: boolean
+}
+
+interface Props {
+	item: ProfileAccordionItem
+}
+
+const currentYear = new Date().getFullYear()
+const { item } = Astro.props
+let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
+---
+
+<div x-data={`{ activeYear: '${activeYear}' }`} class="my-4">
+	<button
+		@click={`activeYear = activeYear === '${item.year}' ? '' : '${item.year}'`}
+		class="flex w-full items-center justify-between bg-slate-800 px-4 py-2 text-left text-xl xl:text-2xl font-medium text-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-50"
+		aria-expanded={activeYear === item.year}
+		aria-controls={`accordion-content-${item.year}`}
+	>
+		<span>{item.year}</span>
+		<Icon
+			name="mdi:chevron-down"
+			class="h-7 w-7 transition-transform duration-200"
+			:class={`{ 'rotate-180': activeYear === '${item.year}' }`}
+		/>
+	</button>
+	<div 
+		x-show={`activeYear === '${item.year}'`} 
+		x-transition 
+		class="p-4 shadow-md"
+		id={`accordion-content-${item.year}`}
+	>
+		<div class="container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+			{
+				item.profiles.map((profile) => (
+					<ProfileCard
+						name={profile.name}
+						position={profile.position}
+						image={`/teams/${item.year.substring(0, 4)}/${slugify(profile.name)}.webp`}
+						hasImage={profile.hasImage}
+					/>
+				))
+			}
+		</div>
+	</div>
+</div>

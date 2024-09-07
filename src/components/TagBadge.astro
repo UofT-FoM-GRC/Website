@@ -11,14 +11,15 @@ const { tag } = Astro.props
 const tagColorMapping: Record<BlogTag, string> = {
 	'teaching-assistantships': 'bg-blue-200 text-blue-800 hover:bg-blue-300',
 	'career-planning-exploration': 'bg-green-200 text-green-800 hover:bg-green-300',
-	'financial-education': 'bg-yellow-200 text-yellow-800 hover:bg-yellow-300',
+	'continuing-education': 'bg-yellow-200 text-yellow-800 hover:bg-yellow-300',
 	'health-wellness': 'bg-red-200 text-red-800 hover:bg-red-300',
 	housing: 'bg-purple-200 text-purple-800 hover:bg-purple-300',
 	'scholarships-bursaries-awards': 'bg-orange-200 text-orange-800 hover:bg-orange-300',
-	'scholarship-award-grant-application-support': 'bg-pink-200 text-pink-800 hover:bg-pink-300'
+	'scholarship-award-grant-application-support': 'bg-pink-200 text-pink-800 hover:bg-pink-300',
+	other: 'bg-gray-200 text-gray-800 hover:bg-gray-300'
 }
 ---
 
 <div class={`rounded-md ${tagColorMapping[tag]} px-2 py-1 text-sm transition-all duration-300 hover:scale-105`}>
-	<a href={`/resources/${tag}`}>{prettifyTag(tag)}</a>
+	<a href={`/resources/${tag}`} aria-label={`View resources for ${prettifyTag(tag)}`}>{prettifyTag(tag)}</a>
 </div>
