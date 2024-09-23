@@ -1,8 +1,8 @@
 ---
 title: 'UofT Free Coursera Access'
 description: 'asdasdasd'
-pubDate: 'Sep 5 2024'
-heroImage: '/uoft-career-fair-banner.webp'
+pubDate: 'Sep 23 2024'
+heroImage: '/coursera-logo.webp'
 tags: ['career-planning-exploration']
 ---
 
