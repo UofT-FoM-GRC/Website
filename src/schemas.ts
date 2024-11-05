@@ -2,7 +2,7 @@ import { z } from 'astro:content'
 
 // Blog Tags
 export const blogTagSchema = z.enum([
-	'teaching-assistantships',
+	'employment',
 	'career-planning-exploration',
 	'continuing-education',
 	'health-wellness',

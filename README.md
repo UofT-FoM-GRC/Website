@@ -98,7 +98,7 @@ This **must be** included at the top of every blog post and is used to generate 
 
 4. **At least one tag must be provided**. They assist with blog post organization and linking to relevant resource pages. The following tags are available:
 
-- **`teaching-assistantships`** - For blog posts related to Teaching Assistantships (i.e. listing, help with applications, etc.)
+- **`employment`** - For blog posts related to employment (i.e. hiring TAs, finding a job, etc.)
 - **`career-planning-exploration`** - For blog posts related to career planning and exploration (i.e. resume tips, interview advice, etc.)
 - **`continuing-education`** - For blog posts related to continuing education (i.e. courses, workshops, etc.)
 - **`health-wellness`** - For blog posts related to health and wellness (i.e. mental health, fitness, etc.)
@@ -115,7 +115,7 @@ title: 'UofT Hiring TAs'
 description: 'How to hire Teaching Assistants at the University of Toronto'
 pubDate: 'Sep 3 2024'
 heroImage: '/uoft-career-fair-banner.webp'
-tags: ['teaching-assistantships']
+tags: ['employment']
 ---
 ```
 

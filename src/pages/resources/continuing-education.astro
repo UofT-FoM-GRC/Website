@@ -8,17 +8,9 @@ const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<BaseLayout title="Continuing Education">
+<BaseLayout title="GRC - Continuing Education">
 	<main class="container mx-auto min-h-screen px-4 py-8">
 		<h1 class="mb-8 text-center text-4xl font-bold">Continuing Education</h1>
-
-		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
-			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
-			<p class="text-justify">
-				The content for Continuing Education is currently under development. We're working hard to bring you valuable
-				information and resources. Please check back soon for updates!
-			</p>
-		</div>
 
 		<!-- Table of Contents -->
 		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">

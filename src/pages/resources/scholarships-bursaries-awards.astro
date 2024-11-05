@@ -10,21 +10,183 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Scholarships, Bursaries & Awards">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-4 text-center text-4xl font-bold">Scholarships, Bursaries & Awards</h1>
-		<!-- Add content for scholarships, bursaries & awards resources -->
+		<h1 class="mb-8 text-center text-4xl font-bold">Scholarships, Bursaries & Awards</h1>
 
-		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
-			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
-			<p class="text-justify">
-				The content for Scholarships, Bursaries & Awards is currently under development. We're working hard to bring you
-				valuable information and resources. Please check back soon for updates!
-			</p>
-		</div>
-		<section class="my-12">
-			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Scholarships, Bursaries & Awards</h2>
+		<!-- Table of Contents -->
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+			<ul class="space-y-2">
+				<li class="transition-all hover:translate-x-2">
+					<a href="#general-award-explorer" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>General Award Explorer</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#sgs-awards" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Graduate Studies Awards</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#contacts" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Award Offices & Contacts</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Related Blog Posts</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Award Explorer Section -->
+		<section id="general-award-explorer" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">General Award Explorer</h2>
+			<div class="grid gap-6 md:grid-cols-2">
+				<!-- Undergraduate Awards -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Undergraduate Awards</h3>
+					<p class="mb-4">
+						Search for undergraduate awards based on various criteria including faculty, citizenship, and award type.
+					</p>
+					<a
+						href="https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfQRxZQ11SZV1zH3pgEw~~"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Explore Undergraduate Awards →
+					</a>
+				</div>
+
+				<!-- Graduate Awards -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Graduate Awards</h3>
+					<p class="mb-4">
+						Find graduate-level awards and scholarships filtered by department, award type, and eligibility criteria.
+					</p>
+					<a
+						href="https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfRxxZQFdTZFVyEnpuEg~~"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Explore Graduate Awards →
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- SGS Awards Section -->
+		<section id="sgs-awards" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">School of Graduate Studies Awards</h2>
+			<div class="grid gap-6 md:grid-cols-2">
+				<!-- Awards & Funding -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Awards & Funding Overview</h3>
+					<p class="mb-4">Comprehensive information about graduate funding opportunities and award programs.</p>
+					<a
+						href="https://www.sgs.utoronto.ca/awards-funding/"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						View Funding Overview →
+					</a>
+				</div>
+
+				<!-- Awards Database -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Awards Database</h3>
+					<p class="mb-4">
+						Detailed database of available graduate awards and scholarships with specific requirements.
+					</p>
+					<a
+						href="https://www.sgs.utoronto.ca/awards/"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Search Awards Database →
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact Information -->
+		<section id="contacts" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">Award Offices & Contacts</h2>
+			<div class="grid gap-6 md:grid-cols-2">
+				<!-- Financial Aid Office -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Financial Aid & Advising Office</h3>
+					<address class="not-italic">
+						<p>School of Graduate Studies</p>
+						<a
+							href="https://www.google.com/maps/search/63+St.+George+Street,+Room+101+University+of+Toronto+Toronto,+ON"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-blue-600 hover:underline"
+						>
+							63 St. George Street, Room 101<br />
+							University of Toronto<br />
+							Toronto, ON
+						</a>
+					</address>
+					<div class="mt-4 space-y-2">
+						<p>
+							<strong>Phone:</strong>
+							<a href="tel:416-978-2839" class="text-blue-600 hover:underline">416-978-2839</a>
+						</p>
+						<p>
+							<strong>Email:</strong>
+							<a href="mailto:sgs.financial.assistance@utoronto.ca" class="text-blue-600 hover:underline">
+								sgs.financial.assistance@utoronto.ca
+							</a>
+						</p>
+					</div>
+				</div>
+
+				<!-- Graduate Awards Office -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-4 text-xl font-semibold">Graduate Awards Office</h3>
+					<address class="not-italic">
+						<p>School of Graduate Studies</p>
+						<a
+							href="https://www.google.com/maps/search/63+St.+George+Street,+Room+201+University+of+Toronto+Toronto,+ON"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-blue-600 hover:underline"
+						>
+							63 St. George Street, Room 201<br />
+							University of Toronto<br />
+							Toronto, ON
+						</a>
+					</address>
+					<div class="mt-4 space-y-2">
+						<p>
+							<strong>Phone:</strong>
+							<a href="tel:416-978-2150" class="text-blue-600 hover:underline">416-978-2150</a>
+						</p>
+						<p>
+							<strong>Email:</strong>
+							<a href="mailto:graduate.awards@utoronto.ca" class="text-blue-600 hover:underline">
+								graduate.awards@utoronto.ca
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Blog Posts -->
+		<section id="blog" class="my-12 scroll-mt-8">
+			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>
 		</section>
 	</main>
 </BaseLayout>
+
+<style>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>

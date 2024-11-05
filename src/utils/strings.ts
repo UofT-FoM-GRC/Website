@@ -15,7 +15,7 @@ export function slugify(text: string): string {
 
 export function prettifyTag(tag: BlogTag) {
 	return {
-		'teaching-assistantships': 'Teaching Assistantships',
+		employment: 'Employment',
 		'career-planning-exploration': 'Career Planning & Exploration',
 		'health-wellness': 'Health & Wellness',
 		'continuing-education': 'Continuing Education',

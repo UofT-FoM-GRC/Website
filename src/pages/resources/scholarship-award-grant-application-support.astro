@@ -8,23 +8,207 @@ const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<BaseLayout title="Health & Wellness">
+<BaseLayout title="Application Support">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-4 text-center text-4xl font-bold">Scholarship/Award/Grant Application Support</h1>
-		<!-- Add content for health & wellness resources -->
+		<h1 class="mb-8 text-center text-4xl font-bold">Application Support Resources</h1>
 
-		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
-			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
-			<p class="text-justify">
-				The content for Scholarship/Award/Grant Application Support is currently under development. We're working hard
-				to bring you valuable information and resources. Please check back soon for updates!
-			</p>
-		</div>
-		<section class="my-12">
-			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Scholarship/Award/Grant Application Support</h2>
+		<!-- Table of Contents -->
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+			<ul class="space-y-2">
+				<li class="transition-all hover:translate-x-2">
+					<a href="#writing-centres" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Writing Centres</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#learning-support" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Learning Strategy Support</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Related Blog Posts</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Writing Centres -->
+		<section id="writing-centres" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">Writing Centres</h2>
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				<!-- Innis College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Innis College</h3>
+					<p class="mb-4">Located in Rooms 315 and 321</p>
+					<a
+						href="http://innis.utoronto.ca/current-students/academic/innis/writing-centre/"
+						class="text-blue-600 hover:underline"
+					>
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- New College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">New College</h3>
+					<p class="mb-4">Located in Wilson Hall, Rooms 2045 and 2047</p>
+					<a href="http://www.newcollege.utoronto.ca/academics/writing-centre/" class="text-blue-600 hover:underline">
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- St. Michael's -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">St. Michael's</h3>
+					<p class="mb-4">Located in Kelly Library Learning Commons</p>
+					<a href="https://library.stmikes.utoronto.ca/research/" class="text-blue-600 hover:underline">
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- Trinity College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Trinity College</h3>
+					<p class="mb-4">Located in Academic Resource Centre, Room 3</p>
+					<a
+						href="https://www.trinity.utoronto.ca/study-arts-science/academic-support-services/writing-support/"
+						class="text-blue-600 hover:underline"
+					>
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- University College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">University College</h3>
+					<p class="mb-4">Located in Rooms 259E, 259F, and 259G</p>
+					<a href="http://www.uc.utoronto.ca/writing-centre" class="text-blue-600 hover:underline">
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- Victoria College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Victoria College</h3>
+					<p class="mb-4">Located in Goldring Student Centre (GSC230)</p>
+					<a
+						href="https://www.vic.utoronto.ca/current-students/registrars-office/writing-centre"
+						class="text-blue-600 hover:underline"
+					>
+						Visit Writing Centre →
+					</a>
+				</div>
+
+				<!-- Woodsworth College -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Woodsworth College</h3>
+					<p class="mb-4">Located in Room 107</p>
+					<a
+						href="http://www.wdw.utoronto.ca/index.php/current_students/academic_writing_centre/"
+						class="text-blue-600 hover:underline"
+					>
+						Visit Writing Centre →
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Learning Strategy Support -->
+		<section id="learning-support" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">Centre for Learning Strategy Support</h2>
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				<!-- Graduate Writing Groups -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Graduate Writing Groups</h3>
+					<p class="mb-4">
+						Join supportive peer groups focused on achieving writing goals with experienced facilitators.
+					</p>
+					<a
+						href="https://studentlife.utoronto.ca/program/graduate-writing-groups/"
+						class="text-blue-600 hover:underline"
+					>
+						Join Writing Groups →
+					</a>
+				</div>
+
+				<!-- Study Hubs -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Study Hubs</h3>
+					<p class="mb-4">Access quiet, welcoming spaces for focused study sessions and exam preparation.</p>
+					<a href="https://studentlife.utoronto.ca/program/study-hubs/" class="text-blue-600 hover:underline">
+						Find Study Hubs →
+					</a>
+				</div>
+
+				<!-- Grad Productivity Group -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Grad Productivity Group</h3>
+					<p class="mb-4">Participate in structured online sessions for focused work alongside peers.</p>
+					<a
+						href="https://studentlife.utoronto.ca/program/grad-productivity-group-actually-work-from-home/"
+						class="text-blue-600 hover:underline"
+					>
+						Join Productivity Sessions →
+					</a>
+				</div>
+
+				<!-- Learning Strategist Appointments -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Learning Strategist Appointments</h3>
+					<p class="mb-4">
+						Book personalized sessions to develop effective study strategies and improve academic skills.
+					</p>
+					<a
+						href="https://studentlife.utoronto.ca/service/learning-strategist-appointments/"
+						class="text-blue-600 hover:underline"
+					>
+						Book Appointment →
+					</a>
+				</div>
+
+				<!-- CLSS Mentor Appointments -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">CLSS Mentor Appointments</h3>
+					<p class="mb-4">Get one-on-one support from peer mentors on study techniques and academic resources.</p>
+					<a
+						href="https://studentlife.utoronto.ca/service/clss-mentor-appointments/"
+						class="text-blue-600 hover:underline"
+					>
+						Meet with Mentor →
+					</a>
+				</div>
+
+				<!-- Tips and Strategies -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Tips & Strategies</h3>
+					<p class="mb-4">Access comprehensive resources for exams, essays, presentations, and more.</p>
+					<a
+						href="https://studentlife.utoronto.ca/task_levels/centre-for-learning-strategy-support/"
+						class="text-blue-600 hover:underline"
+					>
+						View Resources →
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Blog Posts -->
+		<section id="blog" class="my-12 scroll-mt-8">
+			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>
 		</section>
 	</main>
 </BaseLayout>
+
+<style>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>

@@ -2,8 +2,14 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import BlogPostCard from '../../components/BlogPostCard.astro'
+import { Image } from 'astro:assets'
 
-// Filter blogs that have the teaching-assistantships tag
+// Import images
+import HartHouse from '../../assets/HartHouse.png'
+import GoldringCentre from '../../assets/GoldringCentre.png'
+import AthleticsCentre from '../../assets/AthleticsCentre.png'
+
+// Filter blogs that have the employment tag
 const posts = (await getCollection('blog'))
 	.filter((post) => post.data.tags.includes('other'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -11,21 +17,138 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Other Resources">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-4 text-center text-4xl font-bold">Other Resources</h1>
-		<!-- Add content for teaching assistantships resources -->
+		<h1 class="mb-8 text-center text-4xl font-bold">Miscellaneous Resources</h1>
 
-		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
-			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
-			<p class="text-justify">
-				The content for Other Resources is currently under development. We're working hard to bring you valuable
-				information and resources. Please check back soon for updates!
-			</p>
-		</div>
-		<section class="my-12">
-			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Other Resources</h2>
+		<!-- Table of Contents -->
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+			<ul class="space-y-2">
+				<li class="transition-all hover:translate-x-2">
+					<a href="#fitness" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Fitness Facilities</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#supervision" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Graduate Supervision Support</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Related Blog Posts</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Fitness Facilities -->
+		<section id="fitness" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">Fitness Facilities</h2>
+			<div class="grid gap-6 md:grid-cols-3">
+				<!-- Hart House -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<div class="mb-4 overflow-hidden rounded-lg">
+						<Image
+							src={HartHouse}
+							alt="Hart House Fitness Centre"
+							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
+						/>
+					</div>
+					<h3 class="mb-3 text-xl font-semibold">Hart House Fitness Centre</h3>
+					<p class="mb-4">
+						A comprehensive fitness facility offering a pool, weight room, indoor track, and various drop-in classes,
+						catering to all fitness levels in a supportive environment.
+					</p>
+					<a 
+						href="https://harthouse.ca/fitness/"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Explore Hart House →
+					</a>
+				</div>
+
+				<!-- Goldring Centre -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<div class="mb-4 overflow-hidden rounded-lg">
+						<Image
+							src={GoldringCentre}
+							alt="Goldring Centre for High Performance Sport"
+							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
+						/>
+					</div>
+					<h3 class="mb-3 text-xl font-semibold">Goldring Centre</h3>
+					<p class="mb-4">
+						State-of-the-art facility featuring a multi-purpose arena, strength and conditioning center, and
+						specialized training spaces for both recreational users and high-performance athletes.
+					</p>
+					<a 
+						href="https://kpe.utoronto.ca/facility/goldring-centre-high-performance-sport"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Visit Goldring →
+					</a>
+				</div>
+
+				<!-- Athletic Centre -->
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<div class="mb-4 overflow-hidden rounded-lg">
+						<Image
+							src={AthleticsCentre}
+							alt="Athletic Centre"
+							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
+						/>
+					</div>
+					<h3 class="mb-3 text-xl font-semibold">Athletic Centre</h3>
+					<p class="mb-4">
+						Historic multi-sport facility including gymnasiums, pools, and a strength training area, supporting
+						academic learning, recreational activities, and competitive sports.
+					</p>
+					<a 
+						href="https://kpe.utoronto.ca/facility/athletic-centre"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					>
+						Visit Athletic Centre →
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Graduate Supervision Support -->
+		<section id="supervision" class="mb-12 scroll-mt-8">
+			<h2 class="mb-6 text-2xl font-bold">Graduate Supervision Support</h2>
+			<div class="rounded-lg bg-white p-6 shadow-md">
+				<h3 class="mb-4 text-xl font-semibold">Centre for Graduate Mentorship and Supervision (CGMS)</h3>
+				<p class="mb-6 text-justify leading-relaxed">
+					The Centre for Graduate Mentorship and Supervision (CGMS) offers support for students who may be
+					experiencing challenges with their supervisors. They provide resources like coaching and workshops
+					focused on improving communication and resolving conflicts, helping you navigate difficult
+					relationships and foster a more productive academic environment. If you're feeling uncertain about
+					your supervisory situation, CGMS can be a valuable ally in finding constructive solutions.
+				</p>
+				<a 
+					href="https://www.cgms.utoronto.ca/"
+					class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+				>
+					Access CGMS Resources →
+				</a>
+			</div>
+		</section>
+
+		<!-- Related Blog Posts -->
+		<section id="blog" class="my-12 scroll-mt-8">
+			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>
 		</section>
 	</main>
 </BaseLayout>
+
+<style>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>
