@@ -7,7 +7,11 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
+const {
+	title = 'Graduate Representation Committee | Faculty of Medicine, University of Toronto',
+	description = 'The official website of the Faculty of Medicine Graduate Representation Committee at the University of Toronto, providing resources and support for graduate students in medical sciences.',
+	image = '/grc-logo.webp'
+} = Astro.props
 ---
 
 <!-- Global Metadata -->
@@ -41,3 +45,26 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Enhanced SEO Meta Tags -->
+<meta
+	name="keywords"
+	content="UofT, University of Toronto, Faculty of Medicine, Graduate Students, GRC, Graduate Representation Committee, Medical Sciences, Graduate Education"
+/>
+<meta name="author" content="Graduate Representation Committee, Faculty of Medicine" />
+<meta name="language" content="English" />
+
+<!-- Organization Schema -->
+<script is:inline type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "EducationalOrganization",
+		"name": "Graduate Representation Committee",
+		"parentOrganization": {
+			"@type": "EducationalOrganization",
+			"name": "Faculty of Medicine, University of Toronto"
+		},
+		"url": "https://uoftfomgrc.ca",
+		"description": "The official website of the Faculty of Medicine Graduate Representation Committee at the University of Toronto"
+	}
+</script>

@@ -10,21 +10,170 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Career Planning/Exploration">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-4 text-center text-4xl font-bold">Career Planning/Exploration</h1>
-		<!-- Add content for career planning/exploration resources -->
+		<h1 class="mb-8 text-center text-4xl font-bold">Career Planning/Exploration</h1>
 
-		<div class="mb-4 border-l-4 border-yellow-500 bg-yellow-100 p-4 text-yellow-700" role="alert">
-			<h2 class="mb-2 text-center text-2xl font-bold text-yellow-600">Work in Progress</h2>
-			<p class="text-justify">
-				The content for Career Planning/Exploration is currently under development. We're working hard to bring you
-				valuable information and resources. Please check back soon for updates!
+		<!-- Table of Contents -->
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+			<ul class="space-y-2">
+				<li class="transition-all hover:translate-x-2">
+					<a href="#events" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Upcoming Career Events</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#resources" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Career Resources & Guides</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#tools" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Career Development Tools</span>
+					</a>
+				</li>
+				<li class="transition-all hover:translate-x-2">
+					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+						<span class="text-sm">→</span>
+						<span>Related Blog Posts</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Career Events Calendar -->
+		<section id="events" class="mb-12 scroll-mt-8">
+			<h2 class="mb-4 text-2xl font-bold">Upcoming Career Events</h2>
+			<p class="mb-4">
+				Stay updated with career-related events at UofT through our <a
+					href="https://events.studentlife.utoronto.ca/Calendar?svc=cc"
+					class="text-blue-600 hover:underline">Career Services Calendar</a
+				>.
 			</p>
-		</div>
-		<section class="my-12">
-			<h2 class="mb-4 text-center text-2xl font-bold">Blogs related to Career Planning/Exploration</h2>
+		</section>
+
+		<!-- Career Resources -->
+		<section id="resources" class="mb-12 scroll-mt-8">
+			<h2 class="mb-4 text-2xl font-bold">Career Resources & Guides</h2>
+			<div class="grid gap-6 md:grid-cols-2">
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">General Career Resources</h3>
+					<ul class="space-y-2">
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/CC-Resume-and-Cover-Letter-Toolkit.pdf"
+								class="text-blue-600 hover:underline">Resume and Cover Letter Toolkit</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Guide-to-Writing-Personal-Statements-for-Further-Education.pdf"
+								class="text-blue-600 hover:underline">Guide to Writing Personal Statements</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Interview-Strategies-Guide.pdf"
+								class="text-blue-600 hover:underline">Interview Strategies Guide</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Interview-Strategies-Guide-MMI-and-MPI.pdf"
+								class="text-blue-600 hover:underline">MMI and MPI Interview Guide</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://clnx.utoronto.ca/content/documents/Link/Disclosure-and-Accommodation-Guide.pdf"
+								class="text-blue-600 hover:underline">Workplace Disclosure and Accommodation Guide</a
+							>
+						</li>
+					</ul>
+				</div>
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Academic Career Resources</h3>
+					<ul class="space-y-2">
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Finding-Academic-Work-Guide.pdf"
+								class="text-blue-600 hover:underline">Finding Academic Work (PhDs & Post-Docs)</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Academic-Cover-Letter.pdf"
+								class="text-blue-600 hover:underline">Academic Cover Letter Guide</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Creating-Your-Academic-CV.pdf"
+								class="text-blue-600 hover:underline">Academic CV Guide</a
+							>
+						</li>
+						<li>
+							<a
+								href="https://studentlife.utoronto.ca/wp-content/uploads/Academic-Interview-Guide.pdf"
+								class="text-blue-600 hover:underline">Academic Interview Guide</a
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<!-- Career Tools -->
+		<section id="tools" class="mb-12 scroll-mt-8">
+			<h2 class="mb-4 text-2xl font-bold">Career Development Tools</h2>
+			<div class="grid gap-6 md:grid-cols-3">
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Career Navigator</h3>
+					<p class="mb-4">
+						Explore career opportunities, connect with alumni, and discover what you can do with your U of T degree.
+					</p>
+					<a
+						href="https://careernavigator.studentlife.utoronto.ca/"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Access Navigator</a
+					>
+				</div>
+
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">Ten Thousand Coffees</h3>
+					<p class="mb-4">Connect with 13,000+ alumni professionals for career advice and networking opportunities.</p>
+					<a
+						href="https://utoronto.tenthousandcoffees.com/login?redirectUrl=%2Fhub%2Fuoft-cafe%2Fintroductions"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Join Network</a
+					>
+				</div>
+
+				<div class="rounded-lg bg-white p-6 shadow-md">
+					<h3 class="mb-3 text-xl font-semibold">GoinGlobal</h3>
+					<p class="mb-4">
+						Access worldwide job opportunities and career resources with positions available in 40+ countries.
+					</p>
+					<a
+						href="https://online.goinglobal.com/"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Explore Opportunities</a
+					>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Blog Posts -->
+		<section id="blog" class="my-12 scroll-mt-8">
+			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>
 		</section>
 	</main>
 </BaseLayout>
+
+<style>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>
