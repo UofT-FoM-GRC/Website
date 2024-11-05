@@ -5,12 +5,12 @@ import tailwind from '@astrojs/tailwind'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 
-import netlify from '@astrojs/netlify';
+import netlify from '@astrojs/netlify'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
-  integrations: [mdx(), sitemap(), tailwind(), icon(), alpinejs()],
-  output: 'static',
-  adapter: netlify()
+	site: 'https://uoftfomgrc.ca',
+	integrations: [mdx(), sitemap(), tailwind(), icon(), alpinejs()],
+	output: 'static',
+	adapter: netlify()
 })
