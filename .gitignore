@@ -3,6 +3,7 @@ dist/
 .vercel/
 .netlify/
 .netlify/*
+pagefind/
 
 # generated types
 .astro/

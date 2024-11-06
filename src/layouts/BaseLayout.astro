@@ -12,6 +12,8 @@ const { title, description } = Astro.props
 	<head>
 		<BaseHead title={title} description={description} />
 		<ViewTransitions />
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+		<script is:inline src="/pagefind/pagefind-ui.js"></script>
 	</head>
 	<body>
 		<slot name="header">

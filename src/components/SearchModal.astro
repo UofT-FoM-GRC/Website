@@ -1,0 +1,71 @@
+<div
+	x-data="{ 
+		isOpen: false,
+		focusSearch() {
+			this.$nextTick(() => {
+				document.querySelector('.pagefind-ui__search-input')?.focus();
+			});
+		}
+	}"
+	@open-search.window="isOpen = true; focusSearch()"
+	@keydown.window.escape="isOpen = false"
+	x-show="isOpen"
+	style="display: none;"
+	class="fixed inset-0 z-50"
+	x-transition:enter="transition ease-out duration-300"
+	x-transition:enter-start="opacity-0"
+	x-transition:enter-end="opacity-100"
+	x-transition:leave="transition ease-in duration-200"
+	x-transition:leave-start="opacity-100"
+	x-transition:leave-end="opacity-0"
+>
+	<!-- Backdrop -->
+	<div class="fixed inset-0 bg-gray-500 bg-opacity-75" @click="isOpen = false"></div>
+
+	<!-- Modal -->
+	<div class="fixed inset-0 z-10 p-4 sm:p-6 md:p-20">
+		<div
+			@click.outside="isOpen = false"
+			class="mx-auto max-w-3xl transform divide-y divide-gray-100 rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+		>
+			<div id="search" class="h-full w-full p-4" transition:persist></div>
+		</div>
+	</div>
+</div>
+
+<script>
+	let searchInstance: any = null
+
+	window.addEventListener('DOMContentLoaded', () => {
+		if (!searchInstance) {
+			// @ts-ignore
+			searchInstance = new window.PagefindUI({
+				element: '#search',
+				showSubResults: true,
+				showImages: false,
+				resetStyles: false
+			})
+		}
+	})
+</script>
+
+<style is:global>
+	/* Make the form full width */
+	#search .pagefind-ui .pagefind-ui__form {
+		width: 100% !important;
+		margin: 0 !important;
+	}
+
+	#search .pagefind-ui .pagefind-ui__search-input {
+		width: 100% !important;
+	}
+
+	#search .pagefind-ui .pagefind-ui__results-area {
+		width: 100% !important;
+	}
+
+	/* Hide the default loading text */
+	#search .pagefind-ui__message {
+		display: none;
+	}
+</style>

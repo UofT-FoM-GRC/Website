@@ -3,6 +3,7 @@ import HeaderLink from './HeaderLink.astro'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import GRCLogo from '../assets/GRC_Logo.png'
+import SearchModal from './SearchModal.astro'
 ---
 
 <header x-data="{ isOpen: false, isResourcesOpen: false }" class="sticky top-0 z-50 bg-white shadow-md">
@@ -10,8 +11,7 @@ import GRCLogo from '../assets/GRC_Logo.png'
 		<div class="flex items-center gap-2">
 			<div class="logo">
 				<a href="/" aria-label="Go to UofT FoM GRC homepage">
-					<!-- <UofTLogo class="h-12 w-12 text-slate-700" /> -->
-					<Image src={GRCLogo} alt="UofT FoM GRC logo" class="h-12 w-12" />
+					<Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" />
 				</a>
 			</div>
 			<h2 class="text-2xl font-bold text-slate-700"><a href="/">UofT FoM GRC</a></h2>
@@ -50,6 +50,7 @@ import GRCLogo from '../assets/GRC_Logo.png'
 						:class="isOpen ? 'rotate-180' : ''"
 					/>
 				</button>
+
 				<!-- Clicking ESC key should close the dropdown -->
 				<div
 					id="resources-dropdown"
@@ -107,6 +108,15 @@ import GRCLogo from '../assets/GRC_Logo.png'
 					>
 				</div>
 			</div>
+			<!-- Search button -->
+			<button
+				@click="$dispatch('open-search')"
+				class="flex items-center gap-2 text-slate-800 px-2 py-1"
+				aria-label="Open search"
+			>
+				<Icon name="mdi:magnify" class="h-8 w-8" />
+				<span class="hidden lg:inline">Search</span>
+			</button>
 		</div>
 
 		<!-- Mobile menu button -->
@@ -215,6 +225,15 @@ import GRCLogo from '../assets/GRC_Logo.png'
 						>
 					</div>
 				</div>
+				<!-- Search button -->
+				<button
+					@click="$dispatch('open-search')"
+					class="ml-4 mt-2 flex items-center gap-2 text-slate-800"
+					aria-label="Open search"
+				>
+					<Icon name="mdi:magnify" class="h-8 w-8" />
+					<span class="hidden sm:inline">Search</span>
+				</button>
 			</div>
 		</div>
 
@@ -253,3 +272,44 @@ import GRCLogo from '../assets/GRC_Logo.png'
 		</div>
 	</nav>
 </header>
+
+<!-- Add the modal with x-ref -->
+<SearchModal />
+
+<style is:global>
+	/* Container styling */
+	#search {
+		position: relative;
+	}
+
+	/* Results dropdown styling */
+	.pagefind-ui__results-area {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		width: 600px; /* or your preferred width */
+		padding: 1rem;
+		max-height: 80vh;
+		overflow-y: auto;
+		background: white;
+		border: 1px solid #e5e7eb;
+		border-radius: 0.5rem;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+		z-index: 50;
+	}
+
+	/* Optional: Add some padding to results */
+	.pagefind-ui__results {
+		padding: 1rem;
+	}
+
+	/* Optional: Style the search input */
+	.pagefind-ui__search-input {
+		width: 200px; /* or your preferred width */
+	}
+
+	/* Ensure the search box itself doesn't expand */
+	.pagefind-ui__form {
+		width: fit-content;
+	}
+</style>
