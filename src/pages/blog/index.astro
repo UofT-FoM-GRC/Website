@@ -9,7 +9,7 @@ const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueO
 const groupedPosts = posts.reduce(
 	(acc, post) => {
 		const date = post.data.pubDate
-		const key = `${date.getFullYear()}-${date.getMonth()}`
+		const key = `${date.getFullYear()}-${String(date.getMonth()).padStart(2, '0')}`
 		if (!acc[key]) acc[key] = []
 		acc[key].push(post)
 		return acc
@@ -17,7 +17,7 @@ const groupedPosts = posts.reduce(
 	{} as Record<string, typeof posts>
 )
 
-// Sort keys in descending order
+// Sort keys in descending order (newest first)
 const sortedKeys = Object.keys(groupedPosts).sort((a, b) => b.localeCompare(a))
 ---
 

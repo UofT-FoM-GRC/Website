@@ -2,7 +2,7 @@
 title: 'Unlock LinkedIn Learning as a UofT Faculty TA'
 description: 'The University of Toronto Faculty TA LinkedIn Learning is a great opportunity to network with top employers and learn about potential career paths.'
 pubDate: 'Sep 7 2024'
-heroImage: '/linkedin-learning.webp'
+heroImage: '/assets/linkedin-learning.webp'
 tags: ['continuing-education']
 ---
 

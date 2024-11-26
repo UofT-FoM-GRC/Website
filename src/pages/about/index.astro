@@ -5,13 +5,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import Accordion, { type ProfileAccordionItem } from '../../components/ProfileAccordion.astro'
 
 const teamData: ProfileAccordionItem[] = [
-	// ... other years and profiles
 	{
 		year: '2024 - 2025',
 		profiles: [
 			{ name: 'Maurice Pasternak', position: 'Director and Web Developer', hasImage: true },
 			{ name: 'Willow Squires', position: 'Director', hasImage: true },
-			{ name: 'Amy Wilson', position: 'Communications Director', hasImage: true },
 			{ name: 'Jinny Tsang', position: 'Data Analyst', hasImage: true },
 			{ name: 'Salman Basrai', position: 'Data Analyst', hasImage: false },
 			{ name: 'Jennifer C. Onuora', position: 'Data Analyst', hasImage: true },
@@ -19,6 +17,7 @@ const teamData: ProfileAccordionItem[] = [
 			// ... other profiles
 		]
 	}
+	// ... other years and profiles
 ]
 ---
 

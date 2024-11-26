@@ -2,7 +2,7 @@
 title: 'UofT Award Explorer'
 description: 'The University of Toronto Award Explorer is a great resource for finding scholarships and awards tailored to your needs.'
 pubDate: 'Sep 8 2024'
-heroImage: '/waiter-serving-money.webp'
+heroImage: '/assets/waiter-serving-money.webp'
 tags: ['scholarships-bursaries-awards']
 ---
 
