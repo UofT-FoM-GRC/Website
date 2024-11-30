@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="public/uoft-coa.webp" style="border-radius: 50%; border: 1px solid #002e62;" alt="UofT Logo"></a>
+ <img width=200px height=200px src="public/assets/grc-logo.webp" alt="GRC Logo"></a>
 </p>
 
 <h3 align="center"></h3>
@@ -94,7 +94,7 @@ This **must be** included at the top of every blog post and is used to generate 
 
 3. The heroImage **is optional**. It can also be an external URL, for example: https://en.wikipedia.org/wiki/University_of_Toronto#/media/File:UofTConvocationHall.jpg. If not provided, a placeholder image will be used:
 
-<img src="public/uoft-placeholder-default.webp" alt="GRC Blog Post Placeholder Image" width="240" height="200">
+<img src="public/assets/uoft-placeholder-default.webp" alt="GRC Blog Post Placeholder Image" width="240" height="200">
 
 4. **At least one tag must be provided**. They assist with blog post organization and linking to relevant resource pages. The following tags are available:
 
@@ -119,7 +119,6 @@ tags: ['employment']
 ---
 ```
 
-
 ## 🚀 Deployment
 
 Everything is automated to deploy to Netlify once changes on `main` are detected. Keep it simple. No manual deployment steps are required.
@@ -131,7 +130,7 @@ Everything is automated to deploy to Netlify once changes on `main` are detected
 
 ## ✍️ Authors
 
-- [@MauricePasternak](https://github.com/MauricePasternak) - Idea & Initial work
+- [@MauricePasternak](https://github.com/MauricePasternak) - Creator and current maintainer
 
 See also the list of [contributors](https://github.com/UofT-FoM-GRC/Website/contributors) who participated in this project.
 

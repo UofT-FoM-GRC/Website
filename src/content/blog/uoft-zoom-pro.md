@@ -6,8 +6,6 @@ heroImage: '/assets/zoom-banner.webp'
 tags: ['other']
 ---
 
-# The University of Toronto Zoom Pro
-
 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
   As a UofT student, you have access to a free Zoom Pro account that removes the 40-minute meeting limit and provides additional features!
 </div>
