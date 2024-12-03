@@ -1,7 +1,7 @@
 ---
-title: 'UofT Free Coursera Access'
-description: 'asdasdasd'
-pubDate: 'Sep 23 2024'
+title: 'Free Coursera Access for UofT Students'
+description: 'Coursera is a free resource for UofT students.'
+pubDate: 'Nov 30 2024'
 heroImage: '/assets/coursera-logo.webp'
 tags: ['career-planning-exploration']
 ---
