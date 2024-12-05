@@ -16,7 +16,7 @@ The Harmonized Base Funding Agreement (HBFA) is a crucial component of your grad
 1. **Funding Structure**:
    - The HBFA provides a **yearly stipend** for students enrolled in thesis-based graduate programs. The stipend can be referred to as the "Total" in the table below. 
 
-    ![HBFA 2024/2025 Base Funding Table for MSc and PhD Students - Domestic and International](/hbfa-2024-2025.webp)
+    ![HBFA 2024/2025 Base Funding Table for MSc and PhD Students - Domestic and International](/assets/hbfa-2024-2025.webp)
 
     - In other words, the stipend is composed of sub-components, two at minimum: 
         - one for paying the tuition fees
