@@ -15,9 +15,9 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg"
 >
 	<a
-		href={`/blog/${post.slug}/`}
+		href={`/blog/${post.id}`}
 		class="focus-visible:ring-3 block focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-		aria-labelledby={`post-title-${post.slug}`}
+		aria-labelledby={`post-title-${post.id}`}
 	>
 		{
 			heroImageIsExternal ? (
@@ -39,7 +39,7 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 			)
 		}
 		<div class="p-4">
-			<h4 id={`post-title-${post.slug}`} class="mb-2 text-xl font-bold">
+			<h4 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold">
 				{post.data.title}
 			</h4>
 			<p class="text-sm text-gray-600">
