@@ -2,13 +2,20 @@
 const today = new Date()
 ---
 
-<footer class="w-full bg-gradient-to-b from-slate-800 to-slate-900 px-4 py-2 text-center text-gray-200">
+<footer
+	class="w-full bg-linear-to-b from-slate-800 to-slate-900 px-4 py-2 text-center text-gray-200 transition-colors duration-200 dark:from-slate-800 dark:to-slate-950 dark:text-slate-300"
+>
 	<p class="mb-4">
 		&copy; {today.getFullYear()} University of Toronto, Faculty of Medicine, Graduate Representation Committee. All rights
 		reserved.
 	</p>
 	<div class="mt-4 flex justify-center gap-4">
-		<a href="/" target="_blank" class="text-gray-200 hover:text-gray-300" aria-label="Follow UofT GRC on Instagram">
+		<a
+			href="/"
+			target="_blank"
+			class="text-gray-200 transition-colors hover:text-gray-300 dark:text-slate-300 dark:hover:text-slate-100"
+			aria-label="Follow UofT GRC on Instagram"
+		>
 			<span class="sr-only">Follow UofT GRC on Instagram</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" class="fill-current"
 				><path
@@ -17,7 +24,12 @@ const today = new Date()
 				></path></svg
 			>
 		</a>
-		<a href="/" target="_blank" class="text-gray-200 hover:text-gray-300" aria-label="Follow UofT GRC on Twitter">
+		<a
+			href="/"
+			target="_blank"
+			class="text-gray-200 transition-colors hover:text-gray-300 dark:text-slate-300 dark:hover:text-slate-100"
+			aria-label="Follow UofT GRC on Twitter"
+		>
 			<span class="sr-only">Follow UofT GRC on Twitter</span>
 			<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" class="fill-current">
 				<path
@@ -28,7 +40,7 @@ const today = new Date()
 		<a
 			href="https://github.com/UofT-FoM-GRC"
 			target="_blank"
-			class="text-gray-200 hover:text-gray-300"
+			class="text-gray-200 transition-colors hover:text-gray-300 dark:text-slate-300 dark:hover:text-slate-100"
 			aria-label="Visit UofT GRC's GitHub organization page"
 		>
 			<span class="sr-only">Go to UofT GRC's GitHub organization page</span>

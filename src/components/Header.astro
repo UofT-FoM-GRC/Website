@@ -6,38 +6,48 @@ import GRCLogo from '../assets/GRC_Logo.png'
 import SearchModal from './SearchModal.astro'
 ---
 
-<header x-data="{ isOpen: false, isResourcesOpen: false }" class="sticky top-0 z-50 bg-white shadow-md">
+<header
+	x-data="{ 
+		isOpen: false,
+		isDark: localStorage.getItem('grc-theme') === 'dark'
+	}"
+	class="sticky top-0 z-50 bg-white shadow-md transition-colors duration-200 dark:bg-slate-900"
+>
 	<nav class="flex items-center justify-between p-2">
 		<div class="flex items-center gap-2">
-			<div class="logo">
+			<!-- Logo -->
+			<div class="logo rounded-full p-1 dark:bg-neutral-100">
 				<a href="/" aria-label="Go to UofT FoM GRC homepage">
 					<Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" />
 				</a>
 			</div>
-			<h2 class="flex items-center text-2xl font-bold text-slate-700"><a href="/">UofT FoM GRC</a></h2>
+			<!-- Site Title -->
+			<h2 class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
+				<a href="/">UofT FoM GRC</a>
+			</h2>
 		</div>
 
 		<!-- Desktop menu -->
 		<div class="hidden space-x-1 md:flex">
 			<HeaderLink
 				href="/"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100"
+				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
 				>Home</HeaderLink
 			>
 			<HeaderLink
-				href="/blog"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100"
-				>Blog</HeaderLink
+				href="/about"
+				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
+				>About</HeaderLink
 			>
 			<HeaderLink
-				href="/about"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100"
-				>About</HeaderLink
+				href="/blog"
+				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
+				>Blog</HeaderLink
 			>
 			<div class="relative" x-data="{ isOpen: false }">
 				<button
 					@click="isOpen = !isOpen"
-					class="relative flex items-center gap-1 px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100"
+					class="relative flex items-center gap-1 px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
 					aria-label="View GRC resources"
 					aria-haspopup="true"
 					:aria-expanded="isOpen"
@@ -63,47 +73,47 @@ import SearchModal from './SearchModal.astro'
 					x-transition:leave="transition ease-in duration-150"
 					x-transition:leave-start="opacity-100 transform translate-y-0"
 					x-transition:leave-end="opacity-0 transform -translate-y-2"
-					class="absolute right-0 mt-2 w-fit bg-white px-4 shadow-md"
+					class="absolute right-0 mt-2 w-fit bg-white px-4 shadow-md dark:bg-slate-800"
 				>
 					<a
 						href="/resources/health-wellness"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Health & Wellness resources">Health & Wellness</a
 					>
 					<a
 						href="/resources/housing"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Housing resources">Housing</a
 					>
 					<a
 						href="/resources/continuing-education"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Continuing Education resources">Continuing Education</a
 					>
 					<a
 						href="/resources/scholarships-bursaries-awards"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Scholarships/Bursaries/Awards resources">Scholarships/Bursaries/Awards</a
 					>
 					<a
 						href="/resources/scholarship-award-grant-application-support"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Scholarship/Award/Grant Application Support resources"
 						>Scholarship/Award/Grant Application Support</a
 					>
 					<a
 						href="/resources/employment"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Employment resources">Employment</a
 					>
 					<a
 						href="/resources/career-planning-exploration"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Career Planning/Exploration resources">Career Planning/Exploration</a
 					>
 					<a
 						href="/resources/other"
-						class="mb-2 block px-4 py-2 text-slate-800 hover:bg-slate-200"
+						class="mb-2 block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View Other resources">Other</a
 					>
 				</div>
@@ -111,7 +121,7 @@ import SearchModal from './SearchModal.astro'
 			<!-- Search button -->
 			<button
 				@click="$dispatch('open-search')"
-				class="flex items-center gap-2 px-2 py-1 text-slate-800"
+				class="flex items-center gap-2 px-2 py-1 text-slate-800 dark:text-slate-100"
 				aria-label="Open search"
 			>
 				<Icon name="mdi:magnify" class="h-8 w-8" />
@@ -119,16 +129,29 @@ import SearchModal from './SearchModal.astro'
 			</button>
 		</div>
 
-		<!-- Mobile menu button -->
-		<button
-			@click="isOpen = !isOpen"
-			class="text-slate-800 md:hidden"
-			aria-controls="mobile-menu"
-			aria-label="Open mobile menu"
-			:aria-expanded="isOpen"
-		>
-			<Icon name="mdi:menu" class="mx-4 h-8 w-8" />
-		</button>
+		<!-- Container for mobile controls -->
+		<div class="flex">
+			<!-- Mobile theme toggle button -->
+			<button
+				@click="isDark = !isDark; $dispatch('toggle-theme')"
+				class="flex items-center text-slate-800 transition-colors hover:text-slate-900 md:hidden dark:text-slate-100 dark:hover:text-slate-50"
+				aria-label="Toggle dark mode"
+			>
+				<Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" />
+				<Icon name="mdi:moon-waning-crescent" class="hidden h-8 w-8 dark:block" />
+			</button>
+
+			<!-- Mobile menu button -->
+			<button
+				@click="isOpen = !isOpen"
+				class="text-slate-800 md:hidden dark:text-slate-100"
+				aria-controls="mobile-menu"
+				aria-label="Open mobile menu"
+				:aria-expanded="isOpen"
+			>
+				<Icon name="mdi:menu" class="mx-4 h-8 w-8" />
+			</button>
+		</div>
 
 		<!-- Mobile menu dropdown -->
 		<div
@@ -139,28 +162,28 @@ import SearchModal from './SearchModal.astro'
 			x-transition:leave-start="opacity-100 transform translate-y-0"
 			x-transition:leave-end="opacity-0 transform -translate-y-2"
 			@click.away="isOpen = false"
-			class="absolute top-full right-0 left-0 bg-white shadow-md md:hidden"
+			class="absolute top-full right-0 left-0 bg-white shadow-md md:hidden dark:bg-slate-800"
 		>
 			<div class="flex flex-col p-4">
 				<HeaderLink
 					href="/"
-					class="hover:border-accent border-accent py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200"
+					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 					aria-label="Go to UofT FoM GRC homepage">Home</HeaderLink
 				>
 				<HeaderLink
-					href="/blog"
-					class="hover:border-accent py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200"
-					aria-label="Go to UofT FoM GRC blog">Blog</HeaderLink
+					href="/about"
+					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+					aria-label="Go to UofT FoM GRC about page">About</HeaderLink
 				>
 				<HeaderLink
-					href="/about"
-					class="hover:border-accent py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200"
-					aria-label="Go to UofT FoM GRC about page">About</HeaderLink
+					href="/blog"
+					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+					aria-label="Go to UofT FoM GRC blog">Blog</HeaderLink
 				>
 				<div x-data="{ isOpen: false }">
 					<button
 						@click="isOpen = !isOpen"
-						class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200"
+						class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						aria-label="View GRC resources"
 						aria-haspopup="true"
 						:aria-expanded="isOpen"
@@ -186,41 +209,43 @@ import SearchModal from './SearchModal.astro'
 					>
 						<a
 							href="/resources/health-wellness"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Health & Wellness resources">Health & Wellness</a
 						>
 						<a
 							href="/resources/housing"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Housing resources">Housing</a
 						>
 						<a
 							href="/resources/continuing-education"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Continuing Education resources">Continuing Education</a
 						>
 						<a
 							href="/resources/scholarships-bursaries-awards"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Scholarships/Bursaries/Awards resources">Scholarships/Bursaries/Awards</a
 						>
 						<a
 							href="/resources/scholarship-award-grant-application-support"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Scholarship/Award/Grant Application Support resources"
 							>Scholarship/Award/Grant Application Support</a
 						>
-						<a href="/resources/employment" class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+						<a
+							href="/resources/employment"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							>Teaching Assistantships</a
 						>
 						<a
 							href="/resources/career-planning-exploration"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Career Planning/Exploration resources">Career Planning/Exploration</a
 						>
 						<a
 							href="/resources/other"
-							class="mb-2 block py-2 pl-6 text-slate-800 hover:bg-slate-200"
+							class="mb-2 block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 							aria-label="View Other resources">Other</a
 						>
 					</div>
@@ -228,7 +253,7 @@ import SearchModal from './SearchModal.astro'
 				<!-- Search button -->
 				<button
 					@click="$dispatch('open-search')"
-					class="mt-2 ml-4 flex items-center gap-2 text-slate-800"
+					class="mt-2 ml-4 flex items-center gap-2 text-slate-800 dark:text-slate-100"
 					aria-label="Open search"
 				>
 					<Icon name="mdi:magnify" class="h-8 w-8" />
@@ -239,10 +264,19 @@ import SearchModal from './SearchModal.astro'
 
 		<!-- Social icons -->
 		<div class="hidden space-x-4 px-2 md:flex">
+			<!-- Theme toggle button -->
+			<button
+				@click="isDark = !isDark; $dispatch('toggle-theme')"
+				class="flex items-center text-slate-800 transition-colors hover:text-slate-900 dark:text-slate-100 dark:hover:text-slate-50"
+				aria-label="Toggle dark mode"
+			>
+				<Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" />
+				<Icon name="mdi:moon-waning-crescent" class="hidden h-8 w-8 dark:block" />
+			</button>
 			<a
 				href="https://www.instagram.com/grc_uoftfacmed/"
 				target="_blank"
-				class="text-slate-800"
+				class="text-slate-800 dark:text-slate-100"
 				aria-label="Follow UofT FoM GRC on Instagram"
 			>
 				<span class="sr-only">Follow UofT FoM GRC on Instagram</span>
@@ -253,33 +287,26 @@ import SearchModal from './SearchModal.astro'
 					></path></svg
 				>
 			</a>
-			<!-- <a href="/" target="_blank" class="text-slate-800" aria-label="Follow UofT FoM GRC on Twitter">
-				<span class="sr-only">Follow UofT FoM GRC on Twitter</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" class="fill-current">
-					<path
-						d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
-					></path>
-				</svg>
-			</a> -->
-			<!-- <a
-				href="https://github.com/UofT-FoM-GRC"
-				target="_blank"
-				class="text-slate-800"
-				aria-label="Go to UofT FoM GRC's GitHub organization page"
-			>
-				<span class="sr-only">Go to UofT FoM GRC's GitHub organization page</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" class="fill-current">
-					<path
-						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-					></path>
-				</svg>
-			</a> -->
 		</div>
 	</nav>
 </header>
 
 <!-- Add the modal with x-ref -->
 <SearchModal />
+
+<script>
+	import { toggleTheme } from '../utils/theme'
+
+	console.log('[Header] Script initialized, setting up toggle listener')
+
+	// Listen for toggle-theme event from Alpine.js click handler
+	window.addEventListener('toggle-theme', () => {
+		console.log('[Header] Received toggle-theme event')
+		const newTheme = toggleTheme()
+		console.log('[Header] Theme is now:', newTheme)
+		console.log('[Header] Dark class on html:', document.documentElement.classList.contains('dark'))
+	})
+</script>
 
 <style is:global>
 	/* Container styling */
@@ -301,6 +328,12 @@ import SearchModal from './SearchModal.astro'
 		border-radius: 0.5rem;
 		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 		z-index: 50;
+	}
+
+	html.dark .pagefind-ui__results-area {
+		background: #1e293b;
+		border-color: #334155;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
 	}
 
 	/* Optional: Add some padding to results */

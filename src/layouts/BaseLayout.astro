@@ -15,6 +15,38 @@ const { title, description } = Astro.props
 		<ClientRouter />
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 		<script is:inline src="/pagefind/pagefind-ui.js"></script>
+		<script is:inline>
+			// Initialize theme before page renders to prevent flash
+			function initializeTheme() {
+				console.log('[BaseLayout] Initializing theme...')
+				const THEME_STORAGE_KEY = 'grc-theme'
+				const stored = localStorage.getItem(THEME_STORAGE_KEY)
+				console.log('[BaseLayout] Stored theme in localStorage:', stored)
+
+				// Default to light mode if nothing stored
+				const theme = stored === 'dark' ? 'dark' : 'light'
+				console.log('[BaseLayout] Applying theme:', theme)
+
+				if (theme === 'dark') {
+					console.log('[BaseLayout] Adding dark class to html')
+					document.documentElement.classList.add('dark')
+				} else {
+					console.log('[BaseLayout] Removing dark class from html')
+					document.documentElement.classList.remove('dark')
+				}
+
+				console.log('[BaseLayout] Theme initialized. HTML classes:', document.documentElement.className)
+			}
+
+			// Call on initial page load
+			initializeTheme()
+
+			// Re-initialize theme on page transitions (for ClientRouter)
+			document.addEventListener('astro:after-swap', () => {
+				console.log('[BaseLayout] Page transition detected (astro:after-swap), reinitializing theme')
+				initializeTheme()
+			})
+		</script>
 	</head>
 	<body>
 		<slot name="header">

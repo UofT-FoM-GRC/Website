@@ -12,20 +12,20 @@ import { prettifyTag } from '../../utils/strings'
 				<!-- For each tag, create a card with a placeholder image, title, description, and link -->
 				{
 					BLOG_TAGS.map((tag) => (
-						<li class="card overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1">
+						<li class="card overflow-hidden rounded-lg bg-white shadow-md transition-colors duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 dark:bg-slate-800 dark:shadow-slate-900/50">
 							<a
 								href={`/resources/${tag}/`}
-								class="focus-visible:ring-3 block focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+								class="block focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 							>
 								<Image
 									src={`/uoft-placeholder-default.webp`}
 									alt={tag as string}
 									width={720}
 									height={360}
-									class="aspect-video min-h-[18rem] w-full object-cover object-center"
+									class="aspect-video min-h-72 w-full object-cover object-center"
 								/>
 								<div class="p-4">
-									<h4 class="mb-2 text-xl font-bold">{prettifyTag(tag)}</h4>
+									<h4 class="mb-2 text-xl font-bold text-slate-900 dark:text-slate-100">{prettifyTag(tag)}</h4>
 								</div>
 							</a>
 						</li>

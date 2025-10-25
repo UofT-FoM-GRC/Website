@@ -20,13 +20,14 @@
 	x-transition:leave-end="opacity-0"
 >
 	<!-- Backdrop -->
-	<div class="fixed inset-0 bg-gray-500 bg-opacity-75" @click="isOpen = false"></div>
+	<div class="bg-opacity-75 dark:bg-opacity-90 fixed inset-0 bg-gray-500 dark:bg-slate-900" @click="isOpen = false">
+	</div>
 
 	<!-- Modal -->
 	<div class="fixed inset-0 z-10 p-4 sm:p-6 md:p-20">
 		<div
 			@click.outside="isOpen = false"
-			class="mx-auto max-w-3xl transform divide-y divide-gray-100 rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+			class="ring-opacity-5 mx-auto max-w-3xl transform divide-y divide-gray-100 rounded-xl bg-white shadow-2xl ring-1 ring-black transition-colors duration-200 dark:divide-slate-700 dark:bg-slate-800"
 		>
 			<div id="search" class="h-full w-full p-4" transition:persist></div>
 		</div>
@@ -67,5 +68,53 @@
 	/* Hide the default loading text */
 	#search .pagefind-ui__message {
 		display: none;
+	}
+
+	/* Dark mode support for pagefind */
+	html.dark #search .pagefind-ui {
+		--pagefind-ui-primary: #64748b;
+		--pagefind-ui-text: #e2e8f0;
+		--pagefind-ui-background: #1e293b;
+		--pagefind-ui-border: #334155;
+		--pagefind-ui-shadow-color: rgba(0, 0, 0, 0.5);
+	}
+
+	html.dark #search .pagefind-ui__search-input {
+		background: #334155 !important;
+		color: #e2e8f0 !important;
+		border-color: #475569 !important;
+	}
+
+	html.dark #search .pagefind-ui__search-input::placeholder {
+		color: #94a3b8 !important;
+	}
+
+	html.dark #search .pagefind-ui__search-clear {
+		color: #cbd5e1 !important;
+		background: #1e293b !important;
+		border: none !important;
+		padding: 0 1rem !important;
+		font-size: medium !important;
+	}
+
+	html.dark #search .pagefind-ui__search-clear:hover {
+		color: #e2e8f0 !important;
+	}
+
+	html.dark #search .pagefind-ui__results-area {
+		background: #1e293b !important;
+		border-color: #334155 !important;
+	}
+
+	html.dark #search .pagefind-ui__result {
+		border-color: #334155 !important;
+	}
+
+	html.dark #search .pagefind-ui__result-title {
+		color: #e2e8f0 !important;
+	}
+
+	html.dark #search .pagefind-ui__result-excerpt {
+		color: #cbd5e1 !important;
 	}
 </style>

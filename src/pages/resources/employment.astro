@@ -11,32 +11,44 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Employment">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Employment Resources</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">Employment Resources</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#cupe" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#cupe"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>CUPE 3902 Job Postings</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#clnx" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#clnx"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Career & Co-curricular Learning Network</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#resources" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#resources"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Additional Resources</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#blog"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Related Blog Posts</span>
 					</a>
@@ -46,15 +58,15 @@ const posts = (await getCollection('blog'))
 
 		<!-- CUPE Section -->
 		<section id="cupe" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">CUPE Local 3902 Unit 1 Job Postings</h2>
-			<div class="rounded-lg bg-white p-6 shadow-md">
-				<p class="mb-4">
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">CUPE Local 3902 Unit 1 Job Postings</h2>
+			<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<p class="mb-4 text-slate-700 dark:text-slate-300">
 					These positions are open to Graduate Students in the School of Graduate Studies, Postdoctoral Fellows and
 					Undergraduate Students in the University of Toronto.
 				</p>
 				<a
 					href="https://unit1.hrandequity.utoronto.ca/"
-					class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 				>
 					View CUPE Positions →
 				</a>
@@ -63,54 +75,76 @@ const posts = (await getCollection('blog'))
 
 		<!-- CLNx Section -->
 		<section id="clnx" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">Career & Co-curricular Learning Network (CLNx)</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">
+				Career & Co-curricular Learning Network (CLNx)
+			</h2>
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				<!-- Work Study -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-3 text-xl font-semibold">Work Study Positions</h3>
-					<p class="mb-4">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Work Study Positions</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
 						Paid, on-campus positions that provide workplace experience and career development opportunities.
 					</p>
 					<a
 						href="https://clnx.utoronto.ca/myAccount/jobs/work-study/aboutws.htm"
-						class="text-blue-600 hover:underline"
+						class="text-blue-600 hover:underline dark:text-blue-400"
 					>
 						Browse Work Study →
 					</a>
 				</div>
 
 				<!-- On-Campus Jobs -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-3 text-xl font-semibold">On-Campus Jobs</h3>
-					<p class="mb-4">Paid positions posted by U of T faculty and staff across various departments.</p>
-					<a href="https://clnx.utoronto.ca/myAccount/jobs/oncampus.htm" class="text-blue-600 hover:underline">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">On-Campus Jobs</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Paid positions posted by U of T faculty and staff across various departments.
+					</p>
+					<a
+						href="https://clnx.utoronto.ca/myAccount/jobs/oncampus.htm"
+						class="text-blue-600 hover:underline dark:text-blue-400"
+					>
 						View Campus Jobs →
 					</a>
 				</div>
 
 				<!-- Off-Campus Jobs -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-3 text-xl font-semibold">Off-Campus Jobs</h3>
-					<p class="mb-4">External employment opportunities posted by various employers.</p>
-					<a href="https://clnx.utoronto.ca/myAccount/jobs/overview.htm" class="text-blue-600 hover:underline">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Off-Campus Jobs</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						External employment opportunities posted by various employers.
+					</p>
+					<a
+						href="https://clnx.utoronto.ca/myAccount/jobs/overview.htm"
+						class="text-blue-600 hover:underline dark:text-blue-400"
+					>
 						Explore Off-Campus →
 					</a>
 				</div>
 
 				<!-- Casual Jobs -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-3 text-xl font-semibold">Casual Jobs</h3>
-					<p class="mb-4">Local community positions for work in private residences.</p>
-					<a href="https://clnx.utoronto.ca/myAccount/jobs/casualjobs.htm" class="text-blue-600 hover:underline">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Casual Jobs</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Local community positions for work in private residences.
+					</p>
+					<a
+						href="https://clnx.utoronto.ca/myAccount/jobs/casualjobs.htm"
+						class="text-blue-600 hover:underline dark:text-blue-400"
+					>
 						Find Casual Work →
 					</a>
 				</div>
 
 				<!-- Volunteer Positions -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-3 text-xl font-semibold">Volunteer Positions</h3>
-					<p class="mb-4">On- and off-campus unpaid opportunities that may include stipends.</p>
-					<a href="https://clnx.utoronto.ca/myAccount/jobs/volunteer.htm" class="text-blue-600 hover:underline">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Volunteer Positions</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						On- and off-campus unpaid opportunities that may include stipends.
+					</p>
+					<a
+						href="https://clnx.utoronto.ca/myAccount/jobs/volunteer.htm"
+						class="text-blue-600 hover:underline dark:text-blue-400"
+					>
 						Discover Volunteering →
 					</a>
 				</div>
@@ -119,16 +153,16 @@ const posts = (await getCollection('blog'))
 
 		<!-- Additional Resources -->
 		<section id="resources" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">Additional Resources</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">Additional Resources</h2>
 			<div class="grid gap-6 md:grid-cols-2">
 				<!-- Safety & Rights -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Safety & Rights</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Safety & Rights</h3>
 					<ul class="space-y-3">
 						<li>
 							<a
 								href="https://clnx.utoronto.ca/content/documents/Link/Fraudulent%20Job%20Postings%20Guide_2024.pdf"
-								class="text-blue-600 hover:underline"
+								class="text-blue-600 hover:underline dark:text-blue-400"
 							>
 								→ Guide to Avoiding Job Board Fraud
 							</a>
@@ -136,13 +170,16 @@ const posts = (await getCollection('blog'))
 						<li>
 							<a
 								href="https://stepstojustice.ca/legal-topic/employment-and-work/"
-								class="text-blue-600 hover:underline"
+								class="text-blue-600 hover:underline dark:text-blue-400"
 							>
 								→ Employee Rights & Obligations
 							</a>
 						</li>
 						<li>
-							<a href="https://securitymatters.utoronto.ca/report/" class="text-blue-600 hover:underline">
+							<a
+								href="https://securitymatters.utoronto.ca/report/"
+								class="text-blue-600 hover:underline dark:text-blue-400"
+							>
 								→ Report Job Phishing Emails
 							</a>
 						</li>
@@ -150,10 +187,10 @@ const posts = (await getCollection('blog'))
 				</div>
 
 				<!-- Contact Information -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Contact Career Services</h3>
-					<p class="mb-2">For questions about job postings or career services:</p>
-					<a href="mailto:careerservices@utoronto.ca" class="text-blue-600 hover:underline">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Contact Career Services</h3>
+					<p class="mb-2 text-slate-700 dark:text-slate-300">For questions about job postings or career services:</p>
+					<a href="mailto:careerservices@utoronto.ca" class="text-blue-600 hover:underline dark:text-blue-400">
 						careerservices@utoronto.ca
 					</a>
 				</div>
@@ -162,7 +199,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

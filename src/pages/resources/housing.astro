@@ -10,26 +10,35 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="GRC - Housing">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Housing</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">Housing</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#emergency" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#emergency"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Emergency Student Housing</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#graduate" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#graduate"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Graduate Student Housing</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#blog"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Related Blog Posts</span>
 					</a>
@@ -39,11 +48,11 @@ const posts = (await getCollection('blog'))
 
 		<!-- Emergency Student Housing -->
 		<section id="emergency" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Emergency Student Housing</h2>
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Emergency Student Housing</h2>
 
 			<!-- General Emergency Housing -->
-			<div class="mb-6 rounded-lg bg-white p-6 shadow-md">
-				<p class="mb-4">
+			<div class="mb-6 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<p class="mb-4 text-slate-700 dark:text-slate-300">
 					The Student Emergency Housing Support at the University of Toronto provides assistance to students facing
 					urgent housing crises, such as unsafe living conditions, evictions, or personal conflicts. This service is
 					typically used when students find themselves in situations that threaten their ability to secure stable
@@ -52,46 +61,57 @@ const posts = (await getCollection('blog'))
 				</p>
 
 				<div class="mb-4">
-					<h3 class="mb-3 text-xl font-semibold">Emergency Contacts</h3>
-					<ul class="space-y-2">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Emergency Contacts</h3>
+					<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 						<li>
-							<a href="https://www.campussafety.utoronto.ca/" class="text-blue-600 hover:underline">
+							<a href="https://www.campussafety.utoronto.ca/" class="text-blue-600 hover:underline dark:text-blue-400">
 								Campus Safety Website →
 							</a>
 						</li>
 						<li>
 							<strong>St. George or Scarborough Campuses:</strong>
-							<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline">416-978-2222</a>
+							<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline dark:text-red-400"
+								>416-978-2222</a
+							>
 						</li>
 						<li>
 							<strong>Mississauga Campus:</strong>
-							<a href="tel:905-569-4333" class="font-bold text-red-600 hover:underline">905-569-4333</a>
+							<a href="tel:905-569-4333" class="font-bold text-red-600 hover:underline dark:text-red-400"
+								>905-569-4333</a
+							>
 						</li>
 					</ul>
 				</div>
 			</div>
 
 			<!-- Domestic Violence Support -->
-			<div class="rounded-lg bg-white p-6 shadow-md">
-				<h3 class="mb-4 text-xl font-semibold">Fleeing Domestic Violence</h3>
+			<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Fleeing Domestic Violence</h3>
 
 				<div class="grid gap-6 md:grid-cols-2">
 					<!-- During Office Hours -->
 					<div>
-						<h4 class="mb-3 font-semibold">Community Safety Office (During Office Hours)</h4>
-						<ul class="space-y-2">
+						<h4 class="mb-3 font-semibold text-slate-900 dark:text-slate-100">
+							Community Safety Office (During Office Hours)
+						</h4>
+						<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 							<li>
-								<a href="http://www.communitysafety.utoronto.ca/" class="text-blue-600 hover:underline">
+								<a
+									href="http://www.communitysafety.utoronto.ca/"
+									class="text-blue-600 hover:underline dark:text-blue-400"
+								>
 									Community Safety Office Website →
 								</a>
 							</li>
 							<li>
 								<strong>Urgent Matters:</strong>
-								<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline">416-978-2222</a>
+								<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline dark:text-red-400"
+									>416-978-2222</a
+								>
 							</li>
 							<li>
 								<strong>General Line:</strong>
-								<a href="tel:416-978-1485" class="text-blue-600 hover:underline">416-978-1485</a>
+								<a href="tel:416-978-1485" class="text-blue-600 hover:underline dark:text-blue-400">416-978-1485</a>
 							</li>
 							<li class="mt-3">
 								<strong>Address:</strong>
@@ -99,7 +119,7 @@ const posts = (await getCollection('blog'))
 									Community Safety Office<br />
 									<a
 										href="https://www.google.ca/maps/place/21+Sussex+Ave,+Toronto,+ON+M5S+1J6/@43.664907,-79.4034818,17z/data=!3m1!4b1!4m6!3m5!1s0x882b34be772085db:0xa2304ce349eb0df8!8m2!3d43.664907!4d-79.4009069!16s%2Fg%2F11stvbtq7q?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 										target="_blank"
 										rel="noopener noreferrer"
 									>
@@ -115,20 +135,27 @@ const posts = (await getCollection('blog'))
 
 					<!-- Outside Office Hours -->
 					<div>
-						<h4 class="mb-3 font-semibold">Campus Safety Special Constable Service (Outside Office Hours)</h4>
-						<ul class="space-y-2">
+						<h4 class="mb-3 font-semibold text-slate-900 dark:text-slate-100">
+							Campus Safety Special Constable Service (Outside Office Hours)
+						</h4>
+						<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 							<li>
-								<a href="https://www.campussafety.utoronto.ca/" class="text-blue-600 hover:underline">
+								<a
+									href="https://www.campussafety.utoronto.ca/"
+									class="text-blue-600 hover:underline dark:text-blue-400"
+								>
 									Campus Safety Website →
 								</a>
 							</li>
 							<li>
 								<strong>Urgent Matters:</strong>
-								<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline">416-978-2222</a>
+								<a href="tel:416-978-2222" class="font-bold text-red-600 hover:underline dark:text-red-400"
+									>416-978-2222</a
+								>
 							</li>
 							<li>
 								<strong>Non-Urgent Matters:</strong>
-								<a href="tel:416-978-2323" class="text-blue-600 hover:underline">416-978-2323</a>
+								<a href="tel:416-978-2323" class="text-blue-600 hover:underline dark:text-blue-400">416-978-2323</a>
 							</li>
 							<li class="mt-3">
 								<strong>Address:</strong>
@@ -137,7 +164,7 @@ const posts = (await getCollection('blog'))
 									Special Constable Service<br />
 									<a
 										href="https://www.google.ca/maps/place/21+Sussex+Ave,+Toronto,+ON+M5S+1J6/@43.664907,-79.4034818,17z/data=!3m1!4b1!4m6!3m5!1s0x882b34be772085db:0xa2304ce349eb0df8!8m2!3d43.664907!4d-79.4009069!16s%2Fg%2F11stvbtq7q?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 										target="_blank"
 										rel="noopener noreferrer"
 									>
@@ -155,42 +182,49 @@ const posts = (await getCollection('blog'))
 
 		<!-- Graduate Student Housing -->
 		<section id="graduate" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Graduate Student Housing</h2>
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Graduate Student Housing</h2>
 
 			<div class="space-y-6">
 				<!-- Residence Options -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Step 1: Explore Residence Options</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">
+						Step 1: Explore Residence Options
+					</h3>
 					<div class="grid gap-4 md:grid-cols-2">
 						<div>
-							<h4 class="mb-2 font-semibold">St. George Campus</h4>
-							<ul class="space-y-2">
+							<h4 class="mb-2 font-semibold text-slate-900 dark:text-slate-100">St. George Campus</h4>
+							<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 								<li>
-									<a href="https://gradhouse.utoronto.ca/" class="text-blue-600 hover:underline"> Graduate House → </a>
+									<a href="https://gradhouse.utoronto.ca/" class="text-blue-600 hover:underline dark:text-blue-400">
+										Graduate House →
+									</a>
 								</li>
 								<li>
-									<a href="https://chestnut.utoronto.ca/knox-student-residence/" class="text-blue-600 hover:underline">
+									<a
+										href="https://chestnut.utoronto.ca/knox-student-residence/"
+										class="text-blue-600 hover:underline dark:text-blue-400"
+									>
 										Knox Residence →
 									</a>
 								</li>
 								<li>
 									<a
 										href="https://stmikes.utoronto.ca/community/st-michaels-college-residence/loretto-residence-women"
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 									>
 										Loretto College Residence →
 									</a>
-									<span class="ml-2 text-sm text-gray-600">(female-identifying students only)</span>
+									<span class="ml-2 text-sm text-gray-600 dark:text-slate-400">(female-identifying students only)</span>
 								</li>
 							</ul>
 						</div>
 						<div>
-							<h4 class="mb-2 font-semibold">Mississauga Campus</h4>
-							<ul class="space-y-2">
+							<h4 class="mb-2 font-semibold text-slate-900 dark:text-slate-100">Mississauga Campus</h4>
+							<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 								<li>
 									<a
 										href="https://www.utm.utoronto.ca/housing/applying/graduate-and-medical"
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 									>
 										UTM Graduate Housing →
 									</a>
@@ -203,41 +237,47 @@ const posts = (await getCollection('blog'))
 				<!-- Application Steps -->
 				<div class="grid gap-6 md:grid-cols-3">
 					<!-- Step 2 -->
-					<div class="rounded-lg bg-white p-6 shadow-md">
-						<h3 class="mb-4 text-xl font-semibold">Step 2: Enable UTORid</h3>
-						<p class="mb-4">Activate your JOIN/UTORid account to access the application portal.</p>
+					<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+						<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Step 2: Enable UTORid</h3>
+						<p class="mb-4 text-slate-700 dark:text-slate-300">
+							Activate your JOIN/UTORid account to access the application portal.
+						</p>
 
-						<div class="mb-4 rounded-lg bg-blue-50 p-3 text-blue-800">
+						<div class="mb-4 rounded-lg bg-blue-50 p-3 text-blue-800 dark:bg-slate-700 dark:text-blue-200">
 							<span class="font-medium">Note:</span> You can skip this step if you already have a UTORid account.
 						</div>
 
 						<a
 							href="https://join.utoronto.ca/"
-							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 						>
 							Enable UTORid →
 						</a>
 					</div>
 
 					<!-- Step 3 -->
-					<div class="rounded-lg bg-white p-6 shadow-md">
-						<h3 class="mb-4 text-xl font-semibold">Step 3: Complete Application</h3>
-						<p class="mb-4">Log in to StarRez Portal to submit your residence application(s).</p>
+					<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+						<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Step 3: Complete Application</h3>
+						<p class="mb-4 text-slate-700 dark:text-slate-300">
+							Log in to StarRez Portal to submit your residence application(s).
+						</p>
 						<a
 							href="http://starrez.utoronto.ca/"
-							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 						>
 							Access StarRez →
 						</a>
 					</div>
 
 					<!-- Step 4 -->
-					<div class="rounded-lg bg-white p-6 shadow-md">
-						<h3 class="mb-4 text-xl font-semibold">Step 4: Track Status</h3>
-						<p class="mb-4">Check your application status through the StarRez Portal.</p>
+					<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+						<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Step 4: Track Status</h3>
+						<p class="mb-4 text-slate-700 dark:text-slate-300">
+							Check your application status through the StarRez Portal.
+						</p>
 						<a
 							href="http://starrez.utoronto.ca/"
-							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+							class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 						>
 							Access StarRez →
 						</a>
@@ -248,7 +288,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>
