@@ -6,6 +6,21 @@ import Accordion, { type ProfileAccordionItem } from '../../components/ProfileAc
 
 const teamData: ProfileAccordionItem[] = [
 	{
+		year: '2025 - 2026',
+		profiles: [
+			{ name: 'Ally Suarez', position: 'Director', hasImage: false },
+			{ name: 'Annie Pu', position: 'Data Analyst', hasImage: false },
+			{ name: 'Valerie Chow', position: 'Data Analyst', hasImage: false },
+			{ name: 'Yumnah Jafri', position: 'Communications', hasImage: false },
+			{ name: 'Ke Fan Bei', position: 'Communications', hasImage: false },
+			{ name: 'Renee Jing', position: 'Social Media Coordinator', hasImage: false },
+			{ name: 'Kamal Prajapati', position: 'Webmaster', hasImage: false },
+			{ name: 'Oliver Ojeda Valencia', position: 'Graphic Designer', hasImage: false },
+			{ name: 'Maurice Pasternak', position: 'Advisor', hasImage: true },
+			{ name: 'Willow Squires', position: 'Advisor', hasImage: true }
+		]
+	},
+	{
 		year: '2024 - 2025',
 		profiles: [
 			{ name: 'Maurice Pasternak', position: 'Director and Web Developer', hasImage: true },
@@ -32,7 +47,7 @@ const teamData: ProfileAccordionItem[] = [
 				<!-- Hero Image should be adjusted for multiple screen sizes -->
 				<Image src={GRC_Hero} alt="GRC_Hero" width={1920} height={1080} class="hero_image" />
 			</div>
-			<div class="hero_content container prose mx-auto max-w-[120ch] p-4 md:prose-lg">
+			<div class="hero_content prose md:prose-lg container mx-auto max-w-[120ch] p-4">
 				<h1 class="hero_title my-4 text-center text-5xl font-bold">About the GRC</h1>
 				<p class="hero_description lead text-justify">
 					The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all
@@ -40,7 +55,7 @@ const teamData: ProfileAccordionItem[] = [
 				</p>
 			</div>
 		</section>
-		<section id="about-content" class="fade-in-section container prose mx-auto max-w-[120ch] px-4 py-8 md:prose-lg">
+		<section id="about-content" class="fade-in-section prose md:prose-lg container mx-auto max-w-[120ch] px-4 py-8">
 			<h2 class="text-center font-bold">Our Purpose and Objectives</h2>
 			<p class="text-justify">
 				The GRC is dedicated to keeping you informed about important faculty and university policies that affect your
