@@ -1,0 +1,28 @@
+backend:
+  name: github
+  repo: UofT-FoM-GRC/Website
+  branch: dev
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: public/assets
+public_path: /assets
+
+collections:
+  - name: blog
+    label: Blog Posts
+    folder: src/blog
+    create: true
+    slug: '{{slug}}'
+    format: md
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Publish Date, name: pubDate, widget: datetime }
+      - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - { label: Body, name: body, widget: markdown }
+      - label: Tags
+        name: tags
+        widget: list
+        field: { label: Tag, name: tag, widget: string }
+        required: false
