@@ -12,12 +12,14 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 ---
 
 <li
-	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg"
+	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:-translate-y-1 focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg"
+	role="article"
 >
 	<a
 		href={`/blog/${post.id}`}
-		class="focus-visible:ring-3 block focus:outline-none focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+		class="block focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 		aria-labelledby={`post-title-${post.id}`}
+		aria-describedby={`post-date-${post.id} post-tags-${post.id}`}
 	>
 		{
 			heroImageIsExternal ? (
@@ -25,16 +27,16 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 					width={720}
 					height={360}
 					src={post.data.heroImage || '/uoft-placeholder-default.webp'}
-					alt={post.data.title}
-					class="aspect-video min-h-[18rem] w-full object-cover object-center"
+					alt={`Featured image for ${post.data.title}`}
+					class="aspect-video min-h-72 w-full object-cover object-center"
 				/>
 			) : (
 				<Image
 					width={720}
 					height={360}
 					src={post.data.heroImage || '/uoft-placeholder-default.webp'}
-					alt={post.data.title}
-					class="aspect-video min-h-[18rem] w-full object-cover object-center"
+					alt={`Featured image for ${post.data.title}`}
+					class="aspect-video min-h-72 w-full object-cover object-center"
 				/>
 			)
 		}
@@ -42,12 +44,16 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 			<h4 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold">
 				{post.data.title}
 			</h4>
-			<p class="text-sm text-gray-600">
+			<p id={`post-date-${post.id}`} class="text-sm text-gray-600">
 				<FormattedDate date={post.data.pubDate} />
 			</p>
 		</div>
 	</a>
-	<div class="flex flex-wrap justify-start gap-2 border-t-2 p-4">
+	<div
+		id={`post-tags-${post.id}`}
+		class="flex flex-wrap justify-start gap-2 border-t-2 border-t-slate-200 p-4"
+		aria-label="Post tags"
+	>
 		{post.data.tags.map((tag) => <TagBadge tag={tag} />)}
 	</div>
 </li>

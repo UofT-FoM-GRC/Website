@@ -2,7 +2,8 @@
 import BaseHead from '../components/BaseHead.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
+import '../styles/global.css'
 
 const { title, description } = Astro.props
 ---
@@ -11,7 +12,7 @@ const { title, description } = Astro.props
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<ViewTransitions />
+		<ClientRouter />
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 		<script is:inline src="/pagefind/pagefind-ui.js"></script>
 	</head>
