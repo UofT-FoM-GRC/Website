@@ -10,32 +10,46 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Scholarships, Bursaries & Awards">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Scholarships, Bursaries & Awards</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">
+			Scholarships, Bursaries & Awards
+		</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#general-award-explorer" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#general-award-explorer"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>General Award Explorer</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#sgs-awards" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#sgs-awards"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Graduate Studies Awards</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#contacts" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#contacts"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Award Offices & Contacts</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#blog"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Related Blog Posts</span>
 					</a>
@@ -45,31 +59,31 @@ const posts = (await getCollection('blog'))
 
 		<!-- Award Explorer Section -->
 		<section id="general-award-explorer" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">General Award Explorer</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">General Award Explorer</h2>
 			<div class="grid gap-6 md:grid-cols-2">
 				<!-- Undergraduate Awards -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Undergraduate Awards</h3>
-					<p class="mb-4">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Undergraduate Awards</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
 						Search for undergraduate awards based on various criteria including faculty, citizenship, and award type.
 					</p>
 					<a
 						href="https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfQRxZQ11SZV1zH3pgEw~~"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Explore Undergraduate Awards →
 					</a>
 				</div>
 
 				<!-- Graduate Awards -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Graduate Awards</h3>
-					<p class="mb-4">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Graduate Awards</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
 						Find graduate-level awards and scholarships filtered by department, award type, and eligibility criteria.
 					</p>
 					<a
 						href="https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfRxxZQFdTZFVyEnpuEg~~"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Explore Graduate Awards →
 					</a>
@@ -79,29 +93,31 @@ const posts = (await getCollection('blog'))
 
 		<!-- SGS Awards Section -->
 		<section id="sgs-awards" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">School of Graduate Studies Awards</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">School of Graduate Studies Awards</h2>
 			<div class="grid gap-6 md:grid-cols-2">
 				<!-- Awards & Funding -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Awards & Funding Overview</h3>
-					<p class="mb-4">Comprehensive information about graduate funding opportunities and award programs.</p>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Awards & Funding Overview</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Comprehensive information about graduate funding opportunities and award programs.
+					</p>
 					<a
 						href="https://www.sgs.utoronto.ca/awards-funding/"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						View Funding Overview →
 					</a>
 				</div>
 
 				<!-- Awards Database -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Awards Database</h3>
-					<p class="mb-4">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Awards Database</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
 						Detailed database of available graduate awards and scholarships with specific requirements.
 					</p>
 					<a
 						href="https://www.sgs.utoronto.ca/awards/"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Search Awards Database →
 					</a>
@@ -111,18 +127,18 @@ const posts = (await getCollection('blog'))
 
 		<!-- Contact Information -->
 		<section id="contacts" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">Award Offices & Contacts</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">Award Offices & Contacts</h2>
 			<div class="grid gap-6 md:grid-cols-2">
 				<!-- Financial Aid Office -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Financial Aid & Advising Office</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Financial Aid & Advising Office</h3>
 					<address class="not-italic">
-						<p>School of Graduate Studies</p>
+						<p class="text-slate-700 dark:text-slate-300">School of Graduate Studies</p>
 						<a
 							href="https://www.google.com/maps/search/63+St.+George+Street,+Room+101+University+of+Toronto+Toronto,+ON"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="text-blue-600 hover:underline"
+							class="text-blue-600 hover:underline dark:text-blue-400"
 						>
 							63 St. George Street, Room 101<br />
 							University of Toronto<br />
@@ -130,13 +146,16 @@ const posts = (await getCollection('blog'))
 						</a>
 					</address>
 					<div class="mt-4 space-y-2">
-						<p>
+						<p class="text-slate-700 dark:text-slate-300">
 							<strong>Phone:</strong>
-							<a href="tel:416-978-2839" class="text-blue-600 hover:underline">416-978-2839</a>
+							<a href="tel:416-978-2839" class="text-blue-600 hover:underline dark:text-blue-400">416-978-2839</a>
 						</p>
-						<p>
+						<p class="text-slate-700 dark:text-slate-300">
 							<strong>Email:</strong>
-							<a href="mailto:sgs.financial.assistance@utoronto.ca" class="text-blue-600 hover:underline">
+							<a
+								href="mailto:sgs.financial.assistance@utoronto.ca"
+								class="text-blue-600 hover:underline dark:text-blue-400"
+							>
 								sgs.financial.assistance@utoronto.ca
 							</a>
 						</p>
@@ -144,15 +163,15 @@ const posts = (await getCollection('blog'))
 				</div>
 
 				<!-- Graduate Awards Office -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Graduate Awards Office</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Graduate Awards Office</h3>
 					<address class="not-italic">
-						<p>School of Graduate Studies</p>
+						<p class="text-slate-700 dark:text-slate-300">School of Graduate Studies</p>
 						<a
 							href="https://www.google.com/maps/search/63+St.+George+Street,+Room+201+University+of+Toronto+Toronto,+ON"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="text-blue-600 hover:underline"
+							class="text-blue-600 hover:underline dark:text-blue-400"
 						>
 							63 St. George Street, Room 201<br />
 							University of Toronto<br />
@@ -160,13 +179,13 @@ const posts = (await getCollection('blog'))
 						</a>
 					</address>
 					<div class="mt-4 space-y-2">
-						<p>
+						<p class="text-slate-700 dark:text-slate-300">
 							<strong>Phone:</strong>
-							<a href="tel:416-978-2150" class="text-blue-600 hover:underline">416-978-2150</a>
+							<a href="tel:416-978-2150" class="text-blue-600 hover:underline dark:text-blue-400">416-978-2150</a>
 						</p>
-						<p>
+						<p class="text-slate-700 dark:text-slate-300">
 							<strong>Email:</strong>
-							<a href="mailto:graduate.awards@utoronto.ca" class="text-blue-600 hover:underline">
+							<a href="mailto:graduate.awards@utoronto.ca" class="text-blue-600 hover:underline dark:text-blue-400">
 								graduate.awards@utoronto.ca
 							</a>
 						</p>
@@ -177,7 +196,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

@@ -12,7 +12,7 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 ---
 
 <li
-	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md duration-300 focus-within:-translate-y-1 focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg"
+	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 focus-within:-translate-y-1 focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-300 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-blue-900/50"
 	role="article"
 >
 	<a
@@ -41,17 +41,17 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 			)
 		}
 		<div class="p-4">
-			<h4 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold">
+			<h4 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold dark:text-slate-100">
 				{post.data.title}
 			</h4>
-			<p id={`post-date-${post.id}`} class="text-sm text-gray-600">
+			<p id={`post-date-${post.id}`} class="text-sm text-gray-600 dark:text-slate-400">
 				<FormattedDate date={post.data.pubDate} />
 			</p>
 		</div>
 	</a>
 	<div
 		id={`post-tags-${post.id}`}
-		class="flex flex-wrap justify-start gap-2 border-t-2 border-t-slate-200 p-4"
+		class="flex flex-wrap justify-start gap-2 border-t-2 border-t-slate-200 p-4 dark:border-t-slate-600"
 		aria-label="Post tags"
 	>
 		{post.data.tags.map((tag) => <TagBadge tag={tag} />)}

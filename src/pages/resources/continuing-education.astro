@@ -10,20 +10,26 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="GRC - Continuing Education">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Continuing Education</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">Continuing Education</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#scs" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#scs"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>School of Continuing Studies</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#blog"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Related Blog Posts</span>
 					</a>
@@ -33,50 +39,56 @@ const posts = (await getCollection('blog'))
 
 		<!-- School of Continuing Studies -->
 		<section id="scs" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">School of Continuing Studies</h2>
-			
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">School of Continuing Studies</h2>
+
 			<!-- Introduction -->
-			<div class="mb-6 rounded-lg bg-white p-6 shadow-md">
-				<p class="text-justify leading-relaxed">
-					The University of Toronto School of Continuing Studies is the primary hub for lifelong learning at UofT, 
-					offering a wide range of courses and certificate programs across various fields, including business, 
-					arts, health, and technology.
+			<div class="mb-6 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<p class="text-justify leading-relaxed text-slate-700 dark:text-slate-300">
+					The University of Toronto School of Continuing Studies is the primary hub for lifelong learning at UofT,
+					offering a wide range of courses and certificate programs across various fields, including business, arts,
+					health, and technology.
 				</p>
 			</div>
 
 			<!-- Resources Grid -->
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Programs and Courses -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Programs & Courses</h3>
-					<p class="mb-4">Explore our comprehensive range of professional development courses and certificate programs.</p>
-					<a 
-						href="https://learn.utoronto.ca/programs-courses" 
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Programs & Courses</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Explore our comprehensive range of professional development courses and certificate programs.
+					</p>
+					<a
+						href="https://learn.utoronto.ca/programs-courses"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Browse Programs →
 					</a>
 				</div>
 
 				<!-- Financial Aid -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Bursaries & Awards</h3>
-					<p class="mb-4">Discover financial aid opportunities to support your continuing education journey.</p>
-					<a 
-						href="https://learn.utoronto.ca/about-scs/financial-aid/bursaries-and-awards" 
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Bursaries & Awards</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Discover financial aid opportunities to support your continuing education journey.
+					</p>
+					<a
+						href="https://learn.utoronto.ca/about-scs/financial-aid/bursaries-and-awards"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						View Financial Aid →
 					</a>
 				</div>
 
 				<!-- Tech Courses for Teens -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Tech Courses for Teens</h3>
-					<p class="mb-4">Pre-university summer technology programs designed specifically for teenagers.</p>
-					<a 
-						href="https://utoronto-scs.xrcourse.com/lp/pre-uni-summer" 
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Tech Courses for Teens</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Pre-university summer technology programs designed specifically for teenagers.
+					</p>
+					<a
+						href="https://utoronto-scs.xrcourse.com/lp/pre-uni-summer"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Explore Teen Programs →
 					</a>
@@ -86,7 +98,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

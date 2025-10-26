@@ -10,38 +10,53 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="GRC - Health & Wellness">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Health & Wellness</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">Health & Wellness</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#events" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#events"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Upcoming Health & Wellness Events</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#appointments" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#appointments"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Health & Wellness Appointments</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#workshops" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#workshops"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Wellness Workshops</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#telus" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#telus"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Telus Health Support</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#accessibility" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#accessibility"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Accessibility Services</span>
 					</a>
@@ -51,22 +66,22 @@ const posts = (await getCollection('blog'))
 
 		<!-- Events Calendar -->
 		<section id="events" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Upcoming Health & Wellness Events</h2>
-			<p class="mb-4">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Upcoming Health & Wellness Events</h2>
+			<p class="mb-4 text-slate-700 dark:text-slate-300">
 				Stay updated with health and wellness events at UofT through our <a
 					href="https://folio.utoronto.ca/students/events?eventTypeIds=25&page=1&studentSiteId=1"
-					class="text-blue-600 hover:underline">Events Calendar on Folio</a
+					class="text-blue-600 hover:underline dark:text-blue-400">Events Calendar on Folio</a
 				>.
 			</p>
 		</section>
 
 		<!-- Appointments -->
 		<section id="appointments" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Health & Wellness Appointments</h2>
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Health & Wellness Appointments</h2>
 			<div class="grid gap-6 md:grid-cols-2">
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">New Patient Instructions</h3>
-					<ol class="ml-6 list-decimal space-y-3">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">New Patient Instructions</h3>
+					<ol class="ml-6 list-decimal space-y-3 text-slate-700 dark:text-slate-300">
 						<li>
 							Prepare your documentation:
 							<ul class="ml-6 list-disc">
@@ -77,7 +92,7 @@ const posts = (await getCollection('blog'))
 							</ul>
 						</li>
 						<li>
-							Call <a href="tel:416-978-8030" class="text-blue-600 hover:underline">416-978-8030</a>
+							Call <a href="tel:416-978-8030" class="text-blue-600 hover:underline dark:text-blue-400">416-978-8030</a>
 							<ul class="ml-6 list-disc">
 								<li>Press 5 for mental health care</li>
 								<li>Press 2 for primary care</li>
@@ -88,21 +103,25 @@ const posts = (await getCollection('blog'))
 					</ol>
 				</div>
 
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Health Forms</h3>
-					<p class="mb-4">Access all required health forms and documentation through our dedicated portal.</p>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Health Forms</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Access all required health forms and documentation through our dedicated portal.
+					</p>
 					<ul class="space-y-3">
 						<li>
 							<a
 								href="https://studentlife.utoronto.ca/task/all-the-health-forms/"
-								class="text-blue-600 hover:underline"
+								class="text-blue-600 hover:underline dark:text-blue-400"
 							>
 								→ Health Forms Portal
 							</a>
 						</li>
 						<li>
-							<span class="block">Submit completed forms to:</span>
-							<a href="mailto:admin.hwc@utoronto.ca" class="text-blue-600 hover:underline">admin.hwc@utoronto.ca</a>
+							<span class="block text-slate-700 dark:text-slate-300">Submit completed forms to:</span>
+							<a href="mailto:admin.hwc@utoronto.ca" class="text-blue-600 hover:underline dark:text-blue-400"
+								>admin.hwc@utoronto.ca</a
+							>
 						</li>
 					</ul>
 				</div>
@@ -111,11 +130,11 @@ const posts = (await getCollection('blog'))
 
 		<!-- Workshops -->
 		<section id="workshops" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Wellness Workshops</h2>
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Wellness Workshops</h2>
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				<!-- General Mental Health Support -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">General Mental Health Support</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">General Mental Health Support</h3>
 					<ul class="space-y-3">
 						{
 							[
@@ -129,7 +148,7 @@ const posts = (await getCollection('blog'))
 								<li>
 									<a
 										href={`https://studentlife.utoronto.ca/program/${program.toLowerCase().replace(/\s+/g, '-')}/`}
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 									>
 										{program}
 									</a>
@@ -140,15 +159,15 @@ const posts = (await getCollection('blog'))
 				</div>
 
 				<!-- Mindfulness -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Mindfulness</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Mindfulness</h3>
 					<ul class="space-y-3">
 						{
 							['Mindful Eating: Food and Mood', 'Mindful Moments'].map((program) => (
 								<li>
 									<a
 										href={`https://studentlife.utoronto.ca/program/${program.toLowerCase().replace(/\s+/g, '-').replace(':', '')}/`}
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 									>
 										{program}
 									</a>
@@ -159,8 +178,8 @@ const posts = (await getCollection('blog'))
 				</div>
 
 				<!-- Managing Expectations -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
-					<h3 class="mb-4 text-xl font-semibold">Managing Expectations</h3>
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+					<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">Managing Expectations</h3>
 					<ul class="space-y-3">
 						{
 							[
@@ -173,7 +192,7 @@ const posts = (await getCollection('blog'))
 								<li>
 									<a
 										href={`https://studentlife.utoronto.ca/program/${program.toLowerCase().replace(/\s+/g, '-').replace('/', '-')}/`}
-										class="text-blue-600 hover:underline"
+										class="text-blue-600 hover:underline dark:text-blue-400"
 									>
 										{program}
 									</a>
@@ -187,17 +206,19 @@ const posts = (await getCollection('blog'))
 
 		<!-- Telus Health Support -->
 		<section id="telus" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">U of T Telus Health Student Support</h2>
-			<div class="rounded-lg bg-white p-6 shadow-md">
-				<p class="mb-4">24/7 confidential support for any school, health, or general life concern at no cost.</p>
-				<div class="space-y-2">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">U of T Telus Health Student Support</h2>
+			<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<p class="mb-4 text-slate-700 dark:text-slate-300">
+					24/7 confidential support for any school, health, or general life concern at no cost.
+				</p>
+				<div class="space-y-2 text-slate-700 dark:text-slate-300">
 					<p>
 						<strong>North America:</strong>
-						<a href="tel:1-844-451-9700" class="text-blue-600 hover:underline">1-844-451-9700</a>
+						<a href="tel:1-844-451-9700" class="text-blue-600 hover:underline dark:text-blue-400">1-844-451-9700</a>
 					</p>
 					<p>
 						<strong>International:</strong>
-						<a href="tel:001-416-380-6578" class="text-blue-600 hover:underline">001-416-380-6578</a>
+						<a href="tel:001-416-380-6578" class="text-blue-600 hover:underline dark:text-blue-400">001-416-380-6578</a>
 					</p>
 				</div>
 			</div>
@@ -205,12 +226,14 @@ const posts = (await getCollection('blog'))
 
 		<!-- Accessibility Services -->
 		<section id="accessibility" class="mb-12 scroll-mt-8">
-			<h2 class="mb-4 text-2xl font-bold">Accessibility Services</h2>
-			<div class="rounded-lg bg-white p-6 shadow-md">
-				<p class="mb-4">Learn about registration requirements and documentation needed for accessibility services.</p>
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Accessibility Services</h2>
+			<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<p class="mb-4 text-slate-700 dark:text-slate-300">
+					Learn about registration requirements and documentation needed for accessibility services.
+				</p>
 				<a
 					href="https://studentlife.utoronto.ca/service/accessibility-services-registration-and-documentation-requirements/"
-					class="text-blue-600 hover:underline"
+					class="text-blue-600 hover:underline dark:text-blue-400"
 				>
 					View Registration Instructions →
 				</a>
@@ -219,7 +242,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

@@ -17,26 +17,35 @@ const posts = (await getCollection('blog'))
 
 <BaseLayout title="Other Resources">
 	<main class="container mx-auto min-h-screen px-4 py-8">
-		<h1 class="mb-8 text-center text-4xl font-bold">Miscellaneous Resources</h1>
+		<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">Miscellaneous Resources</h1>
 
 		<!-- Table of Contents -->
-		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md">
-			<h2 class="mb-4 text-2xl font-bold">Quick Navigation</h2>
+		<nav class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+			<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 			<ul class="space-y-2">
 				<li class="transition-all hover:translate-x-2">
-					<a href="#fitness" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#fitness"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Fitness Facilities</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#supervision" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#supervision"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Graduate Supervision Support</span>
 					</a>
 				</li>
 				<li class="transition-all hover:translate-x-2">
-					<a href="#blog" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+					<a
+						href="#blog"
+						class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+					>
 						<span class="text-sm">→</span>
 						<span>Related Blog Posts</span>
 					</a>
@@ -46,10 +55,10 @@ const posts = (await getCollection('blog'))
 
 		<!-- Fitness Facilities -->
 		<section id="fitness" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">Fitness Facilities</h2>
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">Fitness Facilities</h2>
 			<div class="grid gap-6 md:grid-cols-3">
 				<!-- Hart House -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
 					<div class="mb-4 overflow-hidden rounded-lg">
 						<Image
 							src={HartHouse}
@@ -57,21 +66,21 @@ const posts = (await getCollection('blog'))
 							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
 						/>
 					</div>
-					<h3 class="mb-3 text-xl font-semibold">Hart House Fitness Centre</h3>
-					<p class="mb-4">
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Hart House Fitness Centre</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
 						A comprehensive fitness facility offering a pool, weight room, indoor track, and various drop-in classes,
 						catering to all fitness levels in a supportive environment.
 					</p>
-					<a 
+					<a
 						href="https://harthouse.ca/fitness/"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Explore Hart House →
 					</a>
 				</div>
 
 				<!-- Goldring Centre -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
 					<div class="mb-4 overflow-hidden rounded-lg">
 						<Image
 							src={GoldringCentre}
@@ -79,21 +88,21 @@ const posts = (await getCollection('blog'))
 							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
 						/>
 					</div>
-					<h3 class="mb-3 text-xl font-semibold">Goldring Centre</h3>
-					<p class="mb-4">
-						State-of-the-art facility featuring a multi-purpose arena, strength and conditioning center, and
-						specialized training spaces for both recreational users and high-performance athletes.
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Goldring Centre</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						State-of-the-art facility featuring a multi-purpose arena, strength and conditioning center, and specialized
+						training spaces for both recreational users and high-performance athletes.
 					</p>
-					<a 
+					<a
 						href="https://kpe.utoronto.ca/facility/goldring-centre-high-performance-sport"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Visit Goldring →
 					</a>
 				</div>
 
 				<!-- Athletic Centre -->
-				<div class="rounded-lg bg-white p-6 shadow-md">
+				<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
 					<div class="mb-4 overflow-hidden rounded-lg">
 						<Image
 							src={AthleticsCentre}
@@ -101,14 +110,14 @@ const posts = (await getCollection('blog'))
 							class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
 						/>
 					</div>
-					<h3 class="mb-3 text-xl font-semibold">Athletic Centre</h3>
-					<p class="mb-4">
-						Historic multi-sport facility including gymnasiums, pools, and a strength training area, supporting
-						academic learning, recreational activities, and competitive sports.
+					<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">Athletic Centre</h3>
+					<p class="mb-4 text-slate-700 dark:text-slate-300">
+						Historic multi-sport facility including gymnasiums, pools, and a strength training area, supporting academic
+						learning, recreational activities, and competitive sports.
 					</p>
-					<a 
+					<a
 						href="https://kpe.utoronto.ca/facility/athletic-centre"
-						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+						class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 					>
 						Visit Athletic Centre →
 					</a>
@@ -118,19 +127,21 @@ const posts = (await getCollection('blog'))
 
 		<!-- Graduate Supervision Support -->
 		<section id="supervision" class="mb-12 scroll-mt-8">
-			<h2 class="mb-6 text-2xl font-bold">Graduate Supervision Support</h2>
-			<div class="rounded-lg bg-white p-6 shadow-md">
-				<h3 class="mb-4 text-xl font-semibold">Centre for Graduate Mentorship and Supervision (CGMS)</h3>
-				<p class="mb-6 text-justify leading-relaxed">
-					The Centre for Graduate Mentorship and Supervision (CGMS) offers support for students who may be
-					experiencing challenges with their supervisors. They provide resources like coaching and workshops
-					focused on improving communication and resolving conflicts, helping you navigate difficult
-					relationships and foster a more productive academic environment. If you're feeling uncertain about
-					your supervisory situation, CGMS can be a valuable ally in finding constructive solutions.
+			<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">Graduate Supervision Support</h2>
+			<div class="rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
+				<h3 class="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">
+					Centre for Graduate Mentorship and Supervision (CGMS)
+				</h3>
+				<p class="mb-6 text-justify leading-relaxed text-slate-700 dark:text-slate-300">
+					The Centre for Graduate Mentorship and Supervision (CGMS) offers support for students who may be experiencing
+					challenges with their supervisors. They provide resources like coaching and workshops focused on improving
+					communication and resolving conflicts, helping you navigate difficult relationships and foster a more
+					productive academic environment. If you're feeling uncertain about your supervisory situation, CGMS can be a
+					valuable ally in finding constructive solutions.
 				</p>
-				<a 
+				<a
 					href="https://www.cgms.utoronto.ca/"
-					class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+					class="inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
 				>
 					Access CGMS Resources →
 				</a>
@@ -139,7 +150,7 @@ const posts = (await getCollection('blog'))
 
 		<!-- Related Blog Posts -->
 		<section id="blog" class="my-12 scroll-mt-8">
-			<h2 class="mb-4 text-center text-2xl font-bold">Related Blog Posts</h2>
+			<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{posts.map((post) => <BlogPostCard post={post} />)}
 			</ul>

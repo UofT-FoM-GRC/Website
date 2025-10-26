@@ -23,10 +23,10 @@ const { item } = Astro.props
 let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
 ---
 
-<div x-data={`{ activeYear: '${activeYear}' }`} class="my-4">
+<div x-data={`{ activeYear: '${activeYear}' }`} class="my-4 foo">
 	<button
 		@click={`activeYear = activeYear === '${item.year}' ? '' : '${item.year}'`}
-		class="flex w-full items-center justify-between bg-slate-800 px-4 py-2 text-left text-xl xl:text-2xl font-medium text-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-50"
+		class="focus-visible:ring-opacity-50 flex w-full items-center justify-between bg-slate-800 px-4 py-2 text-left text-xl font-medium text-gray-100 transition-colors duration-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 xl:text-2xl dark:bg-slate-950 dark:text-slate-200"
 		aria-expanded={activeYear === item.year}
 		aria-controls={`accordion-content-${item.year}`}
 	>
@@ -37,10 +37,10 @@ let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
 			:class={`{ 'rotate-180': activeYear === '${item.year}' }`}
 		/>
 	</button>
-	<div 
-		x-show={`activeYear === '${item.year}'`} 
-		x-transition 
-		class="p-4 shadow-md"
+	<div
+		x-show={`activeYear === '${item.year}'`}
+		x-transition
+		class="bg-slate-50 p-4 shadow-md transition-colors duration-200 dark:bg-slate-900"
 		id={`accordion-content-${item.year}`}
 	>
 		<div class="container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

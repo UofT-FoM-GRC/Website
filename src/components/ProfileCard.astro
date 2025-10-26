@@ -2,7 +2,7 @@
 const { name, position, image, hasImage } = Astro.props
 ---
 
-<div class="rounded-lg bg-white p-2 text-center shadow-md">
+<div class="rounded-lg bg-white p-2 text-center shadow-md transition-all duration-200 hover:shadow-lg hover:shadow-blue-300 hover:-translate-y-1 dark:bg-slate-800 dark:hover:shadow-blue-900/50">
 	{
 		hasImage ? (
 			<img src={image} class="mx-auto mb-4 aspect-square rounded-full object-center" />
@@ -10,7 +10,7 @@ const { name, position, image, hasImage } = Astro.props
 			<img src="/teams/profile-avatar-placeholder.webp" class="mx-auto mb-4 aspect-square rounded-full object-center" />
 		)
 	}
-	<hr class="my-2" />
-	<h3 class="text-xl font-semibold">{name}</h3>
-	<p class="text-gray-600">{position}</p>
+	<hr class="my-2 border-slate-200 dark:border-slate-600" />
+	<h3 class="text-xl font-semibold dark:text-slate-100">{name}</h3>
+	<p class="text-gray-600 dark:text-slate-400">{position}</p>
 </div>

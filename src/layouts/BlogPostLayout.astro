@@ -9,7 +9,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 ---
 
 <BaseLayout title={title} description={description}>
-	<main class="container prose m-0 mx-auto w-full max-w-full p-4 md:prose-lg lg:prose-xl">
+	<main class="prose md:prose-lg lg:prose-xl dark:prose-invert container m-0 mx-auto w-full max-w-full p-4">
 		<article>
 			<div class="w-full">
 				{
@@ -18,9 +18,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 					)
 				}
 			</div>
-			<div class="mx-auto max-w-prose p-4 text-gray-800">
+			<div class="mx-auto max-w-prose p-4 text-gray-800 dark:text-gray-200">
 				<div class="mb-4 py-4 text-center">
-					<div class="mb-2 text-gray-600">
+					<div class="mb-2 text-gray-600 dark:text-slate-400">
 						<FormattedDate date={pubDate} />
 						{
 							updatedDate && (
@@ -33,6 +33,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 					<h1>{title}</h1>
 					<hr class="mb-2" />
 				</div>
+				<!-- Blog post content -->
 				<slot />
 			</div>
 		</article>

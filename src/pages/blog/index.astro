@@ -33,7 +33,7 @@ const sortedKeys = Object.keys(groupedPosts).sort((a, b) => b.localeCompare(a))
 				})
 				return (
 					<section class="mb-12">
-						<h2 class="mb-6 text-2xl font-bold">{sectionTitle}</h2>
+						<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{sectionTitle}</h2>
 						<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 							{groupedPosts[key].map((post) => (
 								<BlogPostCard post={post} />

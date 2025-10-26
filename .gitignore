@@ -27,6 +27,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# notes folder
-notes/
-.github/instructions
+# notes
+notes/*
+.github/instructions/
