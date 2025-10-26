@@ -25,7 +25,8 @@
 ## 📝 Table of Contents
 
 - [About](#🧐-about)
-- [Getting Started](#🏁-getting_started)
+- [Content Management with Decap CMS](#📝-content-management-with-decap-cms)
+- [Getting Started (Developers)](#🏁-getting_started)
 - [Deployment](#🚀-deployment)
 - [Built Using](#⛏️-built_using)
 - [Authors](#✍️-authors)
@@ -35,7 +36,139 @@
 
 The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all graduate students in the University of Toronto Faculty of Medicine. We support and advocate for graduate students, keep them informed about important policies, and actively seek their feedback to ensure our advocacy aligns with their needs.
 
-## 🏁 Getting Started
+## 📝 Content Management with Decap CMS
+
+**For non-technical team members managing blog content.**
+
+### First-Time Setup
+
+1. **Get GitHub Access**
+   - Ask the current website maintainer to add you as a collaborator to the [GitHub repository](https://github.com/UofT-FoM-GRC/Website)
+   - You'll receive an email invitation - accept it
+
+2. **Enable Netlify OAuth**
+   - The website admin needs to enable GitHub OAuth in [Netlify settings](https://app.netlify.com/sites/uoft-fom-grc/settings/access) (one-time setup)
+
+### Accessing the CMS
+
+1. Go to: **https://uoft-fom-grc.netlify.app/admin/**
+2. Click **"Login with GitHub"**
+3. Authorize the application if prompted
+
+### Creating a New Blog Post
+
+1. In the CMS dashboard, click **"Blog Posts"** in the left sidebar
+2. Click **"New Blog Post"** button (top right)
+3. Fill in the fields:
+
+   - **Title**: Your blog post title (e.g., "UofT Career Fair 2025")
+   - **Description**: 1-2 sentence summary for the blog card
+   - **Publish Date**: Click the calendar icon and select the date
+   - **Updated Date**: Leave empty for new posts
+   - **Hero Image**: 
+     - Click **"Choose an image"**
+     - Either upload a new image or select from existing `/assets` folder
+     - **Optional** - a placeholder will be used if not provided
+   - **Tags**: Select 1-3 relevant tags from the dropdown (at least 1 required)
+   - **Body**: Write your content using Markdown formatting
+
+4. Click **"Save"** (top left) - this creates a draft
+5. When ready, change status to **"In review"** then **"Ready"**
+6. Click **"Publish"** → **"Publish now"**
+
+### Editing an Existing Blog Post
+
+1. Click **"Blog Posts"** in the sidebar
+2. Find and click on the post you want to edit
+3. Make your changes
+4. Update the **"Updated Date"** field
+5. Save and publish as above
+
+### Understanding the Workflow
+
+**Important**: Changes go through a review process to avoid accidental builds:
+
+- **Draft**: Work in progress, not visible on site
+- **In Review**: Ready for team review
+- **Ready**: Approved, ready to publish
+
+When you publish, changes are committed to the `dev` branch. The team will merge `dev` → `main` when ready to deploy live.
+
+### Working with Images
+
+**Best Practices:**
+- Use `.webp` format for smaller file sizes
+- Recommended dimensions: 1200x630px for hero images
+- Keep file sizes under 500KB
+- Use descriptive filenames: `career-fair-2025.webp` not `img123.webp`
+
+**To upload images:**
+1. Click "Hero Image" field → "Choose an image" → "Upload"
+2. Or reference existing images in `/assets` folder
+
+**To use images in blog body:**
+```markdown
+![Alt text describing the image](/assets/your-image.webp)
+```
+
+### Available Tags
+
+Choose tags that match your content:
+
+- **employment** - Job postings, TA hiring, work opportunities
+- **career-planning-exploration** - Resume tips, career advice, mentorship
+- **continuing-education** - Courses, workshops, certifications
+- **health-wellness** - Mental health, fitness, wellness resources
+- **housing** - Housing listings, tips, rental information
+- **scholarships-bursaries-awards** - Funding opportunities, awards
+- **scholarship-award-grant-application-support** - Application help, workshops
+- **other** - Content that doesn't fit above categories
+
+### Markdown Quick Reference
+
+```markdown
+# Heading 1
+## Heading 2
+### Heading 3
+
+**bold text**
+*italic text*
+
+- Bullet point
+- Another point
+
+1. Numbered list
+2. Second item
+
+[Link text](https://example.com)
+
+![Image alt text](/assets/image.webp)
+```
+
+Full guide: [Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
+
+### File Naming Rules
+
+When creating new blog posts, the filename is auto-generated from your title:
+- Lowercase only
+- Spaces become hyphens
+- No special characters
+- Example: "Career Fair 2025!" → `career-fair-2025.md`
+
+### Getting Help
+
+**Common Issues:**
+
+1. **Can't login**: Make sure you've been added as a GitHub collaborator
+2. **Can't publish**: Check that you've set status to "Ready" first
+3. **Image not showing**: Verify path starts with `/assets/`
+4. **Missing required field**: Title, Description, Publish Date, and at least 1 tag are required
+
+**Need assistance?** Contact the website maintainer or check the [GitHub Issues](https://github.com/UofT-FoM-GRC/Website/issues).
+
+---
+
+## 🏁 Getting Started (Developers)
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
@@ -43,7 +176,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 You will need a GitHub account to access the repository.
 
-### Installing (for developers)
+### Installing
 
 Standard `git clone` to download the repository:
 
@@ -69,55 +202,49 @@ More preferably, create feature braches off of `dev`:
 git checkout -b <feature-branch-name>
 ```
 
-### Adding/Updating Blog Posts (for writers)
+### Testing Decap CMS Locally
 
-Blog posts are stored in `src/content/blog`. They are written in Markdown, just like this `README.md` file. Please refer to the following cheatsheet for Markdown syntax: 
+To test the CMS interface locally without GitHub OAuth:
 
-[Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
-
-The following rules apply to blog posts:
-
-1. All blog post markdown files **must be** in lower kebab case (i.e. `this-is-a-blog-post.md`) and avoid special characters (i.e. `&` should be `and`).
-2. The start of the Markdown file contains the following syntax referred to as a "frontmatter" block:
-
+1. Install the Decap CMS proxy server:
+```bash
+npx decap-server
 ```
----
-title: Title of Blog Post
-description: Short description of what the blog post is about
-pubDate: Date of publication, ideally in ISO 8601 format (YYYY-MM-DD)
-updatedDate: Date of last update, ideally in ISO 8601 format (YYYY-MM-DD)
-heroImage: Local relative path or URL to main banner image for blog post.
-tags: An array of tags relevant to the blog post. These will be rendered as buttons on blog post cards.
----
+
+2. In another terminal, run the dev server:
+```bash
+pnpm dev
 ```
-This **must be** included at the top of every blog post and is used to generate the blog post card on the blogs page.
 
-3. The heroImage **is optional**. It can also be an external URL, for example: https://en.wikipedia.org/wiki/University_of_Toronto#/media/File:UofTConvocationHall.jpg. If not provided, a placeholder image will be used:
+3. Access CMS at `http://localhost:4321/admin/`
 
-<img src="public/assets/uoft-placeholder-default.webp" alt="GRC Blog Post Placeholder Image" width="240" height="200">
+**Note**: Local mode bypasses authentication and workflow - changes save directly.
 
-4. **At least one tag must be provided**. They assist with blog post organization and linking to relevant resource pages. The following tags are available:
+### Manual Blog Post Editing (Alternative to CMS)
 
-- **`employment`** - For blog posts related to employment (i.e. hiring TAs, finding a job, etc.)
-- **`career-planning-exploration`** - For blog posts related to career planning and exploration (i.e. resume tips, interview advice, etc.)
-- **`continuing-education`** - For blog posts related to continuing education (i.e. courses, workshops, etc.)
-- **`health-wellness`** - For blog posts related to health and wellness (i.e. mental health, fitness, etc.)
-- **`housing`** - For blog posts related to housing (i.e. listings, tips, etc.)
-- **`scholarships-bursaries-awards`** - For blog posts related to scholarships, bursaries, and awards (i.e. listing etc.)
-- **`scholarship-award-grant-application-support`** - For blog posts related to scholarship, award, and grant application support (i.e. workshops, help with applications, etc.)
-- **`other`** - For blog posts that don't fit into the above categories.
+**Recommended**: Use Decap CMS (see Content Management section above) for a visual interface.
 
-So, for example the following is the frontmatter for this blog post:
+**Alternative for developers**: Blog posts are stored in `src/blog/`. They are written in Markdown.
 
-```
+Refer to: [Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
+
+**Rules:**
+
+1. Filenames **must be** lowercase kebab-case: `this-is-a-post.md`
+2. Required frontmatter structure:
+
+```yaml
 ---
-title: 'UofT Hiring TAs'
-description: 'How to hire Teaching Assistants at the University of Toronto'
-pubDate: 'Sep 3 2024'
-heroImage: '/uoft-career-fair-banner.webp'
-tags: ['employment']
+title: 'Post Title'
+description: 'Brief description'
+pubDate: 'Nov 1 2024'
+updatedDate: 'Nov 5 2024'  # optional
+heroImage: '/assets/image.webp'  # optional
+tags: ['employment', 'other']  # at least 1 required
 ---
 ```
+
+3. Available tags: `employment`, `career-planning-exploration`, `continuing-education`, `health-wellness`, `housing`, `scholarships-bursaries-awards`, `scholarship-award-grant-application-support`, `other`
 
 ## 🚀 Deployment
 

@@ -12,7 +12,7 @@ import HelpingStudents from '../assets/HelpingStudents.png'
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
 	<main
-		class="container mx-auto flex w-full flex-col items-center overflow-hidden rounded-xl my-2 text-justify shadow-lg"
+		class="container mx-auto my-2 flex w-full flex-col items-center overflow-hidden rounded-xl text-justify shadow-lg"
 	>
 		<!-- Main Hero -->
 		<section class="fade-in-section relative h-[50vh] min-h-[300px] w-full rounded-t-xl">
@@ -178,6 +178,20 @@ import HelpingStudents from '../assets/HelpingStudents.png'
 			// console.log('DOMContentLoaded')
 			setUpIntersectionObserver()
 		})
+
+		// Netlify Identity: Redirect to CMS after login
+		// @ts-ignore - netlifyIdentity is loaded from external script
+		if (window.netlifyIdentity) {
+			// @ts-ignore
+			window.netlifyIdentity.on('init', (user: any) => {
+				if (!user) {
+					// @ts-ignore
+					window.netlifyIdentity.on('login', () => {
+						document.location.href = '/admin/'
+					})
+				}
+			})
+		}
 	</script>
 </BaseLayout>
 

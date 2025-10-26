@@ -15,6 +15,8 @@ const { title, description } = Astro.props
 		<ClientRouter />
 		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
 		<script is:inline src="/pagefind/pagefind-ui.js"></script>
+		<!-- Netlify Identity Widget for CMS authentication -->
+		<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 	</head>
 	<body>
 		<slot name="header">
