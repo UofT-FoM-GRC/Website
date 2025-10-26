@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
   branch: dev
+  squash_merges: true
 
 # Use editorial workflow to prevent direct commits to dev
 publish_mode: editorial_workflow
@@ -60,14 +61,6 @@ collections:
         date_format: 'MMM D YYYY'
         time_format: false
         hint: The date this post is published
-      - label: Updated Date
-        name: updatedDate
-        widget: datetime
-        format: 'MMM D YYYY'
-        date_format: 'MMM D YYYY'
-        time_format: false
-        required: false
-        hint: Optional - use this when updating an existing post
       - label: Hero Image
         name: heroImage
         widget: image

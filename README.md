@@ -25,242 +25,775 @@
 ## 📝 Table of Contents
 
 - [About](#🧐-about)
-- [Content Management with Decap CMS](#📝-content-management-with-decap-cms)
-- [Getting Started (Developers)](#🏁-getting_started)
-- [Deployment](#🚀-deployment)
+- [How It All Works](#🔄-how-it-all-works)
+- [For Content Editors (Non-Technical)](#✍️-for-content-editors-non-technical)
+  - [Getting Access](#getting-access)
+  - [Creating & Editing Blog Posts](#creating--editing-blog-posts)
+  - [Complete Workflow](#complete-workflow)
+- [For Technical Team Members](#👨‍💻-for-technical-team-members)
+  - [First-Time Setup](#first-time-setup)
+  - [Understanding the Repository](#understanding-the-repository)
+  - [Development Workflow](#development-workflow)
+  - [Reviewing & Deploying Changes](#reviewing--deploying-changes)
+- [Understanding the System](#🔧-understanding-the-system)
+- [Troubleshooting](#🆘-troubleshooting)
 - [Built Using](#⛏️-built_using)
 - [Authors](#✍️-authors)
-- [Acknowledgments](#🎉-acknowledgements)
 
 ## 🧐 About
 
 The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all graduate students in the University of Toronto Faculty of Medicine. We support and advocate for graduate students, keep them informed about important policies, and actively seek their feedback to ensure our advocacy aligns with their needs.
 
-## 📝 Content Management with Decap CMS
+This website is maintained by GRC members and uses modern web technologies to provide an easy-to-manage platform for sharing information with the graduate student body.
 
-**For non-technical team members managing blog content.**
+---
 
-### First-Time Setup
+## 🔄 How It All Works
 
-1. **Get GitHub Access**
-   - Ask the current website maintainer to add you as a collaborator to the [GitHub repository](https://github.com/UofT-FoM-GRC/Website)
-   - You'll receive an email invitation - accept it
+**Overview of the Complete Publishing Process**
 
-2. **Enable Netlify OAuth**
-   - The website admin needs to enable GitHub OAuth in [Netlify settings](https://app.netlify.com/sites/uoft-fom-grc/settings/access) (one-time setup)
+This diagram shows the entire journey from creating content to it appearing live on the website:
 
-### Accessing the CMS
+```mermaid
+graph TB
+    subgraph "Content Editor Role"
+        A[Login to CMS at /admin/] --> B[Create/Edit Blog Post]
+        B --> C[Fill in Title, Description, Date, Tags]
+        C --> D[Write Content in Markdown]
+        D --> E[Upload Images if needed]
+        E --> F[Save Draft]
+    end
+    
+    subgraph "Automated System"
+        F --> G[CMS Creates New Branch]
+        G --> H[Branch: cms/blog/post-slug]
+        H --> I[Opens Pull Request to 'dev']
+        I --> J[Notification Sent to Technical Team]
+    end
+    
+    subgraph "Technical Reviewer Role"
+        J --> K[Technical Member Reviews PR]
+        K --> L[Pull Draft Branch Locally]
+        L --> M[Run 'pnpm run dev']
+        M --> N[Check Site at localhost:4321]
+        N --> O[Run 'pnpm run build']
+        O --> P{Everything Looks Good?}
+        P -->|No| Q[Request Changes from Content Editor]
+        Q --> R[Editor Makes Edits & Saves Draft Again]
+        R --> S[New Commit Pushed to Same Branch]
+        S --> K
+        P -->|Yes| T[Tell Editor to Change Status to 'Ready']
+    end
+    
+    subgraph "Content Editor Publishes"
+        T --> U[Editor Changes Status to 'Ready']
+        U --> V[Editor Clicks 'Publish']
+        V --> W[CMS Merges PR to 'dev']
+        W --> X[CMS Deletes Draft Branch]
+    end
+    
+    subgraph "Technical Team Deploys"
+        X --> Y[Technical Member Merges 'dev' to 'main']
+    end
+    
+    subgraph "Live Deployment"
+        Y --> Z[Netlify Detects 'main' Change]
+        Z --> AA[Netlify Builds Website]
+        AA --> AB[Live at https://uoftfomgrc.ca/]
+    end
+    
+    style F fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style V fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style G fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style H fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style I fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style J fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style K fill:#9013FE,stroke:#6B0FC2,stroke-width:2px,color:#fff
+    style P fill:#9013FE,stroke:#6B0FC2,stroke-width:2px,color:#fff
+    style Y fill:#9013FE,stroke:#6B0FC2,stroke-width:2px,color:#fff
+    style W fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style X fill:#F5A623,stroke:#C77F1B,stroke-width:2px,color:#000
+    style AB fill:#50E3C2,stroke:#3AB89D,stroke-width:2px,color:#000
+```
+
+**Key Points:**
+- **Content Editors** (blue boxes) only need to use the CMS - no coding required
+- **Automated System** (orange boxes) handles Git operations behind the scenes
+- **Technical Reviewers** (purple boxes) test changes during draft phase before final publish
+- **Live Deployment** (teal box) happens automatically when merged to main
+
+**Timeline:**
+- Content creation & save draft: 15-60 minutes (depending on post complexity)
+- Technical review of draft: Usually 1-2 days
+- Content editor publishes (merges to dev): ~1 minute after approval
+- Technical team deploys (merges dev to main): When batching multiple posts or urgent
+- Netlify build & deploy: 2-5 minutes after merge to main
+
+---
+
+## ✍️ For Content Editors (Non-Technical)
+
+**If you just want to write and publish blog posts, this section is for you!**
+
+### Getting Access
+
+To manage blog content, you need either one of two things:
+
+1. **Netlify Identity Account**
+   - Contact the website administrator
+   - They will send you an invitation email from Netlify
+   - Click the link in the email
+   - Set your password
+   - You're ready to create content!
+
+2. **GitHub Account**
+   - If you don't have one, create a free account at [github.com](https://github.com)
+   - Send your GitHub username to the administrator
+   - They'll add you as a collaborator
+
+### Creating & Editing Blog Posts
+
+**Step 1: Access the CMS**
 
 1. Go to: **https://uoft-fom-grc.netlify.app/admin/**
-2. Click **"Login with GitHub"**
-3. Authorize the application if prompted
+2. Log in with your Netlify Identity email/password or GitHub account
+3. You'll see the content dashboard
 
-### Creating a New Blog Post
+**Step 2: Create a New Blog Post**
 
-1. In the CMS dashboard, click **"Blog Posts"** in the left sidebar
+1. Click **"Blog Posts"** in the left sidebar
 2. Click **"New Blog Post"** button (top right)
-3. Fill in the fields:
+3. Fill in the form:
+   - **Title**: Your blog post title (e.g., "Career Fair 2025")
+   - **Description**: 1-2 sentence summary (shows on blog cards)
+   - **Publish Date**: Click calendar icon and select date
+   - **Hero Image** (optional): Click "Choose an image" → Upload or select existing
+   - **Tags**: Select 1-3 tags that match your content (required)
+   - **Body**: Write your content using Markdown (see quick reference below)
 
-   - **Title**: Your blog post title (e.g., "UofT Career Fair 2025")
-   - **Description**: 1-2 sentence summary for the blog card
-   - **Publish Date**: Click the calendar icon and select the date
-   - **Updated Date**: Leave empty for new posts
-   - **Hero Image**: 
-     - Click **"Choose an image"**
-     - Either upload a new image or select from existing `/assets` folder
-     - **Optional** - a placeholder will be used if not provided
-   - **Tags**: Select 1-3 relevant tags from the dropdown (at least 1 required)
-   - **Body**: Write your content using Markdown formatting
+4. Click **"Save"** (top left)
 
-4. Click **"Save"** (top left) - this creates a draft
-5. When ready, change status to **"In review"** then **"Ready"**
-6. Click **"Publish"** → **"Publish now"**
+**Step 3: Preview Your Post**
 
-### Editing an Existing Blog Post
+- While editing, you can see a live preview on the right side
+- Make sure images display correctly
+- Check formatting looks good
 
-1. Click **"Blog Posts"** in the sidebar
-2. Find and click on the post you want to edit
-3. Make your changes
-4. Update the **"Updated Date"** field
-5. Save and publish as above
+**Step 4: Submit for Review**
 
-### Understanding the Workflow
+1. After saving your draft, notify the technical team (Slack/Discord/email)
+2. Wait for technical reviewer to test your draft
+3. If they request changes, edit the post and save again
+4. Once approved by technical reviewer:
+   - Click the status dropdown (shows "Draft")
+   - Change to **"Ready"**
+   - Click **"Publish"** → **"Publish now"**
 
-**Important**: Changes go through a review process to avoid accidental builds:
+✅ **Done!** Your changes are merged to the staging branch and ready for deployment.
 
-- **Draft**: Work in progress, not visible on site
-- **In Review**: Ready for team review
-- **Ready**: Approved, ready to publish
+### Complete Workflow
 
-When you publish, changes are committed to the `dev` branch. The team will merge `dev` → `main` when ready to deploy live.
+Here's how your changes get from the CMS to the live website:
+
+```mermaid
+graph LR
+    A[Save draft] --> B[Notify technical team]
+    B --> C[Technical member reviews draft]
+    C --> D{Looks good?}
+    D -->|No| E[Make requested changes]
+    E --> A
+    D -->|Yes| F[Change status to Ready & Publish]
+    F --> G[Changes merged to dev branch]
+    G --> H[Technical team deploys to live]
+    H --> I[Live on website!]
+```
+
+**Timeline:**
+- **Save draft**: Your changes create a draft branch immediately
+- **Technical review**: Usually 1-2 days to review your draft
+- **You publish**: After approval, change status to "Ready" and publish (merges to dev)
+- **Deployment**: Technical team merges dev to main when batching posts or if urgent
+- **Live**: 2-5 minutes after deployment
+
+**You don't need to know Git or coding!** The CMS handles everything for you.
 
 ### Working with Images
 
 **Best Practices:**
-- Use `.webp` format for smaller file sizes
-- Recommended dimensions: 1200x630px for hero images
+- Use `.webp` or `.jpg` format
+- Recommended size: 1200x630px for hero images
 - Keep file sizes under 500KB
-- Use descriptive filenames: `career-fair-2025.webp` not `img123.webp`
+- Use descriptive names: `career-fair-2025.webp` not `img123.webp`
 
-**To upload images:**
-1. Click "Hero Image" field → "Choose an image" → "Upload"
-2. Or reference existing images in `/assets` folder
+**To add images:**
 
-**To use images in blog body:**
+In the Hero Image field:
+1. Click "Choose an image"
+2. Click "Upload" or select from existing images
+3. Select your file
+
+In the blog body:
 ```markdown
-![Alt text describing the image](/assets/your-image.webp)
+![Description of image](/assets/your-image-name.webp)
 ```
 
 ### Available Tags
 
-Choose tags that match your content:
+Select 1-3 tags that best describe your content:
 
-- **employment** - Job postings, TA hiring, work opportunities
-- **career-planning-exploration** - Resume tips, career advice, mentorship
-- **continuing-education** - Courses, workshops, certifications
-- **health-wellness** - Mental health, fitness, wellness resources
-- **housing** - Housing listings, tips, rental information
-- **scholarships-bursaries-awards** - Funding opportunities, awards
-- **scholarship-award-grant-application-support** - Application help, workshops
-- **other** - Content that doesn't fit above categories
+| Tag | Use For |
+|-----|---------|
+| **employment** | Job postings, TA hiring, work opportunities |
+| **career-planning-exploration** | Resume tips, career advice, mentorship |
+| **continuing-education** | Courses, workshops, certifications |
+| **health-wellness** | Mental health, fitness, wellness resources |
+| **housing** | Housing listings, tips, rental information |
+| **scholarships-bursaries-awards** | Funding opportunities, awards |
+| **scholarship-award-grant-application-support** | Application help, workshops |
+| **other** | Everything else |
 
 ### Markdown Quick Reference
 
 ```markdown
-# Heading 1
-## Heading 2
-### Heading 3
+# Large Heading
+## Medium Heading
+### Small Heading
 
-**bold text**
-*italic text*
+**Bold text**
+*Italic text*
 
 - Bullet point
 - Another point
 
-1. Numbered list
+1. Numbered item
 2. Second item
 
 [Link text](https://example.com)
-
-![Image alt text](/assets/image.webp)
+![Image](/assets/image.webp)
 ```
 
-Full guide: [Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
+**Full guide:** [Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
 
-### File Naming Rules
+### Common Questions
 
-When creating new blog posts, the filename is auto-generated from your title:
-- Lowercase only
-- Spaces become hyphens
-- No special characters
-- Example: "Career Fair 2025!" → `career-fair-2025.md`
+**Q: How do I edit an existing post?**
+A: Click "Blog Posts" → Click the post → Make changes → Save → Publish
 
-### Getting Help
+**Q: Can I save a draft and come back later?**
+A: Yes! Click "Save" anytime. It stays in "Draft" until you change the status.
 
-**Common Issues:**
+**Q: I made a mistake after publishing. What do I do?**
+A: Just edit the post again and republish. Contact the technical team if urgent.
 
-1. **Can't login**: Make sure you've been added as a GitHub collaborator
-2. **Can't publish**: Check that you've set status to "Ready" first
-3. **Image not showing**: Verify path starts with `/assets/`
-4. **Missing required field**: Title, Description, Publish Date, and at least 1 tag are required
+**Q: My images aren't showing up**
+A: Make sure the image path starts with `/assets/`
 
-**Need assistance?** Contact the website maintainer or check the [GitHub Issues](https://github.com/UofT-FoM-GRC/Website/issues).
+**Q: Who do I contact for help?**
+A: Reach out to the GRC technical lead or post in the team Slack
 
 ---
 
-## 🏁 Getting Started (Developers)
+## 👨‍💻 For Technical Team Members
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+**If you're maintaining the website or reviewing blog post changes, this section is for you.**
 
-### Prerequisites
+### First-Time Setup
 
-You will need a GitHub account to access the repository.
+Even if you have limited coding experience, you can maintain this website by following these steps.
 
-### Installing
+#### Step 1: Install Required Software
 
-Standard `git clone` to download the repository:
+**1.1 Install Node.js**
+
+Node.js is the JavaScript runtime that powers the website.
+
+- Go to: https://nodejs.org/
+- Download the **LTS** (Long Term Support) version
+- Run the installer
+- Accept default settings
+- Verify installation:
+  ```bash
+  node --version
+  # Should show: v22.x.x or similar
+  ```
+
+**1.2 Install pnpm**
+
+pnpm is a fast package manager (better than npm).
 
 ```bash
+npm install -g pnpm
+```
+
+Verify:
+```bash
+pnpm --version
+# Should show: 9.x.x or similar
+```
+
+**1.3 Install Git**
+
+Git manages version control for the website.
+
+- **Windows**: Download from https://git-scm.com/
+- **Mac**: Install Xcode Command Line Tools:
+  ```bash
+  xcode-select --install
+  ```
+- **Linux**: 
+  ```bash
+  sudo apt-get install git  # Ubuntu/Debian
+  sudo dnf install git      # Fedora
+  ```
+
+Verify:
+```bash
+git --version
+# Should show: git version 2.x.x
+```
+
+**1.4 Get GitHub Access**
+
+1. Create account at https://github.com (if you don't have one)
+2. Contact the website administrator
+3. They'll add you as a collaborator to the repository
+4. Accept the invitation email
+
+#### Step 2: Clone the Repository
+
+"Cloning" means downloading the website code to your computer.
+
+```bash
+# Navigate to where you want to store the project
+cd ~/Documents/GRC  # or wherever you prefer
+
+# Clone the repository
 git clone https://github.com/UofT-FoM-GRC/Website.git
+
+# Enter the project folder
 cd Website
 ```
-It's recommended to use [pnpm](https://pnpm.io/installation) to install the dependencies.
+
+#### Step 3: Install Dependencies
+
+"Dependencies" are all the code libraries the website needs to run.
 
 ```bash
 pnpm install
 ```
 
-Never work on `main`. At minimum, go to `dev` first:
+This will take 2-5 minutes. You'll see a lot of text scroll by - that's normal!
+
+#### Step 4: Run the Development Server
 
 ```bash
+pnpm run dev
+```
+
+You should see:
+```
+🚀 astro  v5.x.x started in XXXms
+
+  ┃ Local    http://localhost:4321/
+  ┃ Network  use --host to expose
+```
+
+Open your browser and go to: **http://localhost:4321/**
+
+You should see the GRC website running locally! 🎉
+
+**To stop the server:** Press `Ctrl+C` in the terminal
+
+### Understanding the Repository
+
+Here's what each folder/file does:
+
+```
+Website/
+├── public/                  # Static files (images, fonts, etc.)
+│   ├── assets/             # Blog images, backgrounds
+│   ├── admin/              # CMS admin panel files
+│   └── fonts/              # Website fonts
+│
+├── src/                    # Source code (the actual website)
+│   ├── blog/              # Blog post markdown files ⭐
+│   ├── components/        # Reusable UI pieces (header, footer, etc.)
+│   ├── layouts/           # Page templates
+│   ├── pages/             # Actual website pages
+│   │   ├── index.astro   # Homepage
+│   │   ├── blog/         # Blog listing page
+│   │   ├── about/        # About page
+│   │   └── resources/    # Resource pages
+│   ├── styles/            # CSS styling
+│   └── consts.ts          # Website-wide constants
+│
+├── notes/                  # Misc notes and documentation
+├── .github/                # GitHub configuration
+├── package.json            # Project dependencies list
+├── pnpm-lock.yaml         # Locked dependency versions
+├── astro.config.mjs       # Astro framework configuration
+├── tsconfig.json          # TypeScript configuration
+└── README.md              # This file!
+```
+
+**Key Files You'll Work With for Blogs:**
+- `src/blog/*.md` - Blog post files (created via CMS or manually)
+- `public/assets/` - Images for blog posts
+
+**Files You Can Ignore:**
+- `.astro/` - Auto-generated cache
+- `node_modules/` - Installed dependencies
+- `dist/` - Built website files
+
+### Development Workflow
+
+This is how you review and publish changes made through the CMS.
+
+#### Scenario: A content editor saved a draft
+
+**Step 1: Check for New Draft**
+
+When a content editor saves a draft, the CMS creates a new branch and pull request.
+
+1. Go to: https://github.com/UofT-FoM-GRC/Website/pulls
+2. Look for PRs with label: `decap-cms/pending_publish`
+3. Branch name will be: `cms/blog/post-slug-name`
+4. Click on the PR to review
+
+**Step 2: Pull Draft Branch to Your Computer**
+
+```bash
+# Make sure you're in the Website folder
+cd ~/Documents/Website  # or wherever you cloned it
+
+# Fetch all branches from GitHub
+git fetch origin
+
+# Switch to the draft branch (replace with actual branch name from PR)
+git checkout cms/blog/post-slug-name
+```
+
+**Step 3: Review Changes Locally**
+
+```bash
+# Start the development server
+pnpm run dev
+```
+
+Open http://localhost:4321/ in your browser.
+
+**What to check:**
+- ✅ New blog post appears on the blog page
+- ✅ Images display correctly
+- ✅ No broken links
+- ✅ Formatting looks good
+- ✅ Tags are correct
+- ✅ No typos in title/description
+
+**Step 4: Test the Build**
+
+The development server is different from the live site. Make sure it actually builds:
+
+```bash
+# Stop the dev server (Ctrl+C)
+# Run the build command
+pnpm run build
+```
+
+If you see errors, something is wrong! Common issues:
+- Missing required fields in blog post
+- Broken image links
+- Invalid frontmatter YAML syntax
+
+If successful, you'll see:
+```
+✓ Completed in XXXms.
+```
+
+#### Scenario: Changes look good, let editor publish
+
+**Step 1: Approve the Draft**
+
+1. Leave a comment on the PR: "Looks good! Ready to publish ✅"
+2. Notify the content editor (Slack/Discord/email)
+3. Editor will change status to "Ready" and click "Publish" in CMS
+4. The CMS will automatically merge the PR to `dev` and delete the draft branch
+
+**Step 2: Deploy to Live Site (When Ready)**
+
+After one or more posts are published to `dev`, merge dev → main:
+
+The `main` branch is what's live on the website. Let's push the changes there.
+
+**Option A: Via GitHub (Easier)**
+
+1. Go to: https://github.com/UofT-FoM-GRC/Website
+2. Click **"Pull requests"** → **"New pull request"**
+3. Set: `base: main` ← `compare: dev`
+4. Click **"Create pull request"**
+5. Review one more time
+6. Click **"Merge pull request"**
+7. Click **"Confirm merge"**
+
+**Option B: Via Command Line**
+
+```bash
+# Pull latest dev changes first in case someone else updated it in the meantime and fix any conflicts if needed
 git checkout dev
+git pull origin dev
+
+# Switch to main branch
+git checkout main
+
+# Pull latest main in case anyone else updated it
+git pull origin main
+
+# Merge dev into main
+git merge dev
+
+# Push to GitHub
+git push origin main
 ```
 
-More preferably, create feature braches off of `dev`:
+**Step 3: Watch Netlify Deploy**
+
+1. Go to: https://app.netlify.com/sites/uoft-fom-grc/deploys
+2. You'll see a new deploy starting
+3. Wait 2-5 minutes for it to complete
+4. Check the live site: https://uoft-fom-grc.netlify.app/ or https://uoftfomgrc.ca/
+
+🎉 **Changes are now live!**
+
+#### Scenario: Draft needs fixing
+
+If you find issues during review:
+
+1. **Don't approve the draft yet**
+2. Leave a comment on the PR with specific issues to fix
+3. Contact the content editor (Slack/Discord/email)
+4. Editor makes changes in CMS and saves draft again
+5. New commit is pushed to the same draft branch
+6. Pull the updated branch and review again:
+   ```bash
+   git checkout cms/blog/post-slug-name
+   git pull origin cms/blog/post-slug-name
+   pnpm run dev
+   ```
+
+### Reviewing & Deploying Changes
+
+**Quick Reference Workflow:**
 
 ```bash
-git checkout -b <feature-branch-name>
+# 1. Review draft - Fetch and checkout draft branch
+git fetch origin
+git checkout cms/blog/post-slug-name
+
+# 2. Test locally
+pnpm run dev
+# → Check http://localhost:4321/
+
+# 3. Build test
+pnpm run build
+
+# 4. If issues, tell editor to fix and wait for update
+# If good, approve on GitHub and tell editor to publish
+
+# 5. After editor publishes (merges to dev), deploy when ready
+git checkout dev
+git pull origin dev
+git checkout main
+git pull origin main
+git merge dev
+git push origin main
+
+# 6. Monitor deploy
+# → https://app.netlify.com/sites/uoft-fom-grc/deploys
 ```
 
-### Testing Decap CMS Locally
+**When to deploy:**
+- ✅ After reviewing 1-3 blog posts and/or weekly updates
+- ✅ Urgently (for time-sensitive posts)
+- ❌ Not after every single post (wastes build minutes on Netlify; we're on a free plan)
 
-To test the CMS interface locally without GitHub OAuth:
+### Advanced: Testing CMS Locally
 
-1. Install the Decap CMS proxy server:
+If you want to test the CMS interface on your local machine:
+
 ```bash
+# Terminal 1: Run CMS proxy
 npx decap-server
+
+# Terminal 2: Run dev server
+pnpm run dev
 ```
 
-2. In another terminal, run the dev server:
-```bash
-pnpm dev
-```
+Access CMS at: http://localhost:4321/admin/
 
-3. Access CMS at `http://localhost:4321/admin/`
+**Note:** Local CMS bypasses authentication and workflow. Changes save directly to files.
 
-**Note**: Local mode bypasses authentication and workflow - changes save directly.
-
-### Manual Blog Post Editing (Alternative to CMS)
-
-**Recommended**: Use Decap CMS (see Content Management section above) for a visual interface.
-
-**Alternative for developers**: Blog posts are stored in `src/blog/`. They are written in Markdown.
-
-Refer to: [Markdown Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
-
-**Rules:**
-
-1. Filenames **must be** lowercase kebab-case: `this-is-a-post.md`
-2. Required frontmatter structure:
-
-```yaml
 ---
-title: 'Post Title'
-description: 'Brief description'
-pubDate: 'Nov 1 2024'
-updatedDate: 'Nov 5 2024'  # optional
-heroImage: '/assets/image.webp'  # optional
-tags: ['employment', 'other']  # at least 1 required
+
+## 🔧 Understanding the System
+
+### The Three Branches
+
+**`main` branch** = Live website
+- What users see at uoft-fom-grc.netlify.app
+- Protected - only technical team can update
+- Triggers automatic deployment on changes
+
+**`dev` branch** = Development/staging area
+- Where CMS changes go first
+- Test changes here before going live
+- Doesn't trigger deployments (saves build minutes)
+
+**`feat-*` branches** = Custom website changes & features
+- For major changes or new features indepdendent of CMS
+- Created from `dev` branch
+- Use `git rebase dev` to keep up to date
+- Merge into `dev` when ready
+- Delete after merging
+
+### The Tech Stack
+
+| Component | Purpose | Learn More |
+|-----------|---------|------------|
+| **Astro** | Web framework - builds the site | [astro.build](https://astro.build/) |
+| **Decap CMS** | Content management system | [decapcms.org](https://decapcms.org/) |
+| **Netlify** | Hosting & deployment | [netlify.com](https://www.netlify.com/) |
+| **GitHub** | Code storage & version control | [github.com](https://github.com/) |
+| **pnpm** | Package manager | [pnpm.io](https://pnpm.io/) |
+| **Markdown** | Content formatting | [markdownguide.org](https://www.markdownguide.org/) |
+
+### Build Minutes Optimization
+
+Netlify's free tier gives us limited build minutes per month. To conserve them:
+
+- ✅ CMS changes go to `dev` (no build)
+- ✅ Batch multiple posts before deploying
+- ✅ Only `main` branch triggers builds
+- ❌ Don't merge to `main` after every single change
+
 ---
-```
 
-3. Available tags: `employment`, `career-planning-exploration`, `continuing-education`, `health-wellness`, `housing`, `scholarships-bursaries-awards`, `scholarship-award-grant-application-support`, `other`
+## 🆘 Troubleshooting
 
-## 🚀 Deployment
+### For Content Editors
 
-Everything is automated to deploy to Netlify once changes on `main` are detected. Keep it simple. No manual deployment steps are required.
+**Problem: Can't log in to CMS**
+- ✅ Check: Did you accept the Netlify invitation email?
+- ✅ Check: Did you set a password?
+- ✅ Try: Clear browser cache and try again
+- ✅ Contact: Website administrator to resend invitation
+
+**Problem: Images not showing in preview**
+- ✅ Check: Path starts with `/assets/`
+- ✅ Check: Image was uploaded successfully
+- ✅ Try: Use existing image from media library first
+
+**Problem: Can't publish (button grayed out)**
+- ✅ Check: All required fields filled? (Title, Description, Date, Tags)
+- ✅ Check: Status set to "Ready"?
+- ✅ Try: Save draft first, then change status
+
+**Problem: Published but don't see changes on website**
+- ✅ Understand: Changes go to `dev` branch first
+- ✅ Wait: Technical reviewer needs to deploy to live site
+- ✅ Timeline: Usually 1-3 days depending on urgency
+
+### For Technical Members
+
+**Problem: `pnpm install` fails**
+- ✅ Check: Node.js version (need v18+)
+  ```bash
+  node --version
+  ```
+- ✅ Try: Delete `node_modules` and `pnpm-lock.yaml`, reinstall
+  ```bash
+  rm -rf node_modules pnpm-lock.yaml
+  pnpm install
+  ```
+
+**Problem: `pnpm run dev` fails**
+- ✅ Check: Did you run `pnpm install`?
+- ✅ Check: Port 4321 not already in use?
+- ✅ Try: Different port
+  ```bash
+  pnpm run dev -- --port 3000
+  ```
+
+**Problem: Build fails with frontmatter error**
+- ✅ Check: Blog post YAML syntax is valid
+- ✅ Check: Required fields present (title, description, pubDate, tags)
+- ✅ Check: Tags are from the allowed list
+- ✅ Fix: Edit the markdown file directly in `src/blog/`
+
+**Problem: Merge conflicts**
+- ✅ Don't panic! This means two people edited the same file
+- ✅ Option 1: Use GitHub's web interface to resolve
+- ✅ Option 2: Resolve locally:
+  ```bash
+  git status  # See which files conflict
+  # Edit files, remove conflict markers
+  git add .
+  git commit -m "resolve merge conflict"
+  git push
+  ```
+
+**Problem: Netlify build fails**
+- ✅ Check: Build logs at https://app.netlify.com/sites/uoft-fom-grc/deploys
+- ✅ Look for: Error messages (usually at the end)
+- ✅ Common causes:
+  - Invalid frontmatter in blog post
+  - Missing image file
+  - TypeScript errors
+- ✅ Fix locally, test build, then deploy again
+
+**Problem: Changes deployed but not visible**
+- ✅ Try: Hard refresh browser (`Ctrl+Shift+R` or `Cmd+Shift+R`)
+- ✅ Try: Clear browser cache
+- ✅ Check: Was the Netlify deploy successful?
+- ✅ Wait: CDN cache may take 1-5 minutes to update
+
+### Getting Help
+
+**For urgent issues:**
+1. Check this README first
+2. Check existing [GitHub Issues](https://github.com/UofT-FoM-GRC/Website/issues)
+3. Contact the technical lead
+4. Create new GitHub issue if it's a bug
+
+**For questions:**
+- Team Slack/Discord
+- GRC meetings
+- Email the technical lead
+
+**For bugs or feature requests:**
+- Create GitHub issue: https://github.com/UofT-FoM-GRC/Website/issues/new
+- Include:
+  - What you were trying to do
+  - What happened instead
+  - Steps to reproduce
+  - Screenshots if relevant
+
+---
 
 ## ⛏️ Built Using
 
-- [Astro](https://astro.build/) - Web Framework
-- [TailwindCSS](https://tailwindcss.com/) - CSS Framework
+- [Astro](https://astro.build/) - Modern web framework
+- [TailwindCSS](https://tailwindcss.com/) - CSS styling
+- [Decap CMS](https://decapcms.org/) - Content management
+- [Netlify](https://www.netlify.com/) - Hosting & deployment
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ## ✍️ Authors
 
-- [@MauricePasternak](https://github.com/MauricePasternak) - Creator and current maintainer
+- [@MauricePasternak](https://github.com/MauricePasternak) - Creator, author of this guide, and original maintainer
 
-See also the list of [contributors](https://github.com/UofT-FoM-GRC/Website/contributors) who participated in this project.
+See [contributors](https://github.com/UofT-FoM-GRC/Website/contributors) for full list of people who have worked on this project.
 
 ## 🎉 Acknowledgements
 
-- All the members of the GRC, past and present, for their hard work and dedication to the graduate student body.
+- All members of the GRC, past and present, for their dedication to the graduate student body
+- The open-source community for the amazing tools that power this website
