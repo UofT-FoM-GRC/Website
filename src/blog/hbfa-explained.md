@@ -6,8 +6,6 @@ heroImage: '/assets/fom-backgrounds/ffom-zoom-backgrounds-4-1080.webp'
 tags: ['other']
 ---
 
-# Understanding the Harmonized Base Funding Agreement: A Guide from the Graduate Representation Committee
-
 The Harmonized Base Funding Agreement (HBFA) is a crucial component of your graduate experience at the University of Toronto. This funding helps maximize your financial support so that you can focus on your studies and research.
 
 ## Key Highlights of the HBFA
