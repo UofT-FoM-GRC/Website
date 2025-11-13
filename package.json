@@ -12,18 +12,18 @@
 	"dependencies": {
 		"@astrojs/alpinejs": "^0.4.9",
 		"@astrojs/check": "^0.9.5",
-		"@astrojs/mdx": "^4.3.9",
+		"@astrojs/mdx": "^4.3.10",
 		"@astrojs/netlify": "^6.6.0",
 		"@astrojs/rss": "^4.0.13",
 		"@astrojs/sitemap": "^3.6.0",
 		"@iconify-json/mdi": "^1.2.3",
-		"@tailwindcss/vite": "^4.1.16",
+		"@tailwindcss/vite": "^4.1.17",
 		"@types/alpinejs": "^3.13.11",
 		"alpinejs": "^3.15.1",
-		"astro": "^5.15.3",
+		"astro": "^5.15.6",
 		"astro-icon": "^1.1.5",
-		"sharp": "^0.34.4",
-		"tailwindcss": "^4.1.16",
+		"sharp": "^0.34.5",
+		"tailwindcss": "^4.1.17",
 		"typescript": "^5.9.3"
 	},
 	"devDependencies": {
@@ -32,6 +32,5 @@
 		"prettier": "^3.6.2",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-tailwindcss": "^0.7.1"
-		
 	}
 }
