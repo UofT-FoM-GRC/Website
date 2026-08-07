@@ -19,11 +19,20 @@ CI and Deploy Preview availability depends on repository and Netlify settings. I
 2. Set base branch to `main` and compare branch to `dev`.
 3. Use release pull request template. Confirm all intended `dev` changes are included.
 4. Review `CI / Validate` and Deploy Preview when available. Obtain approvals required by current GitHub settings.
-5. Merge in GitHub UI using merge method required by repository settings.
+5. Select **Create a merge commit**. This preserves `dev` as an ancestor of `main` for the next release.
 6. Wait for Netlify production deploy linked to `main`. Read deploy log on failure.
 7. Perform production smoke test below. Record result in release pull request.
 
 Do not create a release by command-line merge or direct push. If GitHub blocks merge, do not bypass protection; email <grc.facmed@utoronto.ca> with pull request URL and check failure.
+
+## Merge methods
+
+- Feature and dependency pull requests targeting `dev`: use **Squash and merge**.
+- Decap CMS editorial pull requests: publish through Decap after approval; do not manually merge during normal operation.
+- Release pull requests from `dev` to `main`: use **Create a merge commit**.
+- Do not use **Rebase and merge**.
+
+Repository settings must therefore allow squash merges and merge commits, disable rebase merges, and leave required linear history disabled on `main`.
 
 ## Production smoke test
 
