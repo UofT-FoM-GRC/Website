@@ -1,0 +1,38 @@
+name: Content correction
+description: Report inaccurate, outdated, missing, or unclear website content.
+title: 'Content: '
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use public information only. Send sensitive information to grc.facmed@utoronto.ca.
+  - type: input
+    id: page
+    attributes:
+      label: Page or URL
+      description: Which page or post needs correction?
+      placeholder: https://uoftfomgrc.ca/example
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current content
+      description: Quote or describe content that needs change.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Requested correction
+      description: Provide replacement text, current source, and deadline if relevant.
+    validations:
+      required: true
+  - type: checkboxes
+    id: urgent
+    attributes:
+      label: Urgency
+      options:
+        - label: This correction is time-sensitive or materially inaccurate.
