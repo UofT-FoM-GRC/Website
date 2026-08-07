@@ -1,4 +1,4 @@
-import { z } from 'astro:content'
+import { z } from 'astro/zod'
 
 // Blog Tags
 export const blogTagSchema = z.enum([

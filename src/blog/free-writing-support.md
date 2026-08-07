@@ -21,9 +21,11 @@ NCFDD is an internationally recognized organization that provides professional d
 ### Programs You Can Access
 
 #### [Dissertation Success Curriculum](https://members.ncfdd.org/dissertation-success-public)
+
 A structured, supportive program designed to help graduate students make consistent progress on their dissertations while building effective academic habits.
 
 #### [14-Day Writing Challenge](https://members.ncfdd.org/14-day-challenge)
+
 A short, intensive program focused on accountability, goal setting, and developing a daily writing practice—perfect for jumpstarting stalled projects.
 
 ### How To Get Started

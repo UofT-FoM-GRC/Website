@@ -29,7 +29,6 @@ Follow these steps to set up your RefWorks Pro account:
    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
      ⚠️ Important: You may see the "<b>Use login from my institution</b>" option again. Do not click on it!
    </div>
-    
 
 5. Check your email (including spam folder) for the verification email. Click the verification link within 24 hours to activate your account
 6. Return to [RefWorks](https://refworks.proquest.com/) and log in with your UofT email and password
