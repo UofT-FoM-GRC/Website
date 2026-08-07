@@ -38,14 +38,18 @@
 	let searchInstance: any = null
 
 	window.addEventListener('DOMContentLoaded', () => {
-		if (!searchInstance) {
-			// @ts-ignore
-			searchInstance = new window.PagefindUI({
+		const PagefindUI = (window as any).PagefindUI
+
+		if (!searchInstance && typeof PagefindUI === 'function') {
+			searchInstance = new PagefindUI({
 				element: '#search',
 				showSubResults: true,
 				showImages: false,
 				resetStyles: false
 			})
+		} else if (!PagefindUI) {
+			const searchElement = document.querySelector('#search')
+			if (searchElement) searchElement.textContent = 'Search is available after a production build.'
 		}
 	})
 </script>
