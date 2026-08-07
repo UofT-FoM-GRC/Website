@@ -13,6 +13,7 @@ tags: ['career-planning-exploration']
 ## Program Overview
 
 Since its launch in 2021, the CMP has helped numerous students achieve their career goals, including:
+
 - Medical school admissions
 - Postdoctoral fellowships
 - Medical science liaison positions
@@ -33,6 +34,7 @@ Since its launch in 2021, the CMP has helped numerous students achieve their car
 ## Eligibility Requirements
 
 You must be:
+
 - A 2nd year Master's OR 3rd+ year PhD student
 - In good academic standing
 - Clear about your career direction and goals

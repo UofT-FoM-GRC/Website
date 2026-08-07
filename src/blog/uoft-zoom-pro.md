@@ -30,9 +30,7 @@ Follow these steps to use your UofT Zoom Pro account in the desktop or mobile ap
 2. If you're logged in with a different account, sign out first
 3. Look for the "SSO" (Single Sign-On) option on the login screen (usually marked with a key icon)
 
-
 <img src="/assets/zoom-sso.webp" alt="Zoom SSO" class="w-full max-w-md mx-auto my-4 rounded">
-
 
 4. Click SSO
 5. When prompted for the domain, enter: **utoronto.zoom.us**
@@ -58,4 +56,3 @@ Follow these steps to use your UofT Zoom Pro account in the desktop or mobile ap
 <div class="bg-purple-100 border-l-4 border-purple-500 text-purple-700 p-4 mt-4 rounded">
   🎓 Remember: Your UofT Zoom Pro account is available as long as you're an active student. Make the most of it for your academic collaborations!
 </div>
-

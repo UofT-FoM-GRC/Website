@@ -23,7 +23,7 @@ const { item } = Astro.props
 let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
 ---
 
-<div x-data={`{ activeYear: '${activeYear}' }`} class="my-4 foo">
+<div x-data={`{ activeYear: '${activeYear}' }`} class="foo my-4">
 	<button
 		@click={`activeYear = activeYear === '${item.year}' ? '' : '${item.year}'`}
 		class="focus-visible:ring-opacity-50 flex w-full items-center justify-between bg-slate-800 px-4 py-2 text-left text-xl font-medium text-gray-100 transition-colors duration-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 xl:text-2xl dark:bg-slate-950 dark:text-slate-200"

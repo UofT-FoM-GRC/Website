@@ -29,7 +29,8 @@ We encourage all interested students to explore these opportunities and apply fo
 
 Best of luck!
 
-<!-- Use 2 spaces to create a new line without the crazy line spacing -->
-Sincerely,  
-Maurice Pasternak    
+<!-- Use <br> to create a new line without the crazy line spacing -->
+
+Sincerely,<br>
+Maurice Pasternak<br>
 GRC Director
