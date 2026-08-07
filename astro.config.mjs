@@ -4,14 +4,13 @@ import sitemap from '@astrojs/sitemap'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
-import netlify from '@astrojs/netlify'
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://uoftfomgrc.ca',
+	compressHTML: true,
 	integrations: [mdx(), sitemap(), icon(), alpinejs()],
 	output: 'static',
-	adapter: netlify(),
 	vite: {
 		plugins: [tailwindcss()]
 	}

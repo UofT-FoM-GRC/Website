@@ -2,10 +2,9 @@
 title: 'Study Spaces for Graduate Students with Children'
 description: 'New study spaces designed for graduate students with children'
 pubDate: 'Oct 30 2025'
-heroImage: '/assets/robarts-family-study-space.webp' 
+heroImage: '/assets/robarts-family-study-space.webp'
 tags: ['other']
 ---
-
 
 # Trying to Study While Keeping an Eye on Your Kids? We've Got You
 
