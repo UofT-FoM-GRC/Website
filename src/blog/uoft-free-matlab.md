@@ -3,6 +3,7 @@ title: 'Free MATLAB License'
 description: 'MATLAB is free for UofT students through the university license.'
 pubDate: 'Dec 2 2024'
 heroImage: '/assets/matlab-banner.webp'
+heroImageAlt: 'MATLAB logo on a blue banner'
 tags: ['other']
 ---
 

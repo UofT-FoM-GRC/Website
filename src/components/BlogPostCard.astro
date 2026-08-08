@@ -13,7 +13,6 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 
 <li
 	class="card flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 focus-within:-translate-y-1 focus-within:shadow-lg focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-300 dark:bg-slate-800 dark:shadow-slate-900/50 dark:hover:shadow-blue-900/50"
-	role="article"
 >
 	<a
 		href={`/blog/${post.id}`}
@@ -28,7 +27,9 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 					height={360}
 					src={post.data.heroImage || '/assets/uoft-placeholder-default.webp'}
 					alt={post.data.heroImageAlt || `Featured image for ${post.data.title}`}
-					class="aspect-video min-h-72 w-full object-cover object-center"
+					loading="lazy"
+					decoding="async"
+					class="aspect-video w-full object-cover object-center"
 				/>
 			) : (
 				<Image
@@ -36,14 +37,16 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 					height={360}
 					src={post.data.heroImage || '/assets/uoft-placeholder-default.webp'}
 					alt={post.data.heroImageAlt || `Featured image for ${post.data.title}`}
-					class="aspect-video min-h-72 w-full object-cover object-center"
+					loading="lazy"
+					decoding="async"
+					class="aspect-video w-full object-cover object-center"
 				/>
 			)
 		}
 		<div class="p-4">
-			<h4 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold dark:text-slate-100">
+			<h3 id={`post-title-${post.id}`} class="mb-2 text-xl font-bold dark:text-slate-100">
 				{post.data.title}
-			</h4>
+			</h3>
 			<p id={`post-date-${post.id}`} class="text-sm text-gray-600 dark:text-slate-400">
 				<FormattedDate date={post.data.pubDate} />
 			</p>

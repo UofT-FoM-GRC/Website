@@ -10,7 +10,7 @@ const { about, years } = team.data
 ---
 
 <BaseLayout title={about.title} description={about.description}>
-	<main>
+	<main id="main-content" data-pagefind-body>
 		<section id="about-hero" class="hero">
 			<div class="hero_container flex w-full flex-col items-center justify-center">
 				<img
@@ -19,20 +19,19 @@ const { about, years } = team.data
 					width="1920"
 					height="1080"
 					class="hero_image"
+					fetchpriority="high"
 				/>
 			</div>
-			<div class="hero_content prose md:prose-lg dark:prose-invert container mx-auto mt-4 max-w-[120ch] p-4">
+			<div class="hero_content prose md:prose-lg dark:prose-invert container mx-auto mt-4 max-w-[75ch] p-4">
 				<h1 class="hero_title my-4 text-center text-5xl font-bold text-slate-900 dark:text-slate-100">
 					{about.title}
-				</h1><p class="hero_description lead text-justify text-slate-700 dark:text-slate-300">{about.description}</p>
+				</h1><p class="hero_description lead text-slate-700 dark:text-slate-300">{about.description}</p>
 			</div>
 		</section>
-		<section id="about-content" class="fade-in-section container mx-auto max-w-[120ch] px-4 py-8">
+		<section id="about-content" class="fade-in-section container mx-auto max-w-[75ch] px-4 py-8">
 			<div class="mb-8 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
 				<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">{about.purposeTitle}</h2>{
-					about.purposeParagraphs.map((paragraph) => (
-						<p class="mb-4 text-justify text-slate-700 dark:text-slate-300">{paragraph}</p>
-					))
+					about.purposeParagraphs.map((paragraph) => <p class="mb-4 text-slate-700 dark:text-slate-300">{paragraph}</p>)
 				}<ul class="space-y-2 text-slate-700 dark:text-slate-300">
 					{
 						about.objectives.map((objective) => (
@@ -48,9 +47,7 @@ const { about, years } = team.data
 			</div>
 			<div class="mb-8 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
 				<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">{about.workTitle}</h2>{
-					about.workParagraphs.map((paragraph) => (
-						<p class="text-justify text-slate-700 dark:text-slate-300">{paragraph}</p>
-					))
+					about.workParagraphs.map((paragraph) => <p class="text-slate-700 dark:text-slate-300">{paragraph}</p>)
 				}
 			</div>
 		</section>

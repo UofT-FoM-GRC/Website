@@ -3,10 +3,12 @@ title: 'UofT Career Fair 2024'
 description: 'The University of Toronto Career Fair is a great opportunity to network with top employers and learn about potential career paths.'
 pubDate: 'Sep 5 2024'
 heroImage: '/assets/uoft-career-fair-banner.webp'
+heroImageAlt: 'University of Toronto Career Fair banner'
+status: archived
 tags: ['career-planning-exploration']
 ---
 
-# Exciting Opportunity: Talk to Potential Employers!
+## Talk to potential employers
 
 **Seeking meaningful work opportunities? Want to connect with top employers across various industries? Join us at the University of Toronto Career Fair to expand your knowledge and skills!**
 

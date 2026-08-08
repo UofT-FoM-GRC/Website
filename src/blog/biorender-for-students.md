@@ -1,12 +1,13 @@
 ---
 title: 'Biorender for Students'
-description: Make Scientific Illustrations Like a Pro'
+description: 'Make scientific illustrations like a pro.'
 pubDate: 'Nov 13 2025'
 heroImage: '/assets/biorenderlogo.webp'
+heroImageAlt: 'BioRender logo'
 tags: ['other']
 ---
 
-# Create innovative and eye-catching illustrations using BioRender
+## Create innovative and eye-catching illustrations using BioRender
 
 U of T students can access BioRender, a scientific illustration software, through their university affiliation to create figures for academic purposes such as presentations, posters, and theses.
 

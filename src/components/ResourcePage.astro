@@ -11,9 +11,10 @@ interface Props {
 const { resource, posts } = Astro.props
 const { sections } = resource.data
 const columns = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3' }
+const hasRelatedPosts = posts.length > 0
 ---
 
-<main class="container mx-auto min-h-screen px-4 py-8">
+<main id="main-content" data-pagefind-body class="container mx-auto min-h-screen px-4 py-8">
 	<h1 class="mb-8 text-center text-4xl font-bold text-slate-900 dark:text-slate-100">{resource.data.title}</h1>
 	<nav
 		class="mb-12 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50"
@@ -36,21 +37,29 @@ const columns = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3'
 					</li>
 				))
 			}
-			<li class="transition-all hover:translate-x-2">
-				<a
-					href="#blog"
-					class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-					><span aria-hidden="true">→</span><span>Related Blog Posts</span></a
-				>
-			</li>
+			{
+				hasRelatedPosts && (
+					<li class="transition-all hover:translate-x-2">
+						<a
+							href="#blog"
+							class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+						>
+							<>
+								<span aria-hidden="true">→</span>
+								<span>Related Blog Posts</span>
+							</>
+						</a>
+					</li>
+				)
+			}
 		</ul>
 	</nav>
 	{
 		sections.map((section) => (
-			<section id={section.id} class="mb-12 scroll-mt-8">
+			<section id={section.id} class="mb-12 scroll-mt-24">
 				<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
 				{section.intro.map((paragraph) => (
-					<p class="mb-4 text-justify leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
+					<p class="mb-4 max-w-[75ch] leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
 				))}
 				<div class:list={['grid gap-6', columns[section.columns]]}>
 					{section.cards.map((card) => (
@@ -64,6 +73,8 @@ const columns = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3'
 								<img
 									src={resolveCmsAsset(card.image)}
 									alt={card.imageAlt || ''}
+									loading="lazy"
+									decoding="async"
 									class="mb-4 h-48 w-full rounded-lg object-cover"
 								/>
 							)}
@@ -78,32 +89,48 @@ const columns = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3'
 									))}
 								</ul>
 							)}
-							{(card.listItems ?? []).length > 0 && (
-								<ol
-									class:list={[
-										'mb-4 space-y-2 text-slate-700 dark:text-slate-300',
-										card.listStyle === 'ordered' ? 'list-decimal pl-5' : 'list-disc pl-5'
-									]}
-								>
-									{(card.listItems ?? []).map((item) => (
-										<li>
-											<span>{item.text}</span>
-											{(item.links ?? []).map((link) => (
-												<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
-													{link.label}
-												</a>
-											))}
-											{(item.items ?? []).length > 0 && (
-												<ul class="ml-5 list-disc">
-													{(item.items ?? []).map((item) => (
-														<li>{item}</li>
-													))}
-												</ul>
-											)}
-										</li>
-									))}
-								</ol>
-							)}
+							{(card.listItems ?? []).length > 0 &&
+								(card.listStyle === 'ordered' ? (
+									<ol class="mb-4 list-decimal space-y-2 pl-5 text-slate-700 dark:text-slate-300">
+										{(card.listItems ?? []).map((item) => (
+											<li>
+												<span>{item.text}</span>
+												{(item.links ?? []).map((link) => (
+													<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
+														{link.label}
+													</a>
+												))}
+												{(item.items ?? []).length > 0 && (
+													<ul class="ml-5 list-disc">
+														{(item.items ?? []).map((nestedItem) => (
+															<li>{nestedItem}</li>
+														))}
+													</ul>
+												)}
+											</li>
+										))}
+									</ol>
+								) : (
+									<ul class="mb-4 list-disc space-y-2 pl-5 text-slate-700 dark:text-slate-300">
+										{(card.listItems ?? []).map((item) => (
+											<li>
+												<span>{item.text}</span>
+												{(item.links ?? []).map((link) => (
+													<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
+														{link.label}
+													</a>
+												))}
+												{(item.items ?? []).length > 0 && (
+													<ul class="ml-5 list-disc">
+														{(item.items ?? []).map((nestedItem) => (
+															<li>{nestedItem}</li>
+														))}
+													</ul>
+												)}
+											</li>
+										))}
+									</ul>
+								))}
 							{(card.addressLines ?? []).length > 0 && (
 								<address class="mb-4 text-slate-700 not-italic dark:text-slate-300">
 									{(card.addressLines ?? []).map((line) => (
@@ -187,12 +214,18 @@ const columns = { 1: '', 2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3'
 			</section>
 		))
 	}
-	<section id="blog" class="my-12 scroll-mt-8">
-		<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
-		<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{posts.map((post) => <BlogPostCard post={post} />)}
-		</ul>
-	</section>
+	{
+		hasRelatedPosts && (
+			<section id="blog" class="my-12 scroll-mt-24">
+				<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">Related Blog Posts</h2>
+				<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{posts.map((post) => (
+						<BlogPostCard post={post} />
+					))}
+				</ul>
+			</section>
+		)
+	}
 </main>
 
 <style>

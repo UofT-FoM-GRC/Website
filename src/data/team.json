@@ -22,6 +22,7 @@
 	"years": [
 		{
 			"year": "2025 - 2026",
+			"current": true,
 			"members": [
 				{ "name": "Ally Suarez", "position": "Director" },
 				{

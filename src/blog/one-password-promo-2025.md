@@ -3,6 +3,7 @@ title: 'Free 1Password for UofT Students: 6+ Years of Secure Password Management
 description: 'UofT students can get 1Password Families free for over 6 years, covering you and up to 4 family members.'
 pubDate: 'Nov 4 2025'
 heroImage: '/assets/1Password-logo.webp'
+heroImageAlt: '1Password logo'
 tags: ['other']
 ---
 

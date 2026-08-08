@@ -3,6 +3,7 @@ title: 'HBFA Updates for 2025-26'
 description: 'New top-up tier and updated funding amounts for the 2025-26 academic year'
 pubDate: 'Dec 1 2025'
 heroImage: '/assets/fom-backgrounds/ffom-zoom-backgrounds-5-1080.webp'
+heroImageAlt: 'Faculty of Medicine branded background'
 tags: ['other']
 ---
 
