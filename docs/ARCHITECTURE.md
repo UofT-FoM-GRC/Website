@@ -2,14 +2,15 @@
 
 ## System flow
 
-1. Editors use Decap CMS at `/admin/` for blog posts.
+1. Content editor uses Decap CMS at `/admin/` for blog posts. They save a draft, receive release-webmaster go-ahead, then publish to `dev`.
 2. Netlify Identity authenticates CMS users; Git Gateway writes editorial workflow changes targeting `dev`.
-3. GitHub pull requests provide review. GitHub Actions runs `CI / Validate` for pull requests targeting `dev` or `main`.
-4. Release pull requests move `dev` to `main` through GitHub UI.
-5. Netlify builds and hosts production from its configured production branch; confirm that branch is `main` during handoff.
-6. Astro produces static pages and optimized image files without a deployment adapter; Pagefind indexes built `dist` output during `pnpm build`.
+3. Release webmaster uses browser-only GitHub and Netlify review. Required checks are `Validate` and `netlify/uoft-fom-grc/deploy-preview`.
+4. Release webmaster self-reviews and merge-commits release pull requests from `dev` to `main`.
+5. Netlify hosts production from `main`, creates branch deploys for `dev`, and deploy previews for pull requests against either branch.
+6. Emergency developer handles local Git, code, configuration, dependencies, conflicts, broken checks, access recovery, and complex rollback.
+7. Astro produces static pages and optimized image files without a deployment adapter; Pagefind indexes built `dist` output during `pnpm build`.
 
-Netlify deploy-preview, Identity provider, branch protection, and billing behavior are account settings. Confirm them during handoff; repository files cannot prove them.
+GitHub protection, Netlify deployment, Identity, and billing controls are external settings that repository files cannot prove. Record required values and acceptance checks in the organization's private handoff record.
 
 ## Components
 
@@ -43,9 +44,9 @@ Netlify deploy-preview, Identity provider, branch protection, and billing behavi
 
 ## Change boundaries
 
-CMS currently manages only `src/blog/` and uploads under `public/assets/`. It does not manage navigation, resources, team roster, homepage, or CMS configuration. Those changes need a developer pull request targeting `dev`.
+CMS manages only `src/blog/` and uploads under `public/assets/`. It does not manage navigation, resources, team roster, homepage, or CMS configuration. Those changes need emergency-developer work and a pull request targeting `dev`.
 
-Generated directories include `node_modules/`, `.astro/`, and `dist/`; do not edit or commit them. See [local development](LOCAL_DEVELOPMENT.md), [review and release](REVIEW_AND_RELEASE.md), and [handoff checklist](HANDOFF_CHECKLIST.md).
+Generated directories include `node_modules/`, `.astro/`, and `dist/`; do not edit or commit them. Local development is emergency-developer-only. See [local development](LOCAL_DEVELOPMENT.md) and [review and release](REVIEW_AND_RELEASE.md).
 
 TypeScript remains at `6.0.3`: latest TypeScript 7 is outside `@astrojs/check` `0.9.10` peer range (`^5.0.0 || ^6.0.0`). This is the only direct-package compatibility exception.
 

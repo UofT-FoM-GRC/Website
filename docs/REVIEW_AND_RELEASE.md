@@ -1,38 +1,43 @@
 # Review and release guide
 
-Use GitHub UI for review and releases. Do not push directly to `main`.
+Release webmaster routine: GitHub and Netlify browser only. Do not clone, use Git, or push directly to `main`.
 
-## Review CMS pull request
+## Review content for `dev`
 
-1. Confirm pull request targets `dev`.
-2. Read changed text and frontmatter. Check dates, tags, links, image paths, image alternative text, and factual claims.
-3. Confirm `CI / Validate` passes.
-4. Open Netlify Deploy Preview when available. Check visible layout, navigation, changed page, and mobile view.
-5. Request changes or record approval in pull request.
-6. Tell editor to publish only after approval.
+1. Open the Decap draft or its associated pull request. Confirm it targets `dev`.
+2. Check changed text and frontmatter: dates, tags, links, image paths, alternative text, and factual claims.
+3. Confirm required checks pass: `Validate` and `netlify/uoft-fom-grc/deploy-preview`.
+4. Open the Netlify preview. Check layout, navigation, changed page, and mobile view.
+5. Send feedback, or give the content editor a publish go-ahead. The editor publishes through Decap to `dev`.
 
-CI and Deploy Preview availability depends on repository and Netlify settings. If either is unavailable, record that fact in review and escalate unexpected configuration changes to <grc.facmed@utoronto.ca>.
+Do not give a publish go-ahead while either required check fails or is missing. Escalate broken checks, preview failures, or access problems to the emergency developer.
 
 ## Release `dev` to `main`
 
-1. In GitHub, select **Pull requests** then **New pull request**.
-2. Set base branch to `main` and compare branch to `dev`.
-3. Use release pull request template. Confirm all intended `dev` changes are included.
-4. Review `CI / Validate` and Deploy Preview when available. Obtain approvals required by current GitHub settings.
-5. Select **Create a merge commit**. This preserves `dev` as an ancestor of `main` for the next release.
-6. Wait for Netlify production deploy linked to `main`. Read deploy log on failure.
-7. Perform production smoke test below. Record result in release pull request.
+1. Open <https://github.com/UofT-FoM-GRC/Website/compare/main...dev?expand=1>.
+2. Create the release pull request with base `main` and compare `dev`. Confirm it includes intended batched `dev` changes. Ask content editors to pause Decap publishing until the release finishes.
+3. Self-review changed files, production impact, and the pull request checklist. No second human review is required.
+4. Confirm `Validate` and `netlify/uoft-fom-grc/deploy-preview` pass and all conversations are resolved.
+5. Make the release decision. Select **Create a merge commit**; do not squash or rebase this release.
+6. Wait for the Netlify production deploy from `main`. Read the deploy log if it fails.
+7. Run the production smoke test. Record the decision and result in the release pull request, then tell content editors that publishing may resume.
 
-Do not create a release by command-line merge or direct push. If GitHub blocks merge, do not bypass protection; email <grc.facmed@utoronto.ca> with pull request URL and check failure.
+Do not bypass protection. If GitHub blocks the release, checks fail, a conflict appears, or production fails, stop and escalate to the emergency developer with relevant URLs and screenshots.
 
 ## Merge methods
 
 - Feature and dependency pull requests targeting `dev`: use **Squash and merge**.
-- Decap CMS editorial pull requests: publish through Decap after approval; do not manually merge during normal operation.
+- Decap CMS editorial changes: publish through Decap after the webmaster's go-ahead; do not manually merge during routine operation.
 - Release pull requests from `dev` to `main`: use **Create a merge commit**.
 - Do not use **Rebase and merge**.
 
-Repository settings must therefore allow squash merges and merge commits, disable rebase merges, and leave required linear history disabled on `main`.
+Repository settings allow squash merges and merge commits, disable rebase merges, and keep required linear history disabled on `main`.
+
+Required status checks on `main` are non-strict: `dev` does not need to contain the previous release merge commit. One release webmaster pauses Decap publishing during release, so routine releases have no concurrent writers. After any exceptional main-only change or rollback, the emergency developer must reconcile `dev` before the next release.
+
+## Build use
+
+This Netlify site uses a Legacy Free usage-based plan with one concurrent build. The standard release path uses four Netlify builds: content preview, `dev` branch deploy, release preview, and production deploy. Batch ready `dev` changes into releases. Check monthly usage; do not migrate plans casually because credit-pricing migration is irreversible.
 
 ## Production smoke test
 
@@ -46,17 +51,16 @@ Repository settings must therefore allow squash merges and merge commits, disabl
 - RSS and sitemap respond at `/rss.xml` and `/sitemap-index.xml`.
 - Browser console has no obvious new errors.
 
-If production fails smoke test, stop further releases and follow [rollback](ROLLBACK.md). Email <grc.facmed@utoronto.ca> with production URL, release pull request, deployment URL, symptom, and urgency.
+If production fails smoke test, stop further releases and follow [rollback](ROLLBACK.md). Escalate with production URL, release pull request, deployment URL, symptom, urgency, and screenshots.
 
 ## Dependency updates
 
-Dependabot groups package and GitHub Actions version updates monthly, targets `dev`, and allows at most one open pull request for each ecosystem. Review every update through normal CI and preview process. Major-version updates require manual release-note, compatibility, and local validation review; do not merge them as routine maintenance.
+Dependabot groups package and GitHub Actions version updates monthly, targets `dev`, and allows one open pull request per ecosystem. Review required checks and preview. Major-version updates need emergency-developer compatibility and local validation before release.
 
-GitHub raises Dependabot security-update pull requests against default branch even when version updates target `dev`. If one targets `main`, do not merge it there as routine maintenance. Apply or retarget fix through `dev`, validate it, then use normal `dev` to `main` release. Escalate urgent exception through rollback/emergency process and copy same fix to `dev` immediately.
+GitHub can raise Dependabot security-update pull requests against the default branch even when version updates target `dev`. Do not merge one targeting `main` as routine maintenance. Emergency developer applies or retargets it through `dev`, validates it, then uses the normal release path. Record any urgent exception and reconcile it to `dev` immediately.
 
 ## Related guides
 
 - [Content editor guide](CONTENT_EDITOR.md)
 - [Local development guide](LOCAL_DEVELOPMENT.md)
 - [Rollback guide](ROLLBACK.md)
-- [Handoff checklist](HANDOFF_CHECKLIST.md)

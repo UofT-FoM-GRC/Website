@@ -68,13 +68,23 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 
 ## Content Management
 
+- **Routine content**: Content editors use Decap CMS only. Save a draft, notify the release webmaster, fix feedback, then publish to `dev` through Decap after go-ahead. No GitHub, Git, or local development.
+- **Release**: Release webmaster uses GitHub and Netlify browser only. Self-review `dev` to `main`, confirm `Validate` and `netlify/uoft-fom-grc/deploy-preview`, then merge with a merge commit.
+- **Emergency development**: Emergency developer handles all source files, local commands, Git, code, configuration, dependencies, conflicts, access recovery, and complex rollback. Routine webmaster work never requires a clone.
 - **Blog Posts**: Located in `src/blog/`. Each file is a Markdown file (`.md`) with frontmatter that must adhere to the `blogSchema`.
 - **Pages**: Located in `src/pages/`. Each `.astro` file corresponds to a page on the site. Dynamic routes are used for blog posts.
 - **Static Assets**: Images, fonts, and other static files are in the `public/` directory.
 
-## How to...
+## External workflow facts
 
-- **Add a new blog post**: Create a new `.md` file in `src/blog/` with the required frontmatter.
-- **Add a new page**: Create a new `.astro` file in `src/pages/`.
-- **Run the site locally**: `pnpm dev`
-- **Build the site**: `pnpm build`
+- Production is Netlify `main`; `dev` receives branch deploys; pull requests against either branch receive deploy previews.
+- Feature and dependency pull requests to `dev` use squash merge. Release pull requests from `dev` to `main` use merge commits. Rebase merge is disabled.
+- `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, administrator enforcement, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge.
+- `dev` has only force-push and deletion blocks, enforced for administrators; it has no pull-request, approval, or status-check requirement. Repository auto-delete remains enabled because protected branches are not auto-deleted.
+
+## Emergency developer commands
+
+- **Routine blog content**: Use Decap CMS; do not create Markdown files locally.
+- **Source changes**: Create a page in `src/pages/` or change other source only during emergency developer work.
+- **Local site**: Run `pnpm dev` only for emergency developer work.
+- **Build**: Run `pnpm build` only for emergency developer work.
