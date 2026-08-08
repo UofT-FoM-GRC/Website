@@ -8,6 +8,11 @@ pagefind/
 # generated types
 .astro/
 
+# Playwright output
+test-results/
+playwright-report/
+blob-report/
+
 # dependencies
 node_modules/
 
