@@ -31,6 +31,8 @@ Do not bypass protection. If GitHub blocks the release, checks fail, a conflict 
 - Release pull requests from `dev` to `main`: use **Create a merge commit**.
 - Do not use **Rebase and merge**.
 
+Squashing a feature or dependency pull request turns its work-in-progress commits into one clear change on `dev`, making history and rollback easier. A release merge commit keeps the exact `dev` commits in `main` and adds one visible marker for the production release. Rebase merge is disabled because replaying commits changes their identities and removes that release boundary.
+
 Repository settings allow squash merges and merge commits, disable rebase merges, and keep required linear history disabled on `main`.
 
 Required status checks on `main` are non-strict: `dev` does not need to contain the previous release merge commit. One release webmaster pauses Decap publishing during release, so routine releases have no concurrent writers. After any exceptional main-only change or rollback, the emergency developer must reconcile `dev` before the next release.

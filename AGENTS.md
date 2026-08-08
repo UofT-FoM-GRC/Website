@@ -82,6 +82,16 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge. Administrators retain bypass ability for documented emergencies, not routine releases.
 - `dev` has only force-push and deletion blocks, enforced for administrators; it has no pull-request, approval, or status-check requirement. Repository auto-delete remains enabled because protected branches are not auto-deleted.
 
+## Commit messages
+
+- Human-authored commits, pull-request titles, and squash messages use Conventional Commits with one Gitmoji shortcode: `type(scope): :emoji: imperative summary`.
+- Scope is optional. Add `!` before `:` for a breaking change and explain it in a `BREAKING CHANGE:` footer.
+- Use lowercase allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, or `revert`.
+- Write an imperative, lowercase summary without a trailing period.
+- Preferred pairings: `feat` → `:sparkles:`, `fix` → `:bug:`, `docs` → `:memo:`, `style` → `:art:`, `refactor` → `:recycle:`, `perf` → `:zap:`, `test` → `:white_check_mark:`, `build` → `:package:`, `ci` → `:construction_worker:`, `chore` → `:wrench:`, `revert` → `:rewind:`. Dependency upgrades may use `build(deps): :arrow_up:`; urgent fixes may use `fix: :ambulance:`.
+- Examples: `feat(cms): :sparkles: add team collection`, `fix(search): :bug: handle missing index`, `docs(workflow): :memo: explain release process`.
+- Decap CMS and other service-generated commits are exempt. For human-controlled squash or release messages, restore this format before merging.
+
 ## Emergency developer commands
 
 - **Routine blog content**: Use Decap CMS; do not create Markdown files locally.
