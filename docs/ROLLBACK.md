@@ -23,7 +23,7 @@ Keep releases paused until the emergency developer confirms that `dev` is reconc
 
 ## Emergency boundary
 
-Emergency developer handles Git or Netlify access recovery, local code/configuration/dependency fixes, conflicts, broken checks, and complex rollback. Do not force-push or bypass required checks. If platform or access recovery requires a temporary settings change, obtain explicit organization-owner authorization; record reason, actor role, affected refs or deploys, checks, time, and recovery action; then restore protections immediately and reconcile `dev` with `main`.
+Emergency developer handles Git or Netlify access recovery, local code/configuration/dependency fixes, conflicts, broken checks, and complex rollback. Administrators retain GitHub bypass ability for emergencies. Use it only when the protected workflow cannot safely recover service; record reason, actor, affected refs or deploys, failed or skipped checks, time, and recovery action, then reconcile `dev` with `main`. Never force-push or rewrite shared history.
 
 Do not guess at conflict resolution or bypass a protection during routine operation. Escalate with collected evidence.
 

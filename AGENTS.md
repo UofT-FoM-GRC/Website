@@ -79,7 +79,7 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 
 - Production is Netlify `main`; `dev` receives branch deploys; pull requests against either branch receive deploy previews.
 - Feature and dependency pull requests to `dev` use squash merge. Release pull requests from `dev` to `main` use merge commits. Rebase merge is disabled.
-- `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, administrator enforcement, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge.
+- `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge. Administrators retain bypass ability for documented emergencies, not routine releases.
 - `dev` has only force-push and deletion blocks, enforced for administrators; it has no pull-request, approval, or status-check requirement. Repository auto-delete remains enabled because protected branches are not auto-deleted.
 
 ## Emergency developer commands
