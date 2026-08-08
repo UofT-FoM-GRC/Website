@@ -9,18 +9,19 @@ Support: <grc.facmed@utoronto.ca>
 ## Start here
 
 - Content editor: [CMS publishing guide](docs/CONTENT_EDITOR.md)
-- Reviewer or releaser: [review and release guide](docs/REVIEW_AND_RELEASE.md)
-- Developer: [local development guide](docs/LOCAL_DEVELOPMENT.md)
-- Incoming owners: [handoff checklist](docs/HANDOFF_CHECKLIST.md)
-- Incident responder: [rollback guide](docs/ROLLBACK.md)
+- Release webmaster: [review and release guide](docs/REVIEW_AND_RELEASE.md)
+- Emergency developer: [local development guide](docs/LOCAL_DEVELOPMENT.md)
+- Rollback: [rollback guide](docs/ROLLBACK.md)
 - Technical overview: [architecture](docs/ARCHITECTURE.md)
+
+Routine work is browser-only: content editors use Decap CMS; the release webmaster uses GitHub and Netlify. Local Git, code, configuration, and dependency work belongs to an emergency developer.
 
 ## Current status
 
 - Node.js `24.12.0` and pnpm `11.20.0` are pinned in repository files.
 - Decap CMS uses Netlify Identity and Git Gateway with editorial workflow; CMS content targets `dev`.
-- Target release path is a pull request from `dev` to `main` in GitHub UI. Confirm Netlify production-branch settings during handoff.
-- CI, rulesets, approvals, Netlify access, billing, and deploy-preview settings require GitHub or Netlify verification. This repository does not claim those settings are enabled.
+- Release path: GitHub pull request from `dev` to `main`, then Netlify production deploy. Production is `main`; `dev` has branch deploys.
+- GitHub and Netlify settings are external controls that repository files cannot prove. Record their configuration, ownership, billing, and recovery details in the organization's private handoff record.
 
 ## Architecture
 

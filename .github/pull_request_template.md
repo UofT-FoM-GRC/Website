@@ -11,9 +11,11 @@
 
 ## Review checklist
 
-- [ ] Pull request targets `dev`; only release pull requests target `main` from `dev`.
+- [ ] Route and merge method fit this change: feature/dependency → `dev` with **Squash and merge**; release `dev` → `main` with **Create a merge commit**; Decap editorial change → publish in Decap.
+- [ ] Release webmaster reviewed this in a browser (self-review for a release pull request); no second human approval is required.
 - [ ] I checked changed text, links, images, and alternative text.
-- [ ] I reviewed CI result and Netlify Deploy Preview, when available.
+- [ ] `Validate` passes.
+- [ ] `netlify/uoft-fom-grc/deploy-preview` passes and I reviewed its preview.
 - [ ] I added screenshots or preview link for visible changes, or explained why not needed.
 - [ ] I described production impact below.
 

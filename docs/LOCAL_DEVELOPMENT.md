@@ -1,6 +1,6 @@
 # Local development guide
 
-Use this guide for code, configuration, or local diagnosis. Content editors do not need local setup.
+Emergency-developer-only guide. Use for code, configuration, dependency, conflict, access-recovery, or complex rollback work. Routine content editors and release webmaster do not clone this repository or run local commands.
 
 ## Required versions
 
@@ -59,7 +59,7 @@ git pull --ff-only origin dev
 git switch -c feat/short-description
 ```
 
-Make focused change, run validation, push feature branch, then open pull request targeting `dev`. Use GitHub UI to merge after review. Never push or merge directly to `main`; releases use [review and release guide](REVIEW_AND_RELEASE.md).
+Make focused change, run validation, push the feature branch, then open a pull request targeting `dev`. Feature and dependency pull requests use **Squash and merge**. Never push developer changes directly to `dev` or `main`; release webmaster uses the browser-only [review and release guide](REVIEW_AND_RELEASE.md).
 
 Do not resolve unfamiliar merge conflicts by guessing. Stop, preserve work, and email <grc.facmed@utoronto.ca> with branch name, pull request URL, and `git status` output.
 
