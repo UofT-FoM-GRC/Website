@@ -1,51 +1,41 @@
 # Content editor guide
 
-Use Decap CMS only. This guide covers blog posts. Other pages, navigation, team roster, and styles need an emergency developer.
+## Current CMS: Decap at `/admin/`
 
-## Access
+Use <https://uoftfomgrc.ca/admin/>. Sign in with Netlify Identity. This route uses Git Gateway and publishes approved changes to `dev`; no GitHub, Git, or local tools needed.
 
-1. Open <https://uoftfomgrc.ca/admin/>.
-2. Sign in through Netlify Identity.
-3. If access fails, email <grc.facmed@utoronto.ca> with your U of T email and requested role.
+Sveltia is staged at `/cms/` but unavailable until OAuth cutover. Do not use it yet.
 
-This CMS uses Netlify Identity and Git Gateway. Do not use GitHub, Git, or local development for content work.
+## Edit content
 
-## Create or correct a post
+1. Open a collection. **Blog Posts** creates and edits posts. **Resource Pages** edits the eight existing pages. **Site Settings** contains homepage, announcements, navigation, contact/social links, and about/team archive.
+2. Use labels, hints, lists, and image controls. Do not repurpose existing resource section IDs. Reorder lists with drag handles.
+3. Add meaningful alternative text for every informational image. Leave decorative-image text empty only when image adds no information.
+4. Save a draft. Review exact changed fields and links.
+5. Notify release webmaster at <grc.facmed@utoronto.ca>. Include draft link and requested publishing date.
+6. Fix feedback. Publish to `dev` only after go-ahead.
 
-1. Select **Blog Posts**, then create a post or open an existing post.
-2. Complete title, description, publish date, one to three tags, and body. Hero image is optional.
-3. Save as a draft. Decap creates a reviewable change targeting `dev`.
-4. Notify the release webmaster at <grc.facmed@utoronto.ca>. Include the draft link and requested publishing date.
-5. Fix feedback in Decap and save the draft again.
-6. Wait for the release webmaster's go-ahead.
-7. Publish through Decap to `dev` only after that go-ahead.
+Publishing never changes production. Authoritative preview is Netlify `dev` branch deploy, not CMS pane.
 
-Publishing sends content to `dev`, not production. Do not merge the associated GitHub pull request yourself.
+## Guardrails
 
-## Write safely
+- Blog post URL comes from file slug. Changing existing title does not change it. Use one to three tags; tags control related resource posts.
+- **Updated Date** belongs on materially corrected published posts. Hero image alternative text is required when image conveys information.
+- Resource page URL IDs are protected. Existing section IDs are public links: do not change or repurpose them. Add new sections/cards instead.
+- Team years and members display in listed order. Add photo and photo alternative text together. Missing photo shows standard avatar.
+- Homepage hero needs two to five lines. The second line is the page heading; keep it descriptive.
+- Homepage announcements display only when **Show on Homepage** is enabled; list order controls display order.
+- External links need `https://`; email needs `mailto:`; phone needs `tel:`.
+- CMS preview is approximate field-level preview. Netlify render is final Astro/Tailwind output.
 
-- Use a clear title and one- or two-sentence description.
-- Use meaningful alternative text for every informational image.
-- Use images with permission. Prefer `.webp` or `.jpg`, descriptive filenames, and a 1200 × 630 px hero image.
-- Check links, dates, deadlines, names, and contact details before review.
-- CMS preview helps drafting; the release webmaster checks the Netlify preview because final styling can differ.
+## Image workflow
 
-```markdown
-## Heading
+Upload images through image field. CMS writes under `public/assets/`; pages use `/assets/...`. Prefer approved `.webp` or `.jpg`, descriptive filenames, and 1200 × 630 px hero images.
 
-Short paragraph with a [useful link](https://example.com).
+Legacy images already visible on site remain available to build. For replacement, upload new image rather than editing legacy path.
 
-- First item
-- Second item
+## Help and recovery
 
-![Description of image](/assets/descriptive-image.webp)
-```
-
-## After publication
-
-Edit an incorrect post through Decap and repeat this process. For urgent, harmful, or privacy-sensitive content, email <grc.facmed@utoronto.ca> immediately. See [rollback](ROLLBACK.md).
-
-## Help
-
-- CMS access or publishing problem: <grc.facmed@utoronto.ca>
-- Release process: [review and release guide](REVIEW_AND_RELEASE.md)
+- CMS access/publishing: <grc.facmed@utoronto.ca>
+- Review/release: [review and release](REVIEW_AND_RELEASE.md)
+- Harmful, private, or urgent content: stop publishing and follow [rollback](ROLLBACK.md).

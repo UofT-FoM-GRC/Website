@@ -1,0 +1,122 @@
+{
+	"slug": "career-planning-exploration",
+	"title": "Career Planning & Exploration Resources",
+	"cardTitle": "Career Planning & Exploration",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Career planning resources",
+	"sections": [
+		{
+			"id": "events",
+			"title": "Upcoming Career Events",
+			"intro": ["Stay updated with career-related events at UofT through our Career Services Calendar."],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Career Services Calendar",
+					"text": [],
+					"links": [
+						{ "label": "Career Services Calendar →", "url": "https://events.studentlife.utoronto.ca/Calendar?svc=cc" }
+					],
+					"bullets": [],
+					"variant": "plain"
+				}
+			]
+		},
+		{
+			"id": "resources",
+			"title": "Career Resources & Guides",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "General Career Resources",
+					"text": [],
+					"links": [
+						{
+							"label": "Resume and Cover Letter Toolkit",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/CC-Resume-and-Cover-Letter-Toolkit.pdf"
+						},
+						{
+							"label": "Guide to Writing Personal Statements",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Guide-to-Writing-Personal-Statements-for-Further-Education.pdf"
+						},
+						{
+							"label": "Interview Strategies Guide",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Interview-Strategies-Guide.pdf"
+						},
+						{
+							"label": "MMI and MPI Interview Guide",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Interview-Strategies-Guide-MMI-and-MPI.pdf"
+						},
+						{
+							"label": "Workplace Disclosure and Accommodation Guide",
+							"url": "https://clnx.utoronto.ca/content/documents/Link/Disclosure-and-Accommodation-Guide.pdf"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Academic Career Resources",
+					"text": [],
+					"links": [
+						{
+							"label": "Finding Academic Work (PhDs & Post-Docs)",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Finding-Academic-Work-Guide.pdf"
+						},
+						{
+							"label": "Academic Cover Letter Guide",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Academic-Cover-Letter.pdf"
+						},
+						{
+							"label": "Academic CV Guide",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Creating-Your-Academic-CV.pdf"
+						},
+						{
+							"label": "Academic Interview Guide",
+							"url": "https://studentlife.utoronto.ca/wp-content/uploads/Academic-Interview-Guide.pdf"
+						}
+					],
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "tools",
+			"title": "Career Development Tools",
+			"intro": [],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "Career Navigator",
+					"text": [
+						"Explore career opportunities, connect with alumni, and discover what you can do with your U of T degree."
+					],
+					"links": [{ "label": "Access Navigator", "url": "https://careernavigator.studentlife.utoronto.ca/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Ten Thousand Coffees",
+					"text": ["Connect with 13,000+ alumni professionals for career advice and networking opportunities."],
+					"links": [
+						{
+							"label": "Join Network",
+							"url": "https://utoronto.tenthousandcoffees.com/login?redirectUrl=%2Fhub%2Fuoft-cafe%2Fintroductions"
+						}
+					],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "GoinGlobal",
+					"text": [
+						"Access worldwide job opportunities and career resources with positions available in 40+ countries."
+					],
+					"links": [{ "label": "Explore Opportunities", "url": "https://online.goinglobal.com/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				}
+			]
+		}
+	]
+}

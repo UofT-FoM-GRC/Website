@@ -1,0 +1,113 @@
+{
+	"slug": "scholarships-bursaries-awards",
+	"title": "Scholarships, Bursaries & Awards",
+	"cardTitle": "Scholarships, Bursaries & Awards",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Scholarships, bursaries and awards resources",
+	"sections": [
+		{
+			"id": "general-award-explorer",
+			"title": "General Award Explorer",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Undergraduate Awards",
+					"text": [
+						"Search for undergraduate awards based on various criteria including faculty, citizenship, and award type."
+					],
+					"links": [
+						{
+							"label": "Explore Undergraduate Awards →",
+							"url": "https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfQRxZQ11SZV1zH3pgEw~~"
+						}
+					],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Graduate Awards",
+					"text": [
+						"Find graduate-level awards and scholarships filtered by department, award type, and eligibility criteria."
+					],
+					"links": [
+						{
+							"label": "Explore Graduate Awards →",
+							"url": "https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfRxxZQFdTZFVyEnpuEg~~"
+						}
+					],
+					"bullets": [],
+					"linkStyle": "button"
+				}
+			]
+		},
+		{
+			"id": "sgs-awards",
+			"title": "School of Graduate Studies Awards",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Awards & Funding Overview",
+					"text": ["Comprehensive information about graduate funding opportunities and award programs."],
+					"links": [{ "label": "View Funding Overview →", "url": "https://www.sgs.utoronto.ca/awards-funding/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Awards Database",
+					"text": ["Detailed database of available graduate awards and scholarships with specific requirements."],
+					"links": [{ "label": "Search Awards Database →", "url": "https://www.sgs.utoronto.ca/awards/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				}
+			]
+		},
+		{
+			"id": "contacts",
+			"title": "Award Offices & Contacts",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Financial Aid & Advising Office",
+					"text": [],
+					"addressLines": [
+						"School of Graduate Studies",
+						"63 St. George Street, Room 101",
+						"University of Toronto",
+						"Toronto, ON"
+					],
+					"facts": [{ "label": "Phone:", "value": "416-978-2839", "url": "tel:416-978-2839" }],
+					"links": [
+						{
+							"label": "Map and address",
+							"url": "https://www.google.com/maps/search/63+St.+George+Street,+Room+101+University+of+Toronto+Toronto,+ON"
+						},
+						{ "label": "sgs.financial.assistance@utoronto.ca", "url": "mailto:sgs.financial.assistance@utoronto.ca" }
+					],
+					"bullets": []
+				},
+				{
+					"title": "Graduate Awards Office",
+					"text": [],
+					"addressLines": [
+						"School of Graduate Studies",
+						"63 St. George Street, Room 201",
+						"University of Toronto",
+						"Toronto, ON"
+					],
+					"facts": [{ "label": "Phone:", "value": "416-978-2150", "url": "tel:416-978-2150" }],
+					"links": [
+						{
+							"label": "Map and address",
+							"url": "https://www.google.com/maps/search/63+St.+George+Street,+Room+201+University+of+Toronto+Toronto,+ON"
+						},
+						{ "label": "graduate.awards@utoronto.ca", "url": "mailto:graduate.awards@utoronto.ca" }
+					],
+					"bullets": []
+				}
+			]
+		}
+	]
+}

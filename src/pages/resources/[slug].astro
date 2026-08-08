@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content'
+import { BLOG_TAGS } from '../../consts'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ResourcePage from '../../components/ResourcePage.astro'
+
+export async function getStaticPaths() {
+	const resources = await getCollection('resources')
+	const slugs = resources.map((resource) => resource.data.slug)
+	if (
+		slugs.length !== BLOG_TAGS.length ||
+		new Set(slugs).size !== slugs.length ||
+		BLOG_TAGS.some((slug) => !slugs.includes(slug))
+	) {
+		throw new Error('Resource content must contain each of the eight established resource slugs exactly once.')
+	}
+	return resources.map((resource) => ({
+		params: { slug: resource.data.slug },
+		props: { resource }
+	}))
+}
+
+const { resource } = Astro.props
+const posts = (await getCollection('blog'))
+	.filter((post) => post.data.tags.includes(resource.data.slug))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<BaseLayout title={resource.data.title}><ResourcePage resource={resource} posts={posts} /></BaseLayout>

@@ -1,0 +1,104 @@
+{
+	"about": {
+		"title": "About the GRC",
+		"description": "The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all graduate students in the University of Toronto Faculty of Medicine.",
+		"heroImage": "GRC_Hero.png",
+		"heroImageAlt": "Graduate Representation Committee members",
+		"purposeTitle": "Our Purpose and Objectives",
+		"purposeParagraphs": [
+			"The GRC is dedicated to keeping you informed about important faculty and university policies that affect your graduate experience. We actively seek your feedback to ensure our advocacy aligns with your needs and sentiments.",
+			"Through our initiatives, we aim to ensure that you:"
+		],
+		"objectives": [
+			"Are well-informed about policies and resources impacting your graduate life.",
+			"Feel heard and know that your opinions contribute to improving our graduate community.",
+			"Experience positive changes through our advocacy and policy efforts."
+		],
+		"workTitle": "Our Work",
+		"workParagraphs": [
+			"The GRC primarily focuses on student stipends and the Faculty of Medicine Harmonized Base Funding Agreement (HBFA). Each year, we conduct the \"GRC Finance and Living Survey\" to gather data on your finances, living conditions, career prospects, and well-being. This data, combined with Statistics Canada metrics on Toronto's cost of living, helps us create the \"GRC Finance and Living Report\". This report highlights the realities of graduate student life and includes our recommendations for HBFA changes."
+		]
+	},
+	"years": [
+		{
+			"year": "2025 - 2026",
+			"members": [
+				{ "name": "Ally Suarez", "position": "Director" },
+				{
+					"name": "Annie Pu",
+					"position": "Data Analyst",
+					"image": "/teams/2025/annie-pu.webp",
+					"imageAlt": "Annie Pu"
+				},
+				{ "name": "Valerie Chow", "position": "Data Analyst" },
+				{
+					"name": "Yumnah Jafri",
+					"position": "Communications",
+					"image": "/teams/2025/yumnah-jafri.webp",
+					"imageAlt": "Yumnah Jafri"
+				},
+				{ "name": "Renee Jing", "position": "Social Media Coordinator" },
+				{
+					"name": "Kamal Prajapati",
+					"position": "Webmaster",
+					"image": "/teams/2025/kamal-prajapati.webp",
+					"imageAlt": "Kamal Prajapati"
+				},
+				{
+					"name": "Oliver Ojeda Valencia",
+					"position": "Graphic Designer",
+					"image": "/teams/2025/oliver-ojeda-valencia.webp",
+					"imageAlt": "Oliver Ojeda Valencia"
+				},
+				{
+					"name": "Maurice Pasternak",
+					"position": "Advisor",
+					"image": "/teams/2025/maurice-pasternak.webp",
+					"imageAlt": "Maurice Pasternak"
+				},
+				{
+					"name": "Willow Squires",
+					"position": "Advisor",
+					"image": "/teams/2025/willow-squires.webp",
+					"imageAlt": "Willow Squires"
+				}
+			]
+		},
+		{
+			"year": "2024 - 2025",
+			"members": [
+				{
+					"name": "Maurice Pasternak",
+					"position": "Director and Web Developer",
+					"image": "/teams/2024/maurice-pasternak.webp",
+					"imageAlt": "Maurice Pasternak"
+				},
+				{
+					"name": "Willow Squires",
+					"position": "Director",
+					"image": "/teams/2024/willow-squires.webp",
+					"imageAlt": "Willow Squires"
+				},
+				{
+					"name": "Jinny Tsang",
+					"position": "Data Analyst",
+					"image": "/teams/2024/jinny-tsang.webp",
+					"imageAlt": "Jinny Tsang"
+				},
+				{ "name": "Salman Basrai", "position": "Data Analyst" },
+				{
+					"name": "Jennifer C. Onuora",
+					"position": "Data Analyst",
+					"image": "/teams/2024/jennifer-c-onuora.webp",
+					"imageAlt": "Jennifer C. Onuora"
+				},
+				{
+					"name": "Ali Chegini",
+					"position": "Data Analyst & Designer",
+					"image": "/teams/2024/ali-chegini.webp",
+					"imageAlt": "Ali Chegini"
+				}
+			]
+		}
+	]
+}

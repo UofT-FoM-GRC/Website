@@ -1,0 +1,150 @@
+{
+	"slug": "scholarship-award-grant-application-support",
+	"title": "Application Support Resources",
+	"cardTitle": "Scholarship/Award/Grant Application Support",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Application support resources",
+	"sections": [
+		{
+			"id": "writing-centres",
+			"title": "Writing Centres",
+			"intro": [],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "Innis College",
+					"text": ["Located in Rooms 315 and 321"],
+					"links": [
+						{
+							"label": "Visit Writing Centre →",
+							"url": "http://innis.utoronto.ca/current-students/academic/innis/writing-centre/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "New College",
+					"text": ["Located in Wilson Hall, Rooms 2045 and 2047"],
+					"links": [
+						{ "label": "Visit Writing Centre →", "url": "http://www.newcollege.utoronto.ca/academics/writing-centre/" }
+					],
+					"bullets": []
+				},
+				{
+					"title": "St. Michael's",
+					"text": ["Located in Kelly Library Learning Commons"],
+					"links": [{ "label": "Visit Writing Centre →", "url": "https://library.stmikes.utoronto.ca/research/" }],
+					"bullets": []
+				},
+				{
+					"title": "Trinity College",
+					"text": ["Located in Academic Resource Centre, Room 3"],
+					"links": [
+						{
+							"label": "Visit Writing Centre →",
+							"url": "https://www.trinity.utoronto.ca/study-arts-science/academic-support-services/writing-support/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "University College",
+					"text": ["Located in Rooms 259E, 259F, and 259G"],
+					"links": [{ "label": "Visit Writing Centre →", "url": "http://www.uc.utoronto.ca/writing-centre" }],
+					"bullets": []
+				},
+				{
+					"title": "Victoria College",
+					"text": ["Located in Goldring Student Centre (GSC230)"],
+					"links": [
+						{
+							"label": "Visit Writing Centre →",
+							"url": "https://www.vic.utoronto.ca/current-students/registrars-office/writing-centre"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Woodsworth College",
+					"text": ["Located in Room 107"],
+					"links": [
+						{
+							"label": "Visit Writing Centre →",
+							"url": "http://www.wdw.utoronto.ca/index.php/current_students/academic_writing_centre/"
+						}
+					],
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "learning-support",
+			"title": "Centre for Learning Strategy Support",
+			"intro": [],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "Graduate Writing Groups",
+					"text": ["Join supportive peer groups focused on achieving writing goals with experienced facilitators."],
+					"links": [
+						{
+							"label": "Join Writing Groups →",
+							"url": "https://studentlife.utoronto.ca/program/graduate-writing-groups/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Study Hubs",
+					"text": ["Access quiet, welcoming spaces for focused study sessions and exam preparation."],
+					"links": [{ "label": "Find Study Hubs →", "url": "https://studentlife.utoronto.ca/program/study-hubs/" }],
+					"bullets": []
+				},
+				{
+					"title": "Grad Productivity Group",
+					"text": ["Participate in structured online sessions for focused work alongside peers."],
+					"links": [
+						{
+							"label": "Join Productivity Sessions →",
+							"url": "https://studentlife.utoronto.ca/program/grad-productivity-group-actually-work-from-home/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Learning Strategist Appointments",
+					"text": ["Book personalized sessions to develop effective study strategies and improve academic skills."],
+					"links": [
+						{
+							"label": "Book Appointment →",
+							"url": "https://studentlife.utoronto.ca/service/learning-strategist-appointments/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "CLSS Mentor Appointments",
+					"text": ["Get one-on-one support from peer mentors on study techniques and academic resources."],
+					"links": [
+						{
+							"label": "Meet with Mentor →",
+							"url": "https://studentlife.utoronto.ca/service/clss-mentor-appointments/"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Tips & Strategies",
+					"text": ["Access comprehensive resources for exams, essays, presentations, and more."],
+					"links": [
+						{
+							"label": "View Resources →",
+							"url": "https://studentlife.utoronto.ca/task_levels/centre-for-learning-strategy-support/"
+						}
+					],
+					"bullets": []
+				}
+			]
+		}
+	]
+}

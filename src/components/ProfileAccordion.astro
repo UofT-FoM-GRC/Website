@@ -1,17 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components'
 import ProfileCard from './ProfileCard.astro'
-import { slugify } from '../utils/strings'
-
 export type ProfileAccordionItem = {
 	year: string
-	profiles: Profile[]
+	members: Profile[]
 }
 
 type Profile = {
 	name: string
 	position: string
-	hasImage: boolean
+	image?: string
+	imageAlt?: string
 }
 
 interface Props {
@@ -45,12 +44,12 @@ let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
 	>
 		<div class="container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{
-				item.profiles.map((profile) => (
+				item.members.map((profile) => (
 					<ProfileCard
 						name={profile.name}
 						position={profile.position}
-						image={`/teams/${item.year.substring(0, 4)}/${slugify(profile.name)}.webp`}
-						hasImage={profile.hasImage}
+						image={profile.image}
+						imageAlt={profile.imageAlt}
 					/>
 				))
 			}
