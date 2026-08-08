@@ -1,0 +1,128 @@
+{
+	"slug": "housing",
+	"title": "Housing",
+	"cardTitle": "Housing",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Housing resources",
+	"sections": [
+		{
+			"id": "emergency",
+			"title": "Emergency Student Housing",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Emergency Student Housing Support",
+					"text": [
+						"The Student Emergency Housing Support at the University of Toronto provides assistance to students facing urgent housing crises, such as unsafe living conditions, evictions, or personal conflicts. This service is typically used when students find themselves in situations that threaten their ability to secure stable housing, ensuring they can continue their education without disruption. If you're in need, the support team is ready to help you find temporary or long-term housing solutions."
+					],
+					"links": [{ "label": "Campus Safety Website →", "url": "https://www.campussafety.utoronto.ca/" }],
+					"facts": [
+						{ "label": "St. George or Scarborough Campuses:", "value": "416-978-2222", "url": "tel:416-978-2222" },
+						{ "label": "Mississauga Campus:", "value": "905-569-4333", "url": "tel:905-569-4333" }
+					],
+					"bullets": []
+				},
+				{
+					"title": "Fleeing Domestic Violence",
+					"text": [],
+					"links": [],
+					"bullets": [],
+					"groups": [
+						{
+							"title": "Community Safety Office (During Office Hours)",
+							"addressLines": [
+								"Community Safety Office",
+								"21 Sussex Avenue, 2nd Floor",
+								"University of Toronto",
+								"Toronto, Ontario",
+								"M5S 1J6"
+							],
+							"facts": [
+								{ "label": "Urgent Matters:", "value": "416-978-2222", "url": "tel:416-978-2222" },
+								{ "label": "General Line:", "value": "416-978-1485", "url": "tel:416-978-1485" }
+							],
+							"links": [
+								{ "label": "Community Safety Office Website →", "url": "http://www.communitysafety.utoronto.ca/" },
+								{
+									"label": "View map",
+									"url": "https://www.google.ca/maps/place/21+Sussex+Ave,+Toronto,+ON+M5S+1J6/@43.664907,-79.4034818,17z/data=!3m1!4b1!4m6!3m5!1s0x882b34be772085db:0xa2304ce349eb0df8!8m2!3d43.664907!4d-79.4009069!16s%2Fg%2F11stvbtq7q?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
+								}
+							]
+						},
+						{
+							"title": "Campus Safety Special Constable Service (Outside Office Hours)",
+							"addressLines": [
+								"University of Toronto Campus Safety",
+								"Special Constable Service",
+								"21 Sussex Avenue",
+								"Toronto, Ontario",
+								"M5S 1J6"
+							],
+							"facts": [
+								{ "label": "Urgent Matters:", "value": "416-978-2222", "url": "tel:416-978-2222" },
+								{ "label": "Non-Urgent Matters:", "value": "416-978-2323", "url": "tel:416-978-2323" }
+							],
+							"links": [
+								{ "label": "Campus Safety Website →", "url": "https://www.campussafety.utoronto.ca/" },
+								{
+									"label": "View map",
+									"url": "https://www.google.ca/maps/place/21+Sussex+Ave,+Toronto,+ON+M5S+1J6/@43.664907,-79.4034818,17z/data=!3m1!4b1!4m6!3m5!1s0x882b34be772085db:0xa2304ce349eb0df8!8m2!3d43.664907!4d-79.4009069!16s%2Fg%2F11stvbtq7q?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "graduate",
+			"title": "Graduate Student Housing",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Step 1: Explore Residence Options",
+					"text": [
+						"St. George Campus: Graduate House, Knox Residence, and Loretto College Residence (female-identifying students only). Mississauga Campus: UTM Graduate Housing."
+					],
+					"links": [
+						{ "label": "Graduate House →", "url": "https://gradhouse.utoronto.ca/" },
+						{ "label": "Knox Residence →", "url": "https://chestnut.utoronto.ca/knox-student-residence/" },
+						{
+							"label": "Loretto College Residence →",
+							"url": "https://stmikes.utoronto.ca/community/st-michaels-college-residence/loretto-residence-women"
+						},
+						{
+							"label": "UTM Graduate Housing →",
+							"url": "https://www.utm.utoronto.ca/housing/applying/graduate-and-medical"
+						}
+					],
+					"bullets": []
+				},
+				{
+					"title": "Step 2: Enable UTORid",
+					"text": ["Activate your JOIN/UTORid account to access the application portal."],
+					"facts": [{ "label": "Note:", "value": "You can skip this step if you already have a UTORid account." }],
+					"links": [{ "label": "Enable UTORid →", "url": "https://join.utoronto.ca/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Step 3: Complete Application",
+					"text": ["Log in to StarRez Portal to submit your residence application(s)."],
+					"links": [{ "label": "Access StarRez →", "url": "http://starrez.utoronto.ca/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Step 4: Track Status",
+					"text": ["Check your application status through the StarRez Portal."],
+					"links": [{ "label": "Access StarRez →", "url": "http://starrez.utoronto.ca/" }],
+					"bullets": [],
+					"linkStyle": "button"
+				}
+			]
+		}
+	]
+}

@@ -1,15 +1,30 @@
 ---
-const { name, position, image, hasImage } = Astro.props
+interface Props {
+	name: string
+	position: string
+	image?: string
+	imageAlt?: string
+}
+
+const { name, position, image, imageAlt } = Astro.props
 ---
 
 <div
 	class="rounded-lg bg-white p-2 text-center shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-300 dark:bg-slate-800 dark:hover:shadow-blue-900/50"
 >
 	{
-		hasImage ? (
-			<img src={image} class="mx-auto mb-4 aspect-square rounded-full object-center" />
+		image ? (
+			<img
+				src={image}
+				alt={imageAlt || `Portrait of ${name}`}
+				class="mx-auto mb-4 aspect-square rounded-full object-center"
+			/>
 		) : (
-			<img src="/teams/profile-avatar-placeholder.webp" class="mx-auto mb-4 aspect-square rounded-full object-center" />
+			<img
+				src="/teams/profile-avatar-placeholder.webp"
+				alt=""
+				class="mx-auto mb-4 aspect-square rounded-full object-center"
+			/>
 		)
 	}
 	<hr class="my-2 border-slate-200 dark:border-slate-600" />

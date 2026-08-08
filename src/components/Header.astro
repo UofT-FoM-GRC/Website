@@ -1,353 +1,157 @@
 ---
-import HeaderLink from './HeaderLink.astro'
+import { getEntry } from 'astro:content'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import GRCLogo from '../assets/GRC_Logo.png'
+import HeaderLink from './HeaderLink.astro'
 import SearchModal from './SearchModal.astro'
+
+const [navigation, site] = await Promise.all([getEntry('navigation', 'navigation'), getEntry('site', 'site')])
+if (!navigation || !site) throw new Error('Missing site navigation')
+const instagram = site.data.socialLinks.find((link) => link.network === 'instagram')
 ---
 
 <header
-	x-data="{ 
-		isOpen: false,
-		isDark: localStorage.getItem('grc-theme') === 'dark'
-	}"
+	x-data="{ isOpen: false, resourcesOpen: false, isDark: localStorage.getItem('grc-theme') === 'dark' }"
 	class="sticky top-0 z-50 bg-white shadow-md transition-colors duration-200 dark:bg-slate-900"
 >
 	<nav class="flex items-center justify-between p-2">
 		<div class="flex items-center gap-2">
-			<!-- Logo -->
 			<div class="logo rounded-full p-1 dark:bg-neutral-100">
-				<a href="/" aria-label="Go to UofT FoM GRC homepage">
-					<Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" />
-				</a>
-			</div>
-			<!-- Site Title -->
-			<h2 class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
-				<a href="/">UofT FoM GRC</a>
+				<a href="/" aria-label="Go to UofT FoM GRC homepage"
+					><Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" /></a
+				>
+			</div><h2 class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
+				<a href="/">{navigation.data.brand}</a>
 			</h2>
 		</div>
-
-		<!-- Desktop menu -->
-		<div class="hidden space-x-1 md:flex">
-			<HeaderLink
-				href="/"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
-				>Home</HeaderLink
-			>
-			<HeaderLink
-				href="/about"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
-				>About</HeaderLink
-			>
-			<HeaderLink
-				href="/blog"
-				class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
-				>Blog</HeaderLink
-			>
-			<div class="relative" x-data="{ isOpen: false }">
+		<div class="hidden items-center space-x-1 md:flex">
+			{
+				navigation.data.links.map((link) => (
+					<HeaderLink
+						href={link.url}
+						class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
+					>
+						{link.label}
+					</HeaderLink>
+				))
+			}
+			<div class="relative">
 				<button
-					@click="isOpen = !isOpen"
-					class="relative flex items-center gap-1 px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
-					aria-label="View GRC resources"
+					@click="resourcesOpen = !resourcesOpen"
+					class="flex items-center gap-1 px-4 py-2 text-xl text-slate-800 dark:text-slate-100"
 					aria-haspopup="true"
-					:aria-expanded="isOpen"
-					aria-controls="resources-dropdown"
-				>
-					Resources
-					<Icon
+					:aria-expanded="resourcesOpen"
+					>{navigation.data.resourceLabel}<Icon
 						name="mdi:chevron-down"
-						class="inline-block h-5 w-5 transition-transform duration-200"
-						:class="isOpen ? 'rotate-180' : ''"
-					/>
-				</button>
-
-				<!-- Clicking ESC key should close the dropdown -->
-				<div
-					id="resources-dropdown"
-					x-show="isOpen"
-					@click.away="isOpen = false"
-					@keydown.escape.window="isOpen = false"
-					x-transition:enter="transition ease-out duration-200"
-					x-transition:enter-start="opacity-0 transform -translate-y-2"
-					x-transition:enter-end="opacity-100 transform translate-y-0"
-					x-transition:leave="transition ease-in duration-150"
-					x-transition:leave-start="opacity-100 transform translate-y-0"
-					x-transition:leave-end="opacity-0 transform -translate-y-2"
+						class="h-5 w-5"
+						:class="resourcesOpen ? 'rotate-180' : ''"
+					/></button
+				><div
+					x-show="resourcesOpen"
+					@click.away="resourcesOpen = false"
+					@keydown.escape.window="resourcesOpen = false"
 					class="absolute right-0 mt-2 w-fit bg-white px-4 shadow-md dark:bg-slate-800"
 				>
-					<a
-						href="/resources/health-wellness"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Health & Wellness resources">Health & Wellness</a
-					>
-					<a
-						href="/resources/housing"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Housing resources">Housing</a
-					>
-					<a
-						href="/resources/continuing-education"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Continuing Education resources">Continuing Education</a
-					>
-					<a
-						href="/resources/scholarships-bursaries-awards"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Scholarships/Bursaries/Awards resources">Scholarships/Bursaries/Awards</a
-					>
-					<a
-						href="/resources/scholarship-award-grant-application-support"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Scholarship/Award/Grant Application Support resources"
-						>Scholarship/Award/Grant Application Support</a
-					>
-					<a
-						href="/resources/employment"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Employment resources">Employment</a
-					>
-					<a
-						href="/resources/career-planning-exploration"
-						class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Career Planning/Exploration resources">Career Planning/Exploration</a
-					>
-					<a
-						href="/resources/other"
-						class="mb-2 block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View Other resources">Other</a
-					>
+					{
+						navigation.data.resourceLinks.map((link) => (
+							<a
+								href={`/resources/${link.slug}`}
+								class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+							>
+								{link.label}
+							</a>
+						))
+					}
 				</div>
 			</div>
-			<!-- Search button -->
 			<button
 				@click="$dispatch('open-search')"
 				class="flex items-center gap-2 px-2 py-1 text-slate-800 dark:text-slate-100"
 				aria-label="Open search"
+				><Icon name="mdi:magnify" class="h-8 w-8" /><span class="hidden lg:inline">Search</span></button
 			>
-				<Icon name="mdi:magnify" class="h-8 w-8" />
-				<span class="hidden lg:inline">Search</span>
-			</button>
 		</div>
-
-		<!-- Container for mobile controls -->
-		<div class="flex">
-			<!-- Mobile theme toggle button -->
+		<div class="flex items-center gap-4 px-2">
 			<button
 				@click="isDark = !isDark; $dispatch('toggle-theme')"
-				class="flex items-center text-slate-800 transition-colors hover:text-slate-900 md:hidden dark:text-slate-100 dark:hover:text-slate-50"
+				class="text-slate-800 md:hidden dark:text-slate-100"
 				aria-label="Toggle dark mode"
-			>
-				<Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" />
-				<Icon name="mdi:moon-waning-crescent" class="hidden h-8 w-8 dark:block" />
-			</button>
-
-			<!-- Mobile menu button -->
-			<button
+				><Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" /><Icon
+					name="mdi:moon-waning-crescent"
+					class="hidden h-8 w-8 dark:block"
+				/></button
+			><button
 				@click="isOpen = !isOpen"
 				class="text-slate-800 md:hidden dark:text-slate-100"
 				aria-controls="mobile-menu"
 				aria-label="Open mobile menu"
-				:aria-expanded="isOpen"
-			>
-				<Icon name="mdi:menu" class="mx-4 h-8 w-8" />
-			</button>
+				:aria-expanded="isOpen"><Icon name="mdi:menu" class="h-8 w-8" /></button
+			><button
+				@click="isDark = !isDark; $dispatch('toggle-theme')"
+				class="hidden text-slate-800 md:block dark:text-slate-100"
+				aria-label="Toggle dark mode"
+				><Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" /><Icon
+					name="mdi:moon-waning-crescent"
+					class="hidden h-8 w-8 dark:block"
+				/></button
+			>{
+				instagram && (
+					<a
+						href={instagram.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hidden text-slate-800 md:block dark:text-slate-100"
+						aria-label={instagram.label}
+					>
+						<Icon name="mdi:instagram" class="h-8 w-8" />
+					</a>
+				)
+			}
 		</div>
-
-		<!-- Mobile menu dropdown -->
 		<div
 			id="mobile-menu"
 			x-show="isOpen"
-			@keydown.escape.window="isOpen = false"
-			x-transition:leave="transition ease-in duration-150"
-			x-transition:leave-start="opacity-100 transform translate-y-0"
-			x-transition:leave-end="opacity-0 transform -translate-y-2"
 			@click.away="isOpen = false"
+			@keydown.escape.window="isOpen = false"
 			class="absolute top-full right-0 left-0 bg-white shadow-md md:hidden dark:bg-slate-800"
 		>
 			<div class="flex flex-col p-4">
-				<HeaderLink
-					href="/"
-					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-					aria-label="Go to UofT FoM GRC homepage">Home</HeaderLink
-				>
-				<HeaderLink
-					href="/about"
-					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-					aria-label="Go to UofT FoM GRC about page">About</HeaderLink
-				>
-				<HeaderLink
-					href="/blog"
-					class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-					aria-label="Go to UofT FoM GRC blog">Blog</HeaderLink
-				>
-				<div x-data="{ isOpen: false }">
-					<button
-						@click="isOpen = !isOpen"
-						class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						aria-label="View GRC resources"
-						aria-haspopup="true"
-						:aria-expanded="isOpen"
-						aria-controls="resources-dropdown"
-					>
-						Resources
-						<Icon
-							name="mdi:chevron-down"
-							class="h-7 w-7 transition-transform duration-200"
-							:class="isOpen ? 'rotate-180' : ''"
-						/>
-					</button>
-					<div
-						id="resources-dropdown"
-						x-show="isOpen"
-						@keydown.escape.window="isOpen = false"
-						x-transition:enter="transition ease-out duration-150"
-						x-transition:enter-start="opacity-0 transform translate-y-2"
-						x-transition:enter-end="opacity-100 transform translate-y-0"
-						x-transition:leave="transition ease-in duration-150"
-						x-transition:leave-start="opacity-100 transform translate-y-0"
-						x-transition:leave-end="opacity-0 transform -translate-y-2"
-					>
-						<a
-							href="/resources/health-wellness"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Health & Wellness resources">Health & Wellness</a
+				{
+					navigation.data.links.map((link) => (
+						<HeaderLink
+							href={link.url}
+							class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
 						>
-						<a
-							href="/resources/housing"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Housing resources">Housing</a
-						>
-						<a
-							href="/resources/continuing-education"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Continuing Education resources">Continuing Education</a
-						>
-						<a
-							href="/resources/scholarships-bursaries-awards"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Scholarships/Bursaries/Awards resources">Scholarships/Bursaries/Awards</a
-						>
-						<a
-							href="/resources/scholarship-award-grant-application-support"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Scholarship/Award/Grant Application Support resources"
-							>Scholarship/Award/Grant Application Support</a
-						>
-						<a
-							href="/resources/employment"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							>Teaching Assistantships</a
-						>
-						<a
-							href="/resources/career-planning-exploration"
-							class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Career Planning/Exploration resources">Career Planning/Exploration</a
-						>
-						<a
-							href="/resources/other"
-							class="mb-2 block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							aria-label="View Other resources">Other</a
-						>
-					</div>
-				</div>
-				<!-- Search button -->
-				<button
+							{link.label}
+						</HeaderLink>
+					))
+				}<button
+					@click="resourcesOpen = !resourcesOpen"
+					class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+					>{navigation.data.resourceLabel}<Icon name="mdi:chevron-down" class="h-7 w-7" /></button
+				><div x-show="resourcesOpen">
+					{
+						navigation.data.resourceLinks.map((link) => (
+							<a
+								href={`/resources/${link.slug}`}
+								class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+							>
+								{link.label}
+							</a>
+						))
+					}
+				</div><button
 					@click="$dispatch('open-search')"
 					class="mt-2 ml-4 flex items-center gap-2 text-slate-800 dark:text-slate-100"
-					aria-label="Open search"
+					aria-label="Open search"><Icon name="mdi:magnify" class="h-8 w-8" /><span>Search</span></button
 				>
-					<Icon name="mdi:magnify" class="h-8 w-8" />
-					<span class="hidden sm:inline">Search</span>
-				</button>
 			</div>
-		</div>
-
-		<!-- Social icons -->
-		<div class="hidden space-x-4 px-2 md:flex">
-			<!-- Theme toggle button -->
-			<button
-				@click="isDark = !isDark; $dispatch('toggle-theme')"
-				class="flex items-center text-slate-800 transition-colors hover:text-slate-900 dark:text-slate-100 dark:hover:text-slate-50"
-				aria-label="Toggle dark mode"
-			>
-				<Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" />
-				<Icon name="mdi:moon-waning-crescent" class="hidden h-8 w-8 dark:block" />
-			</button>
-			<a
-				href="https://www.instagram.com/grc_uoftfacmed/"
-				target="_blank"
-				class="text-slate-800 dark:text-slate-100"
-				aria-label="Follow UofT FoM GRC on Instagram"
-			>
-				<span class="sr-only">Follow UofT FoM GRC on Instagram</span>
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" class="fill-current">
-					<path
-						fill="currentColor"
-						d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
-					></path></svg
-				>
-			</a>
 		</div>
 	</nav>
 </header>
-
-<!-- Add the modal with x-ref -->
 <SearchModal />
-
 <script>
 	import { toggleTheme } from '../utils/theme'
-
-	console.log('[Header] Script initialized, setting up toggle listener')
-
-	// Listen for toggle-theme event from Alpine.js click handler
-	window.addEventListener('toggle-theme', () => {
-		console.log('[Header] Received toggle-theme event')
-		const newTheme = toggleTheme()
-		console.log('[Header] Theme is now:', newTheme)
-		console.log('[Header] Dark class on html:', document.documentElement.classList.contains('dark'))
-	})
+	window.addEventListener('toggle-theme', () => toggleTheme())
 </script>
-
-<style is:global>
-	/* Container styling */
-	#search {
-		position: relative;
-	}
-
-	/* Results dropdown styling */
-	.pagefind-ui__results-area {
-		position: absolute;
-		top: 100%;
-		right: 0;
-		width: 600px; /* or your preferred width */
-		padding: 1rem;
-		max-height: 80vh;
-		overflow-y: auto;
-		background: white;
-		border: 1px solid #e5e7eb;
-		border-radius: 0.5rem;
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-		z-index: 50;
-	}
-
-	html.dark .pagefind-ui__results-area {
-		background: #1e293b;
-		border-color: #334155;
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
-	}
-
-	/* Optional: Add some padding to results */
-	.pagefind-ui__results {
-		padding: 1rem;
-	}
-
-	/* Optional: Style the search input */
-	.pagefind-ui__search-input {
-		width: 200px; /* or your preferred width */
-	}
-
-	/* Ensure the search box itself doesn't expand */
-	.pagefind-ui__form {
-		width: fit-content;
-	}
-</style>

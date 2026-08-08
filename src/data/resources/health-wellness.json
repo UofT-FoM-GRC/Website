@@ -1,0 +1,172 @@
+{
+	"slug": "health-wellness",
+	"title": "Health & Wellness",
+	"cardTitle": "Health & Wellness",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Health and wellness resources",
+	"sections": [
+		{
+			"id": "events",
+			"title": "Upcoming Health & Wellness Events",
+			"intro": ["Stay updated with health and wellness events at UofT through our Events Calendar on Folio."],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Events Calendar",
+					"text": [],
+					"links": [
+						{
+							"label": "Events Calendar on Folio →",
+							"url": "https://folio.utoronto.ca/students/events?eventTypeIds=25&page=1&studentSiteId=1"
+						}
+					],
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "appointments",
+			"title": "Health & Wellness Appointments",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "New Patient Instructions",
+					"text": [],
+					"links": [],
+					"bullets": [],
+					"listStyle": "ordered",
+					"listItems": [
+						{
+							"text": "Prepare your documentation:",
+							"items": [
+								"TCard",
+								"OHIP card (Ontario residents)",
+								"Provincial health card (other provinces)",
+								"UHIP card (international students)"
+							]
+						},
+						{
+							"text": "Call",
+							"links": [{ "label": "416-978-8030", "url": "tel:416-978-8030" }],
+							"items": ["Press 5 for mental health care", "Press 2 for primary care"]
+						},
+						{ "text": "Complete the Registration Package (sent via email)" },
+						{ "text": "Call back to confirm submission and book your first appointment" }
+					],
+					"groups": [],
+					"addressLines": [],
+					"facts": []
+				},
+				{
+					"title": "Health Forms",
+					"text": [
+						"Access required health forms and documentation through the dedicated portal. Submit completed forms to admin.hwc@utoronto.ca."
+					],
+					"links": [
+						{ "label": "Health Forms Portal →", "url": "https://studentlife.utoronto.ca/task/all-the-health-forms/" },
+						{ "label": "admin.hwc@utoronto.ca", "url": "mailto:admin.hwc@utoronto.ca" }
+					],
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "workshops",
+			"title": "Wellness Workshops",
+			"intro": [],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "General Mental Health Support",
+					"text": [],
+					"links": [
+						{ "label": "Breathe Well", "url": "https://studentlife.utoronto.ca/program/breathe-well/" },
+						{ "label": "Sleep Well", "url": "https://studentlife.utoronto.ca/program/sleep-well/" },
+						{ "label": "5 Ways to Wellbeing", "url": "https://studentlife.utoronto.ca/program/5-ways-to-wellbeing/" },
+						{ "label": "Better Coping Skills", "url": "https://studentlife.utoronto.ca/program/better-coping-skills/" },
+						{ "label": "Finding a Therapist", "url": "https://studentlife.utoronto.ca/program/finding-a-therapist/" },
+						{ "label": "Grief Support Group", "url": "https://studentlife.utoronto.ca/program/grief-support-group/" }
+					],
+					"bullets": []
+				},
+				{
+					"title": "Mindfulness",
+					"text": [],
+					"links": [
+						{
+							"label": "Mindful Eating: Food and Mood",
+							"url": "https://studentlife.utoronto.ca/program/mindful-eating-food-and-mood/"
+						},
+						{ "label": "Mindful Moments", "url": "https://studentlife.utoronto.ca/program/mindful-moments/" }
+					],
+					"bullets": []
+				},
+				{
+					"title": "Managing Expectations",
+					"text": [],
+					"links": [
+						{
+							"label": "Making Social Connections",
+							"url": "https://studentlife.utoronto.ca/program/making-social-connections/"
+						},
+						{
+							"label": "Hacking Perfectionism",
+							"url": "https://studentlife.utoronto.ca/program/hacking-perfectionism/"
+						},
+						{
+							"label": "Managing Exam/Test Anxiety",
+							"url": "https://studentlife.utoronto.ca/program/managing-exam-test-anxiety/"
+						},
+						{
+							"label": "Managing Impostor Phenomenon",
+							"url": "https://studentlife.utoronto.ca/program/managing-impostor-phenomenon/"
+						},
+						{
+							"label": "Managing Your Inner Critic",
+							"url": "https://studentlife.utoronto.ca/program/managing-your-inner-critic/"
+						}
+					],
+					"bullets": []
+				}
+			]
+		},
+		{
+			"id": "telus",
+			"title": "U of T Telus Health Student Support",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "24/7 confidential support",
+					"text": ["24/7 confidential support for any school, health, or general life concern at no cost."],
+					"links": [],
+					"bullets": [],
+					"facts": [
+						{ "label": "North America:", "value": "1-844-451-9700", "url": "tel:1-844-451-9700" },
+						{ "label": "International:", "value": "001-416-380-6578", "url": "tel:001-416-380-6578" }
+					]
+				}
+			]
+		},
+		{
+			"id": "accessibility",
+			"title": "Accessibility Services",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Registration and documentation",
+					"text": ["Learn about registration requirements and documentation needed for accessibility services."],
+					"links": [
+						{
+							"label": "View Registration Instructions →",
+							"url": "https://studentlife.utoronto.ca/service/accessibility-services-registration-and-documentation-requirements/"
+						}
+					],
+					"bullets": []
+				}
+			]
+		}
+	]
+}

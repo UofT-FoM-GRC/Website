@@ -5,7 +5,7 @@ import BaseLayout from './BaseLayout.astro'
 
 type Props = CollectionEntry<'blog'>['data']
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+const { title, description, pubDate, updatedDate, heroImage, heroImageAlt } = Astro.props
 ---
 
 <BaseLayout title={title} description={description}>
@@ -14,7 +14,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
 			<div class="w-full">
 				{
 					heroImage && (
-						<img class="mx-auto block rounded-xl shadow-lg" width={1020} height={510} src={heroImage} alt="" />
+						<img
+							class="mx-auto block rounded-xl shadow-lg"
+							width={1020}
+							height={510}
+							src={heroImage}
+							alt={heroImageAlt || ''}
+						/>
 					)
 				}
 			</div>

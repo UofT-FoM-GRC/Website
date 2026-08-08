@@ -3,9 +3,7 @@ backend:
   branch: dev
   squash_merges: true
 
-# Use editorial workflow to prevent direct commits to dev
 publish_mode: editorial_workflow
-
 media_folder: public/assets
 public_folder: /assets
 
@@ -18,81 +16,392 @@ collections:
     extension: md
     format: frontmatter
     identifier_field: title
-    summary: '{{title}} - {{pubDate}}'
+    summary: '{{title}} — {{pubDate}}'
     sortable_fields: ['pubDate', 'title']
-    view_filters:
-      - label: Employment
-        field: tags
-        pattern: 'employment'
-      - label: Career Planning
-        field: tags
-        pattern: 'career-planning-exploration'
-      - label: Continuing Education
-        field: tags
-        pattern: 'continuing-education'
-      - label: Health & Wellness
-        field: tags
-        pattern: 'health-wellness'
-      - label: Housing
-        field: tags
-        pattern: 'housing'
-      - label: Scholarships
-        field: tags
-        pattern: 'scholarships-bursaries-awards'
-      - label: Application Support
-        field: tags
-        pattern: 'scholarship-award-grant-application-support'
-      - label: Other
-        field: tags
-        pattern: 'other'
     fields:
-      - label: Title
-        name: title
-        widget: string
-        hint: The main title of your blog post
-      - label: Description
-        name: description
-        widget: text
-        hint: A short description (1-2 sentences) that appears in blog cards
-      - label: Publish Date
-        name: pubDate
-        widget: datetime
-        format: 'MMM D YYYY'
-        date_format: 'MMM D YYYY'
-        time_format: false
-        hint: The date this post is published
-      - label: Hero Image
-        name: heroImage
-        widget: image
-        required: false
-        hint: Optional banner image for the post. Upload to /assets folder or use existing images
-        media_folder: /public/assets
-        public_folder: /assets
+      - {
+          label: Title,
+          name: title,
+          widget: string,
+          hint: Main title. Changing it does not change the URL of an existing post.
+        }
+      - {
+          label: Description,
+          name: description,
+          widget: text,
+          hint: One or two sentences for search and page metadata.
+        }
+      - {
+          label: Publish Date,
+          name: pubDate,
+          widget: datetime,
+          format: 'YYYY-MM-DD',
+          date_format: 'YYYY-MM-DD',
+          time_format: false
+        }
+      - {
+          label: Updated Date,
+          name: updatedDate,
+          widget: datetime,
+          required: false,
+          format: 'YYYY-MM-DD',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+          hint: Leave blank unless the published post changed materially.
+        }
+      - {
+          label: Hero Image,
+          name: heroImage,
+          widget: image,
+          required: false,
+          hint: Optional banner. Uploads go to /assets.
+        }
+      - {
+          label: Hero Image Alternative Text,
+          name: heroImageAlt,
+          widget: string,
+          required: false,
+          hint: Describe the image. Required whenever an image conveys information.
+        }
       - label: Tags
         name: tags
         widget: select
         multiple: true
         min: 1
         max: 3
-        hint: Select 1-3 relevant tags to help organize this post
+        hint: Select one to three categories. These control related resource pages.
         options:
-          - label: Employment
-            value: employment
-          - label: Career Planning & Exploration
-            value: career-planning-exploration
-          - label: Continuing Education
-            value: continuing-education
-          - label: Health & Wellness
-            value: health-wellness
-          - label: Housing
-            value: housing
-          - label: Scholarships, Bursaries & Awards
-            value: scholarships-bursaries-awards
-          - label: Scholarship/Award/Grant Application Support
-            value: scholarship-award-grant-application-support
-          - label: Other
-            value: other
-      - label: Body
-        name: body
-        widget: markdown
-        hint: The main content of your blog post. Use Markdown formatting.
+          - { label: Employment, value: employment }
+          - { label: Career Planning & Exploration, value: career-planning-exploration }
+          - { label: Continuing Education, value: continuing-education }
+          - { label: Health & Wellness, value: health-wellness }
+          - { label: Housing, value: housing }
+          - { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards }
+          - { label: Scholarship/Award/Grant Application Support, value: scholarship-award-grant-application-support }
+          - { label: Other, value: other }
+      - {
+          label: Body,
+          name: body,
+          widget: markdown,
+          hint: Main post content. Use the image button to add accessible image descriptions.
+        }
+  - name: resources
+    label: Resource Pages
+    folder: src/data/resources
+    extension: json
+    format: json
+    create: false
+    identifier_field: title
+    summary: '{{title}}'
+    fields: &resource_fields
+      - { label: Immutable URL ID, name: slug, widget: hidden }
+      - { label: Page Heading, name: title, widget: string }
+      - { label: Resource Card Title, name: cardTitle, widget: string, hint: Text on the Resources landing-page card. }
+      - { label: Resource Card Image, name: cardImage, widget: image }
+      - { label: Resource Card Image Alternative Text, name: cardImageAlt, widget: string }
+      - label: Page Sections
+        name: sections
+        widget: list
+        hint: Reorder sections and cards by dragging. Section IDs preserve in-page links; do not change an existing ID.
+        fields:
+          - { label: Immutable Section ID, name: id, widget: string }
+          - { label: Section Heading, name: title, widget: string }
+          - {
+              label: Introductory Paragraphs,
+              name: intro,
+              widget: list,
+              required: false,
+              field: { label: Paragraph, name: paragraph, widget: text }
+            }
+          - { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
+          - label: Cards
+            name: cards
+            widget: list
+            fields:
+              - { label: Card Heading, name: title, widget: string }
+              - {
+                  label: Paragraphs,
+                  name: text,
+                  widget: list,
+                  required: false,
+                  field: { label: Paragraph, name: paragraph, widget: text }
+                }
+              - {
+                  label: Bullet Points,
+                  name: bullets,
+                  widget: list,
+                  required: false,
+                  field: { label: Bullet, name: bullet, widget: string }
+                }
+              - {
+                  label: Card Layout,
+                  name: variant,
+                  widget: select,
+                  options: [card, plain],
+                  default: card,
+                  required: false
+                }
+              - {
+                  label: Link Appearance,
+                  name: linkStyle,
+                  widget: select,
+                  options: [link, button],
+                  default: link,
+                  required: false
+                }
+              - {
+                  label: Instruction List Style,
+                  name: listStyle,
+                  widget: select,
+                  options: [unordered, ordered],
+                  default: unordered,
+                  required: false
+                }
+              - label: Instructions
+                name: listItems
+                widget: list
+                required: false
+                hint: Use for ordered steps or nested checklists.
+                fields:
+                  - { label: Step Text, name: text, widget: string }
+                  - label: Step Links
+                    name: links
+                    widget: list
+                    required: false
+                    fields:
+                      - { label: Link Text, name: label, widget: string }
+                      - { label: Destination URL, name: url, widget: string }
+                  - {
+                      label: Nested Items,
+                      name: items,
+                      widget: list,
+                      required: false,
+                      field: { label: Item, name: item, widget: string }
+                    }
+              - {
+                  label: Address Lines,
+                  name: addressLines,
+                  widget: list,
+                  required: false,
+                  field: { label: Address Line, name: line, widget: string }
+                }
+              - label: Labelled Contact Details
+                name: facts
+                widget: list
+                required: false
+                fields:
+                  - { label: Label, name: label, widget: string, hint: 'Example: Phone:' }
+                  - { label: Value, name: value, widget: string }
+                  - { label: Optional Destination URL, name: url, widget: string, required: false }
+              - label: Grouped Contact Panels
+                name: groups
+                widget: list
+                required: false
+                fields:
+                  - { label: Panel Heading, name: title, widget: string }
+                  - {
+                      label: Paragraphs,
+                      name: text,
+                      widget: list,
+                      required: false,
+                      field: { label: Paragraph, name: paragraph, widget: text }
+                    }
+                  - {
+                      label: Address Lines,
+                      name: addressLines,
+                      widget: list,
+                      required: false,
+                      field: { label: Address Line, name: line, widget: string }
+                    }
+                  - label: Labelled Contact Details
+                    name: facts
+                    widget: list
+                    required: false
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Value, name: value, widget: string }
+                      - { label: Optional Destination URL, name: url, widget: string, required: false }
+                  - label: Links
+                    name: links
+                    widget: list
+                    required: false
+                    fields:
+                      - { label: Link Text, name: label, widget: string }
+                      - { label: Destination URL, name: url, widget: string }
+              - { label: Card Image, name: image, widget: image, required: false }
+              - { label: Card Image Alternative Text, name: imageAlt, widget: string, required: false }
+              - label: Links
+                name: links
+                widget: list
+                fields:
+                  - { label: Link Text, name: label, widget: string }
+                  - {
+                      label: Destination URL,
+                      name: url,
+                      widget: string,
+                      hint: Include https:// for external links,
+                      mailto: for email,
+                      or tel: for telephone.
+                    }
+  - name: site_settings
+    label: Site Settings
+    files:
+      - label: Contact and Social Links
+        name: site
+        file: src/data/site.json
+        fields:
+          - { label: Site Title, name: title, widget: string }
+          - { label: Site Description, name: description, widget: text }
+          - label: Contact
+            name: contact
+            widget: object
+            fields: [{ label: Public Email Address, name: email, widget: string }]
+          - label: Social Links
+            name: socialLinks
+            widget: list
+            fields:
+              - { label: Accessible Label, name: label, widget: string }
+              - { label: Destination URL, name: url, widget: string }
+              - { label: Network, name: network, widget: select, options: [instagram, twitter, github] }
+      - label: Navigation
+        name: navigation
+        file: src/data/navigation.json
+        fields:
+          - { label: Header Brand, name: brand, widget: string }
+          - label: Main Navigation Links
+            name: links
+            widget: list
+            fields: [{ label: Label, name: label, widget: string }, { label: URL, name: url, widget: string }]
+          - { label: Resources Menu Label, name: resourceLabel, widget: string }
+          - label: Resources Menu Links
+            name: resourceLinks
+            widget: list
+            min: 8
+            max: 8
+            fields:
+              [
+                { label: Label, name: label, widget: string },
+                {
+                  label: Resource Page,
+                  name: slug,
+                  widget: select,
+                  options:
+                    [
+                      { label: Employment, value: employment },
+                      { label: Career Planning & Exploration, value: career-planning-exploration },
+                      { label: Continuing Education, value: continuing-education },
+                      { label: Health & Wellness, value: health-wellness },
+                      { label: Housing, value: housing },
+                      { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards },
+                      {
+                        label: Scholarship/Award/Grant Application Support,
+                        value: scholarship-award-grant-application-support
+                      },
+                      { label: Other, value: other }
+                    ]
+                }
+              ]
+      - label: Homepage
+        name: homepage
+        file: src/data/homepage.json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Hero Image, name: image, widget: image }
+              - { label: Hero Image Alternative Text, name: imageAlt, widget: string }
+              - {
+                  label: Hero Lines,
+                  name: lines,
+                  widget: list,
+                  min: 2,
+                  max: 5,
+                  hint: The second line is the main page heading. Keep it descriptive.,
+                  field: { label: Line, name: line, widget: string }
+                }
+          - label: Feature Sections
+            name: featureSections
+            widget: list
+            fields:
+              - { label: Heading, name: title, widget: string }
+              - {
+                  label: Paragraphs,
+                  name: paragraphs,
+                  widget: list,
+                  field: { label: Paragraph, name: paragraph, widget: text }
+                }
+              - label: Links
+                name: links
+                widget: list
+                required: false
+                fields:
+                  [
+                    { label: Link Text, name: label, widget: string },
+                    { label: Destination URL, name: url, widget: string }
+                  ]
+              - { label: Image, name: image, widget: image }
+              - { label: Image Alternative Text, name: imageAlt, widget: string }
+              - { label: Background Tone, name: tone, widget: select, options: [dark, light] }
+              - { label: Put Image First on Desktop, name: imageFirst, widget: boolean, default: false }
+          - { label: Contact Heading, name: contactHeading, widget: string }
+          - { label: Contact Text, name: contactText, widget: text }
+      - label: Homepage Announcements
+        name: announcements
+        file: src/data/announcements.json
+        fields:
+          - label: Announcements
+            name: items
+            widget: list
+            hint: Only active announcements appear below the homepage hero. Drag to set display order.
+            fields:
+              - { label: Heading, name: title, widget: string }
+              - { label: Message, name: text, widget: text }
+              - { label: Optional Link URL, name: url, widget: string, required: false }
+              - { label: Show on Homepage, name: active, widget: boolean, default: false }
+      - label: About Page and Team Archive
+        name: team
+        file: src/data/team.json
+        fields:
+          - label: About Page
+            name: about
+            widget: object
+            fields:
+              - { label: Page Title, name: title, widget: string }
+              - { label: Introduction, name: description, widget: text }
+              - { label: Hero Image, name: heroImage, widget: image }
+              - { label: Hero Image Alternative Text, name: heroImageAlt, widget: string }
+              - { label: Purpose Heading, name: purposeTitle, widget: string }
+              - {
+                  label: Purpose Paragraphs,
+                  name: purposeParagraphs,
+                  widget: list,
+                  field: { label: Paragraph, name: paragraph, widget: text }
+                }
+              - {
+                  label: Objectives,
+                  name: objectives,
+                  widget: list,
+                  field: { label: Objective, name: objective, widget: string }
+                }
+              - { label: Work Heading, name: workTitle, widget: string }
+              - {
+                  label: Work Paragraphs,
+                  name: workParagraphs,
+                  widget: list,
+                  field: { label: Paragraph, name: paragraph, widget: text }
+                }
+          - label: Team Years
+            name: years
+            widget: list
+            hint: First year displays first. Add past years here; ordering is preserved.
+            fields:
+              - { label: Academic Year, name: year, widget: string, hint: 'Example: 2025 - 2026.' }
+              - label: Members
+                name: members
+                widget: list
+                fields:
+                  - { label: Name, name: name, widget: string }
+                  - { label: Position, name: position, widget: string }
+                  - { label: Photo, name: image, widget: image, required: false }
+                  - { label: Photo Alternative Text, name: imageAlt, widget: string, required: false }

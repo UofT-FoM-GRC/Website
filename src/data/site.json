@@ -1,0 +1,18 @@
+{
+	"title": "Graduate Representation Committee (GRC), Faculty of Medicine, University of Toronto",
+	"description": "Website of the Faculty of Medicine, Graduate Representation Committee (GRC)",
+	"contact": { "email": "grc.facmed@utoronto.ca" },
+	"socialLinks": [
+		{
+			"label": "Follow UofT FoM GRC on Instagram",
+			"url": "https://www.instagram.com/grc_uoftfacmed/",
+			"network": "instagram"
+		},
+		{ "label": "Follow UofT GRC on Twitter", "url": "/", "network": "twitter" },
+		{
+			"label": "Visit UofT GRC's GitHub organization page",
+			"url": "https://github.com/UofT-FoM-GRC",
+			"network": "github"
+		}
+	]
+}

@@ -1,0 +1,47 @@
+{
+	"slug": "continuing-education",
+	"title": "Continuing Education",
+	"cardTitle": "Continuing Education",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "Continuing education resources",
+	"sections": [
+		{
+			"id": "scs",
+			"title": "School of Continuing Studies",
+			"intro": [
+				"The University of Toronto School of Continuing Studies is the primary hub for lifelong learning at UofT, offering a wide range of courses and certificate programs across various fields, including business, arts, health, and technology."
+			],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "Programs & Courses",
+					"text": ["Explore our comprehensive range of professional development courses and certificate programs."],
+					"links": [{ "label": "Browse Programs →", "url": "https://learn.utoronto.ca/programs-courses" }],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Bursaries & Awards",
+					"text": ["Discover financial aid opportunities to support your continuing education journey."],
+					"links": [
+						{
+							"label": "View Financial Aid →",
+							"url": "https://learn.utoronto.ca/about-scs/financial-aid/bursaries-and-awards"
+						}
+					],
+					"bullets": [],
+					"linkStyle": "button"
+				},
+				{
+					"title": "Tech Courses for Teens",
+					"text": ["Pre-university summer technology programs designed specifically for teenagers."],
+					"links": [
+						{ "label": "Explore Teen Programs →", "url": "https://utoronto-scs.xrcourse.com/lp/pre-uni-summer" }
+					],
+					"bullets": [],
+					"linkStyle": "button"
+				}
+			]
+		}
+	]
+}

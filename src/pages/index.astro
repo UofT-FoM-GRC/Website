@@ -1,147 +1,124 @@
 ---
-import { Image } from 'astro:assets'
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts'
-import BaseLayout from '../layouts/BaseLayout.astro'
 import { Icon } from 'astro-icon/components'
+import { getEntry } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { resolveCmsAsset } from '../utils/cmsAssets'
 
-import FoM_Sky from '../assets/FoM_Sky.png'
-import DataDriven from '../assets/DataDriven.jpg'
-import SavingsPolicy from '../assets/SavingsPolicy.png'
-import HelpingStudents from '../assets/HelpingStudents.png'
+const [homepage, site, announcements] = await Promise.all([
+	getEntry('homepage', 'homepage'),
+	getEntry('site', 'site'),
+	getEntry('announcements', 'announcements')
+])
+if (!homepage || !site || !announcements) throw new Error('Missing homepage settings')
+const { hero, featureSections, contactHeading, contactText } = homepage.data
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+<BaseLayout title={site.data.title} description={site.data.description}>
 	<main class="mx-auto flex w-full flex-col items-center overflow-hidden text-justify">
-		<!-- Main Hero -->
 		<section class="fade-in-section relative h-[50vh] min-h-[300px] w-full rounded-t-xl">
-			<div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-			<div class="relative h-full w-full">
-				<Image
-					src={FoM_Sky}
-					alt="Aerial view of University of Toronto Faculty of Medicine buildings"
+			<div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div><div class="relative h-full w-full">
+				<img
+					src={resolveCmsAsset(hero.image)}
+					alt={hero.imageAlt}
 					class="fade-in-image h-full w-full object-cover brightness-50"
-					width={1920}
-					height={1080}
+					width="1920"
+					height="1080"
 				/>
-			</div>
-			<div class="fade-in-text absolute inset-0 flex flex-col items-center justify-center space-y-4">
-				<p class="text-center text-xl font-bold text-white md:text-3xl">We are your</p>
-				<h1 class="text-center text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-					Graduate Representation Committee
-				</h1>
-				<p class="text-center text-xl font-bold text-white md:text-3xl">at the</p>
-				<p class="text-center text-xl font-bold text-white md:text-3xl">Faculty of Medicine</p>
-				<p class="text-center text-xl font-bold text-white md:text-3xl">University of Toronto</p>
-			</div>
-		</section>
-
-		<!-- Data-Driven Section -->
-		<section
-			class="fade-in-section relative flex min-h-120 w-full items-center bg-gray-800 py-20 transition-colors duration-200 dark:bg-slate-950"
-		>
-			<div class="container mx-auto px-4">
-				<div class="flex flex-col items-center gap-8 md:flex-row">
-					<div class="fade-in-text prose md:w-1/2">
-						<h2 class="text-4xl font-bold text-white md:text-5xl lg:text-6xl dark:text-slate-100">Data-Driven</h2>
-						<p class="text-md mt-4 leading-relaxed text-gray-200 md:text-lg lg:text-xl dark:text-slate-300">
-							We turn your voice into data-driven insights to <strong class="text-white dark:text-slate-100"
-								>advocate</strong
-							> for your needs and enhancing your graduate experience.
-						</p>
-					</div>
-					<div class="fade-in-image md:w-1/2">
-						<Image
-							src={DataDriven}
-							alt="Illustration representing data-driven insights"
-							width={500}
-							height={300}
-							class="h-auto w-full rounded-lg shadow-md"
-						/>
-					</div>
-				</div>
+			</div><div class="fade-in-text absolute inset-0 flex flex-col items-center justify-center space-y-4">
+				{
+					hero.lines.map((line, index) =>
+						index === 1 ? (
+							<h1 class="text-center text-5xl font-bold text-white md:text-6xl lg:text-7xl">{line}</h1>
+						) : (
+							<p class="text-center text-xl font-bold text-white md:text-3xl">{line}</p>
+						)
+					)
+				}
 			</div>
 		</section>
-
-		<!-- Accomplishments Section -->
-		<section
-			class="fade-in-section relative flex min-h-120 w-full items-center bg-slate-50 py-20 transition-colors duration-200 dark:bg-slate-900"
-		>
-			<div class="container mx-auto px-4">
-				<div class="flex flex-col items-center gap-8 py-12 md:flex-row">
-					<div class="fade-in-image md:w-1/2">
-						<Image
-							src={SavingsPolicy}
-							alt="Data-Driven Insights"
-							width={500}
-							height={300}
-							class="h-auto w-full rounded-lg"
-						/>
+		{
+			announcements.data.items
+				.filter((item) => item.active)
+				.map((item) => (
+					<section class="w-full bg-blue-100 px-4 py-4 text-center text-slate-900 dark:bg-blue-950 dark:text-slate-100">
+						<span> {item.text}</span>
+						{item.url && (
+							<a class="ml-2 text-blue-700 underline dark:text-blue-300" href={item.url}>
+								Learn more
+							</a>
+						)}
+					</section>
+				))
+		}
+		{
+			featureSections.map((section) => (
+				<section
+					class:list={[
+						'fade-in-section relative flex min-h-120 w-full items-center py-20 transition-colors duration-200',
+						section.tone === 'dark' ? 'bg-gray-800 dark:bg-slate-950' : 'bg-slate-50 dark:bg-slate-900'
+					]}
+				>
+					<div class="container mx-auto px-4">
+						<div class="flex flex-col items-center gap-8 md:flex-row">
+							<>
+								<div class:list={['fade-in-image md:w-1/2', section.imageFirst ? 'md:order-1' : 'md:order-2']}>
+									<img
+										src={resolveCmsAsset(section.image)}
+										alt={section.imageAlt}
+										width="500"
+										height="300"
+										class="h-auto w-full rounded-lg shadow-md"
+									/>
+								</div>
+								<div class:list={['fade-in-text prose md:w-1/2', section.imageFirst ? 'md:order-2' : 'md:order-1']}>
+									<h2
+										class:list={[
+											'text-4xl font-bold md:text-5xl lg:text-6xl',
+											section.tone === 'dark' ? 'text-white dark:text-slate-100' : 'text-slate-900 dark:text-slate-100'
+										]}
+									>
+										{section.title}
+									</h2>
+									{section.paragraphs.map((paragraph) => (
+										<p
+											class:list={[
+												'text-md mt-4 leading-relaxed md:text-lg lg:text-xl',
+												section.tone === 'dark'
+													? 'text-gray-200 dark:text-slate-300'
+													: 'text-gray-700 dark:text-slate-300'
+											]}
+										>
+											{paragraph}
+										</p>
+									))}
+									{section.links.map((link) => (
+										<a href={link.url} class="mr-4 text-lg font-bold text-blue-500 dark:text-blue-400">
+											{link.label}
+										</a>
+									))}
+								</div>
+							</>
+						</div>
 					</div>
-					<div class="fade-in-text prose md:w-1/2">
-						<h2 class="text-4xl font-bold text-slate-900 md:text-5xl lg:text-6xl dark:text-slate-100">More For You</h2>
-						<p class="text-md mt-4 leading-relaxed text-gray-700 md:text-lg lg:text-xl dark:text-slate-300">
-							Our efforts over the past 8 years have resulted in over <strong
-								class="bg-linear-to-t from-slate-600 to-green-700 bg-clip-text text-4xl leading-relaxed font-bold text-transparent"
-								>$1,000,000</strong
-							>
-							in savings for the graduate student body.
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Student-Centric Section -->
-		<section
-			class="fade-in-section relative flex min-h-120 w-full items-center bg-slate-800 py-20 transition-colors duration-200 dark:bg-slate-950"
-		>
-			<div class="container mx-auto px-4">
-				<div class="flex flex-col items-center gap-8 md:flex-row">
-					<div class="fade-in-text prose md:w-1/2">
-						<h2 class="text-4xl font-bold text-white md:text-5xl lg:text-6xl dark:text-slate-100">Student-Centric</h2>
-						<p class="text-md mt-4 leading-relaxed text-gray-200 md:text-lg lg:text-xl dark:text-slate-300">
-							Not all who wander are lost. We are here to help you find your way.
-						</p>
-						<p class="text-md mt-4 leading-relaxed text-gray-200 md:text-lg lg:text-xl dark:text-slate-300">
-							We regularly post information about events, resources, and opportunities for graduate students. Check out
-							our <a href="/blog" class="text-lg font-bold text-blue-500 dark:text-blue-400">blog</a> as well as our <a
-								href="/resources"
-								class="text-lg font-bold text-blue-500 dark:text-blue-400">resources</a
-							> pages for more information.
-						</p>
-					</div>
-					<div class="fade-in-image md:w-1/2">
-						<Image
-							src={HelpingStudents}
-							alt="Helping Students"
-							width={500}
-							height={300}
-							class="h-auto w-full rounded-lg shadow-md"
-						/>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Contact Section -->
+				</section>
+			))
+		}
 		<section
 			class="fade-in-section relative flex min-h-120 w-full flex-col items-center bg-slate-50 py-20 transition-colors duration-200 dark:bg-slate-900"
 		>
 			<div class="container mx-auto px-4">
 				<div class="fade-in-text flex flex-col items-center gap-8">
-					<h2 class="text-4xl font-bold text-slate-900 md:text-5xl lg:text-6xl dark:text-slate-100">Contact Us</h2>
-					<p class="text-md mt-4 leading-relaxed text-gray-700 md:text-lg lg:text-xl dark:text-slate-300">
-						Have questions or feedback? We'd love to hear from you!
+					<h2 class="text-4xl font-bold text-slate-900 md:text-5xl lg:text-6xl dark:text-slate-100">
+						{contactHeading}
+					</h2><p class="text-md mt-4 leading-relaxed text-gray-700 md:text-lg lg:text-xl dark:text-slate-300">
+						{contactText}
 					</p>
-				</div>
-				<!-- Contact Info -->
-				<div class="mt-12 flex flex-col items-center gap-8">
+				</div><div class="mt-12 flex flex-col items-center gap-8">
 					<div class="flex items-center gap-4">
-						<Icon name="mdi:email" class="h-12 w-12 text-slate-700 dark:text-slate-300" />
-						<div>
-							<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Email</h3>
-							<a href="mailto:grc.facmed@utoronto.ca" class="text-lg text-blue-500 dark:text-blue-400"
-								>grc.facmed@utoronto.ca</a
+						<Icon name="mdi:email" class="h-12 w-12 text-slate-700 dark:text-slate-300" /><div>
+							<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Email</h3><a
+								href={`mailto:${site.data.contact.email}`}
+								class="text-lg text-blue-500 dark:text-blue-400">{site.data.contact.email}</a
 							>
 						</div>
 					</div>
@@ -150,57 +127,33 @@ import HelpingStudents from '../assets/HelpingStudents.png'
 		</section>
 	</main>
 	<script>
-		const handleIntersection: IntersectionObserverCallback = (entries, observer) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					// console.log('is intersecting')
-					entry.target.classList.add('visible')
-					observer.unobserve(entry.target)
-				}
-			})
-		}
-
-		const options = {
-			root: null,
-			rootMargin: '0px 0px -50px 0px',
-			threshold: 0.4
-		}
-
-		const observer = new IntersectionObserver(handleIntersection, options)
-
-		const setUpIntersectionObserver = () => {
-			const sections = document.querySelectorAll('.fade-in-section')
-			sections.forEach((section) => {
-				const image = section.querySelector('.fade-in-image')!
-				const text = section.querySelector('.fade-in-text')!
+		const observer = new IntersectionObserver(
+			(entries, currentObserver) =>
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('visible')
+						currentObserver.unobserve(entry.target)
+					}
+				}),
+			{ rootMargin: '0px 0px -50px 0px', threshold: 0.4 }
+		)
+		const setUpIntersectionObserver = () =>
+			document.querySelectorAll('.fade-in-section').forEach((section) => {
+				const image = section.querySelector('.fade-in-image')
+				const text = section.querySelector('.fade-in-text')
 				if (image) observer.observe(image)
 				if (text) observer.observe(text)
 			})
-		}
-
-		document.addEventListener('astro:page-load', () => {
-			// console.log('page loaded')
-			setUpIntersectionObserver()
-		})
-
-		document.addEventListener('DOMContentLoaded', () => {
-			// console.log('DOMContentLoaded')
-			setUpIntersectionObserver()
-		})
-
-		// Netlify Identity: Redirect to CMS after login
-		// @ts-ignore - netlifyIdentity is loaded from external script
-		if (window.netlifyIdentity) {
-			// @ts-ignore
-			window.netlifyIdentity.on('init', (user: any) => {
-				if (!user) {
-					// @ts-ignore
-					window.netlifyIdentity.on('login', () => {
+		document.addEventListener('astro:page-load', setUpIntersectionObserver)
+		document.addEventListener('DOMContentLoaded', setUpIntersectionObserver)
+		const identity = window.netlifyIdentity
+		if (identity)
+			identity.on('init', (user: unknown) => {
+				if (!user)
+					identity.on('login', () => {
 						document.location.href = '/admin/'
 					})
-				}
 			})
-		}
 	</script>
 </BaseLayout>
 
@@ -211,25 +164,20 @@ import HelpingStudents from '../assets/HelpingStudents.png'
 			opacity 0.5s ease-out,
 			transform 0.5s ease-out;
 	}
-
 	.fade-in-image,
 	.fade-in-text {
 		opacity: 0;
 		transform: translateY(20px);
-		transition-delay: 0.5s;
 		transition:
 			opacity 0.5s ease-out,
 			transform 0.5s ease-out;
 	}
-
-	.fade-in-image.visible {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
+	.fade-in-image.visible,
 	.fade-in-text.visible {
 		opacity: 1;
 		transform: translateY(0);
+	}
+	.fade-in-text.visible {
 		transition-delay: 0.2s;
 	}
 </style>

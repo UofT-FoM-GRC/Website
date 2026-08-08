@@ -26,16 +26,16 @@ const heroImageIsExternal = post.data.heroImage?.startsWith('https://') || post.
 				<img
 					width={720}
 					height={360}
-					src={post.data.heroImage || '/uoft-placeholder-default.webp'}
-					alt={`Featured image for ${post.data.title}`}
+					src={post.data.heroImage || '/assets/uoft-placeholder-default.webp'}
+					alt={post.data.heroImageAlt || `Featured image for ${post.data.title}`}
 					class="aspect-video min-h-72 w-full object-cover object-center"
 				/>
 			) : (
 				<Image
 					width={720}
 					height={360}
-					src={post.data.heroImage || '/uoft-placeholder-default.webp'}
-					alt={`Featured image for ${post.data.title}`}
+					src={post.data.heroImage || '/assets/uoft-placeholder-default.webp'}
+					alt={post.data.heroImageAlt || `Featured image for ${post.data.title}`}
 					class="aspect-video min-h-72 w-full object-cover object-center"
 				/>
 			)

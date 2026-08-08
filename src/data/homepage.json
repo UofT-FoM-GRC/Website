@@ -1,0 +1,54 @@
+{
+	"hero": {
+		"image": "FoM_Sky.png",
+		"imageAlt": "Aerial view of University of Toronto Faculty of Medicine buildings",
+		"lines": [
+			"We are your",
+			"Graduate Representation Committee",
+			"at the",
+			"Faculty of Medicine",
+			"University of Toronto"
+		]
+	},
+	"featureSections": [
+		{
+			"title": "Data-Driven",
+			"paragraphs": [
+				"We turn your voice into data-driven insights to advocate for your needs and enhancing your graduate experience."
+			],
+			"links": [],
+			"image": "DataDriven.jpg",
+			"imageAlt": "Illustration representing data-driven insights",
+			"tone": "dark",
+			"imageFirst": false
+		},
+		{
+			"title": "More For You",
+			"paragraphs": [
+				"Our efforts over the past 8 years have resulted in over $1,000,000 in savings for the graduate student body."
+			],
+			"links": [],
+			"image": "SavingsPolicy.png",
+			"imageAlt": "Data-Driven Insights",
+			"tone": "light",
+			"imageFirst": true
+		},
+		{
+			"title": "Student-Centric",
+			"paragraphs": [
+				"Not all who wander are lost. We are here to help you find your way.",
+				"We regularly post information about events, resources, and opportunities for graduate students. Check out our blog as well as our resources pages for more information."
+			],
+			"links": [
+				{ "label": "Blog", "url": "/blog" },
+				{ "label": "Resources", "url": "/resources" }
+			],
+			"image": "HelpingStudents.png",
+			"imageAlt": "Helping Students",
+			"tone": "dark",
+			"imageFirst": false
+		}
+	],
+	"contactHeading": "Contact Us",
+	"contactText": "Have questions or feedback? We'd love to hear from you!"
+}
