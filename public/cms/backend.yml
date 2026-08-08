@@ -3,7 +3,8 @@
 backend:
   name: github
   repo: UofT-FoM-GRC/Website
-  # Temporary PR rehearsal target. Restore to dev before merge.
-  branch: feat/modern-cms-handoff
+  branch: dev
   auth_methods: [oauth]
 publish_mode: null
+output:
+  omit_empty_optional_fields: true

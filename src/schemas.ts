@@ -13,14 +13,23 @@ export const blogTagSchema = z.enum([
 ])
 export type BlogTag = z.infer<typeof blogTagSchema>
 
+const emptyStringToUndefined = (value: unknown) => (value === '' ? undefined : value)
+
+const optionalCmsStringSchema = z.preprocess(
+	emptyStringToUndefined,
+	z.string().regex(/\S/, 'Value cannot be whitespace only.').optional()
+)
+
+const optionalCmsDateSchema = z.preprocess(emptyStringToUndefined, z.coerce.date().optional())
+
 // Blog Schema
 export const blogSchema = z.object({
 	title: z.string(),
 	description: z.string(),
 	pubDate: z.coerce.date(),
-	updatedDate: z.coerce.date().optional(),
-	heroImage: z.string().optional(),
-	heroImageAlt: z.string().optional(),
+	updatedDate: optionalCmsDateSchema,
+	heroImage: optionalCmsStringSchema,
+	heroImageAlt: optionalCmsStringSchema,
 	tags: z.array(blogTagSchema).min(1).max(3)
 })
 export type BlogPost = z.infer<typeof blogSchema>
@@ -28,6 +37,8 @@ export type BlogPost = z.infer<typeof blogSchema>
 const internalOrExternalUrlSchema = z
 	.string()
 	.regex(/^(?:https?:\/\/|mailto:|tel:|\/(?!\/)|#)/, 'Use an https URL, mailto:, tel:, site-relative URL, or fragment.')
+
+const optionalInternalOrExternalUrlSchema = z.preprocess(emptyStringToUndefined, internalOrExternalUrlSchema.optional())
 
 const linkSchema = z.object({
 	label: z.string(),
@@ -46,7 +57,7 @@ const resourceGroupSchema = z.object({
 	links: z.array(linkSchema).default([]),
 	addressLines: z.array(z.string()).default([]),
 	facts: z
-		.array(z.object({ label: z.string(), value: z.string(), url: internalOrExternalUrlSchema.optional() }))
+		.array(z.object({ label: z.string(), value: z.string(), url: optionalInternalOrExternalUrlSchema }))
 		.default([])
 })
 
@@ -60,12 +71,12 @@ const resourceCardSchema = z.object({
 	groups: z.array(resourceGroupSchema).default([]),
 	addressLines: z.array(z.string()).default([]),
 	facts: z
-		.array(z.object({ label: z.string(), value: z.string(), url: internalOrExternalUrlSchema.optional() }))
+		.array(z.object({ label: z.string(), value: z.string(), url: optionalInternalOrExternalUrlSchema }))
 		.default([]),
 	variant: z.enum(['card', 'plain']).default('card'),
 	linkStyle: z.enum(['link', 'button']).default('link'),
-	image: z.string().optional(),
-	imageAlt: z.string().optional()
+	image: optionalCmsStringSchema,
+	imageAlt: optionalCmsStringSchema
 })
 
 export const resourceSchema = z.object({
@@ -125,8 +136,8 @@ export const teamSchema = z.object({
 				z.object({
 					name: z.string(),
 					position: z.string(),
-					image: z.string().optional(),
-					imageAlt: z.string().optional()
+					image: optionalCmsStringSchema,
+					imageAlt: optionalCmsStringSchema
 				})
 			)
 		})
@@ -161,6 +172,6 @@ export const siteSchema = z.object({
 
 export const announcementsSchema = z.object({
 	items: z.array(
-		z.object({ title: z.string(), text: z.string(), url: internalOrExternalUrlSchema.optional(), active: z.boolean() })
+		z.object({ title: z.string(), text: z.string(), url: optionalInternalOrExternalUrlSchema, active: z.boolean() })
 	)
 })
