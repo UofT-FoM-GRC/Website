@@ -1,1 +1,10 @@
-{ "items": [] }
+{
+  "items": [
+    {
+      "title": "CMS OAuth rehearsal — delete me",
+      "text": "Temporary authentication test",
+      "url": "",
+      "active": false
+    }
+  ]
+}
