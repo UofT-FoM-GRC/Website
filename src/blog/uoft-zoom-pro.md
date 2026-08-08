@@ -3,6 +3,7 @@ title: 'UofT Zoom Pro'
 description: 'The University of Toronto Zoom Pro is a great resource for graduate students.'
 pubDate: 'Nov 26 2024'
 heroImage: '/assets/zoom-banner.webp'
+heroImageAlt: 'Zoom logo on a banner'
 tags: ['other']
 ---
 

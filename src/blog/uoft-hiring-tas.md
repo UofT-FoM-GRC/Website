@@ -3,10 +3,11 @@ title: 'UofT Hiring TAs'
 description: 'How to hire Teaching Assistants at the University of Toronto'
 pubDate: 'Sep 3 2024'
 heroImage: 'https://www.teachermagazine.com/assets/images/teacher/_articleimagetransform855x313/Teaching_assistants.jpg'
+heroImageAlt: 'Teacher supporting a student in a classroom'
 tags: ['employment']
 ---
 
-# Exciting Opportunity: Teaching Assistant Positions Available!
+## Teaching Assistant Positions Available
 
 Hello Students,
 

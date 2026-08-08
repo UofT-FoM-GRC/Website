@@ -14,7 +14,7 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 ---
 
 <BaseLayout title={site.data.title} description={site.data.description}>
-	<main class="mx-auto flex w-full flex-col items-center overflow-hidden text-justify">
+	<main id="main-content" data-pagefind-body class="mx-auto flex w-full flex-col items-center overflow-hidden">
 		<section class="fade-in-section relative h-[50vh] min-h-[300px] w-full rounded-t-xl">
 			<div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div><div class="relative h-full w-full">
 				<img
@@ -23,6 +23,7 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 					class="fade-in-image h-full w-full object-cover brightness-50"
 					width="1920"
 					height="1080"
+					fetchpriority="high"
 				/>
 			</div><div class="fade-in-text absolute inset-0 flex flex-col items-center justify-center space-y-4">
 				{
@@ -67,6 +68,8 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 										alt={section.imageAlt}
 										width="500"
 										height="300"
+										loading="lazy"
+										decoding="async"
 										class="h-auto w-full rounded-lg shadow-md"
 									/>
 								</div>
@@ -137,23 +140,17 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 				}),
 			{ rootMargin: '0px 0px -50px 0px', threshold: 0.4 }
 		)
-		const setUpIntersectionObserver = () =>
+		const setUpIntersectionObserver = () => {
+			document.documentElement.classList.add('motion-ready')
 			document.querySelectorAll('.fade-in-section').forEach((section) => {
 				const image = section.querySelector('.fade-in-image')
 				const text = section.querySelector('.fade-in-text')
 				if (image) observer.observe(image)
 				if (text) observer.observe(text)
 			})
+		}
 		document.addEventListener('astro:page-load', setUpIntersectionObserver)
 		document.addEventListener('DOMContentLoaded', setUpIntersectionObserver)
-		const identity = window.netlifyIdentity
-		if (identity)
-			identity.on('init', (user: unknown) => {
-				if (!user)
-					identity.on('login', () => {
-						document.location.href = '/admin/'
-					})
-			})
 	</script>
 </BaseLayout>
 
@@ -164,20 +161,22 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 			opacity 0.5s ease-out,
 			transform 0.5s ease-out;
 	}
-	.fade-in-image,
-	.fade-in-text {
-		opacity: 0;
-		transform: translateY(20px);
-		transition:
-			opacity 0.5s ease-out,
-			transform 0.5s ease-out;
-	}
-	.fade-in-image.visible,
-	.fade-in-text.visible {
-		opacity: 1;
-		transform: translateY(0);
-	}
-	.fade-in-text.visible {
-		transition-delay: 0.2s;
+	@media (prefers-reduced-motion: no-preference) {
+		:global(.motion-ready) .fade-in-image,
+		:global(.motion-ready) .fade-in-text {
+			opacity: 0;
+			transform: translateY(20px);
+			transition:
+				opacity 0.5s ease-out,
+				transform 0.5s ease-out;
+		}
+		:global(.motion-ready) .fade-in-image.visible,
+		:global(.motion-ready) .fade-in-text.visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		:global(.motion-ready) .fade-in-text.visible {
+			transition-delay: 0.2s;
+		}
 	}
 </style>

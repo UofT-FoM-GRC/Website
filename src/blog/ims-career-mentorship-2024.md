@@ -3,6 +3,8 @@ title: 'IMS Career Mentorship Program 2024-2025'
 description: 'The Institute of Medical Science Career Mentorship Program is now accepting mentee applications'
 pubDate: 'Dec 5 2024'
 heroImage: '/assets/mentor-mentee.webp'
+heroImageAlt: 'Two people meeting for mentorship'
+status: archived
 tags: ['career-planning-exploration']
 ---
 

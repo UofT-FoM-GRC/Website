@@ -50,6 +50,42 @@ collections:
           hint: Leave blank unless the published post changed materially.
         }
       - {
+          label: Publication Status,
+          name: status,
+          widget: select,
+          options: [published, archived],
+          default: published,
+          hint: Archive time-limited or superseded posts. Archived posts remain available at their existing URL.
+        }
+      - {
+          label: Review By,
+          name: reviewBy,
+          widget: datetime,
+          required: false,
+          format: 'YYYY-MM-DD',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+          hint: Internal content-freshness review date; this is not shown to visitors.
+        }
+      - {
+          label: Expires On,
+          name: expiresOn,
+          widget: datetime,
+          required: false,
+          format: 'YYYY-MM-DD',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+          hint: Optional Toronto date through which the post stays in current listings. It remains at its URL and changes at the next site build.
+        }
+      - {
+          label: Content Owner,
+          name: contentOwner,
+          widget: string,
+          required: false,
+          default: GRC,
+          hint: Team or role responsible for reviewing this post.
+        }
+      - {
           label: Hero Image,
           name: heroImage,
           widget: image,
@@ -94,17 +130,28 @@ collections:
     identifier_field: title
     summary: '{{title}}'
     fields: &resource_fields
-      - { label: Immutable URL ID, name: slug, widget: hidden }
+      - { label: Stable URL ID, name: slug, widget: hidden, hint: Fixed by the file name and route. }
       - { label: Page Heading, name: title, widget: string }
+      - {
+          label: Page Description,
+          name: description,
+          widget: text,
+          hint: One or two sentences for search and page metadata.
+        }
       - { label: Resource Card Title, name: cardTitle, widget: string, hint: Text on the Resources landing-page card. }
       - { label: Resource Card Image, name: cardImage, widget: image }
       - { label: Resource Card Image Alternative Text, name: cardImageAlt, widget: string }
       - label: Page Sections
         name: sections
         widget: list
-        hint: Reorder sections and cards by dragging. Section IDs preserve in-page links; do not change an existing ID.
+        hint: Reorder sections and cards by dragging. Section IDs preserve in-page links; do not change an existing ID. Decap cannot make IDs in a list read-only.
         fields:
-          - { label: Immutable Section ID, name: id, widget: string }
+          - {
+              label: Stable Section ID,
+              name: id,
+              widget: string,
+              hint: Must stay unique and unchanged after publication.
+            }
           - { label: Section Heading, name: title, widget: string }
           - {
               label: Introductory Paragraphs,
@@ -272,7 +319,7 @@ collections:
                       'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
                     ]
                 }
-              - { label: Network, name: network, widget: select, options: [instagram, twitter, github] }
+              - { label: Network, name: network, widget: select, options: [instagram, github] }
       - label: Navigation
         name: navigation
         file: src/data/navigation.json
@@ -407,6 +454,13 @@ collections:
             hint: First year displays first. Add past years here; ordering is preserved.
             fields:
               - { label: Academic Year, name: year, widget: string, hint: 'Example: 2025 - 2026.' }
+              - {
+                  label: Current Team,
+                  name: current,
+                  widget: boolean,
+                  default: false,
+                  hint: Select exactly one current team year.
+                }
               - label: Members
                 name: members
                 widget: list

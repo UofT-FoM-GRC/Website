@@ -12,6 +12,7 @@
 		"preview": "astro preview",
 		"check": "astro check",
 		"build": "astro build && pnpm exec pagefind --site dist",
+		"test": "playwright test",
 		"astro": "astro",
 		"format": "prettier --write .",
 		"format:check": "prettier --check ."
@@ -33,6 +34,7 @@
 		"typescript": "^6.0.3"
 	},
 	"devDependencies": {
+		"@playwright/test": "1.62.1",
 		"@tailwindcss/typography": "^0.5.20",
 		"pagefind": "^1.5.2",
 		"playwright": "1.62.1",

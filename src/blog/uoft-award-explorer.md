@@ -3,10 +3,11 @@ title: 'UofT Award Explorer'
 description: 'The University of Toronto Award Explorer is a great resource for finding scholarships and awards tailored to your needs.'
 pubDate: 'Sep 8 2024'
 heroImage: '/assets/waiter-serving-money.webp'
+heroImageAlt: 'Person holding a tray of coins'
 tags: ['scholarships-bursaries-awards']
 ---
 
-# Discover Scholarships with UofT's Award Explorer
+## Discover scholarships with UofT's Award Explorer
 
 Are you a graduate student at the University of Toronto looking for financial support? The [Award Explorer](https://awardexplorer.utoronto.ca/) is your go-to resource for finding scholarships and awards tailored to your needs!
 

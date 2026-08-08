@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components'
 const site = await getEntry('site', 'site')
 if (!site) throw new Error('Missing site settings')
 const today = new Date()
-const iconName = { instagram: 'mdi:instagram', twitter: 'mdi:twitter', github: 'mdi:github' } as const
+const iconName = { instagram: 'mdi:instagram', github: 'mdi:github' } as const
 ---
 
 <footer

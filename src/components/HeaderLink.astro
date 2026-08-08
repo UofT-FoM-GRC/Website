@@ -15,7 +15,6 @@ const isActive = href === pathname || href === '/' + subpath?.[0]
 	class:list={[className, { 'font-semibold after:scale-x-100!': isActive }]}
 	{...props}
 	aria-current={isActive ? 'page' : undefined}
-	aria-label={props['aria-label'] || 'Go to ' + href}
 >
 	<slot />
 </a>

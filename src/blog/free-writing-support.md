@@ -3,6 +3,7 @@ title: 'Free Writing and Dissertation Support for UofT Graduate Students'
 description: 'UofT offers free access to professional development programming to support your thesis/dissertation writing task through NCFDD'
 pubDate: 'Jan 4 2026'
 heroImage: '/assets/writing-logo.webp'
+heroImageAlt: 'Writing support logo'
 tags: ['other']
 ---
 

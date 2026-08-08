@@ -3,10 +3,11 @@ title: 'Study Spaces for Graduate Students with Children'
 description: 'New study spaces designed for graduate students with children'
 pubDate: 'Oct 30 2025'
 heroImage: '/assets/robarts-family-study-space.webp'
+heroImageAlt: 'Family study space at Robarts Library'
 tags: ['other']
 ---
 
-# Trying to Study While Keeping an Eye on Your Kids? We've Got You
+## Study space while caring for children
 
 Being a grad student at UofT is hard enough. Being a parent at the same time feels like climbing Everest.
 

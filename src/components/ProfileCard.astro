@@ -17,12 +17,20 @@ const { name, position, image, imageAlt } = Astro.props
 			<img
 				src={image}
 				alt={imageAlt || `Portrait of ${name}`}
+				loading="lazy"
+				decoding="async"
+				width="320"
+				height="320"
 				class="mx-auto mb-4 aspect-square rounded-full object-center"
 			/>
 		) : (
 			<img
 				src="/teams/profile-avatar-placeholder.webp"
 				alt=""
+				loading="lazy"
+				decoding="async"
+				width="320"
+				height="320"
 				class="mx-auto mb-4 aspect-square rounded-full object-center"
 			/>
 		)

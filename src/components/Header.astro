@@ -12,18 +12,18 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 ---
 
 <header
-	x-data="{ isOpen: false, resourcesOpen: false, isDark: localStorage.getItem('grc-theme') === 'dark' }"
+	x-data="{ isOpen: false, resourcesOpen: false, isDark: document.documentElement.classList.contains('dark') }"
 	class="sticky top-0 z-50 bg-white shadow-md transition-colors duration-200 dark:bg-slate-900"
 >
-	<nav class="flex items-center justify-between p-2">
+	<nav class="flex items-center justify-between p-2" aria-label="Main navigation">
 		<div class="flex items-center gap-2">
 			<div class="logo rounded-full p-1 dark:bg-neutral-100">
 				<a href="/" aria-label="Go to UofT FoM GRC homepage"
 					><Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" /></a
 				>
-			</div><h2 class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
+			</div><div class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
 				<a href="/">{navigation.data.brand}</a>
-			</h2>
+			</div>
 		</div>
 		<div class="hidden items-center space-x-1 md:flex">
 			{
@@ -39,8 +39,9 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 			<div class="relative">
 				<button
 					@click="resourcesOpen = !resourcesOpen"
+					id="resources-menu-button"
 					class="flex items-center gap-1 px-4 py-2 text-xl text-slate-800 dark:text-slate-100"
-					aria-haspopup="true"
+					aria-controls="resources-menu"
 					:aria-expanded="resourcesOpen"
 					>{navigation.data.resourceLabel}<Icon
 						name="mdi:chevron-down"
@@ -49,6 +50,9 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 					/></button
 				><div
 					x-show="resourcesOpen"
+					x-cloak
+					id="resources-menu"
+					aria-labelledby="resources-menu-button"
 					@click.away="resourcesOpen = false"
 					@keydown.escape.window="resourcesOpen = false"
 					class="absolute right-0 mt-2 w-fit bg-white px-4 shadow-md dark:bg-slate-800"
@@ -66,7 +70,7 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 				</div>
 			</div>
 			<button
-				@click="$dispatch('open-search')"
+				@click="$dispatch('open-search', { opener: $el })"
 				class="flex items-center gap-2 px-2 py-1 text-slate-800 dark:text-slate-100"
 				aria-label="Open search"
 				><Icon name="mdi:magnify" class="h-8 w-8" /><span class="hidden lg:inline">Search</span></button
@@ -85,7 +89,7 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 				@click="isOpen = !isOpen"
 				class="text-slate-800 md:hidden dark:text-slate-100"
 				aria-controls="mobile-menu"
-				aria-label="Open mobile menu"
+				:aria-label="isOpen ? 'Close mobile menu' : 'Open mobile menu'"
 				:aria-expanded="isOpen"><Icon name="mdi:menu" class="h-8 w-8" /></button
 			><button
 				@click="isDark = !isDark; $dispatch('toggle-theme')"
@@ -112,6 +116,7 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 		<div
 			id="mobile-menu"
 			x-show="isOpen"
+			x-cloak
 			@click.away="isOpen = false"
 			@keydown.escape.window="isOpen = false"
 			class="absolute top-full right-0 left-0 bg-white shadow-md md:hidden dark:bg-slate-800"
@@ -128,9 +133,12 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 					))
 				}<button
 					@click="resourcesOpen = !resourcesOpen"
+					id="mobile-resources-menu-button"
 					class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
+					aria-controls="mobile-resources-menu"
+					:aria-expanded="resourcesOpen"
 					>{navigation.data.resourceLabel}<Icon name="mdi:chevron-down" class="h-7 w-7" /></button
-				><div x-show="resourcesOpen">
+				><div id="mobile-resources-menu" x-show="resourcesOpen" x-cloak>
 					{
 						navigation.data.resourceLinks.map((link) => (
 							<a
@@ -142,7 +150,7 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 						))
 					}
 				</div><button
-					@click="$dispatch('open-search')"
+					@click="$dispatch('open-search', { opener: $el })"
 					class="mt-2 ml-4 flex items-center gap-2 text-slate-800 dark:text-slate-100"
 					aria-label="Open search"><Icon name="mdi:magnify" class="h-8 w-8" /><span>Search</span></button
 				>

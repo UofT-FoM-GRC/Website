@@ -1,6 +1,7 @@
 {
 	"slug": "housing",
 	"title": "Housing",
+	"description": "Housing, emergency accommodation, and tenant-support resources for graduate students.",
 	"cardTitle": "Housing",
 	"cardImage": "/assets/uoft-placeholder-default.webp",
 	"cardImageAlt": "Housing resources",

@@ -10,9 +10,18 @@ const resources = BLOG_TAGS.map((tag) => bySlug.get(tag)).filter((resource): res
 )
 ---
 
-<BaseLayout>
-	<main class="container mx-auto min-h-screen px-4 py-8">
+<BaseLayout
+	title="Graduate student resources | Graduate Representation Committee"
+	description="Browse graduate student resources for employment, funding, wellness, housing, education, and more."
+>
+	<main id="main-content" data-pagefind-body class="container mx-auto min-h-screen px-4 py-8">
 		<section>
+			<header class="mb-10 max-w-3xl">
+				<h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100">Graduate student resources</h1>
+				<p class="mt-3 text-slate-700 dark:text-slate-300">
+					Find University of Toronto and community resources organized by graduate-student need.
+				</p>
+			</header>
 			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{
 					resources.map((resource) => (
@@ -26,7 +35,9 @@ const resources = BLOG_TAGS.map((tag) => bySlug.get(tag)).filter((resource): res
 									alt={resource.data.cardImageAlt}
 									width="720"
 									height="360"
-									class="aspect-video min-h-72 w-full object-cover object-center"
+									loading="lazy"
+									decoding="async"
+									class="aspect-video w-full object-cover object-center"
 								/>
 								<div class="p-4">
 									<h2 class="mb-2 text-xl font-bold text-slate-900 dark:text-slate-100">{resource.data.cardTitle}</h2>

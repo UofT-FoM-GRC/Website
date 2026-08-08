@@ -1,15 +1,21 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import FormattedDate from '../components/FormattedDate.astro'
+import { isExpiredOn } from '../utils/blog'
 import BaseLayout from './BaseLayout.astro'
 
 type Props = CollectionEntry<'blog'>['data']
 
-const { title, description, pubDate, updatedDate, heroImage, heroImageAlt } = Astro.props
+const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, status, expiresOn } = Astro.props
+const expired = isExpiredOn(expiresOn)
 ---
 
-<BaseLayout title={title} description={description}>
-	<main class="prose md:prose-lg lg:prose-xl dark:prose-invert container m-0 mx-auto w-full max-w-full p-4">
+<BaseLayout {title} {description} image={heroImage} imageAlt={heroImageAlt} article {pubDate} {updatedDate}>
+	<main
+		id="main-content"
+		data-pagefind-body
+		class="prose md:prose-lg lg:prose-xl dark:prose-invert container m-0 mx-auto w-full max-w-full p-4"
+	>
 		<article>
 			<div class="w-full">
 				{
@@ -20,11 +26,20 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageAlt } = As
 							height={510}
 							src={heroImage}
 							alt={heroImageAlt || ''}
+							fetchpriority="high"
 						/>
 					)
 				}
 			</div>
 			<div class="mx-auto max-w-prose p-4 text-gray-800 dark:text-gray-200">
+				{
+					(status === 'archived' || expired) && (
+						<aside class="not-prose mb-6 rounded border-l-4 border-amber-600 bg-amber-50 p-4 text-amber-950 dark:bg-amber-950 dark:text-amber-50">
+							<strong>{status === 'archived' ? 'Archived post.' : 'Expired post.'}</strong> This historical information
+							may no longer be current.
+						</aside>
+					)
+				}
 				<div class="mb-4 py-4 text-center">
 					<div class="mb-2 text-gray-600 dark:text-slate-400">
 						<FormattedDate date={pubDate} />

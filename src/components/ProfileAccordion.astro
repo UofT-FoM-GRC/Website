@@ -1,8 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components'
 import ProfileCard from './ProfileCard.astro'
+
 export type ProfileAccordionItem = {
 	year: string
+	current: boolean
 	members: Profile[]
 }
 
@@ -17,30 +19,26 @@ interface Props {
 	item: ProfileAccordionItem
 }
 
-const currentYear = new Date().getFullYear()
 const { item } = Astro.props
-let activeYear = item.year.startsWith(currentYear.toString()) ? item.year : ''
+const contentId = `accordion-content-${item.year.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`
 ---
 
-<div x-data={`{ activeYear: '${activeYear}' }`} class="foo my-4">
+<div x-data={`{ open: ${item.current} }`} class="my-4">
 	<button
-		@click={`activeYear = activeYear === '${item.year}' ? '' : '${item.year}'`}
+		@click="open = !open"
 		class="focus-visible:ring-opacity-50 flex w-full items-center justify-between bg-slate-800 px-4 py-2 text-left text-xl font-medium text-gray-100 transition-colors duration-200 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 xl:text-2xl dark:bg-slate-950 dark:text-slate-200"
-		aria-expanded={activeYear === item.year}
-		aria-controls={`accordion-content-${item.year}`}
+		:aria-expanded="open.toString()"
+		aria-controls={contentId}
 	>
 		<span>{item.year}</span>
-		<Icon
-			name="mdi:chevron-down"
-			class="h-7 w-7 transition-transform duration-200"
-			:class={`{ 'rotate-180': activeYear === '${item.year}' }`}
-		/>
+		<Icon name="mdi:chevron-down" class="h-7 w-7 transition-transform duration-200" :class="open ? 'rotate-180' : ''" />
 	</button>
 	<div
-		x-show={`activeYear === '${item.year}'`}
+		x-show="open"
+		x-cloak
 		x-transition
 		class="bg-slate-50 p-4 shadow-md transition-colors duration-200 dark:bg-slate-900"
-		id={`accordion-content-${item.year}`}
+		id={contentId}
 	>
 		<div class="container mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 			{

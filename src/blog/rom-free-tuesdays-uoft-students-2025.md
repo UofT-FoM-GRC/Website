@@ -3,6 +3,7 @@ title: 'The ROM is Free on Tuesdays for UofT Students'
 description: 'UofT students can access the Royal Ontario Museum for free every Tuesday with their student ID.'
 pubDate: 'Nov 20 2025'
 heroImage: '/assets/rom-dinosaur-fossil.webp'
+heroImageAlt: 'Dinosaur fossil exhibit at the Royal Ontario Museum'
 tags: ['other']
 ---
 
