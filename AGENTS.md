@@ -98,3 +98,10 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - **Source changes**: Create a page in `src/pages/` or change other source only during emergency developer work.
 - **Local site**: Run `pnpm dev` only for emergency developer work.
 - **Build**: Run `pnpm build` only for emergency developer work.
+
+## Playwright checks
+
+- Browser binaries are local generated tools. Install Chromium with `pnpm exec playwright install chromium`.
+- Use headless Playwright for visual/smoke checks.
+- Do not commit browser binaries or generated output.
+- Do not expand CI unless Playwright tests are deliberately adopted.
