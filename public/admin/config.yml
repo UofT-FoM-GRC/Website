@@ -261,7 +261,17 @@ collections:
             widget: list
             fields:
               - { label: Accessible Label, name: label, widget: string }
-              - { label: Destination URL, name: url, widget: string }
+              - {
+                  label: Destination URL,
+                  name: url,
+                  widget: string,
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, or tel: for telephone.',
+                  pattern:
+                    [
+                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                    ]
+                }
               - { label: Network, name: network, widget: select, options: [instagram, twitter, github] }
       - label: Navigation
         name: navigation

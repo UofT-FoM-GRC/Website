@@ -151,7 +151,11 @@ export const siteSchema = z.object({
 	description: z.string(),
 	contact: z.object({ email: z.email() }),
 	socialLinks: z.array(
-		z.object({ label: z.string(), url: z.url(), network: z.enum(['instagram', 'twitter', 'github']) })
+		z.object({
+			label: z.string(),
+			url: internalOrExternalUrlSchema,
+			network: z.enum(['instagram', 'twitter', 'github'])
+		})
 	)
 })
 
