@@ -35,11 +35,14 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "1.62.1",
+		"@sveltia/cms": "0.214.1",
 		"@tailwindcss/typography": "^0.5.20",
+		"ajv": "8.20.0",
 		"pagefind": "^1.5.2",
 		"playwright": "1.62.1",
 		"prettier": "^3.9.6",
 		"prettier-plugin-astro": "^0.14.1",
-		"prettier-plugin-tailwindcss": "^0.8.1"
+		"prettier-plugin-tailwindcss": "^0.8.1",
+		"yaml": "2.9.0"
 	}
 }

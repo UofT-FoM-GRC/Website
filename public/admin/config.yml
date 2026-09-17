@@ -1,9 +1,17 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.214.1/schema/sveltia-cms.json
+# Sveltia 0.214.1 is pinned for the technical rehearsal. Upgrade only after a new rehearsal.
 backend:
-  name: git-gateway
-  branch: dev
-  squash_merges: true
+  name: github
+  repo: UofT-FoM-GRC/Website
+  branch: main
+  auth_methods: [oauth]
 
 publish_mode: editorial_workflow
+site_url: https://uoftfomgrc.ca
+editor:
+  preview: false
+output:
+  omit_empty_optional_fields: true
 media_folder: public/assets
 public_folder: /assets
 
@@ -18,6 +26,7 @@ collections:
     identifier_field: title
     summary: '{{title}} — {{pubDate}}'
     sortable_fields: ['pubDate', 'title']
+    preview_path: '/blog/{{slug}}/'
     fields:
       - {
           label: Title,
@@ -112,7 +121,7 @@ collections:
           - { label: Continuing Education, value: continuing-education }
           - { label: Health & Wellness, value: health-wellness }
           - { label: Housing, value: housing }
-          - { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards }
+          - { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards }
           - { label: Scholarship/Award/Grant Application Support, value: scholarship-award-grant-application-support }
           - { label: Other, value: other }
       - {
@@ -129,8 +138,9 @@ collections:
     create: false
     identifier_field: title
     summary: '{{title}}'
+    preview_path: '/resources/{{slug}}/'
     fields: &resource_fields
-      - { label: Stable URL ID, name: slug, widget: hidden, hint: Fixed by the file name and route. }
+      - { label: Stable URL ID, name: slug, widget: hidden }
       - { label: Page Heading, name: title, widget: string }
       - {
           label: Page Description,
@@ -286,81 +296,32 @@ collections:
                       label: Destination URL,
                       name: url,
                       widget: string,
-                      hint: Include https:// for external links,
-                      mailto: for email,
-                      or tel: for telephone.
+                      hint: 'Include https:// for external links, mailto: for email, or tel: for telephone.'
                     }
-  - name: site_settings
-    label: Site Settings
+  - name: homepage_announcements
+    label: Homepage Announcements
     files:
-      - label: Contact and Social Links
-        name: site
-        file: src/data/site.json
+      - label: Homepage Announcements
+        name: announcements
+        file: src/data/announcements.json
+        preview_path: '/'
         fields:
-          - { label: Site Title, name: title, widget: string }
-          - { label: Site Description, name: description, widget: text }
-          - label: Contact
-            name: contact
-            widget: object
-            fields: [{ label: Public Email Address, name: email, widget: string }]
-          - label: Social Links
-            name: socialLinks
+          - label: Announcements
+            name: items
             widget: list
+            hint: Only active announcements appear below the homepage hero. Drag to set display order.
             fields:
-              - { label: Accessible Label, name: label, widget: string }
-              - {
-                  label: Destination URL,
-                  name: url,
-                  widget: string,
-                  hint: 'Include https:// for external links, / for internal links, mailto: for email, or tel: for telephone.',
-                  pattern:
-                    [
-                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
-                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
-                    ]
-                }
-              - { label: Network, name: network, widget: select, options: [instagram, github] }
-      - label: Navigation
-        name: navigation
-        file: src/data/navigation.json
-        fields:
-          - { label: Header Brand, name: brand, widget: string }
-          - label: Main Navigation Links
-            name: links
-            widget: list
-            fields: [{ label: Label, name: label, widget: string }, { label: URL, name: url, widget: string }]
-          - { label: Resources Menu Label, name: resourceLabel, widget: string }
-          - label: Resources Menu Links
-            name: resourceLinks
-            widget: list
-            min: 8
-            max: 8
-            fields:
-              [
-                { label: Label, name: label, widget: string },
-                {
-                  label: Resource Page,
-                  name: slug,
-                  widget: select,
-                  options:
-                    [
-                      { label: Employment, value: employment },
-                      { label: Career Planning & Exploration, value: career-planning-exploration },
-                      { label: Continuing Education, value: continuing-education },
-                      { label: Health & Wellness, value: health-wellness },
-                      { label: Housing, value: housing },
-                      { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards },
-                      {
-                        label: Scholarship/Award/Grant Application Support,
-                        value: scholarship-award-grant-application-support
-                      },
-                      { label: Other, value: other }
-                    ]
-                }
-              ]
+              - { label: Heading, name: title, widget: string }
+              - { label: Message, name: text, widget: text }
+              - { label: Optional Link URL, name: url, widget: string, required: false }
+              - { label: Show on Homepage, name: active, widget: boolean, default: false }
+  - name: homepage
+    label: Homepage
+    files:
       - label: Homepage
         name: homepage
         file: src/data/homepage.json
+        preview_path: '/'
         fields:
           - label: Hero
             name: hero
@@ -403,22 +364,13 @@ collections:
               - { label: Put Image First on Desktop, name: imageFirst, widget: boolean, default: false }
           - { label: Contact Heading, name: contactHeading, widget: string }
           - { label: Contact Text, name: contactText, widget: text }
-      - label: Homepage Announcements
-        name: announcements
-        file: src/data/announcements.json
-        fields:
-          - label: Announcements
-            name: items
-            widget: list
-            hint: Only active announcements appear below the homepage hero. Drag to set display order.
-            fields:
-              - { label: Heading, name: title, widget: string }
-              - { label: Message, name: text, widget: text }
-              - { label: Optional Link URL, name: url, widget: string, required: false }
-              - { label: Show on Homepage, name: active, widget: boolean, default: false }
+  - name: team_and_about
+    label: Team and About Page
+    files:
       - label: About Page and Team Archive
         name: team
         file: src/data/team.json
+        preview_path: '/about/'
         fields:
           - label: About Page
             name: about
@@ -469,3 +421,73 @@ collections:
                   - { label: Position, name: position, widget: string }
                   - { label: Photo, name: image, widget: image, required: false }
                   - { label: Photo Alternative Text, name: imageAlt, widget: string, required: false }
+  - name: advanced_site_settings
+    label: Advanced Site Settings
+    files:
+      - label: Navigation
+        name: navigation
+        file: src/data/navigation.json
+        preview_path: '/'
+        fields:
+          - { label: Header Brand, name: brand, widget: string }
+          - label: Main Navigation Links
+            name: links
+            widget: list
+            fields: [{ label: Label, name: label, widget: string }, { label: URL, name: url, widget: string }]
+          - { label: Resources Menu Label, name: resourceLabel, widget: string }
+          - label: Resources Menu Links
+            name: resourceLinks
+            widget: list
+            min: 8
+            max: 8
+            fields:
+              [
+                { label: Label, name: label, widget: string },
+                {
+                  label: Resource Page,
+                  name: slug,
+                  widget: select,
+                  options:
+                    [
+                      { label: Employment, value: employment },
+                      { label: Career Planning & Exploration, value: career-planning-exploration },
+                      { label: Continuing Education, value: continuing-education },
+                      { label: Health & Wellness, value: health-wellness },
+                      { label: Housing, value: housing },
+                      { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards },
+                      {
+                        label: Scholarship/Award/Grant Application Support,
+                        value: scholarship-award-grant-application-support
+                      },
+                      { label: Other, value: other }
+                    ]
+                }
+              ]
+      - label: Contact and Social Links
+        name: site
+        file: src/data/site.json
+        preview_path: '/'
+        fields:
+          - { label: Site Title, name: title, widget: string }
+          - { label: Site Description, name: description, widget: text }
+          - label: Contact
+            name: contact
+            widget: object
+            fields: [{ label: Public Email Address, name: email, widget: string }]
+          - label: Social Links
+            name: socialLinks
+            widget: list
+            fields:
+              - { label: Accessible Label, name: label, widget: string }
+              - {
+                  label: Destination URL,
+                  name: url,
+                  widget: string,
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, or tel: for telephone.',
+                  pattern:
+                    [
+                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                    ]
+                }
+              - { label: Network, name: network, widget: select, options: [instagram, github] }

@@ -2,3 +2,5 @@ engineStrict: true
 allowBuilds:
   esbuild: true
   sharp: true
+minimumReleaseAgeExclude:
+  - '@sveltia/cms@0.214.1'
