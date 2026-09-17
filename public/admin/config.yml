@@ -14,6 +14,18 @@ output:
   omit_empty_optional_fields: true
 media_folder: public/assets
 public_folder: /assets
+media_libraries:
+  default:
+    config:
+      # 10 MiB keeps browser-side processing responsive while accepting normal camera exports.
+      max_file_size: 10485760
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
 
 collections:
   - name: blog
@@ -99,14 +111,15 @@ collections:
           name: heroImage,
           widget: image,
           required: false,
-          hint: Optional banner. Uploads go to /assets.
+          accept: 'image/jpeg,image/png,image/webp',
+          hint: 'Optional banner. JPEG, PNG, and WebP uploads become optimized WebP files in /assets.'
         }
       - {
-          label: Hero Image Alternative Text,
+          label: Hero Image Description,
           name: heroImageAlt,
           widget: string,
           required: false,
-          hint: Describe the image. Required whenever an image conveys information.
+          hint: Describe the image. Required whenever a hero image is supplied.
         }
       - label: Tags
         name: tags
@@ -149,8 +162,14 @@ collections:
           hint: One or two sentences for search and page metadata.
         }
       - { label: Resource Card Title, name: cardTitle, widget: string, hint: Text on the Resources landing-page card. }
-      - { label: Resource Card Image, name: cardImage, widget: image }
-      - { label: Resource Card Image Alternative Text, name: cardImageAlt, widget: string }
+      - {
+          label: Resource Card Image,
+          name: cardImage,
+          widget: image,
+          required: true,
+          accept: 'image/jpeg,image/png,image/webp'
+        }
+      - { label: Resource Card Image Description, name: cardImageAlt, widget: string, required: true }
       - label: Page Sections
         name: sections
         widget: list
@@ -285,8 +304,20 @@ collections:
                     fields:
                       - { label: Link Text, name: label, widget: string }
                       - { label: Destination URL, name: url, widget: string }
-              - { label: Card Image, name: image, widget: image, required: false }
-              - { label: Card Image Alternative Text, name: imageAlt, widget: string, required: false }
+              - {
+                  label: Card Image,
+                  name: image,
+                  widget: image,
+                  required: false,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - {
+                  label: Card Image Description,
+                  name: imageAlt,
+                  widget: string,
+                  required: false,
+                  hint: Required whenever a card image is supplied.
+                }
               - label: Links
                 name: links
                 widget: list
@@ -327,8 +358,14 @@ collections:
             name: hero
             widget: object
             fields:
-              - { label: Hero Image, name: image, widget: image }
-              - { label: Hero Image Alternative Text, name: imageAlt, widget: string }
+              - {
+                  label: Hero Image,
+                  name: image,
+                  widget: image,
+                  required: true,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - { label: Hero Image Description, name: imageAlt, widget: string, required: true }
               - {
                   label: Hero Lines,
                   name: lines,
@@ -358,8 +395,8 @@ collections:
                     { label: Link Text, name: label, widget: string },
                     { label: Destination URL, name: url, widget: string }
                   ]
-              - { label: Image, name: image, widget: image }
-              - { label: Image Alternative Text, name: imageAlt, widget: string }
+              - { label: Image, name: image, widget: image, required: true, accept: 'image/jpeg,image/png,image/webp' }
+              - { label: Image Description, name: imageAlt, widget: string, required: true }
               - { label: Background Tone, name: tone, widget: select, options: [dark, light] }
               - { label: Put Image First on Desktop, name: imageFirst, widget: boolean, default: false }
           - { label: Contact Heading, name: contactHeading, widget: string }
@@ -378,8 +415,14 @@ collections:
             fields:
               - { label: Page Title, name: title, widget: string }
               - { label: Introduction, name: description, widget: text }
-              - { label: Hero Image, name: heroImage, widget: image }
-              - { label: Hero Image Alternative Text, name: heroImageAlt, widget: string }
+              - {
+                  label: Hero Image,
+                  name: heroImage,
+                  widget: image,
+                  required: true,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - { label: Hero Image Description, name: heroImageAlt, widget: string, required: true }
               - { label: Purpose Heading, name: purposeTitle, widget: string }
               - {
                   label: Purpose Paragraphs,
@@ -419,8 +462,20 @@ collections:
                 fields:
                   - { label: Name, name: name, widget: string }
                   - { label: Position, name: position, widget: string }
-                  - { label: Photo, name: image, widget: image, required: false }
-                  - { label: Photo Alternative Text, name: imageAlt, widget: string, required: false }
+                  - {
+                      label: Photo,
+                      name: image,
+                      widget: image,
+                      required: false,
+                      accept: 'image/jpeg,image/png,image/webp'
+                    }
+                  - {
+                      label: Photo Description,
+                      name: imageAlt,
+                      widget: string,
+                      required: false,
+                      hint: Required whenever a photo is supplied.
+                    }
   - name: advanced_site_settings
     label: Advanced Site Settings
     files:

@@ -10,6 +10,8 @@ const sveltiaVersion = '0.214.1'
 type Field = {
 	name: string
 	widget?: string
+	required?: boolean
+	accept?: string
 	options?: unknown[]
 	field?: Field
 	fields?: Field[]
@@ -32,6 +34,17 @@ type Config = {
 	site_url: string
 	editor: { preview: boolean }
 	output: { omit_empty_optional_fields: boolean }
+	media_libraries?: {
+		default?: {
+			config?: {
+				max_file_size?: number
+				slugify_filename?: boolean
+				transformations?: {
+					raster_image?: { format?: string; quality?: number; width?: number; height?: number }
+				}
+			}
+		}
+	}
 	collections: Collection[]
 }
 
@@ -116,6 +129,83 @@ test('Sveltia foundation has the reviewed GitHub editorial workflow settings', (
 	expect(config.site_url).toBe('https://uoftfomgrc.ca')
 	expect(config.editor).toEqual({ preview: false })
 	expect(config.output).toEqual({ omit_empty_optional_fields: true })
+})
+
+test('Sveltia normalizes routine raster uploads in repository media', () => {
+	const { config } = readConfig()
+
+	expect(config.media_libraries).toEqual({
+		default: {
+			config: {
+				max_file_size: 10 * 1024 * 1024,
+				slugify_filename: true,
+				transformations: {
+					raster_image: { format: 'webp', quality: 85, width: 2048, height: 2048 }
+				}
+			}
+		}
+	})
+})
+
+test('every CMS image field accepts routine raster formats and has an image-description partner', () => {
+	const { config } = readConfig()
+	const imageFields: Array<{ fields: Field[]; image: string; description: string; imageRequired: boolean }> = [
+		{
+			fields: getCollection(config, 'blog').fields!,
+			image: 'heroImage',
+			description: 'heroImageAlt',
+			imageRequired: false
+		},
+		{
+			fields: getCollection(config, 'resources').fields!,
+			image: 'cardImage',
+			description: 'cardImageAlt',
+			imageRequired: true
+		},
+		{
+			fields: getField(getField(getCollection(config, 'resources').fields!, 'sections').fields!, 'cards').fields!,
+			image: 'image',
+			description: 'imageAlt',
+			imageRequired: false
+		},
+		{
+			fields: getField(getCollection(config, 'homepage').files![0].fields, 'hero').fields!,
+			image: 'image',
+			description: 'imageAlt',
+			imageRequired: true
+		},
+		{
+			fields: getField(getCollection(config, 'homepage').files![0].fields, 'featureSections').fields!,
+			image: 'image',
+			description: 'imageAlt',
+			imageRequired: true
+		},
+		{
+			fields: getField(getCollection(config, 'team_and_about').files![0].fields, 'about').fields!,
+			image: 'heroImage',
+			description: 'heroImageAlt',
+			imageRequired: true
+		},
+		{
+			fields: getField(getField(getCollection(config, 'team_and_about').files![0].fields, 'years').fields!, 'members')
+				.fields!,
+			image: 'image',
+			description: 'imageAlt',
+			imageRequired: false
+		}
+	]
+
+	for (const { fields, image, description, imageRequired } of imageFields) {
+		expect(getField(fields, image)).toMatchObject({
+			widget: 'image',
+			required: imageRequired,
+			accept: 'image/jpeg,image/png,image/webp'
+		})
+		expect(getField(fields, description)).toMatchObject({
+			widget: 'string',
+			required: imageRequired
+		})
+	}
 })
 
 test('Sveltia exposes task areas and route-specific site previews', () => {

@@ -21,6 +21,21 @@ const optionalCmsStringSchema = z.preprocess(emptyStringToUndefined, requiredStr
 
 const optionalCmsDateSchema = z.preprocess(emptyStringToUndefined, z.coerce.date().optional())
 
+const requireImageDescription =
+	<ImageKey extends string, DescriptionKey extends string>(imageKey: ImageKey, descriptionKey: DescriptionKey) =>
+	(
+		{ [imageKey]: image, [descriptionKey]: description }: Partial<Record<ImageKey | DescriptionKey, unknown>>,
+		context: z.RefinementCtx
+	) => {
+		if (image && !description) {
+			context.addIssue({
+				code: 'custom',
+				path: [descriptionKey],
+				message: 'Image description is required when an image is set.'
+			})
+		}
+	}
+
 // Blog Schema
 export const blogSchema = z
 	.object({
@@ -37,13 +52,7 @@ export const blogSchema = z
 		contentOwner: optionalCmsStringSchema.default('GRC')
 	})
 	.superRefine((post, context) => {
-		if (post.heroImage && !post.heroImageAlt) {
-			context.addIssue({
-				code: 'custom',
-				path: ['heroImageAlt'],
-				message: 'Alternative text is required when a hero image is set.'
-			})
-		}
+		requireImageDescription('heroImage', 'heroImageAlt')(post, context)
 		if (post.expiresOn && post.expiresOn < post.pubDate) {
 			context.addIssue({ code: 'custom', path: ['expiresOn'], message: 'Expiry must not predate publication.' })
 		}
@@ -100,15 +109,7 @@ const resourceCardSchema = z
 		image: optionalCmsStringSchema,
 		imageAlt: optionalCmsStringSchema
 	})
-	.superRefine((card, context) => {
-		if (card.image && !card.imageAlt) {
-			context.addIssue({
-				code: 'custom',
-				path: ['imageAlt'],
-				message: 'Alternative text is required when an image is set.'
-			})
-		}
-	})
+	.superRefine(requireImageDescription('image', 'imageAlt'))
 
 export const resourceSchema = z
 	.object({
@@ -160,6 +161,15 @@ export const homepageSchema = z.object({
 	contactText: requiredStringSchema
 })
 
+const teamMemberImageSchema = z
+	.object({
+		name: requiredStringSchema,
+		position: requiredStringSchema,
+		image: optionalCmsStringSchema,
+		imageAlt: optionalCmsStringSchema
+	})
+	.superRefine(requireImageDescription('image', 'imageAlt'))
+
 export const teamSchema = z
 	.object({
 		about: z.object({
@@ -177,14 +187,7 @@ export const teamSchema = z
 			z.object({
 				year: requiredStringSchema,
 				current: z.boolean().default(false),
-				members: z.array(
-					z.object({
-						name: requiredStringSchema,
-						position: requiredStringSchema,
-						image: optionalCmsStringSchema,
-						imageAlt: optionalCmsStringSchema
-					})
-				)
+				members: z.array(teamMemberImageSchema)
 			})
 		)
 	})
