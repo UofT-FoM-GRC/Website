@@ -105,3 +105,13 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - Use headless Playwright for visual/smoke checks.
 - Do not commit browser binaries or generated output.
 - Do not expand CI unless Playwright tests are deliberately adopted.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs use local Markdown under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+This is a single-context repository using root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
