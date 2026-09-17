@@ -1,0 +1,22 @@
+{
+	"brand": "UofT FoM GRC",
+	"links": [
+		{ "label": "Home", "url": "/" },
+		{ "label": "About", "url": "/about" },
+		{ "label": "Blog", "url": "/blog" }
+	],
+	"resourceLabel": "Resources",
+	"resourceLinks": [
+		{ "label": "Health & Wellness", "slug": "health-wellness" },
+		{ "label": "Housing", "slug": "housing" },
+		{ "label": "Continuing Education", "slug": "continuing-education" },
+		{ "label": "Scholarships/Bursaries/Awards", "slug": "scholarships-bursaries-awards" },
+		{
+			"label": "Scholarship/Award/Grant Application Support",
+			"slug": "scholarship-award-grant-application-support"
+		},
+		{ "label": "Employment", "slug": "employment" },
+		{ "label": "Career Planning/Exploration", "slug": "career-planning-exploration" },
+		{ "label": "Other", "slug": "other" }
+	]
+}

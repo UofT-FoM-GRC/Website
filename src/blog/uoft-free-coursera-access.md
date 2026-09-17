@@ -3,10 +3,11 @@ title: 'Free Coursera Access for UofT Students'
 description: 'Coursera is a free resource for UofT students.'
 pubDate: 'Nov 30 2024'
 heroImage: '/assets/coursera-logo.webp'
+heroImageAlt: 'Coursera logo'
 tags: ['career-planning-exploration']
 ---
 
-# Exciting Opportunity for U of T Medicine Students: Free Coursera Access!
+## Free Coursera access for U of T Medicine students
 
 We are thrilled to announce that the University of Toronto is now a proud member of the Coursera Partner Consortium! This initiative allows universities to share massive open online courses (MOOCs) with other participating Coursera partners, providing an incredible opportunity for our students.
 

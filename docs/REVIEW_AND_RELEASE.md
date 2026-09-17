@@ -5,7 +5,7 @@ Release webmaster routine: GitHub and Netlify browser only. Do not clone, use Gi
 ## Review content for `dev`
 
 1. Open the Decap draft or its associated pull request. Confirm it targets `dev`.
-2. Check changed text and frontmatter: dates, tags, links, image paths, alternative text, and factual claims.
+2. Check changed data: blog dates/tags/body, resource slugs/section IDs/links, homepage and announcement wording, navigation, contact/social links, and team order/photos/alternative text.
 3. Confirm required checks pass: `Validate` and `netlify/uoft-fom-grc/deploy-preview`.
 4. Open the Netlify preview. Check layout, navigation, changed page, and mobile view.
 5. Send feedback, or give the content editor a publish go-ahead. The editor publishes through Decap to `dev`.
@@ -46,7 +46,8 @@ This Netlify site uses a Legacy Free usage-based plan with one concurrent build.
 - Homepage loads at <https://uoftfomgrc.ca>.
 - Desktop and mobile navigation work.
 - Blog index and changed post load; images and alternative text are correct.
-- Resource pages load.
+- All eight resource pages load; changed card links work.
+- About page loads; changed team year/member order, names, positions, photos, and alternative text are correct.
 - Search opens and returns a known term.
 - Light and dark themes work.
 - CMS login page loads at <https://uoftfomgrc.ca/admin/>.

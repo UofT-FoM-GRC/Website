@@ -3,10 +3,11 @@ title: 'Unlock LinkedIn Learning as a UofT Faculty TA'
 description: 'The University of Toronto Faculty TA LinkedIn Learning is a great opportunity to network with top employers and learn about potential career paths.'
 pubDate: 'Sep 7 2024'
 heroImage: '/assets/linkedin-learning.webp'
+heroImageAlt: 'LinkedIn Learning logo'
 tags: ['continuing-education']
 ---
 
-# Unlock LinkedIn Learning with Your Faculty Status
+## Unlock LinkedIn Learning with your Faculty status
 
 Are you a graduate student working as a Teaching Assistant (TA) at the University of Toronto? If so, you have an incredible opportunity to access LinkedIn Learning for free through your faculty status!
 

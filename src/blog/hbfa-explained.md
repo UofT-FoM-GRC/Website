@@ -3,6 +3,7 @@ title: 'The HBFA Explained - 2024/2025'
 description: 'A succinct explanation of the Harmonized Base Funding Agreement (HBFA) and its impact on graduate students'
 pubDate: 'Nov 1 2024'
 heroImage: '/assets/fom-backgrounds/ffom-zoom-backgrounds-4-1080.webp'
+heroImageAlt: 'Faculty of Medicine branded background'
 tags: ['other']
 ---
 

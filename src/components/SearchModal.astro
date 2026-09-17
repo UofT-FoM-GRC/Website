@@ -1,80 +1,179 @@
 <div
-	x-data="{ 
+	x-data={`{
 		isOpen: false,
-		focusSearch() {
+		opener: null,
+		open(event) {
+			this.opener = event.detail?.opener || document.activeElement
+			this.isOpen = true
 			this.$nextTick(() => {
-				document.querySelector('.pagefind-ui__search-input')?.focus();
-			});
+				window.requestAnimationFrame(() => document.getElementById('search-close')?.focus())
+				window.dispatchEvent(new CustomEvent('pagefind-open'))
+			})
+		},
+		close() {
+			this.isOpen = false
+			this.$nextTick(() => this.opener?.focus())
+		},
+		trap(event) {
+			const focusable = [...this.$refs.dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+			if (!focusable.length) return
+			const first = focusable[0]
+			const last = focusable[focusable.length - 1]
+			if (event.shiftKey && document.activeElement === first) {
+				event.preventDefault()
+				last.focus()
+			} else if (!event.shiftKey && document.activeElement === last) {
+				event.preventDefault()
+				first.focus()
+			}
 		}
-	}"
-	@open-search.window="isOpen = true; focusSearch()"
-	@keydown.window.escape="isOpen = false"
+	}`}
+	@open-search.window="open($event)"
+	@keydown.window.escape="if (isOpen) close()"
 	x-show="isOpen"
-	style="display: none;"
+	x-cloak
 	class="fixed inset-0 z-50"
-	x-transition:enter="transition ease-out duration-300"
-	x-transition:enter-start="opacity-0"
-	x-transition:enter-end="opacity-100"
-	x-transition:leave="transition ease-in duration-200"
-	x-transition:leave-start="opacity-100"
-	x-transition:leave-end="opacity-0"
 >
-	<!-- Backdrop -->
-	<div class="bg-opacity-75 dark:bg-opacity-90 fixed inset-0 bg-gray-500 dark:bg-slate-900" @click="isOpen = false">
-	</div>
-
-	<!-- Modal -->
-	<div class="fixed inset-0 z-10 p-4 sm:p-6 md:p-20">
+	<div class="fixed inset-0 bg-slate-900/75" @click="close()"></div>
+	<div class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
 		<div
-			@click.outside="isOpen = false"
-			class="ring-opacity-5 mx-auto max-w-3xl transform divide-y divide-gray-100 rounded-xl bg-white shadow-2xl ring-1 ring-black transition-colors duration-200 dark:divide-slate-700 dark:bg-slate-800"
+			x-ref="dialog"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="search-dialog-title"
+			class="mx-auto max-w-3xl divide-y divide-gray-100 rounded-xl bg-white shadow-2xl ring-1 ring-black/5 dark:divide-slate-700 dark:bg-slate-800"
+			@keydown.tab="trap($event)"
 		>
-			<div id="search" class="h-full w-full p-4" transition:persist></div>
+			<div class="flex items-center justify-between gap-4 p-4">
+				<h2 id="search-dialog-title" class="text-2xl font-bold text-slate-900 dark:text-slate-100">Search this site</h2>
+				<button
+					id="search-close"
+					x-ref="close"
+					@click="close()"
+					class="rounded px-3 py-2 font-semibold text-slate-800 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-slate-100 dark:hover:bg-slate-700"
+				>
+					Close search
+				</button>
+			</div>
+			<div class="p-4">
+				<p id="search-status" class="sr-only" role="status" aria-live="polite"></p>
+				<p id="search-error" class="hidden text-red-700 dark:text-red-300" role="alert"></p>
+				<div id="search" class="h-full w-full" transition:persist></div>
+			</div>
 		</div>
 	</div>
 </div>
 
 <script>
 	let searchInstance: any = null
+	let pagefindLoader: Promise<void> | null = null
+	let searchInitializer: Promise<void> | null = null
 
-	window.addEventListener('DOMContentLoaded', () => {
-		const PagefindUI = (window as any).PagefindUI
+	function setStatus(message: string) {
+		document.querySelector('#search-status')?.replaceChildren(message)
+	}
 
-		if (!searchInstance && typeof PagefindUI === 'function') {
-			searchInstance = new PagefindUI({
-				element: '#search',
-				showSubResults: true,
-				showImages: false,
-				resetStyles: false
-			})
-		} else if (!PagefindUI) {
-			const searchElement = document.querySelector('#search')
-			if (searchElement) searchElement.textContent = 'Search is available after a production build.'
+	function setError(message: string) {
+		const error = document.querySelector('#search-error')
+		error?.replaceChildren(message)
+		error?.classList.remove('hidden')
+	}
+
+	function clearError() {
+		document.querySelector('#search-error')?.classList.add('hidden')
+	}
+
+	function focusSearch() {
+		if (!document.querySelector('[role="dialog"]')?.getClientRects().length) return
+		const input = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input')
+		if (input) {
+			input.focus()
+			return
+		}
+
+		const target = document.querySelector('#search')
+		if (!target) return
+		const observer = new MutationObserver(() => {
+			const delayedInput = document.querySelector<HTMLInputElement>('.pagefind-ui__search-input')
+			if (delayedInput) {
+				delayedInput.focus()
+				observer.disconnect()
+			}
+		})
+		observer.observe(target, { childList: true, subtree: true })
+		window.setTimeout(() => observer.disconnect(), 5_000)
+	}
+
+	function scheduleSearchFocus() {
+		focusSearch()
+		window.setTimeout(focusSearch, 100)
+		window.setTimeout(focusSearch, 500)
+	}
+
+	function loadPagefind() {
+		if (pagefindLoader) return pagefindLoader
+		pagefindLoader = new Promise((resolve, reject) => {
+			const stylesheet = document.createElement('link')
+			stylesheet.rel = 'stylesheet'
+			stylesheet.href = '/pagefind/pagefind-ui.css'
+			document.head.append(stylesheet)
+			const script = document.createElement('script')
+			script.src = '/pagefind/pagefind-ui.js'
+			script.async = true
+			script.onload = () => resolve()
+			script.onerror = () => reject(new Error('Pagefind assets are unavailable'))
+			document.head.append(script)
+		})
+		return pagefindLoader
+	}
+
+	function initializeSearch() {
+		if (!searchInitializer) {
+			searchInitializer = (async () => {
+				await loadPagefind()
+				const PagefindUI = (window as any).PagefindUI
+				if (typeof PagefindUI !== 'function') throw new Error('Pagefind did not load')
+				searchInstance = new PagefindUI({
+					element: '#search',
+					showSubResults: true,
+					showImages: false,
+					resetStyles: false
+				})
+			})()
+		}
+		return searchInitializer
+	}
+
+	window.addEventListener('pagefind-open', async () => {
+		const target = document.querySelector('#search')
+		if (!target || searchInstance) {
+			scheduleSearchFocus()
+			return
+		}
+		clearError()
+		setStatus('Loading search.')
+		try {
+			await initializeSearch()
+			setStatus('Search ready.')
+			scheduleSearchFocus()
+		} catch {
+			setStatus('Search is unavailable. Try again after the site finishes building.')
+			setError('Search is unavailable. Try again after the site finishes building.')
 		}
 	})
 </script>
 
 <style is:global>
-	/* Make the form full width */
-	#search .pagefind-ui .pagefind-ui__form {
-		width: 100% !important;
-		margin: 0 !important;
-	}
-
-	#search .pagefind-ui .pagefind-ui__search-input {
-		width: 100% !important;
-	}
-
+	#search .pagefind-ui .pagefind-ui__form,
+	#search .pagefind-ui .pagefind-ui__search-input,
 	#search .pagefind-ui .pagefind-ui__results-area {
 		width: 100% !important;
 	}
 
-	/* Hide the default loading text */
-	#search .pagefind-ui__message {
-		display: none;
+	#search .pagefind-ui .pagefind-ui__form {
+		margin: 0 !important;
 	}
 
-	/* Dark mode support for pagefind */
 	html.dark #search .pagefind-ui {
 		--pagefind-ui-primary: #64748b;
 		--pagefind-ui-text: #e2e8f0;
@@ -91,34 +190,5 @@
 
 	html.dark #search .pagefind-ui__search-input::placeholder {
 		color: #94a3b8 !important;
-	}
-
-	html.dark #search .pagefind-ui__search-clear {
-		color: #cbd5e1 !important;
-		background: #1e293b !important;
-		border: none !important;
-		padding: 0 1rem !important;
-		font-size: medium !important;
-	}
-
-	html.dark #search .pagefind-ui__search-clear:hover {
-		color: #e2e8f0 !important;
-	}
-
-	html.dark #search .pagefind-ui__results-area {
-		background: #1e293b !important;
-		border-color: #334155 !important;
-	}
-
-	html.dark #search .pagefind-ui__result {
-		border-color: #334155 !important;
-	}
-
-	html.dark #search .pagefind-ui__result-title {
-		color: #e2e8f0 !important;
-	}
-
-	html.dark #search .pagefind-ui__result-excerpt {
-		color: #cbd5e1 !important;
 	}
 </style>

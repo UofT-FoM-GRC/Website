@@ -55,14 +55,12 @@
 	/* Light mode */
 	:root {
 		color-scheme: light;
-		--gray-gradient: linear-gradient(45deg, #e0e7ff 0%, #f3e8ff 100%);
 		--gray-dark: 51, 65, 85; /* slate-700 rgb values */
 	}
 
 	/* Dark mode */
 	html.dark {
 		color-scheme: dark;
-		--gray-gradient: linear-gradient(45deg, #0f172a 0%, #1e293b 100%);
 		--gray-dark: 226, 232, 240; /* slate-100 rgb values */
 	}
 
@@ -71,8 +69,7 @@
 		margin: 0;
 		padding: 0;
 		text-align: left;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		background-size: 100% 600px;
+		background: #f8fafc;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		color: rgb(var(--gray-dark));
@@ -86,6 +83,37 @@
 	html.dark body {
 		background: #0f172a;
 		color: #e2e8f0;
+	}
+}
+
+[x-cloak] {
+	display: none !important;
+}
+
+.skip-link {
+	position: fixed;
+	top: 0.5rem;
+	left: 0.5rem;
+	z-index: 100;
+	transform: translateY(-200%);
+	border-radius: 0.25rem;
+	background: #1d4ed8;
+	padding: 0.5rem 1rem;
+	color: white;
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }
 

@@ -19,7 +19,7 @@ Netlify restore does not repair Git source, and the next Git-triggered productio
 
 For a clear failed release, release webmaster uses GitHub's **Revert** action on the failed release pull request to create a revert pull request targeting `main`. Self-review it; confirm `Validate` and `netlify/uoft-fom-grc/deploy-preview`; then merge with **Create a merge commit**. Never force-push or rewrite history.
 
-Keep releases paused until the emergency developer confirms that `dev` is reconciled. For CMS-only content, a content editor makes the equivalent correction through Decap after webmaster review; the emergency developer verifies branch state. For code, configuration, mixed releases, or any conflict, the emergency developer makes the corrective change. Without this work, the next `dev` to `main` release can restore the failed change.
+Keep releases paused until the emergency developer confirms that `dev` is reconciled. For CMS-only blog, resource, homepage, navigation, site-setting, or team content, a content editor makes the equivalent correction through the current CMS after webmaster review; the emergency developer verifies branch state. For code, configuration, mixed releases, or any conflict, the emergency developer makes the corrective change. Without this work, the next `dev` to `main` release can restore the failed change.
 
 ## Emergency boundary
 

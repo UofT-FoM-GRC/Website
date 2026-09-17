@@ -1,53 +1,37 @@
 # Architecture
 
-## System flow
+## Content flow
 
-1. Content editor uses Decap CMS at `/admin/` for blog posts. They save a draft, receive release-webmaster go-ahead, then publish to `dev`.
-2. Netlify Identity authenticates CMS users; Git Gateway writes editorial workflow changes targeting `dev`.
-3. Release webmaster uses browser-only GitHub and Netlify review. Required checks are `Validate` and `netlify/uoft-fom-grc/deploy-preview`.
-4. Release webmaster self-reviews and merge-commits release pull requests from `dev` to `main`.
-5. Netlify hosts production from `main`, creates branch deploys for `dev`, and deploy previews for pull requests against either branch.
-6. Emergency developer handles local Git, code, configuration, dependencies, conflicts, broken checks, access recovery, and complex rollback.
-7. Astro produces static pages and optimized image files without a deployment adapter; Pagefind indexes built `dist` output during `pnpm build`.
+1. Editor uses Decap at `/admin/`; Netlify Identity + Git Gateway writes approved CMS changes to `dev`.
+2. Netlify builds `dev`. Webmaster reviews exact branch deploy.
+3. Webmaster manually opens `dev` → `main` PR, confirms checks/preview, then merge-commits. Netlify deploys `main` to production.
+4. Astro renders static HTML; Tailwind classes remain in Astro components; Pagefind indexes `dist` during build.
 
-GitHub protection, Netlify deployment, Identity, and billing controls are external settings that repository files cannot prove. Record required values and acceptance checks in the organization's private handoff record.
+## CMS data model
 
-## Components
+| Location                      | CMS content                                                    | Render owner             |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------ |
+| `src/blog/*.md`               | Blog frontmatter and Markdown body                             | Blog layouts/cards       |
+| `src/data/resources/*.json`   | Eight fixed resource URLs, cards, links, order                 | `ResourcePage.astro`     |
+| `src/data/homepage.json`      | Hero, sections, images, wording, contact wording               | Homepage                 |
+| `src/data/announcements.json` | Homepage announcements and display order                       | Homepage                 |
+| `src/data/team.json`          | About wording, current/past team years, members, photos, order | About/profile components |
+| `src/data/navigation.json`    | Header navigation and resource-menu labels/order               | Header                   |
+| `src/data/site.json`          | Site metadata, public contact email, social links              | Layout, header, footer   |
 
-| Component                      | Purpose                                                    |
-| ------------------------------ | ---------------------------------------------------------- |
-| Astro                          | Static site framework and build.                           |
-| Tailwind CSS                   | Styling.                                                   |
-| Alpine.js                      | Browser interactivity.                                     |
-| Decap CMS                      | Browser editor for blog content.                           |
-| Netlify Identity + Git Gateway | CMS authentication and repository write path.              |
-| GitHub                         | Source control, issues, pull requests, CI, and Dependabot. |
-| Netlify                        | Production hosting and deployment.                         |
-| Pagefind                       | Static full-text search index.                             |
+`src/schemas.ts` validates every data source through Astro collections in `src/content.config.ts`. Immutable resource slugs match blog tag IDs and preserve all eight URLs. Resource-menu entries store a resource slug, not a copied URL, so menu links cannot drift from resource routes.
 
-## Repository map
+`src/utils/cmsAssets.ts` maps existing source images to emitted URLs. New CMS images live in `public/assets/` and are referenced directly. Current imagery remains visible; future images need no code work.
 
-| Location                                                | Controls                                                                 |
-| ------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `src/pages/`                                            | Routes: home, blog, about, resources, RSS.                               |
-| `src/components/`                                       | Shared page components, navigation, footer, search.                      |
-| `src/layouts/`                                          | Shared page and post layouts.                                            |
-| `src/styles/`                                           | Global styles.                                                           |
-| `src/blog/`                                             | CMS-managed Markdown blog posts.                                         |
-| `src/content.config.ts`, `src/schemas.ts`               | Blog collection and validation schema.                                   |
-| `public/assets/`                                        | Public images and static assets.                                         |
-| `public/admin/config.yml`                               | Decap CMS backend, target branch, collections, and fields.               |
-| `astro.config.mjs`                                      | Astro integrations, site URL, static output, and build configuration.    |
-| `netlify.toml`                                          | Netlify build command, publish directory, Node version.                  |
-| `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml` | Scripts, pinned pnpm, dependencies, dependency graph, build permissions. |
-| `.github/`                                              | CI workflow, Dependabot, pull request template, issue forms.             |
+## CMS routes and cutover state
 
-## Change boundaries
+- **Now:** `/admin/` loads pinned Decap `3.15.1`, Netlify Identity, Git Gateway, and editorial workflow. Operational.
+- **Staged:** `/cms/` loads pinned Sveltia `0.181.1`. It merges shared collection configuration from `/admin/config.yml` with `/cms/backend.yml`, replacing only backend settings with GitHub OAuth on `dev`.
+- **Blocker:** Sveltia official docs state Git Gateway and Netlify Identity are unsupported. GitHub authorization-code flow needs GitHub OAuth app linked as Netlify site OAuth provider. This external Netlify/GitHub setting is not installed and cannot be stored in repository. Sveltia editorial workflow is also unimplemented, so post-cutover saving is direct-to-`dev`; Netlify `dev` deploy remains review authority.
+- **Cutover:** organization administrator registers/links GitHub OAuth in Netlify, grants webmaster GitHub repository write access, tests `/cms/` on `dev`, checks one no-op/content change and Netlify deploy, then advertises `/cms/`. Retain `/admin/` during rollback window. Do not remove Identity/Git Gateway before successful production rehearsal.
 
-CMS manages only `src/blog/` and uploads under `public/assets/`. It does not manage navigation, resources, team roster, homepage, or CMS configuration. Those changes need emergency-developer work and a pull request targeting `dev`.
+Sveltia docs: <https://sveltiacms.app/en/docs/backends>, <https://sveltiacms.app/en/docs/backends/github>, <https://sveltiacms.app/en/docs/migration/netlify-decap-cms>.
 
-Generated directories include `node_modules/`, `.astro/`, and `dist/`; do not edit or commit them. Local development is emergency-developer-only. See [local development](LOCAL_DEVELOPMENT.md) and [review and release](REVIEW_AND_RELEASE.md).
+## Boundaries
 
-TypeScript remains at `6.0.3`: latest TypeScript 7 is outside `@astrojs/check` `0.9.10` peer range (`^5.0.0 || ^6.0.0`). This is the only direct-package compatibility exception.
-
-Netlify needs no Astro adapter for this fully static build. `netlify.toml` publishes `dist`; Netlify Identity and Git Gateway are hosting services used by the static Decap files under `public/admin/`, not Astro server features. `/admin/` is served from the copied `dist/admin/index.html` directory index without a redirect rule.
+CMS manages meaningful site content and images, not components, Tailwind, schemas, CMS backend configuration, dependencies, or deployment configuration. Generated `node_modules/`, `.astro/`, and `dist/` are never committed. Emergency developer owns code/config/dependency/access recovery.

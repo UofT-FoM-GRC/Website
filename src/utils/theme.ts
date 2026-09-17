@@ -11,10 +11,12 @@ type Theme = 'light' | 'dark'
 export function getCurrentTheme(): Theme {
 	if (typeof window === 'undefined') return 'light'
 
-	const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null
-	console.log('[theme.ts] getCurrentTheme() - stored value:', stored)
-
-	// Default to light if nothing stored
+	let stored: Theme | null = null
+	try {
+		stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null
+	} catch {
+		// Storage is optional; the document class remains the source of truth.
+	}
 	return stored === 'dark' ? 'dark' : 'light'
 }
 
@@ -22,26 +24,15 @@ export function getCurrentTheme(): Theme {
  * Apply theme to the document by adding/removing dark class
  */
 export function applyTheme(theme: Theme): void {
-	if (typeof document === 'undefined') {
-		console.log('[theme.ts] applyTheme() - document undefined')
-		return
-	}
+	if (typeof document === 'undefined') return
 
 	const html = document.documentElement
-	console.log('[theme.ts] applyTheme() - applying theme:', theme)
-
-	if (theme === 'dark') {
-		html.classList.add('dark')
-		console.log('[theme.ts] applyTheme() - added dark class')
-	} else {
-		html.classList.remove('dark')
-		console.log('[theme.ts] applyTheme() - removed dark class')
+	html.classList.toggle('dark', theme === 'dark')
+	try {
+		localStorage.setItem(THEME_STORAGE_KEY, theme)
+	} catch {
+		// Storage is optional; the selected theme still applies for this page.
 	}
-
-	// Save to localStorage
-	localStorage.setItem(THEME_STORAGE_KEY, theme)
-	console.log('[theme.ts] applyTheme() - saved to localStorage:', theme)
-	console.log('[theme.ts] applyTheme() - html.className is now:', html.className)
 }
 
 /**
@@ -51,7 +42,6 @@ export function toggleTheme(): Theme {
 	const current = getCurrentTheme()
 	const next: Theme = current === 'light' ? 'dark' : 'light'
 
-	console.log('[theme.ts] toggleTheme() - current:', current, 'next:', next)
 	applyTheme(next)
 
 	return next

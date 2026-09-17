@@ -3,6 +3,7 @@ title: 'Free RefWorks Pro for UofT Students'
 description: 'RefWorks Pro is a free resource for UofT students.'
 pubDate: 'Nov 30 2024'
 heroImage: '/assets/refworks-banner.webp'
+heroImageAlt: 'RefWorks logo on a banner'
 tags: ['other']
 ---
 

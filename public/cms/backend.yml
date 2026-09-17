@@ -1,0 +1,10 @@
+# Sveltia-only override. Loaded after /admin/config.yml to reuse the exact field model.
+# GitHub OAuth provider must be linked to the Netlify site before this route is used.
+backend:
+  name: github
+  repo: UofT-FoM-GRC/Website
+  branch: dev
+  auth_methods: [oauth]
+publish_mode: null
+output:
+  omit_empty_optional_fields: true
