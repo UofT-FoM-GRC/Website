@@ -349,13 +349,29 @@ export const siteSchema = z.object({
 	)
 })
 
-export const announcementsSchema = z.object({
-	items: z.array(
-		z.object({
-			title: requiredStringSchema,
-			text: requiredStringSchema,
-			url: optionalInternalOrExternalUrlSchema,
-			active: z.boolean()
+export const createAnnouncementsSchema = () =>
+	z
+		.object({
+			items: z.array(
+				z.object({
+					title: requiredStringSchema,
+					text: requiredStringSchema,
+					url: optionalInternalOrExternalUrlSchema,
+					expiresOn: optionalCmsDateSchema,
+					active: z.boolean()
+				})
+			)
 		})
-	)
-})
+		.superRefine((announcements, context) => {
+			announcements.items.forEach((item, index) => {
+				if (item.active && !item.expiresOn) {
+					context.addIssue({
+						code: 'custom',
+						path: ['items', index, 'expiresOn'],
+						message: 'Active announcements require an expiry date.'
+					})
+				}
+			})
+		})
+
+export const announcementsSchema = createAnnouncementsSchema()

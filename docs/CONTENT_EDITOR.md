@@ -24,7 +24,7 @@ Publishing never changes production. Authoritative preview is Netlify `dev` bran
 - Resource page URL IDs are protected. Existing section IDs are public links: do not change or repurpose them. Add new sections/cards instead.
 - Team years and members display in listed order. Add photo and photo alternative text together. Missing photo shows standard avatar.
 - Homepage hero needs two to five lines. The second line is the page heading; keep it descriptive.
-- Homepage announcements display only when **Show on Homepage** is enabled; list order controls display order.
+- Homepage announcements display only when **Show on Homepage** is enabled; list order controls display order. An active announcement requires an expiry date and stays up through that Toronto date. It hides at the next scheduled daily rebuild. Leave an announcement inactive to keep it as an unpublished training item.
 - External links need `https://`; email needs `mailto:`; phone needs `tel:`.
 - CMS preview is approximate field-level preview. Netlify render is final Astro/Tailwind output.
 

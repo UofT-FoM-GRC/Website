@@ -449,7 +449,24 @@ collections:
               - { label: Heading, name: title, widget: string }
               - { label: Message, name: text, widget: text }
               - { label: Optional Link URL, name: url, widget: string, required: false }
-              - { label: Show on Homepage, name: active, widget: boolean, default: false }
+              - {
+                  label: Expires On,
+                  name: expiresOn,
+                  widget: datetime,
+                  required: false,
+                  type: date,
+                  format: 'YYYY-MM-DD',
+                  date_format: 'YYYY-MM-DD',
+                  time_format: false,
+                  hint: Active announcements require the Toronto date through which they stay up. They hide at the next scheduled site build after that date.
+                }
+              - {
+                  label: Show on Homepage,
+                  name: active,
+                  widget: boolean,
+                  default: false,
+                  hint: Only active announcements appear below the homepage hero. An active announcement needs an expiry date.
+                }
   - name: homepage
     label: Homepage
     files:

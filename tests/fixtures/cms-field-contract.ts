@@ -107,7 +107,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 			}
 		}
 	},
-	announcements: { items: { title: 'string', text: 'text', url: 'string', active: 'boolean' } },
+	announcements: { items: { title: 'string', text: 'text', url: 'string', expiresOn: 'datetime', active: 'boolean' } },
 	homepage: {
 		hero: { image: 'image', imageAlt: 'string', lines: { line: 'string' } },
 		featureSections: {

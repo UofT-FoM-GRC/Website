@@ -23,6 +23,12 @@
 
 `src/utils/cmsAssets.ts` maps existing source images to emitted URLs. New CMS images live in `public/assets/` and are referenced directly. Current imagery remains visible; future images need no code work.
 
+## Deployment and scheduled builds
+
+Netlify builds production from `main` after each release merge. Because the output is static, blog posts and active announcements that reach their expiry date keep rendering the previous state until Netlify builds again. A scheduled GitHub Actions workflow (`.github/workflows/expiry-rebuild.yml`) calls a Netlify production build hook once per day at 09:00 UTC. Toronto midnight is 04:00 UTC during daylight saving and 05:00 UTC outside it, so the schedule always runs after the selected Toronto date has passed, never before it.
+
+The workflow only POSTs the hook. It does not check out, edit, or commit content, so it cannot publish a CMS draft or change any source file. The technical steward owns the hook and secret: create a production build hook for the Netlify site and store its URL as the `NETLIFY_BUILD_HOOK_URL` repository secret in GitHub, then rotate it if it is exposed. The daily rebuild adds one production build per day (about 30 per month) to the Legacy Free plan usage already consumed by release and deploy-preview builds.
+
 ## CMS routes and cutover state
 
 - **Now:** `/admin/` loads pinned Decap `3.15.1`, Netlify Identity, Git Gateway, and editorial workflow. Operational.

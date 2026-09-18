@@ -2,6 +2,7 @@
 import { Icon } from 'astro-icon/components'
 import { getEntry } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { isAnnouncementVisible } from '../utils/announcements'
 import { resolveCmsAsset } from '../utils/cmsAssets'
 
 const [homepage, site, announcements] = await Promise.all([
@@ -39,7 +40,7 @@ const { hero, featureSections, contactHeading, contactText } = homepage.data
 		</section>
 		{
 			announcements.data.items
-				.filter((item) => item.active)
+				.filter((item) => isAnnouncementVisible(item))
 				.map((item) => (
 					<section class="w-full bg-blue-100 px-4 py-4 text-center text-slate-900 dark:bg-blue-950 dark:text-slate-100">
 						<span> {item.text}</span>
