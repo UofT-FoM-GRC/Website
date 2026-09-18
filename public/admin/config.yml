@@ -116,8 +116,14 @@ collections:
       - {
           label: Body,
           name: body,
-          widget: markdown,
-          hint: Main post content. Use the image button to add accessible image descriptions.
+          widget: richtext,
+          modes: [rich_text],
+          buttons: [heading-two, heading-three, heading-four, bold, italic, link, bulleted-list, numbered-list],
+          editor_components: [accessible-image, callout, action-link],
+          allow_nested_components: false,
+          sanitize_preview: true,
+          use_markdown_shortcuts: false,
+          hint: 'Main post content. Use Insert to add accessible images, callouts, and action links.'
         }
   - name: resources
     label: Resource Pages

@@ -11,7 +11,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 		heroImage: 'image',
 		heroImageAlt: 'string',
 		tags: 'select',
-		body: 'markdown'
+		body: 'richtext'
 	},
 	resources: {
 		slug: 'hidden',

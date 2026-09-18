@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import Ajv from 'ajv'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { runInNewContext } from 'node:vm'
 import { parseDocument } from 'yaml'
 import { cmsFieldContract } from './fixtures/cms-field-contract'
 
@@ -254,6 +255,75 @@ test('blog lifecycle fields use calendar dates and hide automated metadata', () 
 	})
 	expect(fields.map((field) => field.name)).not.toContain('reviewBy')
 	expect(fields.map((field) => field.name)).not.toContain('contentOwner')
+})
+
+test('blog authoring exposes only the reviewed rich-text controls and semantic components', () => {
+	const { config } = readConfig()
+	const body = getField(getCollection(config, 'blog').fields!, 'body')
+
+	expect(body).toMatchObject({
+		widget: 'richtext',
+		modes: ['rich_text'],
+		buttons: [
+			'heading-two',
+			'heading-three',
+			'heading-four',
+			'bold',
+			'italic',
+			'link',
+			'bulleted-list',
+			'numbered-list'
+		],
+		editor_components: ['accessible-image', 'callout', 'action-link'],
+		allow_nested_components: false,
+		sanitize_preview: true,
+		use_markdown_shortcuts: false
+	})
+	expect(readFileSync(new URL('../public/admin/customizations.js', import.meta.url), 'utf8')).toContain(
+		'editor_components: []'
+	)
+})
+
+test('semantic component source round-trips quoted, ampersand, bracket, and escaped image-description values', () => {
+	type Component = {
+		id: string
+		pattern: RegExp
+		toBlock: (value: Record<string, string>) => string
+		fromBlock: (match: RegExpMatchArray) => Record<string, string>
+	}
+	const components = new Map<string, Component>()
+	runInNewContext(readFileSync(new URL('../public/admin/customizations.js', import.meta.url), 'utf8'), {
+		Date,
+		Intl,
+		window: {
+			CMS: {
+				registerEditorComponent: (component: Component) => components.set(component.id, component),
+				registerEventListener: () => undefined
+			}
+		}
+	})
+
+	const expectRoundTrip = (id: string, value: Record<string, string>) => {
+		const component = components.get(id)!
+		const source = component.toBlock(value)
+		expect(component.fromBlock(source.match(component.pattern)!)).toEqual(value)
+		expect([...`${source}\n\n${source}`.matchAll(new RegExp(component.pattern.source, 'g'))]).toHaveLength(2)
+	}
+
+	expectRoundTrip('callout', {
+		kind: 'warning',
+		title: 'Read "this" & keep [notes]',
+		body: 'Body with **formatting**.'
+	})
+	expectRoundTrip('action-link', {
+		url: 'https://example.com/?course=GRC&year=2026',
+		label: 'Read "this" & keep [notes]',
+		body: 'More details.'
+	})
+	expectRoundTrip('accessible-image', {
+		src: '/assets/picture.webp',
+		body: 'Diagram [A] & "path"'
+	})
 })
 
 test('Sveltia task areas retain current file paths and data field trees', () => {

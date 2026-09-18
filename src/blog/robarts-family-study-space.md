@@ -29,7 +29,8 @@ This space is open to UofT students, faculty, visiting scholars, and staff who b
 
 ## How to Get Access
 
-[Register using this form to get your key-fob for access to the space](http://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.office.com%2Fr%2FM7E9GMurvs&data=05%7C01%7Ckristy.wheaton%40utoronto.ca%7Cf34e93d99aa8429b70d508da876b9e75%7C78aac2262f034b4d9037b46d56c55210%7C0%7C0%7C637971193525776107%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=FruIIpGZIMVEmhiX2hz%2FStlqNLo4susG1pOCNKOV8d8%3D&reserved=0)
+:::action-link{url="http://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.office.com%2Fr%2FM7E9GMurvs&data=05%7C01%7Ckristy.wheaton%40utoronto.ca%7Cf34e93d99aa8429b70d508da876b9e75%7C78aac2262f034b4d9037b46d56c55210%7C0%7C0%7C637971193525776107%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=FruIIpGZIMVEmhiX2hz%2FStlqNLo4susG1pOCNKOV8d8%3D&reserved=0" label="Register using this form to get your key-fob for access to the space"}
+:::
 
 ## A Few House Rules
 
