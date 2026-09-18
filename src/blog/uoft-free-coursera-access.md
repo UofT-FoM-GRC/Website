@@ -49,8 +49,6 @@ To help you discover valuable content related to career and professional skills 
 
 Don't miss out on this fantastic opportunity to enhance your skills and advance your career. Start exploring the Coursera catalogue today!
 
----
-
 Feel free to reach out if you have any questions or need assistance with account setup and course access.
 
 Happy learning!

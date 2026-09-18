@@ -15,9 +15,9 @@ Graduate school can be both rewarding and challenging—especially when it comes
 
 NCFDD is an internationally recognized organization that provides professional development, mentoring, and skill-building resources for graduate students, postdoctoral scholars, and faculty. Their programming is especially well known for helping scholars build sustainable writing habits, overcome academic isolation, and develop strategies for long-term success.
 
-<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
-  Thanks to U of T’s institutional membership, all graduate students are eligible to enrol in NCFDD’s highly regarded programs, including the Dissertation Success Curriculum and the 14-Day Writing Challenge.
-</div>
+:::callout{kind="information"}
+Thanks to U of T’s institutional membership, all graduate students are eligible to enrol in NCFDD’s highly regarded programs, including the Dissertation Success Curriculum and the 14-Day Writing Challenge.
+:::
 
 ### Programs You Can Access
 

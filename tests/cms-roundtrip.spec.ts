@@ -1,7 +1,11 @@
 import { expect, test, type Page } from '@playwright/test'
 import { readdirSync, readFileSync } from 'node:fs'
+import remarkDirective from 'remark-directive'
+import remarkParse from 'remark-parse'
 import sharp from 'sharp'
+import { unified } from 'unified'
 import { parseDocument, stringify } from 'yaml'
+import { blogMigration } from './fixtures/blog-migration'
 
 const cmsBundle = readFileSync(new URL('../node_modules/@sveltia/cms/dist/sveltia-cms.js', import.meta.url))
 const configPath = new URL('../public/admin/config.yml', import.meta.url)
@@ -68,6 +72,41 @@ const withoutEmptyValues = <T>(value: T): T => {
 }
 
 const normalizeMarkdownSpacing = (value: string) => value.replace(/\n\s*\n/g, '\n')
+
+const markdownBody = (source: string) => source.match(/^---\n[\s\S]*?\n---\n([\s\S]+)$/)?.[1] ?? ''
+
+type MarkdownNode = {
+	type: string
+	depth?: number
+	ordered?: boolean
+	start?: number | null
+	name?: string
+	url?: string
+	attributes?: Record<string, string>
+	value?: string
+	children?: MarkdownNode[]
+}
+
+const semanticTokens = (node: MarkdownNode, tokens: string[] = []): string[] => {
+	if (node.type === 'heading') tokens.push(`heading:${node.depth}`)
+	if (node.type === 'list') tokens.push(`list:${node.ordered}:${node.start ?? ''}`)
+	if (node.type === 'listItem') tokens.push('item')
+	if (node.type === 'link') tokens.push(`link:${node.url}`)
+	if (node.type === 'containerDirective' || node.type === 'textDirective') {
+		const attributes = Object.entries(node.attributes ?? {})
+			.sort(([left], [right]) => left.localeCompare(right))
+			.map(([key, value]) => `${key}=${value}`)
+			.join(',')
+		tokens.push(`directive:${node.type}:${node.name}:${attributes}`)
+	}
+	if (node.type === 'strong' || node.type === 'emphasis' || node.type === 'break') tokens.push(node.type)
+	if (node.type === 'text') tokens.push(`text:${node.value}`)
+	for (const child of node.children ?? []) semanticTokens(child, tokens)
+	return tokens
+}
+
+const normalizeSemanticBody = (source: string) =>
+	semanticTokens(unified().use(remarkParse).use(remarkDirective).parse(markdownBody(source)) as unknown as MarkdownNode)
 
 const openTestBackend = async (page: Page, sandboxName: string) => {
 	const files = readContentFiles()
@@ -247,6 +286,49 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 
 	const newBlog = await page.evaluate(readTestFile, { path: 'src/blog/new-lifecycle-post.md', testRepositoryName })
 	expect(parseDocument(newBlog).toJS()).not.toHaveProperty('updatedDate')
+})
+
+test('pinned Sveltia opens, saves, and reloads every migrated blog without semantic body corruption', async ({
+	page
+}) => {
+	test.setTimeout(120_000)
+	const testRepositoryName = 'sveltia-cms-test'
+	const testSandboxName = `cms-migrated-blog-roundtrip-${test.info().parallelIndex}-${test.info().repeatEachIndex}`
+	const files = Object.fromEntries(readContentFiles())
+	await page.clock.install({ time: new Date('2026-01-15T05:00:00.000Z') })
+	await openTestBackend(page, testSandboxName)
+
+	for (const { file } of blogMigration) {
+		const path = `src/blog/${file}`
+		const original = files[path]
+		const originalData = parseDocument(original).toJS() as { title: string }
+		const savedTitle = `${originalData.title} round trip`
+		await page.getByText(new RegExp(`^${originalData.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `)).click()
+		const titleInput = page.locator('input:visible').first()
+		await expect(titleInput).toHaveValue(originalData.title)
+		await titleInput.fill(savedTitle)
+		await expect(page.getByRole('button', { name: 'Save' })).toBeEnabled()
+		await page.getByRole('button', { name: 'Save' }).click()
+		await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
+
+		const saved = () => page.evaluate(readTestFile, { path, testRepositoryName })
+		await expect.poll(async () => (parseDocument(await saved()).toJS() as { title: string }).title).toBe(savedTitle)
+		const firstSave = await saved()
+		expect(normalizeSemanticBody(firstSave)).toStrictEqual(normalizeSemanticBody(original))
+
+		await page.reload()
+		await expect(page.getByText(new RegExp(`^${savedTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `))).toBeVisible()
+		await page.getByText(new RegExp(`^${savedTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `)).click()
+		await expect(titleInput).toHaveValue(savedTitle)
+		const resavedTitle = `${originalData.title} round trip twice`
+		await titleInput.fill(resavedTitle)
+		await page.getByRole('button', { name: 'Save' }).click()
+		await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
+		await expect.poll(async () => (parseDocument(await saved()).toJS() as { title: string }).title).toBe(resavedTitle)
+		const secondSave = await saved()
+		expect(normalizeSemanticBody(secondSave)).toStrictEqual(normalizeSemanticBody(original))
+		expect(normalizeMarkdownSpacing(markdownBody(secondSave))).toBe(normalizeMarkdownSpacing(markdownBody(firstSave)))
+	}
 })
 
 test('offline pinned Sveltia exposes only the semantic blog insert controls', async ({ page }) => {

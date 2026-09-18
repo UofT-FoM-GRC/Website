@@ -1,4 +1,49 @@
 import { expect, test } from '@playwright/test'
+import { blogMigration } from './fixtures/blog-migration'
+
+const routeFor = (file: string) => `/blog/${file.replace(/\.md$/, '')}/`
+const normalizeTypography = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+
+test('every migrated route renders semantic callouts, images, and actions without legacy presentation markup', async ({
+	page
+}) => {
+	const renderedKinds = new Set<string>()
+
+	for (const migration of blogMigration) {
+		await page.goto(routeFor(migration.file))
+		const callouts = page.locator('aside.semantic-callout')
+		await expect(callouts, migration.file).toHaveCount(migration.callouts.length)
+		for (const [index, expected] of migration.callouts.entries()) {
+			const callout = callouts.nth(index)
+			renderedKinds.add(expected.kind)
+			await expect(callout).toHaveAttribute('data-callout-kind', expected.kind)
+			await expect(
+				callout.getByText(expected.kind[0].toUpperCase() + expected.kind.slice(1), { exact: true })
+			).toBeVisible()
+			await expect(callout.locator('.semantic-callout__icon')).toHaveAttribute('aria-hidden', 'true')
+			for (const fact of expected.facts) {
+				expect(normalizeTypography((await callout.textContent()) ?? '')).toContain(normalizeTypography(fact))
+			}
+			if (expected.listItems) await expect(callout.locator('ul > li')).toHaveText(expected.listItems)
+		}
+		for (const image of migration.images ?? []) {
+			await expect(page.getByRole('img', { name: image.description, exact: true })).toHaveAttribute('src', image.src)
+		}
+		for (const action of migration.actionLinks ?? []) {
+			await expect(
+				page.locator('.semantic-action-link').getByRole('link', { name: action.label, exact: true })
+			).toHaveAttribute('href', action.url)
+		}
+		await expect(
+			page.locator(
+				'main article [class*="bg-green-100"], main article [class*="bg-blue-100"], main article [class*="bg-yellow-100"], main article [class*="bg-purple-100"], main article [style]'
+			)
+		).toHaveCount(0)
+		await expect(page.locator('main article aside.semantic-callout svg')).toHaveCount(0)
+	}
+
+	expect([...renderedKinds].sort()).toEqual(['important', 'information', 'warning'])
+})
 
 test('pilot Zoom post renders labelled semantic callouts and an accessible Markdown image', async ({ page }) => {
 	await page.goto('/blog/uoft-zoom-pro/')

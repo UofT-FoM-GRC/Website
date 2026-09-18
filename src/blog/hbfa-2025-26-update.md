@@ -17,13 +17,31 @@ If you've been here a while, here's what changed: there's now a **$5,000 top-up*
 
 Here's what you can expect as your base stipend depending on your program and residency status:
 
-| Program                    | Living Allowance | Tuition & Fees | UHIP    | **Total Base Funding** |
-| -------------------------- | ---------------- | -------------- | ------- | ---------------------- |
-| **Domestic MSc** (2024-25) | $29,819.88       | $9,438.48      | —       | **$39,258.36**         |
-| **Domestic MSc** (2025-26) | $29,819.88       | $9,608.48      | —       | **$39,428.36**         |
-| **Domestic PhD**           | $32,910.48       | $8,448.48      | —       | **$41,358.96**         |
-| **International MSc**      | $29,819.88       | $34,108.48     | $756.00 | **$64,684.36**         |
-| **International PhD**      | $32,910.48       | $8,448.48      | $756.00 | **$42,114.96**         |
+- **Program: Domestic MSc (2024-25)**
+  - Living Allowance: $29,819.88
+  - Tuition & Fees: $9,438.48
+  - UHIP: —
+  - **Total Base Funding: $39,258.36**
+- **Program: Domestic MSc (2025-26)**
+  - Living Allowance: $29,819.88
+  - Tuition & Fees: $9,608.48
+  - UHIP: —
+  - **Total Base Funding: $39,428.36**
+- **Program: Domestic PhD**
+  - Living Allowance: $32,910.48
+  - Tuition & Fees: $8,448.48
+  - UHIP: —
+  - **Total Base Funding: $41,358.96**
+- **Program: International MSc**
+  - Living Allowance: $29,819.88
+  - Tuition & Fees: $34,108.48
+  - UHIP: $756.00
+  - **Total Base Funding: $64,684.36**
+- **Program: International PhD**
+  - Living Allowance: $32,910.48
+  - Tuition & Fees: $8,448.48
+  - UHIP: $756.00
+  - **Total Base Funding: $42,114.96**
 
 Your base funding includes everything you need to cover tuition, fees, and living expenses. For domestic MSc students, there's a small increase in tuition and fees this year (about $170 more).
 
@@ -33,15 +51,27 @@ When you receive external scholarships, you might think your total funding becom
 
 Here's the complete breakdown:
 
-| Your Total Scholarship Amount | What Happens                                                   | Top-Up Amount               |
-| ----------------------------- | -------------------------------------------------------------- | --------------------------- |
-| $0 to $2,000                  | You keep the full amount. It doesn't reduce your base funding. | No top-up                   |
-| $2,001 to $9,999              | Goes toward base funding                                       | **$2,000 top-up**           |
-| $10,000 to $15,000            | Goes toward base funding                                       | **$3,000 top-up**           |
-| $15,001 to $39,999            | Goes toward base funding                                       | **$4,000 top-up**           |
-| **$40,000 to $45,000**        | **Goes toward base funding**                                   | **$5,000 top-up** ⭐ _New!_ |
-| $45,001 to $50,000            | You keep up to $50,000 total                                   | No top-up                   |
-| Over $50,000                  | You can only keep $50,000                                      | No top-up                   |
+- **Your Total Scholarship Amount: $0 to $2,000**
+  - What Happens: You keep the full amount. It doesn't reduce your base funding.
+  - Top-Up Amount: No top-up
+- **Your Total Scholarship Amount: $2,001 to $9,999**
+  - What Happens: Goes toward base funding
+  - Top-Up Amount: **$2,000 top-up**
+- **Your Total Scholarship Amount: $10,000 to $15,000**
+  - What Happens: Goes toward base funding
+  - Top-Up Amount: **$3,000 top-up**
+- **Your Total Scholarship Amount: $15,001 to $39,999**
+  - What Happens: Goes toward base funding
+  - Top-Up Amount: **$4,000 top-up**
+- **Your Total Scholarship Amount: $40,000 to $45,000**
+  - **What Happens: Goes toward base funding**
+  - **Top-Up Amount: $5,000 top-up** ⭐ _New!_
+- **Your Total Scholarship Amount: $45,001 to $50,000**
+  - What Happens: You keep up to $50,000 total
+  - Top-Up Amount: No top-up
+- **Your Total Scholarship Amount: Over $50,000**
+  - What Happens: You can only keep $50,000
+  - Top-Up Amount: No top-up
 
 ### A Real Example
 
@@ -55,18 +85,16 @@ The scholarship essentially pays for your base funding, and the top-up is your r
 
 ### The Fine Print Gotchas
 
-<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
-    <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="64" stroke-dashoffset="64" d="M12 3l9 17h-18l9 -17Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10v4"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path><path stroke-dasharray="2" stroke-dashoffset="2" d="M12 17v0.01"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="2;0"/></path></g></svg>
-    Not all money counts as a scholarship for top-up purposes. The following do <b>NOT</b> qualify for top-ups:
-    <ul>
-        <li>University of Toronto Fellowships (including departmental fellowships)</li>
-        <li>Doctoral Completion Awards</li>
-        <li>Temerty Faculty of Medicine Entrance Scholarships</li>
-        <li>GSS (Graduate Student Supplement) funds</li>
-        <li>Travel awards</li>
-        <li>Bursaries</li>
-    </ul>
-</div>
+:::callout{kind="warning"}
+Not all money counts as a scholarship for top-up purposes. The following do **NOT** qualify for top-ups:
+
+- University of Toronto Fellowships (including departmental fellowships)
+- Doctoral Completion Awards
+- Temerty Faculty of Medicine Entrance Scholarships
+- GSS (Graduate Student Supplement) funds
+- Travel awards
+- Bursaries
+:::
 
 ## How Long Does Funding Last?
 

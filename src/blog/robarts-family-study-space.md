@@ -44,7 +44,5 @@ Nothing too strict, just the basics to keep things safe and comfortable for ever
 
 Break these rules and you might lose access, so let’s all play nice.
 
----
-
 Sincerely,  
 GRC

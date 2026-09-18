@@ -24,14 +24,13 @@ We are thrilled to share an excellent resource for those of you interested in be
 
 The university has a dedicated page where all open TA positions are posted. You can find detailed information about each position, including the department, required qualifications, and application deadlines.
 
-[Explore Open TA Positions Here](https://unit1.hrandequity.utoronto.ca/)
+:::action-link{url="https://unit1.hrandequity.utoronto.ca/" label="Explore Open TA Positions Here"}
+:::
 
 We encourage all interested students to explore these opportunities and apply for positions that align with your academic and career goals. If you have any questions or need assistance with your application, please don't hesitate to reach out to us.
 
 Best of luck!
 
-<!-- Use <br> to create a new line without the crazy line spacing -->
-
-Sincerely,<br>
-Maurice Pasternak<br>
+Sincerely,\
+Maurice Pasternak\
 GRC Director

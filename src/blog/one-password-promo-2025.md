@@ -7,9 +7,9 @@ heroImageAlt: '1Password logo'
 tags: ['other']
 ---
 
-<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
-  UofT Information Security is offering students a free 1Password Families account for 6 years and 3 months. This covers you plus 4 family members. No credit card needed.
-</div>
+:::callout{kind="information"}
+UofT Information Security is offering students a free 1Password Families account for 6 years and 3 months. This covers you plus 4 family members. No credit card needed.
+:::
 
 ## Why Bother with a Password Manager?
 
@@ -31,15 +31,13 @@ Go to [https://1password.com/promo/](https://1password.com/promo/)
 
 You'll need the promo code. To keep bots from scraping it, the full code is capital B followed by:
 
-<div class="bg-blue-100 border-l-4 dark:bg-blue-300 border-blue-500 text-blue-700 p-4 my-4 rounded" style="font-family: monospace; font-size: 1.1em; letter-spacing: 0.1em;">
-  <div class="user-select: all;">
-  WJZ<span style="display: inline;">2</span>ACI<span style="display: inline;">2</span>MVVC
-  </div>
-</div>
+:::callout{kind="important"}
+WJZ2ACI2MVVC
+:::
 
-<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
-  ⚠️ This token was last updated on July 15, 2024.
-</div>
+:::callout{kind="warning"}
+This token was last updated on July 15, 2024.
+:::
 
 ### Step 3: Enter Your Student Email
 
@@ -57,7 +55,7 @@ An email from 1Password should show up in your student inbox shortly. If you don
 
 Click the link in the email and you'll see this page:
 
-![1Password account creation page](/assets/1Password-create-account.webp)
+:accessible-image{src="/assets/1Password-create-account.webp" description="1Password account creation page"}
 
 **Use your UofT email here.**
 
@@ -86,8 +84,6 @@ Start by adding your most important logins. After that, 1Password will offer to 
 **Let 1Password generate passwords for you.** Since you don't have to remember them, they can be as long and random as you want.
 
 **Share with family.** Shared vaults are convenient for Netflix passwords, wifi credentials, or anything else the household needs access to.
-
----
 
 This is actually useful. Six years of free password management that covers your family too is a pretty good deal.
 
