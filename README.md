@@ -36,7 +36,7 @@ See [architecture](docs/ARCHITECTURE.md) for repository map and system boundarie
 
 ## Content freshness
 
-Each blog post can have an owner, review date, expiry date, and status. The owner reviews time-sensitive material before `reviewBy`; `expiresOn` keeps a post current through its selected Toronto calendar date, then removes it from current listings at the next site build while preserving its historical URL. Set `status: archived` when superseded. Do not publish an uncertain offer, eligibility rule, date, or price as current fact.
+Each blog post has `current` or `archived` visibility plus an optional `expiresOn` date. Posts remain current through their selected Toronto calendar date, then leave discovery at the next site build while preserving their historical URL. Do not publish an uncertain offer, eligibility rule, date, or price as current fact.
 
 ## Emergency developer validation
 

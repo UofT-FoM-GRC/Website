@@ -56,55 +56,31 @@ collections:
           label: Publish Date,
           name: pubDate,
           widget: datetime,
+          type: date,
+          default: '{{now}}',
           format: 'YYYY-MM-DD',
           date_format: 'YYYY-MM-DD',
           time_format: false
         }
-      - {
-          label: Updated Date,
-          name: updatedDate,
-          widget: datetime,
-          required: false,
-          format: 'YYYY-MM-DD',
-          date_format: 'YYYY-MM-DD',
-          time_format: false,
-          hint: Leave blank unless the published post changed materially.
-        }
+      - { label: Updated Date, name: updatedDate, widget: hidden }
       - {
           label: Publication Status,
           name: status,
           widget: select,
-          options: [published, archived],
-          default: published,
+          options: [current, archived],
+          default: current,
           hint: Archive time-limited or superseded posts. Archived posts remain available at their existing URL.
-        }
-      - {
-          label: Review By,
-          name: reviewBy,
-          widget: datetime,
-          required: false,
-          format: 'YYYY-MM-DD',
-          date_format: 'YYYY-MM-DD',
-          time_format: false,
-          hint: Internal content-freshness review date; this is not shown to visitors.
         }
       - {
           label: Expires On,
           name: expiresOn,
           widget: datetime,
           required: false,
+          type: date,
           format: 'YYYY-MM-DD',
           date_format: 'YYYY-MM-DD',
           time_format: false,
           hint: Optional Toronto date through which the post stays in current listings. It remains at its URL and changes at the next site build.
-        }
-      - {
-          label: Content Owner,
-          name: contentOwner,
-          widget: string,
-          required: false,
-          default: GRC,
-          hint: Team or role responsible for reviewing this post.
         }
       - {
           label: Hero Image,

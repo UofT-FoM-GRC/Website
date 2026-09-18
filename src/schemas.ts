@@ -1,4 +1,5 @@
 import { z } from 'astro/zod'
+import { cmsDateKey, torontoDate } from './utils/blog'
 
 // Blog Tags
 export const blogTagSchema = z.enum([
@@ -36,27 +37,35 @@ const requireImageDescription =
 		}
 	}
 
+export const createBlogSchema = (now = new Date()) =>
+	z
+		.object({
+			title: requiredStringSchema,
+			description: requiredStringSchema,
+			pubDate: z.coerce.date(),
+			updatedDate: optionalCmsDateSchema,
+			heroImage: optionalCmsStringSchema,
+			heroImageAlt: optionalCmsStringSchema,
+			tags: z.array(blogTagSchema).min(1).max(3),
+			status: z.enum(['current', 'archived']).default('current'),
+			expiresOn: optionalCmsDateSchema
+		})
+		.superRefine((post, context) => {
+			requireImageDescription('heroImage', 'heroImageAlt')(post, context)
+			if (cmsDateKey(post.pubDate) > torontoDate(now)) {
+				context.addIssue({
+					code: 'custom',
+					path: ['pubDate'],
+					message: 'Publication date cannot be in the future.'
+				})
+			}
+			if (post.expiresOn && cmsDateKey(post.expiresOn) < cmsDateKey(post.pubDate)) {
+				context.addIssue({ code: 'custom', path: ['expiresOn'], message: 'Expiry must not predate publication.' })
+			}
+		})
+
 // Blog Schema
-export const blogSchema = z
-	.object({
-		title: requiredStringSchema,
-		description: requiredStringSchema,
-		pubDate: z.coerce.date(),
-		updatedDate: optionalCmsDateSchema,
-		heroImage: optionalCmsStringSchema,
-		heroImageAlt: optionalCmsStringSchema,
-		tags: z.array(blogTagSchema).min(1).max(3),
-		status: z.enum(['published', 'archived']).default('published'),
-		reviewBy: optionalCmsDateSchema,
-		expiresOn: optionalCmsDateSchema,
-		contentOwner: optionalCmsStringSchema.default('GRC')
-	})
-	.superRefine((post, context) => {
-		requireImageDescription('heroImage', 'heroImageAlt')(post, context)
-		if (post.expiresOn && post.expiresOn < post.pubDate) {
-			context.addIssue({ code: 'custom', path: ['expiresOn'], message: 'Expiry must not predate publication.' })
-		}
-	})
+export const blogSchema = createBlogSchema()
 export type BlogPost = z.infer<typeof blogSchema>
 
 const internalOrExternalUrlSchema = z

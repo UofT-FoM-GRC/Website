@@ -43,7 +43,7 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 
 - **`astro.config.mjs`**:
   - Sets the `site` URL to `https://uoftfomgrc.ca`.
-  - Configures integrations: `@astrojs/mdx`, `@astrojs/sitemap`, `astro-icon`, `@astrojs/alpinejs`.
+  - Configures integrations: `@astrojs/mdx`, `astro-icon`, `@astrojs/alpinejs`.
   - Sets the output to `static`.
   - Publishes the fully static `dist` output to Netlify without an Astro deployment adapter.
   - Integrates Tailwind CSS via a Vite plugin.

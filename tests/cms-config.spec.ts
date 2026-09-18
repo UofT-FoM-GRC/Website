@@ -236,6 +236,26 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 	}
 })
 
+test('blog lifecycle fields use calendar dates and hide automated metadata', () => {
+	const { config } = readConfig()
+	const fields = getCollection(config, 'blog').fields!
+
+	expect(getField(fields, 'pubDate')).toMatchObject({
+		widget: 'datetime',
+		type: 'date',
+		format: 'YYYY-MM-DD',
+		default: '{{now}}'
+	})
+	expect(getField(fields, 'updatedDate')).toMatchObject({ widget: 'hidden' })
+	expect(getField(fields, 'status')).toMatchObject({
+		widget: 'select',
+		options: ['current', 'archived'],
+		default: 'current'
+	})
+	expect(fields.map((field) => field.name)).not.toContain('reviewBy')
+	expect(fields.map((field) => field.name)).not.toContain('contentOwner')
+})
+
 test('Sveltia task areas retain current file paths and data field trees', () => {
 	const { source, config } = readConfig()
 
@@ -283,8 +303,10 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 test('admin loads only the pinned Sveltia editor asset', () => {
 	const index = readFileSync(new URL('../public/admin/index.html', import.meta.url), 'utf8')
 	const config = readFileSync(configPath, 'utf8')
+	const cmsScript = `https://unpkg.com/@sveltia/cms@${sveltiaVersion}/dist/sveltia-cms.js`
 
-	expect(index).toContain(`https://unpkg.com/@sveltia/cms@${sveltiaVersion}/dist/sveltia-cms.js`)
+	expect(index).toContain(cmsScript)
+	expect(index.indexOf('/admin/customizations.js')).toBeGreaterThan(index.indexOf(cmsScript))
 	expect(config).toContain(`https://unpkg.com/@sveltia/cms@${sveltiaVersion}/schema/sveltia-cms.json`)
 	expect(index).not.toContain('decap-cms')
 	expect(index).not.toContain('identity.netlify.com')

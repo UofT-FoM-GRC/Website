@@ -1,6 +1,5 @@
 import alpinejs from '@astrojs/alpinejs'
 import mdx from '@astrojs/mdx'
-import sitemap from '@astrojs/sitemap'
 import icon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
@@ -9,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
 	site: 'https://uoftfomgrc.ca',
 	compressHTML: true,
-	integrations: [mdx(), sitemap(), icon(), alpinejs()],
+	integrations: [mdx(), icon(), alpinejs()],
 	output: 'static',
 	vite: {
 		plugins: [tailwindcss()]

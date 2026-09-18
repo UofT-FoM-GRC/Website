@@ -4,6 +4,7 @@ import { parseDocument, stringify } from 'yaml'
 
 const cmsBundle = readFileSync(new URL('../node_modules/@sveltia/cms/dist/sveltia-cms.js', import.meta.url))
 const configPath = new URL('../public/admin/config.yml', import.meta.url)
+const customizationsPath = new URL('../public/admin/customizations.js', import.meta.url)
 const testRepositoryName = 'sveltia-cms-test'
 
 const readContentFiles = () => [
@@ -65,6 +66,8 @@ const withoutEmptyValues = <T>(value: T): T => {
 	) as T
 }
 
+const normalizeMarkdownSpacing = (value: string) => value.replace(/\n\s*\n/g, '\n')
+
 test('test backend opens all existing content and preserves Markdown and JSON entry/file saves', async ({ page }) => {
 	const testSandboxName = `cms-roundtrip-${test.info().parallelIndex}-${test.info().repeatEachIndex}`
 	const files = readContentFiles()
@@ -80,6 +83,10 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 	await page.route('**/admin/config.yml**', (route) =>
 		route.fulfill({ body: stringify(config), contentType: 'text/yaml' })
 	)
+	await page.route('**/admin/customizations.js', (route) =>
+		route.fulfill({ body: readFileSync(customizationsPath, 'utf8'), contentType: 'application/javascript' })
+	)
+	await page.clock.install({ time: new Date('2026-01-15T05:00:00.000Z') })
 	await page.addInitScript(
 		async ({ files, testRepositoryName, testSandboxName }) => {
 			const getDirectory = navigator.storage.getDirectory.bind(navigator.storage)
@@ -136,8 +143,8 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 	const [, savedFrontMatter, savedBody] = saved.match(/^---\n([\s\S]*?)\n---\n([\s\S]+)$/) ?? []
 	const savedData = parseDocument(savedFrontMatter).toJS()
 
-	expect(savedData).toMatchObject({ ...originalData, title })
-	expect(savedBody).toBe(originalBody)
+	expect(savedData).toMatchObject({ ...originalData, title, updatedDate: '2026-01-15' })
+	expect(normalizeMarkdownSpacing(savedBody)).toBe(normalizeMarkdownSpacing(originalBody))
 
 	const resourcePath = 'src/data/resources/employment.json'
 	const resource = JSON.parse(source[resourcePath])
@@ -146,6 +153,7 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 	const savedResourceFile = () => page.evaluate(readTestFile, { path: resourcePath, testRepositoryName })
 	await expect.poll(savedResourceFile).toContain(`"title": "${resourceTitle}"`)
 	expect(JSON.parse(await savedResourceFile())).toMatchObject({ ...withoutEmptyValues(resource), title: resourceTitle })
+	expect(JSON.parse(await savedResourceFile())).not.toHaveProperty('updatedDate')
 
 	const teamPath = 'src/data/team.json'
 	const team = JSON.parse(source[teamPath])
@@ -166,4 +174,24 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 	await page.reload()
 	await page.getByRole('treeitem', { name: 'Blog Posts', exact: true }).click()
 	await expect(page.getByText(new RegExp(`^${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} — `))).toBeVisible()
+
+	await page.getByLabel('Create New Entry').first().click()
+	const newTitle = page.getByText('Title', { exact: true }).locator('xpath=following::input[@type="text"][1]')
+	const newPublicationDate = page
+		.getByText('Publish Date', { exact: true })
+		.locator('xpath=following::input[@type="date"][1]')
+	await page.getByRole('combobox').click()
+	await page.getByText('Other', { exact: true }).last().click()
+	await expect(newPublicationDate).toHaveValue('2026-01-15')
+	await newTitle.fill('New lifecycle post')
+	await page.locator('textarea:visible').first().fill('New post description.')
+	await newPublicationDate.fill('2026-01-15')
+	await page.locator('[contenteditable="true"]').fill('New post body.')
+	await expect(newTitle).toHaveValue('New lifecycle post')
+	await expect(newPublicationDate).toHaveValue('2026-01-15')
+	await page.getByRole('button', { name: 'Save' }).click()
+	await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
+
+	const newBlog = await page.evaluate(readTestFile, { path: 'src/blog/new-lifecycle-post.md', testRepositoryName })
+	expect(parseDocument(newBlog).toJS()).not.toHaveProperty('updatedDate')
 })

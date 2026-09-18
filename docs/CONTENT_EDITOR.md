@@ -20,7 +20,7 @@ Publishing never changes production. Authoritative preview is Netlify `dev` bran
 ## Guardrails
 
 - Blog post URL comes from file slug. Changing existing title does not change it. Use one to three tags; tags control related resource posts.
-- **Updated Date** belongs on materially corrected published posts. Hero image alternative text is required when image conveys information.
+- **Updated Date** is set automatically whenever an existing blog post is saved with changes. Hero image alternative text is required when image conveys information.
 - Resource page URL IDs are protected. Existing section IDs are public links: do not change or repurpose them. Add new sections/cards instead.
 - Team years and members display in listed order. Add photo and photo alternative text together. Missing photo shows standard avatar.
 - Homepage hero needs two to five lines. The second line is the page heading; keep it descriptive.

@@ -8,12 +8,23 @@ type Props = CollectionEntry<'blog'>['data']
 
 const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, status, expiresOn } = Astro.props
 const expired = isExpiredOn(expiresOn)
+const historical = status === 'archived' || expired
 ---
 
-<BaseLayout {title} {description} image={heroImage} imageAlt={heroImageAlt} article {pubDate} {updatedDate}>
+<BaseLayout
+	{title}
+	{description}
+	image={heroImage}
+	imageAlt={heroImageAlt}
+	article
+	{pubDate}
+	{updatedDate}
+	noindex={historical}
+>
 	<main
 		id="main-content"
-		data-pagefind-body
+		data-pagefind-body={!historical ? '' : undefined}
+		data-pagefind-ignore={historical ? '' : undefined}
 		class="prose md:prose-lg lg:prose-xl dark:prose-invert container m-0 mx-auto w-full max-w-full p-4"
 	>
 		<article>
@@ -33,7 +44,7 @@ const expired = isExpiredOn(expiresOn)
 			</div>
 			<div class="mx-auto max-w-prose p-4 text-gray-800 dark:text-gray-200">
 				{
-					(status === 'archived' || expired) && (
+					historical && (
 						<aside class="not-prose mb-6 rounded border-l-4 border-amber-600 bg-amber-50 p-4 text-amber-950 dark:bg-amber-950 dark:text-amber-50">
 							<strong>{status === 'archived' ? 'Archived post.' : 'Expired post.'}</strong> This historical information
 							may no longer be current.

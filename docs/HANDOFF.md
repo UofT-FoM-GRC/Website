@@ -14,7 +14,7 @@ Use this checklist before a webmaster or emergency developer changes hands. Stor
 
 - [ ] Decap at `/admin/` remains current CMS: Netlify Identity + Git Gateway, editorial workflow, target branch `dev`.
 - [ ] Sveltia at `/cms/` remains staged only. Follow [architecture](ARCHITECTURE.md#cms-routes-and-cutover-state) before cutover; Git Gateway and Netlify Identity are unsupported there.
-- [ ] Review blog `reviewBy`, `expiresOn`, `status`, and `contentOwner` fields at least monthly and before term changes. Expiry changes take effect only after a site build; publish or schedule a build for the first day after an expiry date.
+- [ ] Review blog visibility and `expiresOn` dates at least monthly and before term changes. Expiry changes take effect only after a site build; publish or schedule a build for the first day after an expiry date.
 - [ ] Archive confirmed-expired promotions; preserve their URLs. Do not mark uncertain facts current.
 - [ ] Preserve existing resource slugs and section IDs. Decap cannot lock IDs in dynamic section lists; schema validation only catches malformed or duplicate IDs.
 
