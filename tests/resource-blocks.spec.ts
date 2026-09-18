@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { resourceSchema } from '../src/schemas'
 import {
+	currentResourceSections,
 	generateSectionAnchor,
 	isArchivedSection,
 	isTypedResourceCard,
@@ -95,7 +96,7 @@ test('every typed resource-card block validates through the public schema', () =
 	}
 })
 
-test('unknown block kinds fail with a path-specific validation message', () => {
+test('unknown block types fail with a path-specific validation message', () => {
 	const result = parseResource([
 		{
 			id: 'blocks',
@@ -160,7 +161,7 @@ test('employment stores card details as typed blocks', () => {
 	})
 })
 
-test('archived sections require a notice and archived cards stay stored without rendering', () => {
+test('archived sections require a notice and leave quick navigation, intro, cards, and Pagefind', () => {
 	const missingNotice = parseResource([
 		{ id: 'archived', title: 'Old section', status: 'archived', cards: [{ title: 'Hidden card', blocks: [] }] }
 	])
@@ -173,24 +174,33 @@ test('archived sections require a notice and archived cards stay stored without 
 		})
 	}
 
-	const archived = parseResource([
+	const parsed = parseResource([
+		{
+			id: 'jobs',
+			title: 'Current jobs',
+			cards: [{ title: 'Open role', blocks: [{ type: 'text', body: 'Still shown.' }] }]
+		},
 		{
 			id: 'archived',
 			title: 'Old section',
+			intro: ['This intro must not render.'],
 			status: 'archived',
 			archiveNotice: 'This section is kept for reference.',
 			replacement: { label: 'See current jobs', url: '/resources/employment/#clnx' },
 			cards: [
-				{ title: 'Visible card', blocks: [{ type: 'text', body: 'Still shown.' }] },
+				{ title: 'Current card in archived section', blocks: [{ type: 'text', body: 'Must not render.' }] },
 				{ title: 'Stored card', status: 'archived', blocks: [{ type: 'text', body: 'Should not render.' }] }
 			]
 		}
 	])
-	expect(archived.success).toBeTruthy()
-	if (!archived.success) return
-	const section = archived.data.sections[0]
-	expect(isArchivedSection(section)).toBeTruthy()
-	expect(visibleResourceCards(section.cards).map((card) => card.title)).toEqual(['Visible card'])
+	expect(parsed.success).toBeTruthy()
+	if (!parsed.success) return
+	expect(currentResourceSections(parsed.data.sections).map((section) => section.id)).toEqual(['jobs'])
+	const archived = parsed.data.sections[1]
+	expect(isArchivedSection(archived)).toBeTruthy()
+	expect(archived.intro).toEqual(['This intro must not render.'])
+	expect(archived.cards.map((card) => card.title)).toEqual(['Current card in archived section', 'Stored card'])
+	expect(visibleResourceCards(archived.cards).map((card) => card.title)).toEqual(['Current card in archived section'])
 })
 
 test('new section anchors generate once from the heading, stay unique, and do not change later', () => {
@@ -231,6 +241,9 @@ test('formatted resource markdown allows only paragraphs, emphasis, links, and b
 	expect(() => renderResourceMarkdown('<em>raw</em>')).toThrow('Raw HTML is not allowed in formatted text.')
 	expect(() => renderResourceMarkdown(':::callout{kind="information"}\nNested\n:::')).toThrow(
 		'Semantic directives are not allowed in formatted text.'
+	)
+	expect(() => renderResourceMarkdown('[Open](javascript:alert(1))')).toThrow(
+		'Formatted text links must use https, http, mailto, tel, a site-relative path, or a fragment.'
 	)
 })
 

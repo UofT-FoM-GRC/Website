@@ -4,6 +4,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { runInNewContext } from 'node:vm'
 import { parseDocument } from 'yaml'
+import { generateSectionAnchor } from '../src/utils/strings'
 import { cmsFieldContract } from './fixtures/cms-field-contract'
 
 const sveltiaVersion = '0.214.1'
@@ -13,6 +14,7 @@ type Field = {
 	widget?: string
 	required?: boolean
 	accept?: string
+	hint?: string
 	options?: unknown[]
 	field?: Field
 	fields?: Field[]
@@ -407,8 +409,11 @@ test('CMS generates a unique section anchor from the first heading and leaves ex
 
 	expect(saved.getIn(['data', 'sections'])).toEqual([
 		{ id: 'cupe', title: 'Changed heading' },
-		{ id: 'seasonal-job-fairs', title: 'Seasonal Job Fairs' },
-		{ id: 'resources', title: 'Resources' }
+		{ id: generateSectionAnchor('Seasonal Job Fairs', ['cupe']), title: 'Seasonal Job Fairs' },
+		{
+			id: generateSectionAnchor('Resources', ['cupe', generateSectionAnchor('Seasonal Job Fairs', ['cupe'])]),
+			title: 'Resources'
+		}
 	])
 })
 
@@ -475,7 +480,11 @@ test('Employment CMS uses typed card blocks and hides section anchors from routi
 	const { config } = readConfig()
 	const sections = getField(getResourceFile(config, 'employment').fields, 'sections')
 	expect(getField(sections.fields!, 'id')).toMatchObject({ widget: 'hidden' })
-	expect(getField(sections.fields!, 'status').options).toEqual(['current', 'archived'])
+	expect(getField(sections.fields!, 'status')).toMatchObject({
+		widget: 'select',
+		options: ['current', 'archived'],
+		hint: 'Archived sections leave quick navigation and search. They keep their heading, a required notice, and an optional replacement link.'
+	})
 	const cards = getField(sections.fields!, 'cards')
 	expect(cards.fields!.map((field) => field.name)).toEqual(['title', 'variant', 'status', 'blocks'])
 	expect(getField(cards.fields!, 'blocks').types?.map((type) => type.name)).toEqual([

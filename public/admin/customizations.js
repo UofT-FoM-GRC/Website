@@ -125,6 +125,8 @@
 			.replace(/^-+/, '')
 			.replace(/-+$/, '')
 
+	// Keep this browser copy aligned with src/utils/strings.ts; cms-config.spec.ts compares both.
+
 	const generateSectionAnchor = (title, existing) => {
 		const used = new Set(existing)
 		const base = slugify(title) || 'section'

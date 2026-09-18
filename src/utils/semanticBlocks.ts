@@ -46,7 +46,12 @@ const requireOnlyAttributes = (
 	}
 }
 
-const requireAllowedUrl = (value: string | undefined, name: string, file: Failable, node: MarkdownNode): string => {
+export const requireAllowedUrl = (
+	value: string | undefined,
+	name: string,
+	file: Failable,
+	node: MarkdownNode
+): string => {
 	const url = requireText(value, name, file, node)
 	if (/\s/.test(url)) file.fail(`${name} cannot contain whitespace.`, node)
 

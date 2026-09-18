@@ -135,60 +135,66 @@ collections:
         file: src/data/resources/employment.json
         preview_path: '/resources/{{slug}}/'
         fields: &typed_resource_fields
-          - { label: Stable URL ID, name: slug, widget: hidden }
-          - { label: Page Heading, name: title, widget: string }
-          - {
+          - &resource_slug { label: Stable URL ID, name: slug, widget: hidden }
+          - &resource_title { label: Page Heading, name: title, widget: string }
+          - &resource_description {
               label: Page Description,
               name: description,
               widget: text,
               hint: One or two sentences for search and page metadata.
             }
-          - {
+          - &resource_card_title {
               label: Resource Card Title,
               name: cardTitle,
               widget: string,
               hint: Text on the Resources landing-page card.
             }
-          - {
+          - &resource_card_image {
               label: Resource Card Image,
               name: cardImage,
               widget: image,
               required: true,
               accept: 'image/jpeg,image/png,image/webp'
             }
-          - { label: Resource Card Image Description, name: cardImageAlt, widget: string, required: true }
+          - &resource_card_image_alt {
+              label: Resource Card Image Description,
+              name: cardImageAlt,
+              widget: string,
+              required: true
+            }
           - label: Page Sections
             name: sections
             widget: list
             summary: '{{title}}'
             hint: Reorder sections and cards by dragging. A new section keeps the in-page link created from its first heading.
             fields:
-              - { label: Section Anchor, name: id, widget: hidden }
-              - { label: Section Heading, name: title, widget: string }
-              - {
+              - &section_id { label: Section Anchor, name: id, widget: hidden }
+              - &section_title { label: Section Heading, name: title, widget: string }
+              - &section_intro {
                   label: Introductory Paragraphs,
                   name: intro,
                   widget: list,
                   required: false,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
-              - { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
-              - {
+              - &section_columns { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
+              - &section_status {
                   label: Visibility,
                   name: status,
                   widget: select,
                   options: [current, archived],
                   default: current,
-                  hint: 'Archived sections stay in quick navigation with a required notice.'
+                  hint: 'Archived sections leave quick navigation and search. They keep their heading, a required notice, and an optional replacement link.'
                 }
-              - {
+              - &section_archive_notice {
                   label: Archive Notice,
                   name: archiveNotice,
                   widget: text,
                   required: false,
                   hint: Required when this section is archived.
                 }
-              - label: Optional Replacement Link
+              - &section_replacement
+                label: Optional Replacement Link
                 name: replacement
                 widget: object
                 required: false
@@ -397,66 +403,25 @@ collections:
         file: src/data/resources/career-planning-exploration.json
         preview_path: '/resources/{{slug}}/'
         fields: &resource_fields
-          - { label: Stable URL ID, name: slug, widget: hidden }
-          - { label: Page Heading, name: title, widget: string }
-          - {
-              label: Page Description,
-              name: description,
-              widget: text,
-              hint: One or two sentences for search and page metadata.
-            }
-          - {
-              label: Resource Card Title,
-              name: cardTitle,
-              widget: string,
-              hint: Text on the Resources landing-page card.
-            }
-          - {
-              label: Resource Card Image,
-              name: cardImage,
-              widget: image,
-              required: true,
-              accept: 'image/jpeg,image/png,image/webp'
-            }
-          - { label: Resource Card Image Description, name: cardImageAlt, widget: string, required: true }
+          - *resource_slug
+          - *resource_title
+          - *resource_description
+          - *resource_card_title
+          - *resource_card_image
+          - *resource_card_image_alt
           - label: Page Sections
             name: sections
             widget: list
             summary: '{{title}}'
             hint: Reorder sections and cards by dragging. A new section keeps the in-page link created from its first heading.
             fields:
-              - { label: Section Anchor, name: id, widget: hidden }
-              - { label: Section Heading, name: title, widget: string }
-              - {
-                  label: Introductory Paragraphs,
-                  name: intro,
-                  widget: list,
-                  required: false,
-                  field: { label: Paragraph, name: paragraph, widget: text }
-                }
-              - { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
-              - {
-                  label: Visibility,
-                  name: status,
-                  widget: select,
-                  options: [current, archived],
-                  default: current,
-                  hint: 'Archived sections stay in quick navigation with a required notice.'
-                }
-              - {
-                  label: Archive Notice,
-                  name: archiveNotice,
-                  widget: text,
-                  required: false,
-                  hint: Required when this section is archived.
-                }
-              - label: Optional Replacement Link
-                name: replacement
-                widget: object
-                required: false
-                fields:
-                  - { label: Link Text, name: label, widget: string, required: false }
-                  - { label: Destination URL, name: url, widget: string, required: false }
+              - *section_id
+              - *section_title
+              - *section_intro
+              - *section_columns
+              - *section_status
+              - *section_archive_notice
+              - *section_replacement
               - label: Cards
                 name: cards
                 widget: list

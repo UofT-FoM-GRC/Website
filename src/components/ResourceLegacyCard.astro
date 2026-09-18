@@ -1,6 +1,9 @@
 ---
 import { resolveCmsAsset } from '../utils/cmsAssets'
 import type { LegacyResourceCard } from '../schemas'
+import ResourceContactDetails from './ResourceContactDetails.astro'
+import ResourceContactPanel from './ResourceContactPanel.astro'
+import ResourceStepList from './ResourceStepList.astro'
 
 /** Temporary compatibility renderer for unmigrated resource pages until ticket 10. */
 
@@ -39,115 +42,13 @@ const { card } = Astro.props
 			</ul>
 		)
 	}
-	{
-		(card.listItems ?? []).length > 0 &&
-			(card.listStyle === 'ordered' ? (
-				<ol class="mb-4 list-decimal space-y-2 pl-5 text-slate-700 dark:text-slate-300">
-					{(card.listItems ?? []).map((item) => (
-						<li>
-							<span>{item.text}</span>
-							{(item.links ?? []).map((link) => (
-								<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
-									{link.label}
-								</a>
-							))}
-							{(item.items ?? []).length > 0 && (
-								<ul class="ml-5 list-disc">
-									{(item.items ?? []).map((nestedItem) => (
-										<li>{nestedItem}</li>
-									))}
-								</ul>
-							)}
-						</li>
-					))}
-				</ol>
-			) : (
-				<ul class="mb-4 list-disc space-y-2 pl-5 text-slate-700 dark:text-slate-300">
-					{(card.listItems ?? []).map((item) => (
-						<li>
-							<span>{item.text}</span>
-							{(item.links ?? []).map((link) => (
-								<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
-									{link.label}
-								</a>
-							))}
-							{(item.items ?? []).length > 0 && (
-								<ul class="ml-5 list-disc">
-									{(item.items ?? []).map((nestedItem) => (
-										<li>{nestedItem}</li>
-									))}
-								</ul>
-							)}
-						</li>
-					))}
-				</ul>
-			))
-	}
-	{
-		(card.addressLines ?? []).length > 0 && (
-			<address class="mb-4 text-slate-700 not-italic dark:text-slate-300">
-				{(card.addressLines ?? []).map((line) => (
-					<>
-						{line}
-						<br />
-					</>
-				))}
-			</address>
-		)
-	}
-	{
-		(card.facts ?? []).map((fact) => (
-			<p class="mb-2 text-slate-700 dark:text-slate-300">
-				<strong>{fact.label}</strong>{' '}
-				{fact.url ? (
-					<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
-						{fact.value}
-					</a>
-				) : (
-					fact.value
-				)}
-			</p>
-		))
-	}
+	{(card.listItems ?? []).length > 0 && <ResourceStepList items={card.listItems} listStyle={card.listStyle} />}
+	<ResourceContactDetails addressLines={card.addressLines} facts={card.facts} />
 	{
 		(card.groups ?? []).length > 0 && (
 			<div class="mb-4 grid gap-6 md:grid-cols-2">
 				{(card.groups ?? []).map((group) => (
-					<section>
-						<h4 class="mb-3 font-semibold text-slate-900 dark:text-slate-100">{group.title}</h4>
-						{(group.text ?? []).map((paragraph) => (
-							<p class="mb-3 text-slate-700 dark:text-slate-300">{paragraph}</p>
-						))}
-						{(group.facts ?? []).map((fact) => (
-							<p class="mb-2 text-slate-700 dark:text-slate-300">
-								<strong>{fact.label}</strong>{' '}
-								{fact.url ? (
-									<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
-										{fact.value}
-									</a>
-								) : (
-									fact.value
-								)}
-							</p>
-						))}
-						{(group.addressLines ?? []).length > 0 && (
-							<address class="mb-3 text-slate-700 not-italic dark:text-slate-300">
-								{(group.addressLines ?? []).map((line) => (
-									<>
-										{line}
-										<br />
-									</>
-								))}
-							</address>
-						)}
-						<div class="flex flex-col items-start gap-2">
-							{(group.links ?? []).map((link) => (
-								<a href={link.url} class="text-blue-600 hover:underline dark:text-blue-400">
-									{link.label}
-								</a>
-							))}
-						</div>
-					</section>
+					<ResourceContactPanel panel={group} />
 				))}
 			</div>
 		)

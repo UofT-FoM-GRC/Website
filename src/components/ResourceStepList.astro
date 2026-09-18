@@ -1,0 +1,36 @@
+---
+interface Props {
+	items: Array<{ text: string; links?: Array<{ label: string; url: string }>; items?: string[] }>
+	listStyle?: 'ordered' | 'unordered'
+}
+
+const { items, listStyle = 'unordered' } = Astro.props
+const StepTag = listStyle === 'ordered' ? 'ol' : 'ul'
+---
+
+<StepTag
+	class:list={[
+		'mb-4 space-y-2 pl-5 text-slate-700 dark:text-slate-300',
+		listStyle === 'ordered' ? 'list-decimal' : 'list-disc'
+	]}
+>
+	{
+		items.map((item) => (
+			<li>
+				<span>{item.text}</span>
+				{(item.links ?? []).map((link) => (
+					<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
+						{link.label}
+					</a>
+				))}
+				{(item.items ?? []).length > 0 && (
+					<ul class="ml-5 list-disc">
+						{(item.items ?? []).map((nestedItem) => (
+							<li>{nestedItem}</li>
+						))}
+					</ul>
+				)}
+			</li>
+		))
+	}
+</StepTag>

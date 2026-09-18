@@ -3,7 +3,12 @@ import type { CollectionEntry } from 'astro:content'
 import BlogPostCard from './BlogPostCard.astro'
 import ResourceLegacyCard from './ResourceLegacyCard.astro'
 import ResourceTypedCard from './ResourceTypedCard.astro'
-import { isArchivedSection, isTypedResourceCard, visibleResourceCards } from '../utils/resourceContent'
+import {
+	currentResourceSections,
+	isArchivedSection,
+	isTypedResourceCard,
+	visibleResourceCards
+} from '../utils/resourceContent'
 
 interface Props {
 	resource: CollectionEntry<'resources'>
@@ -25,7 +30,7 @@ const hasRelatedPosts = posts.length > 0
 		<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 		<ul class="space-y-2">
 			{
-				sections.map((section) => (
+				currentResourceSections(sections).map((section) => (
 					<li class="transition-all hover:translate-x-2">
 						<a
 							href={`#${section.id}`}
@@ -76,14 +81,18 @@ const hasRelatedPosts = posts.length > 0
 						)}
 					</aside>
 				)}
-				{section.intro.map((paragraph) => (
-					<p class="mb-4 max-w-[75ch] leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
-				))}
-				<div class:list={['grid gap-6', columns[section.columns]]}>
-					{visibleResourceCards(section.cards).map((card) =>
-						isTypedResourceCard(card) ? <ResourceTypedCard card={card} /> : <ResourceLegacyCard card={card} />
-					)}
-				</div>
+				{!isArchivedSection(section) && (
+					<>
+						{section.intro.map((paragraph) => (
+							<p class="mb-4 max-w-[75ch] leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
+						))}
+						<div class:list={['grid gap-6', columns[section.columns]]}>
+							{visibleResourceCards(section.cards).map((card) =>
+								isTypedResourceCard(card) ? <ResourceTypedCard card={card} /> : <ResourceLegacyCard card={card} />
+							)}
+						</div>
+					</>
+				)}
 			</section>
 		))
 	}

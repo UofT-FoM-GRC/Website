@@ -13,6 +13,15 @@ export function slugify(text: string): string {
 		.replace(/-+$/, '') // Trim hyphens from end of text
 }
 
+export const generateSectionAnchor = (title: string, existing: Iterable<string>) => {
+	const used = new Set(existing)
+	const base = slugify(title) || 'section'
+	if (!used.has(base)) return base
+	let suffix = 2
+	while (used.has(`${base}-${suffix}`)) suffix += 1
+	return `${base}-${suffix}`
+}
+
 export function prettifyTag(tag: BlogTag) {
 	return {
 		employment: 'Employment',
