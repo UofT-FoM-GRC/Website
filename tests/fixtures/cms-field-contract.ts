@@ -21,12 +21,16 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 		cardImage: 'image',
 		cardImageAlt: 'string',
 		sections: {
-			id: 'string',
+			id: 'hidden',
 			title: 'string',
 			intro: { paragraph: 'text' },
 			columns: 'select',
+			status: 'select',
+			archiveNotice: 'text',
+			replacement: { label: 'string', url: 'string' },
 			cards: {
 				title: 'string',
+				status: 'select',
 				text: { paragraph: 'text' },
 				bullets: { bullet: 'string' },
 				variant: 'select',
@@ -49,6 +53,57 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 				image: 'image',
 				imageAlt: 'string',
 				links: { label: 'string', url: 'string' }
+			}
+		}
+	},
+	typedResources: {
+		slug: 'hidden',
+		title: 'string',
+		description: 'text',
+		cardTitle: 'string',
+		cardImage: 'image',
+		cardImageAlt: 'string',
+		sections: {
+			id: 'hidden',
+			title: 'string',
+			intro: { paragraph: 'text' },
+			columns: 'select',
+			status: 'select',
+			archiveNotice: 'text',
+			replacement: { label: 'string', url: 'string' },
+			cards: {
+				title: 'string',
+				variant: 'select',
+				status: 'select',
+				blocks: {
+					types: {
+						text: { body: 'richtext' },
+						image: { image: 'image', imageAlt: 'string' },
+						links: { appearance: 'select', items: { label: 'string', url: 'string' } },
+						steps: {
+							listStyle: 'select',
+							items: {
+								text: 'string',
+								links: { label: 'string', url: 'string' },
+								items: { item: 'string' }
+							}
+						},
+						contact: {
+							addressLines: { line: 'string' },
+							facts: { label: 'string', value: 'string', url: 'string' }
+						},
+						'contact-panels': {
+							panels: {
+								title: 'string',
+								text: { paragraph: 'text' },
+								addressLines: { line: 'string' },
+								facts: { label: 'string', value: 'string', url: 'string' },
+								links: { label: 'string', url: 'string' }
+							}
+						},
+						callout: { kind: 'select', title: 'string', body: 'richtext' }
+					}
+				}
 			}
 		}
 	},

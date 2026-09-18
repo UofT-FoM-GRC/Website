@@ -86,19 +86,111 @@ const resourceListItemSchema = z.object({
 	items: z.array(requiredStringSchema).default([])
 })
 
+const resourceFactSchema = z.object({
+	label: requiredStringSchema,
+	value: requiredStringSchema,
+	url: optionalInternalOrExternalUrlSchema
+})
+
 const resourceGroupSchema = z.object({
 	title: requiredStringSchema,
 	text: z.array(requiredStringSchema).default([]),
 	links: z.array(linkSchema).default([]),
 	addressLines: z.array(requiredStringSchema).default([]),
-	facts: z
-		.array(
-			z.object({ label: requiredStringSchema, value: requiredStringSchema, url: optionalInternalOrExternalUrlSchema })
-		)
-		.default([])
+	facts: z.array(resourceFactSchema).default([])
 })
 
-const resourceCardSchema = z
+const optionalReplacementLinkSchema = z.preprocess((value) => {
+	if (!value || typeof value !== 'object') return undefined
+	const link = value as { label?: unknown; url?: unknown }
+	return link.label || link.url ? value : undefined
+}, linkSchema.optional())
+
+const parseOrNever = <Schema extends z.ZodType>(schema: Schema, value: unknown, context: z.RefinementCtx) => {
+	const result = schema.safeParse(value)
+	if (!result.success) {
+		for (const issue of result.error.issues) {
+			context.addIssue({ code: 'custom', path: issue.path, message: issue.message })
+		}
+		return z.NEVER
+	}
+	return result.data
+}
+
+const textBlockSchema = z.object({ type: z.literal('text'), body: requiredStringSchema })
+const imageBlockSchema = z
+	.object({ type: z.literal('image'), image: requiredStringSchema, imageAlt: requiredStringSchema })
+	.superRefine(requireImageDescription('image', 'imageAlt'))
+const linksBlockSchema = z.object({
+	type: z.literal('links'),
+	appearance: z.enum(['link', 'button']).default('link'),
+	items: z.array(linkSchema).min(1)
+})
+const stepsBlockSchema = z.object({
+	type: z.literal('steps'),
+	listStyle: z.enum(['unordered', 'ordered']).default('unordered'),
+	items: z.array(resourceListItemSchema).min(1)
+})
+const contactBlockSchema = z
+	.object({
+		type: z.literal('contact'),
+		addressLines: z.array(requiredStringSchema).default([]),
+		facts: z.array(resourceFactSchema).default([])
+	})
+	.superRefine((block, context) => {
+		if (block.addressLines.length === 0 && block.facts.length === 0) {
+			context.addIssue({
+				code: 'custom',
+				path: ['addressLines'],
+				message: 'Contact details need an address line or a labelled value.'
+			})
+		}
+	})
+const contactPanelsBlockSchema = z.object({
+	type: z.literal('contact-panels'),
+	panels: z.array(resourceGroupSchema).min(1)
+})
+const calloutBlockSchema = z.object({
+	type: z.literal('callout'),
+	kind: z.enum(['information', 'important', 'warning']),
+	title: optionalCmsStringSchema,
+	body: requiredStringSchema
+})
+
+const resourceBlockSchemas = {
+	text: textBlockSchema,
+	image: imageBlockSchema,
+	links: linksBlockSchema,
+	steps: stepsBlockSchema,
+	contact: contactBlockSchema,
+	'contact-panels': contactPanelsBlockSchema,
+	callout: calloutBlockSchema
+} as const
+
+export const resourceBlockSchema = z.any().transform((value, context) => {
+	const type = value && typeof value === 'object' && 'type' in value ? String(value.type) : ''
+	if (!type) {
+		context.addIssue({ code: 'custom', path: ['type'], message: 'Block type is required.' })
+		return z.NEVER
+	}
+	if (!(type in resourceBlockSchemas)) {
+		context.addIssue({ code: 'custom', path: ['type'], message: `Unknown block type "${type}".` })
+		return z.NEVER
+	}
+	return parseOrNever(resourceBlockSchemas[type as keyof typeof resourceBlockSchemas], value, context)
+})
+
+const resourceVisibilitySchema = z.enum(['current', 'archived']).default('current')
+
+export const typedResourceCardSchema = z.object({
+	title: requiredStringSchema,
+	variant: z.enum(['card', 'plain']).default('card'),
+	status: resourceVisibilitySchema,
+	blocks: z.array(resourceBlockSchema)
+})
+
+// Temporary compatibility for unmigrated resource pages until ticket 10.
+export const legacyResourceCardSchema = z
 	.object({
 		title: requiredStringSchema,
 		text: z.array(requiredStringSchema).default([]),
@@ -108,17 +200,50 @@ const resourceCardSchema = z
 		listItems: z.array(resourceListItemSchema).default([]),
 		groups: z.array(resourceGroupSchema).default([]),
 		addressLines: z.array(requiredStringSchema).default([]),
-		facts: z
-			.array(
-				z.object({ label: requiredStringSchema, value: requiredStringSchema, url: optionalInternalOrExternalUrlSchema })
-			)
-			.default([]),
+		facts: z.array(resourceFactSchema).default([]),
 		variant: z.enum(['card', 'plain']).default('card'),
+		status: resourceVisibilitySchema,
 		linkStyle: z.enum(['link', 'button']).default('link'),
 		image: optionalCmsStringSchema,
 		imageAlt: optionalCmsStringSchema
 	})
 	.superRefine(requireImageDescription('image', 'imageAlt'))
+
+export type ResourceBlock = z.infer<(typeof resourceBlockSchemas)[keyof typeof resourceBlockSchemas]>
+export type TypedResourceCard = z.infer<typeof typedResourceCardSchema>
+export type LegacyResourceCard = z.infer<typeof legacyResourceCardSchema>
+export type ResourceCard = TypedResourceCard | LegacyResourceCard
+
+export const resourceCardSchema: z.ZodType<ResourceCard> = z
+	.any()
+	.transform((value, context) =>
+		parseOrNever(
+			value && typeof value === 'object' && 'blocks' in value ? typedResourceCardSchema : legacyResourceCardSchema,
+			value,
+			context
+		)
+	)
+
+const resourceSectionSchema = z
+	.object({
+		id: requiredStringSchema.regex(/^[a-z0-9-]+$/),
+		title: requiredStringSchema,
+		intro: z.array(z.string()).default([]),
+		columns: z.union([z.literal(1), z.literal(2), z.literal(3)]).default(1),
+		status: resourceVisibilitySchema,
+		archiveNotice: optionalCmsStringSchema,
+		replacement: optionalReplacementLinkSchema,
+		cards: z.array(resourceCardSchema).default([])
+	})
+	.superRefine((section, context) => {
+		if (section.status === 'archived' && !section.archiveNotice) {
+			context.addIssue({
+				code: 'custom',
+				path: ['archiveNotice'],
+				message: 'Archived sections require a short notice.'
+			})
+		}
+	})
 
 export const resourceSchema = z
 	.object({
@@ -128,15 +253,7 @@ export const resourceSchema = z
 		cardTitle: requiredStringSchema,
 		cardImage: requiredStringSchema,
 		cardImageAlt: requiredStringSchema,
-		sections: z.array(
-			z.object({
-				id: requiredStringSchema.regex(/^[a-z0-9-]+$/),
-				title: requiredStringSchema,
-				intro: z.array(z.string()).default([]),
-				columns: z.union([z.literal(1), z.literal(2), z.literal(3)]).default(1),
-				cards: z.array(resourceCardSchema).default([])
-			})
-		)
+		sections: z.array(resourceSectionSchema)
 	})
 	.superRefine((resource, context) => {
 		const ids = resource.sections.map((section) => section.id)

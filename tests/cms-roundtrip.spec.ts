@@ -422,3 +422,16 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 	await page.getByRole('button', { name: 'Save' }).click()
 	await expect(page.locator('[data-entry-draft-root]')).toBeVisible()
 })
+
+test('Employment CMS exposes typed blocks, hides section anchors, and generates them on first save', async ({
+	page
+}) => {
+	const testSandboxName = `cms-resource-blocks-${test.info().parallelIndex}-${test.info().repeatEachIndex}`
+	await openTestBackend(page, testSandboxName)
+	await page.getByRole('treeitem', { name: 'Resource Pages', exact: true }).click()
+	await page.getByText('Employment Resources', { exact: true }).click()
+
+	await expect(page.getByText('Stable Section ID')).toHaveCount(0)
+	await expect(page.getByRole('textbox', { name: 'Section Anchor', exact: true })).toHaveCount(0)
+	await expect(page.getByRole('textbox', { name: 'Paragraphs', exact: true })).toHaveCount(0)
+})

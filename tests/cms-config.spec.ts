@@ -16,6 +16,7 @@ type Field = {
 	options?: unknown[]
 	field?: Field
 	fields?: Field[]
+	types?: Field[]
 }
 
 type Collection = {
@@ -87,6 +88,12 @@ const getCollection = (config: Config, name: string) => {
 	return collection!
 }
 
+const getResourceFile = (config: Config, name: string) => {
+	const file = getCollection(config, 'resources').files?.find((candidate) => candidate.name === name)
+	expect(file, `Missing ${name} resource page`).toBeDefined()
+	return file!
+}
+
 const getField = (fields: Field[], name: string) => {
 	const field = fields.find((candidate) => candidate.name === name)
 	expect(field, `Missing ${name} field`).toBeDefined()
@@ -95,9 +102,17 @@ const getField = (fields: Field[], name: string) => {
 
 const fieldShape = (fields: Field[]): Record<string, unknown> =>
 	Object.fromEntries(
-		fields.map(({ name, widget = 'string', fields: nestedFields, field }) => [
+		fields.map(({ name, widget = 'string', fields: nestedFields, field, types }) => [
 			name,
-			nestedFields ? fieldShape(nestedFields) : field ? fieldShape([field]) : widget
+			types
+				? {
+						types: Object.fromEntries(types.map((type) => [type.name, type.fields ? fieldShape(type.fields) : widget]))
+					}
+				: nestedFields
+					? fieldShape(nestedFields)
+					: field
+						? fieldShape([field])
+						: widget
 		])
 	)
 
@@ -109,7 +124,19 @@ const expectDataFields = (value: unknown, fields: Field[]) => {
 	if (value === null || typeof value !== 'object') return
 
 	for (const [name, child] of Object.entries(value)) {
+		if (name === 'type') continue
 		const field = getField(fields, name)
+		if (field.types) {
+			const items = Array.isArray(child) ? child : [child]
+			for (const item of items) {
+				if (!item || typeof item !== 'object' || !('type' in item)) continue
+				const typeName = String((item as { type: string }).type)
+				const typeField = field.types.find((candidate) => candidate.name === typeName)
+				expect(typeField, `Missing CMS type ${typeName} for ${field.name}`).toBeDefined()
+				expectDataFields(item, typeField!.fields ?? [])
+			}
+			continue
+		}
 		if (field.fields) expectDataFields(child, field.fields)
 		if (field.field) expectDataFields(child, [field.field])
 	}
@@ -158,13 +185,22 @@ test('every CMS image field accepts routine raster formats and has an image-desc
 			imageRequired: false
 		},
 		{
-			fields: getCollection(config, 'resources').fields!,
+			fields: getResourceFile(config, 'employment').fields,
 			image: 'cardImage',
 			description: 'cardImageAlt',
 			imageRequired: true
 		},
 		{
-			fields: getField(getField(getCollection(config, 'resources').fields!, 'sections').fields!, 'cards').fields!,
+			fields: getField(
+				getField(getField(getResourceFile(config, 'employment').fields, 'sections').fields!, 'cards').fields!,
+				'blocks'
+			).types!.find((type) => type.name === 'image')!.fields!,
+			image: 'image',
+			description: 'imageAlt',
+			imageRequired: true
+		},
+		{
+			fields: getField(getField(getResourceFile(config, 'housing').fields, 'sections').fields!, 'cards').fields!,
 			image: 'image',
 			description: 'imageAlt',
 			imageRequired: false
@@ -326,10 +362,61 @@ test('semantic component source round-trips quoted, ampersand, bracket, and esca
 	})
 })
 
+test('CMS generates a unique section anchor from the first heading and leaves existing anchors unchanged', () => {
+	type Listener = { name: string; handler: (event: { entry: EntryStub }) => EntryStub }
+	const listeners: Listener[] = []
+
+	class EntryStub {
+		constructor(private readonly value: Record<string, unknown>) {}
+		get(key: string) {
+			return this.value[key]
+		}
+		getIn(path: string[]) {
+			return path.reduce<unknown>((current, key) => (current as Record<string, unknown> | undefined)?.[key], this.value)
+		}
+		setIn(path: string[], next: unknown) {
+			const clone = structuredClone(this.value)
+			let cursor = clone as Record<string, unknown>
+			for (const key of path.slice(0, -1)) cursor = cursor[key] as Record<string, unknown>
+			cursor[path.at(-1)!] = next
+			return new EntryStub(clone)
+		}
+	}
+
+	runInNewContext(readFileSync(new URL('../public/admin/customizations.js', import.meta.url), 'utf8'), {
+		Date,
+		Intl,
+		window: {
+			CMS: {
+				registerEditorComponent: () => undefined,
+				registerEventListener: (listener: Listener) => listeners.push(listener)
+			}
+		}
+	})
+
+	const saved = listeners
+		.find((listener) => listener.name === 'preSave')!
+		.handler({
+			entry: new EntryStub({
+				collection: 'resources',
+				data: {
+					sections: [{ id: 'cupe', title: 'Changed heading' }, { title: 'Seasonal Job Fairs' }, { title: 'Resources' }]
+				}
+			})
+		})
+
+	expect(saved.getIn(['data', 'sections'])).toEqual([
+		{ id: 'cupe', title: 'Changed heading' },
+		{ id: 'seasonal-job-fairs', title: 'Seasonal Job Fairs' },
+		{ id: 'resources', title: 'Resources' }
+	])
+})
+
 test('Sveltia task areas retain current file paths and data field trees', () => {
 	const { source, config } = readConfig()
 
 	expect(source).toContain('fields: &resource_fields')
+	expect(source).toContain('fields: &typed_resource_fields')
 	const blog = getCollection(config, 'blog')
 	expect(blog).toMatchObject({ folder: 'src/blog', extension: 'md', format: 'frontmatter' })
 	expect(fieldShape(blog.fields!)).toEqual(cmsFieldContract.blog)
@@ -342,13 +429,27 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 	}
 
 	const resources = getCollection(config, 'resources')
-	expect(resources).toMatchObject({ folder: 'src/data/resources', extension: 'json', format: 'json' })
-	expect(fieldShape(resources.fields!)).toEqual(cmsFieldContract.resources)
+	expect(resources).toMatchObject({ format: 'json' })
+	expect(resources.files?.map((file) => file.name)).toEqual([
+		'employment',
+		'career-planning-exploration',
+		'continuing-education',
+		'health-wellness',
+		'housing',
+		'other',
+		'scholarships-bursaries-awards',
+		'scholarship-award-grant-application-support'
+	])
 	expect(getField(blog.fields!, 'tags').options).toEqual(resourceCategories)
-	for (const fileName of readdirSync(new URL('../src/data/resources/', import.meta.url))) {
-		const data = JSON.parse(readFileSync(new URL(`../src/data/resources/${fileName}`, import.meta.url), 'utf8'))
-		expect(data.slug).toBe(fileName.replace(/\.json$/, ''))
-		expectDataFields(data, resources.fields!)
+	for (const file of resources.files!) {
+		const data = JSON.parse(readFileSync(join(root.pathname, file.file!), 'utf8'))
+		expect(data.slug).toBe(file.name)
+		expect(file.file).toBe(`src/data/resources/${file.name}.json`)
+		expect(file.preview_path).toBe('/resources/{{slug}}/')
+		expect(fieldShape(file.fields)).toEqual(
+			file.name === 'employment' ? cmsFieldContract.typedResources : cmsFieldContract.resources
+		)
+		expectDataFields(data, file.fields)
 	}
 
 	for (const [collectionName, fileName, dataPath] of [
@@ -368,6 +469,40 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 
 	const navigation = getCollection(config, 'advanced_site_settings').files?.find(({ name }) => name === 'navigation')
 	expect(getField(getField(navigation!.fields, 'resourceLinks').fields!, 'slug').options).toEqual(resourceCategories)
+})
+
+test('Employment CMS uses typed card blocks and hides section anchors from routine controls', () => {
+	const { config } = readConfig()
+	const sections = getField(getResourceFile(config, 'employment').fields, 'sections')
+	expect(getField(sections.fields!, 'id')).toMatchObject({ widget: 'hidden' })
+	expect(getField(sections.fields!, 'status').options).toEqual(['current', 'archived'])
+	const cards = getField(sections.fields!, 'cards')
+	expect(cards.fields!.map((field) => field.name)).toEqual(['title', 'variant', 'status', 'blocks'])
+	expect(getField(cards.fields!, 'blocks').types?.map((type) => type.name)).toEqual([
+		'text',
+		'image',
+		'links',
+		'steps',
+		'contact',
+		'contact-panels',
+		'callout'
+	])
+	expect(
+		getField(getField(cards.fields!, 'blocks').types!.find((type) => type.name === 'text')!.fields!, 'body')
+	).toMatchObject({
+		widget: 'richtext',
+		buttons: ['bold', 'italic', 'link', 'bulleted-list']
+	})
+	expect(
+		getField(getField(cards.fields!, 'blocks').types!.find((type) => type.name === 'callout')!.fields!, 'body')
+	).toMatchObject({
+		widget: 'richtext',
+		buttons: ['bold', 'italic', 'link', 'bulleted-list', 'numbered-list']
+	})
+
+	const housingCards = getField(getField(getResourceFile(config, 'housing').fields, 'sections').fields!, 'cards')
+	expect(housingCards.fields!.map((field) => field.name)).toContain('text')
+	expect(housingCards.fields!.map((field) => field.name)).not.toContain('blocks')
 })
 
 test('admin loads only the pinned Sveltia editor asset', () => {

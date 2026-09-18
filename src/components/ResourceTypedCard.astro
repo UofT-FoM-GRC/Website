@@ -1,0 +1,158 @@
+---
+import { resolveCmsAsset } from '../utils/cmsAssets'
+import { renderResourceCallout, renderResourceMarkdown, type TypedResourceCard } from '../utils/resourceContent'
+
+interface Props {
+	card: TypedResourceCard
+}
+
+const { card } = Astro.props
+const formattedTextClass =
+	'resource-formatted-text mb-4 space-y-4 text-slate-700 dark:text-slate-300 [&_a]:text-blue-600 [&_a]:hover:underline dark:[&_a]:text-blue-400 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5'
+const linkClass = (appearance: 'link' | 'button') =>
+	appearance === 'button'
+		? 'inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800'
+		: 'text-blue-600 hover:underline dark:text-blue-400'
+---
+
+<article
+	class:list={[
+		card.variant !== 'plain' &&
+			'rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50'
+	]}
+>
+	<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">{card.title}</h3>
+	{
+		card.blocks.map((block) => {
+			if (block.type === 'text') {
+				return <div class={formattedTextClass} set:html={renderResourceMarkdown(block.body)} />
+			}
+			if (block.type === 'image') {
+				return (
+					<img
+						src={resolveCmsAsset(block.image)}
+						alt={block.imageAlt}
+						loading="lazy"
+						decoding="async"
+						class="mb-4 h-48 w-full rounded-lg object-cover"
+					/>
+				)
+			}
+			if (block.type === 'links') {
+				return (
+					<div class="mb-4 flex flex-col items-start gap-2">
+						{block.items.map((link) => (
+							<a href={link.url} class={linkClass(block.appearance)}>
+								{link.label}
+							</a>
+						))}
+					</div>
+				)
+			}
+			if (block.type === 'steps') {
+				const StepTag = block.listStyle === 'ordered' ? 'ol' : 'ul'
+				return (
+					<StepTag
+						class:list={[
+							'mb-4 space-y-2 pl-5 text-slate-700 dark:text-slate-300',
+							block.listStyle === 'ordered' ? 'list-decimal' : 'list-disc'
+						]}
+					>
+						{block.items.map((item) => (
+							<li>
+								<span>{item.text}</span>
+								{(item.links ?? []).map((link) => (
+									<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
+										{link.label}
+									</a>
+								))}
+								{(item.items ?? []).length > 0 && (
+									<ul class="ml-5 list-disc">
+										{(item.items ?? []).map((nestedItem) => (
+											<li>{nestedItem}</li>
+										))}
+									</ul>
+								)}
+							</li>
+						))}
+					</StepTag>
+				)
+			}
+			if (block.type === 'contact') {
+				return (
+					<>
+						{(block.addressLines ?? []).length > 0 && (
+							<address class="mb-4 text-slate-700 not-italic dark:text-slate-300">
+								{(block.addressLines ?? []).map((line) => (
+									<>
+										{line}
+										<br />
+									</>
+								))}
+							</address>
+						)}
+						{(block.facts ?? []).map((fact) => (
+							<p class="mb-2 text-slate-700 dark:text-slate-300">
+								<strong>{fact.label}</strong>{' '}
+								{fact.url ? (
+									<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
+										{fact.value}
+									</a>
+								) : (
+									fact.value
+								)}
+							</p>
+						))}
+					</>
+				)
+			}
+			if (block.type === 'contact-panels') {
+				return (
+					<div class="mb-4 grid gap-6 md:grid-cols-2">
+						{block.panels.map((group) => (
+							<section>
+								<h4 class="mb-3 font-semibold text-slate-900 dark:text-slate-100">{group.title}</h4>
+								{(group.text ?? []).map((paragraph) => (
+									<p class="mb-3 text-slate-700 dark:text-slate-300">{paragraph}</p>
+								))}
+								{(group.facts ?? []).map((fact) => (
+									<p class="mb-2 text-slate-700 dark:text-slate-300">
+										<strong>{fact.label}</strong>{' '}
+										{fact.url ? (
+											<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
+												{fact.value}
+											</a>
+										) : (
+											fact.value
+										)}
+									</p>
+								))}
+								{(group.addressLines ?? []).length > 0 && (
+									<address class="mb-3 text-slate-700 not-italic dark:text-slate-300">
+										{(group.addressLines ?? []).map((line) => (
+											<>
+												{line}
+												<br />
+											</>
+										))}
+									</address>
+								)}
+								<div class="flex flex-col items-start gap-2">
+									{(group.links ?? []).map((link) => (
+										<a href={link.url} class="text-blue-600 hover:underline dark:text-blue-400">
+											{link.label}
+										</a>
+									))}
+								</div>
+							</section>
+						))}
+					</div>
+				)
+			}
+			if (block.type === 'callout') {
+				return <div class="mb-4" set:html={renderResourceCallout(block)} />
+			}
+			return null
+		})
+	}
+</article>

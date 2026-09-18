@@ -114,11 +114,53 @@
 		return `${value('year')}-${value('month')}-${value('day')}`
 	}
 
+	const slugify = (text) =>
+		String(text ?? '')
+			.toLowerCase()
+			.trim()
+			.replace(/\s+/g, '-')
+			.replace(/&/g, '-and-')
+			.replace(/[^\w-]+/g, '')
+			.replace(/--+/g, '-')
+			.replace(/^-+/, '')
+			.replace(/-+$/, '')
+
+	const generateSectionAnchor = (title, existing) => {
+		const used = new Set(existing)
+		const base = slugify(title) || 'section'
+		if (!used.has(base)) return base
+		let suffix = 2
+		while (used.has(`${base}-${suffix}`)) suffix += 1
+		return `${base}-${suffix}`
+	}
+
+	const assignSectionAnchors = (entry) => {
+		const sections = entry.getIn(['data', 'sections'])
+		if (!sections) return entry
+		const list = typeof sections.toJS === 'function' ? sections.toJS() : sections
+		if (!Array.isArray(list)) return entry
+		const used = list.map((section) => section?.id).filter(Boolean)
+		const updated = list.map((section) => {
+			if (!section || typeof section !== 'object' || section.id) return section
+			const id = generateSectionAnchor(section.title, used)
+			used.push(id)
+			return { ...section, id }
+		})
+		return entry.setIn(['data', 'sections'], updated)
+	}
+
 	window.CMS.registerEventListener({
 		name: 'preSave',
 		handler: ({ entry }) => {
-			if (entry.get('collection') !== 'blog' || entry.get('newRecord')) return
-			return entry.setIn(['data', 'updatedDate'], torontoDate())
+			try {
+				if (entry.get('collection') === 'blog' && !entry.get('newRecord')) {
+					entry = entry.setIn(['data', 'updatedDate'], torontoDate())
+				}
+				if (entry.get('collection') === 'resources') entry = assignSectionAnchors(entry)
+			} catch (error) {
+				console.error(error)
+			}
+			return entry
 		}
 	})
 })()
