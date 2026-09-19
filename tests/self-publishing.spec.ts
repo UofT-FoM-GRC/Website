@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import { existsSync, readFileSync } from 'node:fs'
 import { runInNewContext } from 'node:vm'
 import { parseDocument } from 'yaml'
+import { findProtectedDeletions } from '../scripts/check-protected-deletions.mjs'
 import { getCollection, getField, readCmsConfig as readConfig } from './fixtures/cms-config'
 
 test('self-publishing targets main through the GitHub editorial workflow', () => {
@@ -53,7 +54,7 @@ test('published blog URLs and resource routes cannot be removed through routine 
 	const blog = getCollection(config, 'blog')
 	const resources = getCollection(config, 'resources')
 
-	expect(blog).toMatchObject({ folder: 'src/blog', create: true, delete: false })
+	expect(blog).toMatchObject({ folder: 'src/blog', create: true, delete: true })
 	expect(blog.fields!.map((field) => field.name)).not.toContain('slug')
 	expect(getField(blog.fields!, 'title').hint).toMatch(/does not change the URL/i)
 
@@ -74,7 +75,7 @@ test('published blog URLs and resource routes cannot be removed through routine 
 	expect(getField(sections.fields!, 'id')).toMatchObject({ widget: 'hidden' })
 })
 
-test('the pre-publish confirmation aborts on cancel and permits the merge attempt on confirm', async () => {
+test('publish and unpublish guards protect reviewed previews and stable blog URLs', async () => {
 	type Listener = { name: string; handler: (event: Record<string, unknown>) => unknown }
 	const listeners: Listener[] = []
 	const confirmMessages: string[] = []
@@ -113,6 +114,12 @@ test('the pre-publish confirmation aborts on cancel and permits the merge attemp
 	await expect(publish()).resolves.toBeUndefined()
 	expect(mergeAttempts, 'Confirming permits the merge attempt').toBe(1)
 	expect(confirmMessages).toEqual(['I reviewed the site preview.', 'I reviewed the site preview.'])
+
+	const unpublishGates = listeners.filter((listener) => listener.name === 'preUnpublish')
+	expect(unpublishGates, 'Expected exactly one published-blog deletion guard').toHaveLength(1)
+	const unpublish = unpublishGates[0].handler
+	const entry = { get: (key: string) => (key === 'collection' ? 'blog' : undefined) }
+	expect(() => unpublish({ entry })).toThrow(/archive/i)
 })
 
 test('the staged /cms duplicate is gone and old bookmarks redirect to /admin/', () => {
@@ -140,6 +147,21 @@ test('CI and Dependabot target main without a routine dev release', () => {
 	for (const update of dependabot.updates) {
 		expect(update['target-branch'], `${update['package-ecosystem']} Dependabot branch`).toBe('main')
 	}
+})
+
+test('CI rejects deletion of stable blog and resource identities', () => {
+	expect(
+		findProtectedDeletions([
+			'src/blog/hbfa-explained.md',
+			'src/data/resources/housing.json',
+			'src/data/announcements.json',
+			'public/assets/old.webp'
+		])
+	).toEqual(['src/blog/hbfa-explained.md', 'src/data/resources/housing.json'])
+
+	const ci = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8')
+	expect(ci).toContain('node scripts/check-protected-deletions.mjs')
+	expect(ci).toContain('fetch-depth: 0')
 })
 
 test('routine publishing documentation names the required merge gates and CMS exemptions', () => {

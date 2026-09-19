@@ -83,7 +83,7 @@ No routine step exposes Git commands, branches, pull requests, Netlify, local to
 - Keep rich-text mode only. Omit raw mode, code blocks, heading one, and presentation controls from routine toolbars.
 - Keep `sanitize_preview` enabled.
 - Register a pre-publish confirmation: “I reviewed the site preview.”
-- Set `delete: false` where a public URL or anchor must survive.
+- Prevent deletion wherever a public URL or anchor must survive. Never-published blog drafts must remain discardable; because Sveltia's `delete: false` also blocks that safe cleanup, published blog removal is instead blocked by both a pre-unpublish guard and CI deletion validation.
 
 ## CMS information architecture
 

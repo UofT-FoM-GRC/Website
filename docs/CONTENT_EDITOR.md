@@ -22,7 +22,7 @@ The in-editor split preview is disabled. **View Preview** is the only authoritat
 
 ## Guardrails
 
-- Blog post URL comes from the file name, not the title. Archived posts remain reachable at their existing URL; deleted posts lose it permanently, so archiving is the routine choice.
+- Blog post URL comes from the file name, not the title. Discard never-published drafts when they are no longer needed. Published blog deletion is blocked; set **Visibility** to **Archived** so the existing URL survives.
 - **Updated Date** is set automatically whenever an existing blog post is saved with changes.
 - Resource page URLs are protected. Existing section anchors are public links: do not change or repurpose them. Add new sections or cards instead.
 - Team years and members display in listed order; drag to reorder. **Current Team Year** must exactly match one listed **Academic Year** text, or the site build fails and publishing is blocked. Add photo and photo description together. Missing photo shows the standard avatar.

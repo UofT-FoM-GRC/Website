@@ -50,8 +50,8 @@ collections:
     summary: '{{title}} — {{pubDate}}'
     sortable_fields: ['pubDate', 'title']
     preview_path: '/blog/{{slug}}/'
-    # Published URLs are permanent: blog posts are archived, never deleted, in routine editing.
-    delete: false
+    # New drafts may be discarded. A pre-unpublish hook and CI both block removal of published URLs.
+    delete: true
     fields:
       - {
           label: Title,

@@ -177,4 +177,13 @@
 			}
 		}
 	})
+
+	window.CMS.registerEventListener({
+		name: 'preUnpublish',
+		handler: ({ entry }) => {
+			if (entry.get('collection') === 'blog') {
+				throw new Error('Published blog posts cannot be deleted. Set Visibility to Archived instead.')
+			}
+		}
+	})
 })()
