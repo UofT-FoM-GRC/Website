@@ -1,6 +1,6 @@
 # Local development guide
 
-Emergency-developer-only guide. Use for code, configuration, dependency, conflict, access-recovery, or complex rollback work. Routine content editors and release webmaster do not clone this repository or run local commands.
+Technical-steward-only guide. Use for code, configuration, dependency, conflict, access-recovery, or complex rollback work. Routine content editors do not clone this repository or run local commands.
 
 ## Required versions
 
@@ -24,14 +24,13 @@ Expected versions: `v24.12.0` and `11.20.0`. If Corepack is unavailable in your 
 ```bash
 git clone https://github.com/UofT-FoM-GRC/Website.git
 cd Website
-git switch --track origin/dev
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open shown local URL, normally <http://localhost:4321>. Stop server with `Ctrl+C`.
+`main` is the default and only long-lived branch. Open the shown local URL, normally <http://localhost:4321>. Stop the server with `Ctrl+C`.
 
-`pnpm dev` does not generate Pagefind files, so local search displays a production-build notice. Run `pnpm build`, then `pnpm preview`, to test the complete static output locally. Use a Netlify Deploy Preview for final hosting checks, including `/admin/` and Netlify Identity.
+`pnpm dev` does not generate Pagefind files, so local search displays a production-build notice. Run `pnpm build`, then `pnpm preview`, to test the complete static output locally. Use a Netlify Deploy Preview for final hosting checks, including `/admin/` and GitHub OAuth sign-in.
 
 Never delete `pnpm-lock.yaml`. It pins reviewed dependencies. If installed files are damaged, remove only `node_modules`, then rerun `pnpm install --frozen-lockfile`.
 
@@ -54,15 +53,15 @@ pnpm exec prettier --write path/to/changed-file
 ## Feature branch workflow
 
 ```bash
-git switch dev
-git pull --ff-only origin dev
+git switch main
+git pull --ff-only origin main
 git switch -c feat/short-description
 ```
 
-Make focused change, run validation, push the feature branch, then open a pull request targeting `dev`. Feature and dependency pull requests use **Squash and merge**. Never push developer changes directly to `dev` or `main`; release webmaster uses the browser-only [review and release guide](REVIEW_AND_RELEASE.md).
+Make a focused change, run validation, push the feature branch, then open a pull request targeting `main`. Feature and dependency pull requests use **Squash and merge** after `Validate` and `netlify/uoft-fom-grc/deploy-preview` pass. Never push directly to `main`. Routine content publishing uses Sveltia CMS at `/admin/` and is documented in the [content editor guide](CONTENT_EDITOR.md).
 
 Do not resolve unfamiliar merge conflicts by guessing. Stop, preserve work, and email <grc.facmed@utoronto.ca> with branch name, pull request URL, and `git status` output.
 
 ## Repository map
 
-See [architecture](ARCHITECTURE.md) for source locations and [content editor guide](CONTENT_EDITOR.md) for CMS-managed blog content.
+See [architecture](ARCHITECTURE.md) for source locations and [content editor guide](CONTENT_EDITOR.md) for CMS-managed content.

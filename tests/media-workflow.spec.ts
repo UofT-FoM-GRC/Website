@@ -1,32 +1,13 @@
 import { expect, test, type Page } from '@playwright/test'
-import { readdirSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import sharp from 'sharp'
 import { parseDocument, stringify } from 'yaml'
 import { blogSchema, resourceSchema, teamSchema } from '../src/schemas'
+import { readContentFiles } from './fixtures/repository-content'
 
 const cmsBundle = readFileSync(new URL('../node_modules/@sveltia/cms/dist/sveltia-cms.js', import.meta.url))
 const configPath = new URL('../public/admin/config.yml', import.meta.url)
 const testRepositoryName = 'sveltia-cms-test'
-
-const readContentFiles = () => [
-	...readdirSync(new URL('../src/blog/', import.meta.url))
-		.filter((name) => name.endsWith('.md'))
-		.map(
-			(name) => [`src/blog/${name}`, readFileSync(new URL(`../src/blog/${name}`, import.meta.url), 'utf8')] as const
-		),
-	...readdirSync(new URL('../src/data/resources/', import.meta.url))
-		.filter((name) => name.endsWith('.json'))
-		.map(
-			(name) =>
-				[
-					`src/data/resources/${name}`,
-					readFileSync(new URL(`../src/data/resources/${name}`, import.meta.url), 'utf8')
-				] as const
-		),
-	...['announcements.json', 'homepage.json', 'team.json', 'navigation.json', 'site.json'].map(
-		(name) => [`src/data/${name}`, readFileSync(new URL(`../src/data/${name}`, import.meta.url), 'utf8')] as const
-	)
-]
 
 const readTestFile = async ({ path, testRepositoryName }: { path: string; testRepositoryName: string }) => {
 	try {

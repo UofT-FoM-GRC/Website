@@ -8,55 +8,9 @@ import { parseDocument } from 'yaml'
 import { blogTagSchema } from '../src/schemas'
 import { generateSectionAnchor } from '../src/utils/strings'
 import { cmsFieldContract } from './fixtures/cms-field-contract'
+import { getCollection, getField, readCmsConfig as readConfig, type Field } from './fixtures/cms-config'
 
 const sveltiaVersion = '0.214.1'
-
-type Field = {
-	name: string
-	widget?: string
-	required?: boolean
-	accept?: string
-	options?: unknown[]
-	pattern?: unknown[]
-	hint?: string
-	min?: number
-	max?: number
-	field?: Field
-	fields?: Field[]
-	types?: Field[]
-}
-
-type Collection = {
-	name: string
-	label: string
-	description?: string
-	folder?: string
-	extension?: string
-	format?: string
-	preview_path?: string
-	fields?: Field[]
-	files?: Array<{ name: string; file: string; preview_path?: string; fields: Field[] }>
-}
-
-type Config = {
-	backend: Record<string, unknown>
-	publish_mode: string
-	site_url: string
-	editor: { preview: boolean }
-	output: { omit_empty_optional_fields: boolean }
-	media_libraries?: {
-		default?: {
-			config?: {
-				max_file_size?: number
-				slugify_filename?: boolean
-				transformations?: {
-					raster_image?: { format?: string; quality?: number; width?: number; height?: number }
-				}
-			}
-		}
-	}
-	collections: Collection[]
-}
 
 const root = new URL('..', import.meta.url)
 const configPath = new URL('../public/admin/config.yml', import.meta.url)
@@ -73,13 +27,6 @@ const resourceCategories = [
 	{ label: 'Other', value: 'other' }
 ]
 
-const readConfig = () => {
-	const source = readFileSync(configPath, 'utf8')
-	const document = parseDocument(source, { uniqueKeys: true })
-	expect(document.errors).toEqual([])
-	return { source, config: document.toJS() as Config }
-}
-
 test('configuration conforms to the pinned Sveltia schema', () => {
 	const { config } = readConfig()
 	const sveltiaPackage = JSON.parse(readFileSync(sveltiaPackagePath, 'utf8')) as { version: string }
@@ -90,22 +37,10 @@ test('configuration conforms to the pinned Sveltia schema', () => {
 	expect(validate(config), JSON.stringify(validate.errors)).toBeTruthy()
 })
 
-const getCollection = (config: Config, name: string) => {
-	const collection = config.collections.find((candidate) => candidate.name === name)
-	expect(collection, `Missing ${name} task area`).toBeDefined()
-	return collection!
-}
-
-const getResourceFile = (config: Config, name: string) => {
+const getResourceFile = (config: ReturnType<typeof readConfig>['config'], name: string) => {
 	const file = getCollection(config, 'resources').files?.find((candidate) => candidate.name === name)
 	expect(file, `Missing ${name} resource page`).toBeDefined()
 	return file!
-}
-
-const getField = (fields: Field[], name: string) => {
-	const field = fields.find((candidate) => candidate.name === name)
-	expect(field, `Missing ${name} field`).toBeDefined()
-	return field!
 }
 
 const fieldShape = (fields: Field[]): Record<string, unknown> =>

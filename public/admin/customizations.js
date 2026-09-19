@@ -165,4 +165,16 @@
 			return entry
 		}
 	})
+
+	// Hard gate before Sveltia merges the draft pull request. A thrown error stops the
+	// merge attempt, so cancelling leaves the pull request unpublished on its branch.
+	const confirmationMessage = 'I reviewed the site preview.'
+	window.CMS.registerEventListener({
+		name: 'prePublish',
+		handler: () => {
+			if (!window.confirm(confirmationMessage)) {
+				throw new Error('Publishing was cancelled because the site preview was not confirmed.')
+			}
+		}
+	})
 })()

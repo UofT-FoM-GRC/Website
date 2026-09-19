@@ -5,6 +5,11 @@ backend:
   repo: UofT-FoM-GRC/Website
   branch: main
   auth_methods: [oauth]
+  # Netlify reports each pull request's deploy preview through this exact check.
+  # Naming it keeps preview links locked to Netlify even if other statuses appear.
+  preview_context: netlify/uoft-fom-grc/deploy-preview
+  # One content publish becomes one commit on main, matching repository squash policy.
+  squash_merges: true
 
 publish_mode: editorial_workflow
 site_url: https://uoftfomgrc.ca
@@ -39,6 +44,8 @@ collections:
     summary: '{{title}} — {{pubDate}}'
     sortable_fields: ['pubDate', 'title']
     preview_path: '/blog/{{slug}}/'
+    # Published URLs are permanent: blog posts are archived, never deleted, in routine editing.
+    delete: false
     fields:
       - {
           label: Title,
