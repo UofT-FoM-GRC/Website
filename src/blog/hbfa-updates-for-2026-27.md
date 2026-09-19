@@ -7,6 +7,6 @@ status: current
 tags: []
 ---
 
-:::action-link{url="example.com" label="Read the official HBFA update"}
+:::action-link{url="https://physiology.utoronto.ca/2026-27-temerty-faculty-medicine-harmonized-base-funding-agreement" label="Read the official HBFA update"}
 
 :::
