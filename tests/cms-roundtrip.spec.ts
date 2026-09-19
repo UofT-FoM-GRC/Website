@@ -400,6 +400,7 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 	await page.getByRole('menuitem', { name: 'Action link' }).click()
 	const invalidUrl = page.getByRole('textbox', { name: 'Destination URL' }).last()
 	await invalidUrl.fill('javascript:alert(1)')
+	page.once('dialog', (dialog) => dialog.accept())
 	await page.getByRole('button', { name: 'Save' }).click()
 	await expect(page.locator('[data-entry-draft-root]')).toBeVisible()
 })

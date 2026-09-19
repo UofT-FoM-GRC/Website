@@ -2,6 +2,23 @@
 	const escapeDirectiveAttribute = (value) => String(value).trim().replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 	const unescapeDirectiveAttribute = (value = '') => value.replace(/&quot;/g, '"').replace(/&amp;/g, '&')
 	const unescapeImageDescription = (value = '') => value.replace(/\\([\\[\]])/g, '$1')
+	const actionLinkUrlMessage = 'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+	const getActionLinkUrlError = (value) => {
+		const url = String(value ?? '').trim()
+		if (!url || /[\s\u0000-\u001F\u007F<>]/.test(url)) return actionLinkUrlMessage
+		if (url.startsWith('/')) return url.startsWith('//') || url.startsWith('/\\') ? actionLinkUrlMessage : null
+		if (url.startsWith('#')) return url.length === 1 ? 'Enter text after # for a fragment link.' : null
+		let parsed
+		try {
+			parsed = new URL(url)
+		} catch {
+			return actionLinkUrlMessage
+		}
+		if (!['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)) return actionLinkUrlMessage
+		if (['http:', 'https:'].includes(parsed.protocol) && !parsed.hostname) return actionLinkUrlMessage
+		if (['mailto:', 'tel:'].includes(parsed.protocol) && !parsed.pathname) return actionLinkUrlMessage
+		return null
+	}
 	const componentBodyField = (label, required = false) => ({
 		name: 'body',
 		label,
@@ -86,10 +103,7 @@
 				label: 'Destination URL',
 				widget: 'string',
 				required: true,
-				pattern: [
-					'^(?:https?://|mailto:|tel:|/(?![\\\\/])|#\\S+)',
-					'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
-				]
+				pattern: ['^(?:https?://|mailto:|tel:|/(?![\\\\/])|#\\S+)', actionLinkUrlMessage]
 			},
 			componentBodyField('Optional Supporting Text')
 		],
@@ -151,9 +165,24 @@
 		return entry.setIn(['data', 'sections'], updated)
 	}
 
+	const warnAboutInvalidBlogLinks = (entry) => {
+		if (entry.get('collection') !== 'blog') return
+		const body = String(entry.getIn(['data', 'body']) ?? '')
+		for (const match of body.matchAll(/:::action-link\{url="((?:&quot;|&amp;|[^"])*)"/g)) {
+			const message = getActionLinkUrlError(unescapeDirectiveAttribute(match[1]))
+			if (message) {
+				window.alert(
+					`Validation issue in Body → Action link → Destination URL: ${message}\n\nThe draft can be saved, but validation and publishing remain blocked until this is corrected.`
+				)
+				return
+			}
+		}
+	}
+
 	window.CMS.registerEventListener({
 		name: 'preSave',
 		handler: ({ entry }) => {
+			warnAboutInvalidBlogLinks(entry)
 			try {
 				if (entry.get('collection') === 'blog' && !entry.get('newRecord')) {
 					entry = entry.setIn(['data', 'updatedDate'], torontoDate())

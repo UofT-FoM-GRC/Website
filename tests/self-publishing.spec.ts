@@ -84,6 +84,7 @@ test('publish and unpublish guards protect reviewed previews and stable blog URL
 	runInNewContext(readFileSync(new URL('../public/admin/customizations.js', import.meta.url), 'utf8'), {
 		Date,
 		Intl,
+		URL,
 		window: {
 			confirm: (message: string) => {
 				confirmMessages.push(message)

@@ -97,6 +97,28 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 			.toContain('https://deploy-preview-1--uoft-fom-grc.netlify.app/blog/preview-practice-post/')
 	})
 
+	test('identifies an invalid action-link destination while preserving the draft', async ({ page }) => {
+		const mock = await openMockedAdmin(page, (seeded) => seeded.seedDraft(practicePost))
+		await openBlogEntry(page, /^Preview practice post — /)
+		const branch = `cms/blog/${practicePost.slug}`
+		const original = mock.branches.get(branch)?.get(`src/blog/${practicePost.slug}.md`)
+
+		const body = page.locator('[data-key-path="body"]')
+		await body.getByRole('button', { name: 'Insert' }).click()
+		await page.getByRole('menuitem', { name: 'Action link' }).click()
+		await page.getByRole('textbox', { name: 'Link Text' }).last().fill('Read more')
+		await page.getByRole('textbox', { name: 'Destination URL' }).last().fill('example.com')
+		let warning = ''
+		page.once('dialog', async (dialog) => {
+			warning = dialog.message()
+			await dialog.accept()
+		})
+		await page.getByRole('button', { name: 'Save' }).click()
+
+		await expect.poll(() => warning).toMatch(/Body.*Action link.*Destination URL.*https URL/i)
+		await expect.poll(() => mock.branches.get(branch)?.get(`src/blog/${practicePost.slug}.md`)).not.toBe(original)
+	})
+
 	test('reports the deploy-preview build state until the preview is ready', async ({ page }) => {
 		const mock = await openMockedAdmin(page, (seeded) => {
 			seeded.seedDraft(practicePost)
