@@ -35,6 +35,13 @@ export type Config = {
 	backend: Record<string, unknown>
 	publish_mode: string
 	site_url: string
+	slug?: {
+		encoding?: string
+		clean_accents?: boolean
+		sanitize_replacement?: string
+		trim?: boolean
+		lowercase?: boolean
+	}
 	editor: { preview: boolean }
 	output: { omit_empty_optional_fields: boolean }
 	media_libraries?: {
