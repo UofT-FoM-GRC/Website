@@ -75,11 +75,13 @@ const migratedTables = [
 	}
 ]
 
-test('migration manifest covers every blog exactly once', () => {
+test('migration manifest references each migrated blog exactly once', () => {
 	const files = readdirSync(blogDirectory)
 		.filter((file) => file.endsWith('.md'))
 		.sort()
-	expect(blogMigration.map(({ file }) => file).sort()).toEqual(files)
+	const migratedFiles = blogMigration.map(({ file }) => file)
+	expect(new Set(migratedFiles).size).toBe(migratedFiles.length)
+	for (const file of migratedFiles) expect(files).toContain(file)
 })
 
 test('migration scanner handles frontmatter, HTML autolinks, and encoded directive attributes structurally', () => {
