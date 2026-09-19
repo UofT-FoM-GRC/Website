@@ -251,7 +251,7 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 	await page.getByLabel('Create New Entry').first().click()
 	const newTitle = page.getByText('Title', { exact: true }).locator('xpath=following::input[@type="text"][1]')
 	const newPublicationDate = page
-		.getByText('Publish Date', { exact: true })
+		.getByText('Publication Date', { exact: true })
 		.locator('xpath=following::input[@type="date"][1]')
 	await page.getByRole('combobox').click()
 	await page.getByText('Other', { exact: true }).last().click()

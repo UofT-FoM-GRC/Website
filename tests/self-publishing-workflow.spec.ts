@@ -67,7 +67,11 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 
 		await page.getByRole('button', { name: /^Status:/ }).click()
 		await page.getByRole('menu').getByText('Ready', { exact: true }).click()
-		await expect(page.getByText(/Description.*required|required.*Description/i).first()).toBeVisible()
+		await page.getByRole('radio', { name: 'Validation' }).click()
+		await page.getByRole('button', { name: 'Validate', exact: true }).click()
+		await expect(
+			page.getByText(/Search and Sharing Summary.*required|required.*Search and Sharing Summary/i).first()
+		).toBeVisible()
 		expect(mock.pullRequests[0].labels).toContain('sveltia-cms/draft')
 	})
 

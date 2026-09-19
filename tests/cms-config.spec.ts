@@ -342,7 +342,10 @@ test('blog lifecycle fields use calendar dates and hide automated metadata', () 
 	expect(getField(fields, 'updatedDate')).toMatchObject({ widget: 'hidden' })
 	expect(getField(fields, 'status')).toMatchObject({
 		widget: 'select',
-		options: ['current', 'archived'],
+		options: [
+			{ label: 'Current', value: 'current' },
+			{ label: 'Archived', value: 'archived' }
+		],
 		default: 'current'
 	})
 	expect(fields.map((field) => field.name)).not.toContain('reviewBy')
@@ -533,7 +536,10 @@ test('Employment CMS uses typed card blocks and hides section anchors from routi
 	expect(getField(sections.fields!, 'id')).toMatchObject({ widget: 'hidden' })
 	expect(getField(sections.fields!, 'status')).toMatchObject({
 		widget: 'select',
-		options: ['current', 'archived'],
+		options: [
+			{ label: 'Current', value: 'current' },
+			{ label: 'Archived', value: 'archived' }
+		],
 		hint: 'Archived sections leave quick navigation and search. They keep their heading, a required notice, and an optional replacement link.'
 	})
 	const cards = getField(sections.fields!, 'cards')

@@ -467,7 +467,7 @@ test('duplicate section anchors fail validation', () => {
 		expect(result.error.issues).toContainEqual({
 			code: 'custom',
 			path: ['sections'],
-			message: 'Each section ID must be unique within a resource page.'
+			message: 'Each resource section must have a unique stable link.'
 		})
 	}
 })

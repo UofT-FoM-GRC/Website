@@ -54,13 +54,13 @@ collections:
           hint: Main title. Changing it does not change the URL of an existing post.
         }
       - {
-          label: Description,
+          label: Search and Sharing Summary,
           name: description,
           widget: text,
-          hint: One or two sentences for search and page metadata.
+          hint: One or two sentences shown in search results and link previews.
         }
       - {
-          label: Publish Date,
+          label: Publication Date,
           name: pubDate,
           widget: datetime,
           type: date,
@@ -71,15 +71,15 @@ collections:
         }
       - { label: Updated Date, name: updatedDate, widget: hidden }
       - {
-          label: Publication Status,
+          label: Visibility,
           name: status,
           widget: select,
-          options: [current, archived],
+          options: &visibility_options [{ label: Current, value: current }, { label: Archived, value: archived }],
           default: current,
           hint: Archive time-limited or superseded posts. Archived posts remain available at their existing URL.
         }
       - {
-          label: Expires On,
+          label: Expires After,
           name: expiresOn,
           widget: datetime,
           required: false,
@@ -104,7 +104,7 @@ collections:
           required: false,
           hint: Describe the image. Required whenever a hero image is supplied.
         }
-      - label: Tags
+      - label: Categories
         name: tags
         widget: select
         multiple: true
@@ -145,10 +145,10 @@ collections:
           - &resource_slug { label: Stable URL ID, name: slug, widget: hidden }
           - &resource_title { label: Page Heading, name: title, widget: string }
           - &resource_description {
-              label: Page Description,
+              label: Search and Sharing Summary,
               name: description,
               widget: text,
-              hint: One or two sentences for search and page metadata.
+              hint: One or two sentences shown in search results and link previews.
             }
           - &resource_card_title {
               label: Resource Card Title,
@@ -189,7 +189,7 @@ collections:
                   label: Visibility,
                   name: status,
                   widget: select,
-                  options: [current, archived],
+                  options: *visibility_options,
                   default: current,
                   hint: 'Archived sections leave quick navigation and search. They keep their heading, a required notice, and an optional replacement link.'
                 }
@@ -228,7 +228,7 @@ collections:
                       label: Card Visibility,
                       name: status,
                       widget: select,
-                      options: [current, archived],
+                      options: *visibility_options,
                       default: current,
                       hint: Archived cards remain stored but are not shown to visitors.
                     }

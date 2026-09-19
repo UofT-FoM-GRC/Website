@@ -234,7 +234,7 @@ export const resourceSchema = z
 			context.addIssue({
 				code: 'custom',
 				path: ['sections'],
-				message: 'Each section ID must be unique within a resource page.'
+				message: 'Each resource section must have a unique stable link.'
 			})
 		}
 	})

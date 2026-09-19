@@ -1,0 +1,220 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+const taskAreas = [
+	['Blog Posts', 'Create posts and update, archive, or expire existing posts.'],
+	['Resource Pages', 'Update the eight fixed resource pages and their sections, cards, and content blocks.'],
+	['Homepage Announcements', 'Add short notices, set expiry dates, and choose whether they appear.'],
+	['Homepage', 'Update the hero, feature sections, links, images, and contact text.'],
+	['Team and About Page', 'Update About content, team years, current year, and members.'],
+	['Advanced Site Settings', 'Change site-wide navigation, contact details, or social links. Use with care.']
+]
+---
+
+<BaseLayout
+	title="Content editor guide"
+	description="Browser-only instructions for editing and publishing GRC website content."
+	noindex
+>
+	<main id="main-content" data-pagefind-ignore class="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-16">
+		<header class="mb-12 border-b border-slate-300 pb-8 dark:border-slate-700">
+			<p class="mb-3 text-sm font-bold tracking-widest text-blue-700 uppercase dark:text-blue-300">GRC website</p>
+			<h1 class="mb-4 text-4xl leading-tight font-bold text-slate-950 sm:text-5xl dark:text-white">
+				Content editor guide
+			</h1>
+			<p class="max-w-3xl text-xl text-slate-700 dark:text-slate-300">
+				Use this guide on a laptop or desktop. Screenshots show the pinned <strong>Sveltia CMS 0.214.1</strong> interface.
+			</p>
+			<a
+				href="/admin/"
+				class="mt-6 inline-flex rounded-md bg-blue-700 px-5 py-3 font-bold text-white no-underline hover:bg-blue-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700 dark:bg-blue-500 dark:text-slate-950 dark:hover:bg-blue-400"
+			>
+				Open content manager
+			</a>
+		</header>
+
+		<div class="prose prose-slate dark:prose-invert prose-a:text-blue-700 dark:prose-a:text-blue-300 max-w-none">
+			<section aria-labelledby="sign-in">
+				<h2 id="sign-in">1. Sign in</h2>
+				<p>
+					Open the <a href="/admin/">content manager</a>, choose <strong>Sign in with GitHub</strong>, and complete the
+					sign-in screen. Use the account the technical steward authorized for website editing.
+				</p>
+				<p>
+					Contact the technical steward if access is denied, loops back to sign-in, or asks for permissions you do not
+					have.
+				</p>
+			</section>
+
+			<section aria-labelledby="task-area">
+				<h2 id="task-area">2. Choose a task area</h2>
+				<p>Select the area matching the public content you need to change.</p>
+				<div class="not-prose my-6 overflow-hidden rounded-lg border border-slate-300 dark:border-slate-700">
+					<dl class="divide-y divide-slate-300 dark:divide-slate-700">
+						{
+							taskAreas.map(([name, description]) => (
+								<div class="grid gap-1 bg-white p-4 sm:grid-cols-[13rem_1fr] sm:gap-5 dark:bg-slate-800">
+									<dt class="font-bold text-slate-950 dark:text-white">{name}</dt>
+									<dd class="m-0 text-base text-slate-700 dark:text-slate-300">{description}</dd>
+								</div>
+							))
+						}
+					</dl>
+				</div>
+				<figure>
+					<img
+						src="/assets/editor-guide/task-areas.webp"
+						alt="Sveltia content manager showing the six task areas in its left navigation"
+						width="1440"
+						height="900"
+						loading="lazy"
+					/>
+					<figcaption>Task areas in Sveltia CMS 0.214.1.</figcaption>
+				</figure>
+			</section>
+
+			<section aria-labelledby="save-draft">
+				<h2 id="save-draft">3. Save a content draft</h2>
+				<ul>
+					<li>Follow field labels and examples. Fields marked required must be complete before review.</li>
+					<li>
+						Select <strong>Save</strong> whenever you want to keep your work. Saving never changes the public site.
+					</li>
+					<li>An incomplete content draft can be saved and reopened later.</li>
+					<li>When preparing it for review, fix each highlighted field and follow its message.</li>
+				</ul>
+				<p>
+					The editor gives immediate writing feedback, but it does not reproduce the public page. Treat it as <strong
+						>Editor preview</strong
+					>, not final proof of appearance.
+				</p>
+				<figure>
+					<img
+						src="/assets/editor-guide/edit-and-save.webp"
+						alt="Sveltia blog editor showing labelled fields and the Save control"
+						width="1440"
+						height="900"
+						loading="lazy"
+					/>
+					<figcaption>A saved content draft remains private until you publish it.</figcaption>
+				</figure>
+			</section>
+
+			<section aria-labelledby="validate-preview">
+				<h2 id="validate-preview">4. Validate and review the site preview</h2>
+				<ol>
+					<li>Open the <strong>Validation</strong> side panel and select <strong>Validate</strong>.</li>
+					<li>Fix every listed field, validate again, and save.</li>
+					<li>Move the content draft from <strong>Draft</strong> to <strong>Ready</strong>.</li>
+					<li>Wait while the automated validation and site-preview checks run.</li>
+					<li>If a check fails, read the message, correct the content, save, and wait for the checks again.</li>
+					<li>Select <strong>View Preview</strong>. It opens the exact changed page.</li>
+					<li>
+						Review text, links, images, image descriptions, dates, order, and both wide and narrow browser widths.
+					</li>
+				</ol>
+				<aside
+					class="not-prose my-6 rounded-lg border-l-4 border-blue-700 bg-blue-50 p-5 text-slate-900 dark:border-blue-300 dark:bg-slate-800 dark:text-slate-100"
+				>
+					<strong>Site preview is authoritative.</strong> It uses the public website presentation rules. The Editor preview
+					is only a writing aid.
+				</aside>
+				<figure>
+					<img
+						src="/assets/editor-guide/review-and-publish.webp"
+						alt="Sveltia draft controls showing Ready status, View Preview, and Publish Entry"
+						width="1440"
+						height="900"
+						loading="lazy"
+					/>
+					<figcaption>Open View Preview before publishing.</figcaption>
+				</figure>
+			</section>
+
+			<section aria-labelledby="publish">
+				<h2 id="publish">5. Publish</h2>
+				<ol>
+					<li>Confirm both automated checks passed and you reviewed the site preview.</li>
+					<li>Select <strong>Publish</strong>, then confirm <strong>Publish</strong> in the dialog.</li>
+					<li>Accept <strong>“I reviewed the site preview.”</strong> only when that statement is true.</li>
+					<li>Open the public page and confirm the change after publishing finishes.</li>
+				</ol>
+				<p>
+					If publishing fails, the draft remains private. Do not repeatedly retry an unexplained failure; contact the
+					technical steward.
+				</p>
+			</section>
+
+			<section aria-labelledby="archive-expiry">
+				<h2 id="archive-expiry">Archive and expiry</h2>
+				<ul>
+					<li><strong>Archive</strong> a superseded blog post or resource section instead of deleting it.</li>
+					<li>
+						<strong>Expiry</strong> removes a time-limited post or active announcement after its selected Toronto date.
+					</li>
+					<li>Archived and expired posts keep their stable URL but leave listings and search.</li>
+					<li>
+						Changing a blog title does not change its URL. Existing resource-page URLs and section links also stay
+						stable.
+					</li>
+					<li>
+						Ask the technical steward before any change that appears to require changing or removing a stable URL.
+					</li>
+				</ul>
+			</section>
+
+			<section aria-labelledby="images">
+				<h2 id="images">Images</h2>
+				<ul>
+					<li>Upload a JPEG, PNG, or WebP file through the matching image field.</li>
+					<li>The content manager optimizes and renames the upload automatically. No manual resizing is needed.</li>
+					<li>
+						Always add the paired <strong>Image Description</strong>: describe relevant content or purpose for someone
+						who cannot see it.
+					</li>
+					<li>Use the site preview to check crop, placement, quality, and description.</li>
+				</ul>
+			</section>
+
+			<section aria-labelledby="practice">
+				<h2 id="practice">Safe practice</h2>
+				<ol>
+					<li>Create a clearly named disposable blog draft, such as “Training — your name and date.”</li>
+					<li>
+						Practice required fields, an image and description, a callout, an action link, saving, validation, and site
+						preview.
+					</li>
+					<li>
+						Discard that draft without publishing it: open the three-dot <strong>Editor Options</strong> menu, choose <strong
+							>Discard Changes</strong
+						>, and confirm.
+					</li>
+					<li>
+						For publishing practice, add an inactive announcement with <strong>Show on Homepage</strong> turned off and a
+						future expiry date.
+					</li>
+					<li>Validate, review its homepage site preview, publish, and confirm no announcement appears publicly.</li>
+				</ol>
+				<p>Never use private information, real urgent wording, or an active announcement for rehearsal.</p>
+			</section>
+
+			<section aria-labelledby="escalation">
+				<h2 id="escalation">When to contact the technical steward</h2>
+				<p>Stop and email <a href="mailto:grc.facmed@utoronto.ca">grc.facmed@utoronto.ca</a> when:</p>
+				<ul>
+					<li>sign-in or access fails;</li>
+					<li>validation still fails after you correct every highlighted field;</li>
+					<li>the site preview fails, never becomes available, or does not match your saved content;</li>
+					<li>publishing fails, reports a conflict, or remains in progress;</li>
+					<li>a stable URL, resource-section link, or site-wide setting appears at risk;</li>
+					<li>content needs a layout or content type the editor does not offer; or</li>
+					<li>private, harmful, or urgent incorrect content reaches the public site.</li>
+				</ul>
+				<p>
+					Include the task area, content title, what you expected, what happened, and a screenshot. Do not send
+					passwords or access codes.
+				</p>
+			</section>
+		</div>
+	</main>
+</BaseLayout>
