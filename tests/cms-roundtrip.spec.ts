@@ -435,3 +435,72 @@ test('Employment CMS exposes typed blocks, hides section anchors, and generates 
 	await expect(page.getByRole('textbox', { name: 'Section Anchor', exact: true })).toHaveCount(0)
 	await expect(page.getByRole('textbox', { name: 'Paragraphs', exact: true })).toHaveCount(0)
 })
+
+const leaveResourceEditor = async (page: Page) => {
+	const cancel = page.getByRole('button', { name: 'Cancel Editing' })
+	if (await cancel.isVisible()) {
+		await cancel.click()
+		await expect(cancel).toHaveCount(0)
+	}
+}
+
+const openResourcePage = async (page: Page, title: string) => {
+	await leaveResourceEditor(page)
+	await page.getByRole('treeitem', { name: 'Resource Pages', exact: true }).click()
+	await page.getByText(title, { exact: true }).click()
+	await expect(page.getByRole('textbox', { name: 'Page Heading' })).toHaveValue(title)
+	await expect(page.getByRole('button', { name: 'View on Live Site' })).toBeVisible()
+	await expect(page.getByRole('textbox', { name: 'Paragraphs', exact: true })).toHaveCount(0)
+}
+
+test('text-and-link resource pages open, reorder, and save typed blocks in CMS', async ({ page }) => {
+	test.setTimeout(120_000)
+	const testSandboxName = `cms-text-link-resources-${test.info().parallelIndex}-${test.info().repeatEachIndex}`
+	await openTestBackend(page, testSandboxName)
+
+	await openResourcePage(page, 'Career Planning & Exploration Resources')
+	await page.getByText('3 Page Sections', { exact: true }).click()
+	await expect(page.getByRole('textbox', { name: 'Section Heading' }).first()).toHaveValue('Upcoming Career Events')
+	await page.getByRole('button', { name: 'Reorder Item' }).first().focus()
+	await page.keyboard.press('ArrowDown')
+	await page.getByRole('button', { name: 'Save' }).click()
+	await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
+	const saved = () =>
+		page.evaluate(readTestFile, { path: 'src/data/resources/career-planning-exploration.json', testRepositoryName })
+	await expect
+		.poll(async () => JSON.parse(await saved()).sections.map((section: { id: string }) => section.id))
+		.toEqual(['resources', 'events', 'tools'])
+	expect(JSON.parse(await saved()).sections[0].cards[0]).toHaveProperty('blocks')
+
+	for (const title of ['Continuing Education', 'Miscellaneous Resources', 'Application Support Resources']) {
+		await openResourcePage(page, title)
+	}
+})
+
+test('contact-rich resource pages open, reorder, and save typed blocks in CMS', async ({ page }) => {
+	test.setTimeout(120_000)
+	const testSandboxName = `cms-contact-rich-resources-${test.info().parallelIndex}-${test.info().repeatEachIndex}`
+	await openTestBackend(page, testSandboxName)
+
+	await openResourcePage(page, 'Housing')
+	await page.getByText('2 Page Sections', { exact: true }).click()
+	await expect(page.getByRole('textbox', { name: 'Section Heading' }).first()).toHaveValue('Emergency Student Housing')
+	await page.getByRole('button', { name: 'Reorder Item' }).first().focus()
+	await page.keyboard.press('ArrowDown')
+	await page.getByRole('button', { name: 'Save' }).click()
+	await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
+	const saved = () => page.evaluate(readTestFile, { path: 'src/data/resources/housing.json', testRepositoryName })
+	await expect
+		.poll(async () => JSON.parse(await saved()).sections.map((section: { id: string }) => section.id))
+		.toEqual(['graduate', 'emergency'])
+	expect(JSON.parse(await saved()).sections[0].cards[0]).toHaveProperty('blocks')
+	expect(
+		JSON.parse(await saved()).sections[1].cards[1].blocks.some(
+			(block: { type: string }) => block.type === 'contact-panels'
+		)
+	).toBeTruthy()
+
+	for (const title of ['Health & Wellness', 'Scholarships, Bursaries & Awards']) {
+		await openResourcePage(page, title)
+	}
+})

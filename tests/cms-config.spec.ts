@@ -202,12 +202,6 @@ test('every CMS image field accepts routine raster formats and has an image-desc
 			imageRequired: true
 		},
 		{
-			fields: getField(getField(getResourceFile(config, 'housing').fields, 'sections').fields!, 'cards').fields!,
-			image: 'image',
-			description: 'imageAlt',
-			imageRequired: false
-		},
-		{
 			fields: getField(getCollection(config, 'homepage').files![0].fields, 'hero').fields!,
 			image: 'image',
 			description: 'imageAlt',
@@ -420,7 +414,6 @@ test('CMS generates a unique section anchor from the first heading and leaves ex
 test('Sveltia task areas retain current file paths and data field trees', () => {
 	const { source, config } = readConfig()
 
-	expect(source).toContain('fields: &resource_fields')
 	expect(source).toContain('fields: &typed_resource_fields')
 	const blog = getCollection(config, 'blog')
 	expect(blog).toMatchObject({ folder: 'src/blog', extension: 'md', format: 'frontmatter' })
@@ -451,9 +444,7 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 		expect(data.slug).toBe(file.name)
 		expect(file.file).toBe(`src/data/resources/${file.name}.json`)
 		expect(file.preview_path).toBe('/resources/{{slug}}/')
-		expect(fieldShape(file.fields)).toEqual(
-			file.name === 'employment' ? cmsFieldContract.typedResources : cmsFieldContract.resources
-		)
+		expect(fieldShape(file.fields)).toEqual(cmsFieldContract.typedResources)
 		expectDataFields(data, file.fields)
 	}
 
@@ -510,8 +501,16 @@ test('Employment CMS uses typed card blocks and hides section anchors from routi
 	})
 
 	const housingCards = getField(getField(getResourceFile(config, 'housing').fields, 'sections').fields!, 'cards')
-	expect(housingCards.fields!.map((field) => field.name)).toContain('text')
-	expect(housingCards.fields!.map((field) => field.name)).not.toContain('blocks')
+	expect(housingCards.fields!.map((field) => field.name)).toEqual(['title', 'variant', 'status', 'blocks'])
+	expect(getField(housingCards.fields!, 'blocks').types?.map((type) => type.name)).toEqual([
+		'text',
+		'image',
+		'links',
+		'steps',
+		'contact',
+		'contact-panels',
+		'callout'
+	])
 })
 
 test('admin loads only the pinned Sveltia editor asset', () => {
