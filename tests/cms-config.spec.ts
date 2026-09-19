@@ -394,6 +394,8 @@ test('blog authoring exposes only the reviewed rich-text controls and semantic c
 test('semantic component source round-trips quoted, ampersand, bracket, and escaped image-description values', () => {
 	type Component = {
 		id: string
+		mode?: string
+		summary?: string
 		pattern: RegExp
 		toBlock: (value: Record<string, string>) => string
 		fromBlock: (match: RegExpMatchArray) => Record<string, string>
@@ -416,6 +418,7 @@ test('semantic component source round-trips quoted, ampersand, bracket, and esca
 		expect(component.fromBlock(source.match(component.pattern)!)).toEqual(value)
 		expect([...`${source}\n\n${source}`.matchAll(new RegExp(component.pattern.source, 'g'))]).toHaveLength(2)
 	}
+	expect(components.get('action-link')).toMatchObject({ mode: 'dialog', summary: '{{label}}' })
 
 	expectRoundTrip('callout', {
 		kind: 'warning',
