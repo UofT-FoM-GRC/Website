@@ -60,13 +60,9 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		)
 
 		await page.reload()
+		await page.getByRole('treeitem', { name: 'Blog Posts', exact: true }).click()
+		await page.getByText(/^HBFA Updates for 2026–27 — /).click()
 		const restoredTitle = page.locator('[data-key-path="title"] input[type="text"]')
-		const blogTree = page.getByRole('treeitem', { name: 'Blog Posts', exact: true })
-		await expect.poll(async () => (await restoredTitle.isVisible()) || (await blogTree.isVisible())).toBeTruthy()
-		if (!(await restoredTitle.isVisible())) {
-			await blogTree.click()
-			await page.getByText(/^HBFA Updates for 2026–27 — /).click()
-		}
 		await expect(restoredTitle).toHaveValue(title)
 
 		await page.getByRole('button', { name: /^Status:/ }).click()
@@ -106,8 +102,11 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		const body = page.locator('[data-key-path="body"]')
 		await body.getByRole('button', { name: 'Insert' }).click()
 		await page.getByRole('menuitem', { name: 'Action link' }).click()
-		await page.getByRole('textbox', { name: 'Link Text' }).last().fill('Read more')
-		await page.getByRole('textbox', { name: 'Destination URL' }).last().fill('example.com')
+		const actionDialog = page.getByRole('dialog', { name: 'Action link' })
+		await actionDialog.getByRole('textbox', { name: 'Link Text' }).fill('Read more')
+		await actionDialog.getByRole('textbox', { name: 'Destination URL' }).fill('example.com')
+		await actionDialog.getByRole('button', { name: 'Insert' }).click()
+		await page.waitForTimeout(200)
 		let warning = ''
 		page.once('dialog', async (dialog) => {
 			warning = dialog.message()
@@ -117,6 +116,38 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 
 		await expect.poll(() => warning).toMatch(/Body.*Action link.*Destination URL.*https URL/i)
 		await expect.poll(() => mock.branches.get(branch)?.get(`src/blog/${practicePost.slug}.md`)).not.toBe(original)
+	})
+
+	test('keeps a writable paragraph after inserting an action link into an empty body', async ({ page }) => {
+		const emptyBodyPost = {
+			slug: 'empty-body-action-link',
+			title: 'Empty body action link',
+			content: [
+				'---',
+				"title: 'Empty body action link'",
+				"description: 'Regression fixture for writing after a leading action link.'",
+				"pubDate: '2026-01-15'",
+				'tags: [other]',
+				'---',
+				''
+			].join('\n')
+		}
+		await openMockedAdmin(page, (seeded) => seeded.seedDraft(emptyBodyPost))
+		await openBlogEntry(page, /^Empty body action link — /)
+
+		const body = page.locator('[data-key-path="body"]')
+		await body.getByRole('button', { name: 'Insert' }).click()
+		await page.getByRole('menuitem', { name: 'Action link' }).click()
+		const dialog = page.getByRole('dialog', { name: 'Action link' })
+		await dialog.getByRole('textbox', { name: 'Link Text' }).fill('Official source')
+		await dialog.getByRole('textbox', { name: 'Destination URL' }).fill('https://example.com')
+		await dialog.getByRole('button', { name: 'Insert' }).click()
+		await page.waitForTimeout(200)
+
+		const trailingParagraph = body.locator('[contenteditable="true"] p').last()
+		await trailingParagraph.click()
+		await page.keyboard.type('Continue writing after the link.')
+		await expect(body.getByRole('textbox', { name: 'Body' })).toContainText('Continue writing after the link.')
 	})
 
 	test('reports the deploy-preview build state until the preview is ready', async ({ page }) => {

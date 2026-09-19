@@ -96,6 +96,8 @@
 	window.CMS.registerEditorComponent({
 		id: 'action-link',
 		label: 'Action link',
+		mode: 'dialog',
+		summary: '{{label}}',
 		fields: [
 			{ name: 'label', label: 'Link Text', widget: 'string', required: true },
 			{

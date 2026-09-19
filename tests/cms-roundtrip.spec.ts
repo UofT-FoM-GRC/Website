@@ -336,9 +336,12 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 
 	await body.getByRole('button', { name: 'Insert' }).click()
 	await page.getByRole('menuitem', { name: 'Action link' }).click()
-	await page.getByRole('textbox', { name: 'Link Text' }).last().fill('Open the guide')
-	await page.getByRole('textbox', { name: 'Destination URL' }).last().fill('/guide/')
-	await page.getByRole('textbox', { name: 'Optional Supporting Text' }).last().fill('Read this before hosting.')
+	const actionDialog = page.getByRole('dialog', { name: 'Action link' })
+	await actionDialog.getByRole('textbox', { name: 'Link Text' }).fill('Open the guide')
+	await actionDialog.getByRole('textbox', { name: 'Destination URL' }).fill('/guide/')
+	await actionDialog.getByRole('textbox', { name: 'Optional Supporting Text' }).fill('Read this before hosting.')
+	await actionDialog.getByRole('button', { name: 'Insert' }).click()
+	await page.waitForTimeout(200)
 
 	await page.getByRole('button', { name: 'Save' }).click()
 	await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
@@ -350,7 +353,11 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 	await page.reload()
 	await page.getByText(/^UofT Zoom Pro — /).click()
 	await expect(page.getByRole('textbox', { name: 'Optional Heading' }).last()).toHaveValue('Before you host')
-	await expect(page.getByRole('textbox', { name: 'Link Text' }).last()).toHaveValue('Open the guide')
+	await body.getByRole('button', { name: 'Action link' }).click()
+	await expect(
+		page.getByRole('dialog', { name: 'Action link' }).getByRole('textbox', { name: 'Link Text' })
+	).toHaveValue('Open the guide')
+	await page.getByRole('dialog', { name: 'Action link' }).getByRole('button', { name: 'Cancel' }).click()
 
 	await body.getByRole('button', { name: 'Insert' }).click()
 	await page.getByRole('menuitem', { name: 'Accessible image' }).click()
@@ -398,11 +405,20 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 
 	await body.getByRole('button', { name: 'Insert' }).click()
 	await page.getByRole('menuitem', { name: 'Action link' }).click()
-	const invalidUrl = page.getByRole('textbox', { name: 'Destination URL' }).last()
+	const invalidActionDialog = page.getByRole('dialog', { name: 'Action link' })
+	await invalidActionDialog.getByRole('textbox', { name: 'Link Text' }).fill('Unsafe link')
+	const invalidUrl = invalidActionDialog.getByRole('textbox', { name: 'Destination URL' })
 	await invalidUrl.fill('javascript:alert(1)')
-	page.once('dialog', (dialog) => dialog.accept())
+	await invalidActionDialog.getByRole('button', { name: 'Insert' }).click()
+	await page.waitForTimeout(200)
+	let warning = ''
+	page.once('dialog', (dialog) => {
+		warning = dialog.message()
+		return dialog.accept()
+	})
 	await page.getByRole('button', { name: 'Save' }).click()
-	await expect(page.locator('[data-entry-draft-root]')).toBeVisible()
+	await expect.poll(() => warning).toMatch(/Destination URL.*https URL/i)
+	await expect(page.locator('[data-entry-draft-root]')).toBeHidden()
 })
 
 test('Employment CMS exposes typed blocks, hides section anchors, and generates them on first save', async ({
