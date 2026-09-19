@@ -7,6 +7,6 @@ status: current
 tags: []
 ---
 
-:::action-link{url="example.com" label="Read the official HBFA update."}
+:::action-link{url="example.com" label="Read the official HBFA update"}
 
 :::
