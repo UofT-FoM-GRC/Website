@@ -40,7 +40,7 @@ Browser configuration, ownership, monitoring, and rotation steps live in the [te
 - The GitHub backend authenticates through the Netlify-linked GitHub OAuth provider and targets `main` with `publish_mode: editorial_workflow`.
 - `preview_context` names the `netlify/uoft-fom-grc/deploy-preview` commit status, so **View Preview** always resolves the changed route on the pull request's deploy preview.
 - A `prePublish` confirmation requires "I reviewed the site preview." before Sveltia attempts the merge. Cancelling aborts the publish; the merge itself is still gated by branch protection.
-- Publishing uses squash merge. Blog posts keep `delete: false`; resource pages remain fixed file records, so published URLs and protected identities survive routine editing.
+- Publishing uses squash merge. Never-published blog drafts can be discarded, but a CMS pre-unpublish guard and CI deletion check both block removal of published blog URLs. Resource pages remain fixed file records, so their routes and protected identities survive routine editing.
 
 Sveltia docs: <https://sveltiacms.app/en/docs/backends>, <https://sveltiacms.app/en/docs/backends/github>, <https://sveltiacms.app/en/docs/workflows/editorial>, <https://sveltiacms.app/en/docs/workflows/deploy-previews>.
 

@@ -112,16 +112,28 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		await expect(page.getByRole('button', { name: 'View Preview' })).toBeVisible({ timeout: 15_000 })
 	})
 
-	test('published blog entries offer archive or discard instead of deletion', async ({ page }) => {
+	test('published blog identity controls remain guarded while draft cleanup stays available', async ({ page }) => {
 		await openMockedAdmin(page)
 		await openBlogEntry(page, /^Biorender for Students — /)
 
 		await page.getByRole('button', { name: 'Show Editor Options' }).click()
 		const options = page.getByRole('menu', { name: 'Editor Options' })
 		await expect(options.getByRole('menuitem', { name: 'Duplicate Entry' })).toBeVisible()
-		await expect(options.getByRole('menuitem', { name: 'Edit Slug' })).toBeDisabled()
-		await expect(options.getByRole('menuitem', { name: /Delete/ })).toHaveCount(0)
-		await expect(page.getByText(/^Delete Entry/)).toHaveCount(0)
+		await expect(options.getByRole('menuitem', { name: 'Edit Slug' })).toBeEnabled()
+		await expect(options.getByRole('menuitem', { name: 'Delete Entry' })).toBeVisible()
+	})
+
+	test('never-published blog drafts can be discarded without risking a stable URL', async ({ page }) => {
+		const mock = await openMockedAdmin(page, (seeded) => seeded.seedDraft({ ...practicePost, status: 'draft' }))
+
+		await page.getByRole('radio', { name: 'Editorial Workflow' }).click()
+		const card = page.getByRole('listitem').filter({ hasText: practicePost.title })
+		await card.getByRole('button', { name: 'Delete Entry' }).click()
+		const dialog = page.getByRole('alertdialog', { name: 'Delete Entry' })
+		await expect(dialog).toContainText(/hasn.t been published.*discard it completely/i)
+		await dialog.getByRole('button', { name: 'Delete', exact: true }).click()
+
+		await expect.poll(() => mock.branches.has(`cms/blog/${practicePost.slug}`)).toBeFalsy()
 	})
 
 	test('aborts publishing when the preview confirmation is cancelled', async ({ page }) => {
