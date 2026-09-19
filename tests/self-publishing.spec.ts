@@ -12,13 +12,13 @@ test('self-publishing targets main through the GitHub editorial workflow', () =>
 		repo: 'UofT-FoM-GRC/Website',
 		branch: 'rehearsal/cms-cutover',
 		auth_methods: ['oauth'],
-		preview_context: 'netlify/uoft-fom-grc/deploy-preview',
+		preview_context: 'netlify/uoft-fom-grc-rehearsal/deploy-preview',
 		squash_merges: true
 	})
 	expect(config.backend).not.toHaveProperty('automatic_deployments')
 	expect(config.backend).not.toHaveProperty('skip_ci')
 	expect(config.publish_mode).toBe('editorial_workflow')
-	expect(config.site_url).toBe('https://uoftfomgrc.ca')
+	expect(config.site_url).toBe('https://uoft-fom-grc-rehearsal.netlify.app')
 })
 
 test('every editable area exposes an exact route-specific site preview', () => {
