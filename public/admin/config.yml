@@ -564,22 +564,23 @@ collections:
                   widget: list,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
+          - {
+              label: Current Team Year,
+              name: currentYear,
+              widget: string,
+              required: true,
+              hint: 'Enter the exact Academic Year text of the current team, for example: 2025 - 2026. It must match one of the Team Years, or the site build fails and the release is blocked.'
+            }
           - label: Team Years
             name: years
             widget: list
-            hint: First year displays first. Add past years here; ordering is preserved.
+            hint: First year displays first. Drag to reorder years; each academic year may appear once.
             fields:
               - { label: Academic Year, name: year, widget: string, hint: 'Example: 2025 - 2026.' }
-              - {
-                  label: Current Team,
-                  name: current,
-                  widget: boolean,
-                  default: false,
-                  hint: Select exactly one current team year.
-                }
               - label: Members
                 name: members
                 widget: list
+                hint: Members display in listed order. Drag to reorder members.
                 fields:
                   - { label: Name, name: name, widget: string }
                   - { label: Position, name: position, widget: string }

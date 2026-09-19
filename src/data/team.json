@@ -19,10 +19,10 @@
 			"The GRC primarily focuses on student stipends and the Faculty of Medicine Harmonized Base Funding Agreement (HBFA). Each year, we conduct the \"GRC Finance and Living Survey\" to gather data on your finances, living conditions, career prospects, and well-being. This data, combined with Statistics Canada metrics on Toronto's cost of living, helps us create the \"GRC Finance and Living Report\". This report highlights the realities of graduate student life and includes our recommendations for HBFA changes."
 		]
 	},
+	"currentYear": "2025 - 2026",
 	"years": [
 		{
 			"year": "2025 - 2026",
-			"current": true,
 			"members": [
 				{ "name": "Ally Suarez", "position": "Director" },
 				{

@@ -241,6 +241,16 @@ test('every CMS image field accepts routine raster formats and has an image-desc
 	}
 })
 
+test('Team and About selects one required current year instead of per-year booleans', () => {
+	const { config } = readConfig()
+	const fields = getCollection(config, 'team_and_about').files![0].fields!
+	const years = getField(fields, 'years')
+
+	expect(getField(fields, 'currentYear')).toMatchObject({ widget: 'string', required: true })
+	expect(getField(fields, 'currentYear').hint).toContain('match one of the Team Years')
+	expect(years.fields!.map((field) => field.name)).not.toContain('current')
+})
+
 test('Sveltia exposes task areas and route-specific site previews', () => {
 	const { config } = readConfig()
 

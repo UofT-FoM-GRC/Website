@@ -134,9 +134,9 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 			workTitle: 'string',
 			workParagraphs: { paragraph: 'text' }
 		},
+		currentYear: 'string',
 		years: {
 			year: 'string',
-			current: 'boolean',
 			members: { name: 'string', position: 'string', image: 'image', imageAlt: 'string' }
 		}
 	},

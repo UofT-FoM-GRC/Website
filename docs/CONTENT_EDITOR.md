@@ -22,7 +22,7 @@ Publishing never changes production. Authoritative preview is Netlify `dev` bran
 - Blog post URL comes from file slug. Changing existing title does not change it. Use one to three tags; tags control related resource posts.
 - **Updated Date** is set automatically whenever an existing blog post is saved with changes. Hero image alternative text is required when image conveys information.
 - Resource page URL IDs are protected. Existing section IDs are public links: do not change or repurpose them. Add new sections/cards instead.
-- Team years and members display in listed order. Add photo and photo alternative text together. Missing photo shows standard avatar.
+- Team years and members display in listed order; drag to reorder. **Current Team Year** must exactly match one listed **Academic Year** text, or the site build fails and the release is blocked. Add photo and photo alternative text together. Missing photo shows standard avatar.
 - Homepage hero needs two to five lines. The second line is the page heading; keep it descriptive.
 - Homepage announcements display only when **Show on Homepage** is enabled; list order controls display order. An active announcement requires an expiry date and stays up through that Toronto date. It hides at the next scheduled daily rebuild. Leave an announcement inactive to keep it as an unpublished training item.
 - External links need `https://`; email needs `mailto:`; phone needs `tel:`.

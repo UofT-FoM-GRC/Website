@@ -236,7 +236,8 @@ test('team member image descriptions allow empty CMS values and report the neste
 			workTitle: 'Work',
 			workParagraphs: ['Work paragraph']
 		},
-		years: [{ year: '2026 - 2027', current: true, members: [{ name: 'Photo-free member', position: 'Member' }] }]
+		currentYear: '2026 - 2027',
+		years: [{ year: '2026 - 2027', members: [{ name: 'Photo-free member', position: 'Member' }] }]
 	}
 
 	expect(teamSchema.safeParse(baseTeam).success).toBeTruthy()

@@ -309,17 +309,32 @@ export const teamSchema = z
 			workTitle: requiredStringSchema,
 			workParagraphs: z.array(requiredStringSchema)
 		}),
+		currentYear: requiredStringSchema,
 		years: z.array(
 			z.object({
 				year: requiredStringSchema,
-				current: z.boolean().default(false),
 				members: z.array(teamMemberImageSchema)
 			})
 		)
 	})
 	.superRefine((team, context) => {
-		if (team.years.filter((year) => year.current).length !== 1) {
-			context.addIssue({ code: 'custom', path: ['years'], message: 'Select exactly one current team year.' })
+		const seenYears = new Set<string>()
+		team.years.forEach(({ year }, index) => {
+			if (seenYears.has(year)) {
+				context.addIssue({
+					code: 'custom',
+					path: ['years', index, 'year'],
+					message: 'Each academic year must appear once.'
+				})
+			}
+			seenYears.add(year)
+		})
+		if (!team.years.some(({ year }) => year === team.currentYear)) {
+			context.addIssue({
+				code: 'custom',
+				path: ['currentYear'],
+				message: 'Current year must match one of the listed academic years.'
+			})
 		}
 	})
 
