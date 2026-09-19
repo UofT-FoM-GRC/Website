@@ -4,7 +4,8 @@ description: Updated 2026–27 Harmonized Base Funding Agreement amounts for Tem
 pubDate: 2026-09-19
 updatedDate: 2026-09-19
 status: current
-tags: []
+tags:
+  - scholarships-bursaries-awards
 ---
 
 :::action-link{url="https://physiology.utoronto.ca/2026-27-temerty-faculty-medicine-harmonized-base-funding-agreement" label="Read the official HBFA update"}
