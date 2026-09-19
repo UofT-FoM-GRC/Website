@@ -38,7 +38,8 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		await page.getByRole('treeitem', { name: 'Blog Posts', exact: true }).click()
 		await page.getByLabel('Create New Entry').first().click()
 		const titleInput = page.locator('[data-key-path="title"] input[type="text"]')
-		const title = 'HBFA Updates for 2026–27'
+		const title = 'CMS Rehearsal 2026–27'
+		const slug = 'cms-rehearsal-2026-27'
 		// The new-entry editor can finish loading right after the first render, replacing
 		// the title input. Retry until the typed value sticks.
 		for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -51,17 +52,15 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 
 		await expect.poll(() => mock.pullRequests.length).toBe(1)
 		const pullRequest = mock.pullRequests[0]
-		expect(pullRequest.branch).toContain('cms/blog/hbfa-updates-for-2026-27')
+		expect(pullRequest.branch).toContain(`cms/blog/${slug}`)
 		expect(pullRequest.branch).not.toMatch(/[^\x00-\x7f]/)
 		expect(pullRequest.labels).toContain('sveltia-cms/draft')
-		expect(pullRequest.files.map((file) => file.path)).toContain('src/blog/hbfa-updates-for-2026-27.md')
-		expect(mock.branches.get(pullRequest.branch)?.get('src/blog/hbfa-updates-for-2026-27.md')).toContain(
-			`title: ${title}`
-		)
+		expect(pullRequest.files.map((file) => file.path)).toContain(`src/blog/${slug}.md`)
+		expect(mock.branches.get(pullRequest.branch)?.get(`src/blog/${slug}.md`)).toContain(`title: ${title}`)
 
 		await page.reload()
-		await page.getByRole('treeitem', { name: 'Blog Posts', exact: true }).click()
-		await page.getByText(/^HBFA Updates for 2026–27 — /).click()
+		await page.getByRole('radio', { name: 'Editorial Workflow' }).click()
+		await page.getByRole('button', { name: title, exact: true }).click()
 		const restoredTitle = page.locator('[data-key-path="title"] input[type="text"]')
 		await expect(restoredTitle).toHaveValue(title)
 
