@@ -62,3 +62,5 @@ Dependabot groups package and GitHub Actions version updates monthly, targets `m
 - [Content editor guide](CONTENT_EDITOR.md)
 - [Local development guide](LOCAL_DEVELOPMENT.md)
 - [Rollback guide](ROLLBACK.md)
+- [Technical operations runbook](TECHNICAL_OPERATIONS.md)
+- [Technical rehearsal record](TECHNICAL_REHEARSAL.md)

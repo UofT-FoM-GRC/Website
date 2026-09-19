@@ -18,6 +18,7 @@
 - [ ] `netlify/uoft-fom-grc/deploy-preview` passes and I reviewed its preview.
 - [ ] I added screenshots or a preview link for visible changes, or explained why not needed.
 - [ ] I described production impact below.
+- [ ] If this changes Sveltia, OAuth, deployment, expiry, access, or recovery behavior, I linked the relevant technical rehearsal evidence and updated the runbooks.
 
 ## Testing
 

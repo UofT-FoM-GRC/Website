@@ -31,6 +31,8 @@ Netlify builds production from `main` after each CMS publish or merged code pull
 
 The workflow only POSTs the hook. It does not check out, edit, or commit content, so it cannot publish a CMS draft or change any source file. The technical steward owns the hook and secret: create a production build hook for the Netlify site and store its URL as the `NETLIFY_BUILD_HOOK_URL` repository secret in GitHub, then rotate it if it is exposed. The daily rebuild adds one production build per day (about 30 per month) to the Legacy Free plan usage already consumed by deploy-preview and production builds.
 
+Browser configuration, ownership, monitoring, and rotation steps live in the [technical operations runbook](TECHNICAL_OPERATIONS.md). Cutover and every Sveltia version change require the twelve-scenario [technical rehearsal](TECHNICAL_REHEARSAL.md).
+
 ## CMS routes and access
 
 - `/admin/` loads pinned Sveltia CMS `0.214.1` with the project configuration and `customizations.js`.

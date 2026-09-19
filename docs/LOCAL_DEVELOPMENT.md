@@ -64,4 +64,4 @@ Do not resolve unfamiliar merge conflicts by guessing. Stop, preserve work, and 
 
 ## Repository map
 
-See [architecture](ARCHITECTURE.md) for source locations and [content editor guide](CONTENT_EDITOR.md) for CMS-managed content.
+See [architecture](ARCHITECTURE.md) for source locations and [content editor guide](CONTENT_EDITOR.md) for CMS-managed content. External GitHub, OAuth, Netlify, expiry, cutover, upgrade, and annual-handoff procedures are browser-first and live in the [technical operations runbook](TECHNICAL_OPERATIONS.md); use the [technical rehearsal record](TECHNICAL_REHEARSAL.md) for any Sveltia version change.

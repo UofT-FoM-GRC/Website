@@ -98,6 +98,9 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - **Source changes**: Create a page in `src/pages/` or change other source only during technical steward work.
 - **Local site**: Run `pnpm dev` only for technical steward work.
 - **Build**: Run `pnpm build` only for technical steward work.
+- **External operations**: Follow `docs/TECHNICAL_OPERATIONS.md` for OAuth, Netlify, GitHub access/protection, expiry automation, upgrades, cutover, and annual handoff.
+- **CMS rehearsal**: Use all twelve scenarios in `docs/TECHNICAL_REHEARSAL.md` before cutover or any Sveltia version change; store completed evidence privately and never record secrets.
+- **Recovery**: Follow `docs/ROLLBACK.md`; a Netlify restore is temporary until `main` is reconciled, and Decap is not a live fallback.
 
 ## Playwright checks
 

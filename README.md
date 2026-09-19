@@ -14,6 +14,8 @@ Support: <grc.facmed@utoronto.ca>
 - Rollback: [rollback guide](docs/ROLLBACK.md)
 - Technical overview: [architecture](docs/ARCHITECTURE.md)
 - Ownership and access handoff: [handoff checklist](docs/HANDOFF.md)
+- External setup, maintenance, and cutover: [technical operations runbook](docs/TECHNICAL_OPERATIONS.md)
+- Pre-cutover and upgrade evidence: [technical rehearsal record](docs/TECHNICAL_REHEARSAL.md)
 
 Routine work is browser-only. Content editors draft, preview, and self-publish through Sveltia CMS at `/admin/`; the technical steward handles rare source, access, or recovery work. CMS covers blog, resources, homepage, announcements, team archive, navigation, and contact/social links.
 
