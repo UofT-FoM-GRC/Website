@@ -13,6 +13,12 @@ backend:
 
 publish_mode: editorial_workflow
 site_url: https://uoft-fom-grc-rehearsal.netlify.app
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+  trim: true
+  lowercase: true
 editor:
   preview: false
 output:

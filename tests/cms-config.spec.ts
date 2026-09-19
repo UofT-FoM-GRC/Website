@@ -102,6 +102,18 @@ test('Sveltia foundation has the reviewed GitHub editorial workflow settings', (
 	expect(config.output).toEqual({ omit_empty_optional_fields: true })
 })
 
+test('generated entry URLs and branches use unambiguous ASCII slugs', () => {
+	const { config } = readConfig()
+
+	expect(config.slug).toEqual({
+		encoding: 'ascii',
+		clean_accents: true,
+		sanitize_replacement: '-',
+		trim: true,
+		lowercase: true
+	})
+})
+
 test('Sveltia normalizes routine raster uploads in repository media', () => {
 	const { config } = readConfig()
 
