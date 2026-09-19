@@ -97,7 +97,7 @@ test('Sveltia foundation has the reviewed GitHub editorial workflow settings', (
 	expect(config.backend).not.toHaveProperty('automatic_deployments')
 	expect(config.backend).not.toHaveProperty('skip_ci')
 	expect(config.publish_mode).toBe('editorial_workflow')
-	expect(config.site_url).toBe('https://uoftfomgrc.ca')
+	expect(config.site_url).toBe('https://uoft-fom-grc-rehearsal.netlify.app')
 	expect(config.editor).toEqual({ preview: false })
 	expect(config.output).toEqual({ omit_empty_optional_fields: true })
 })

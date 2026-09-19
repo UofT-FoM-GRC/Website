@@ -7,12 +7,12 @@ backend:
   auth_methods: [oauth]
   # Netlify reports each pull request's deploy preview through this exact check.
   # Naming it keeps preview links locked to Netlify even if other statuses appear.
-  preview_context: netlify/uoft-fom-grc/deploy-preview
+  preview_context: netlify/uoft-fom-grc-rehearsal/deploy-preview
   # Rehearsal publishes stay isolated from production until the cutover is approved.
   squash_merges: true
 
 publish_mode: editorial_workflow
-site_url: https://uoftfomgrc.ca
+site_url: https://uoft-fom-grc-rehearsal.netlify.app
 editor:
   preview: false
 output:
