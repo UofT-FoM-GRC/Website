@@ -1,7 +1,7 @@
 ---
 title: HBFA Updates for 2026–27
 description: Updated 2026–27 Harmonized Base Funding Agreement amounts for Temerty Faculty of Medicine graduate students, including expected income and guidance on supervisor top-ups.
-pubDate: 2026-09-19
+pubDate: 2026-09-20
 updatedDate: 2026-09-19
 status: current
 tags:
