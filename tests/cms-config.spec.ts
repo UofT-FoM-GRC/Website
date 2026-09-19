@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test'
 import Ajv from 'ajv'
+import { z } from 'astro/zod'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { runInNewContext } from 'node:vm'
 import { parseDocument } from 'yaml'
+import { blogTagSchema } from '../src/schemas'
 import { generateSectionAnchor } from '../src/utils/strings'
 import { cmsFieldContract } from './fixtures/cms-field-contract'
 
@@ -14,8 +16,11 @@ type Field = {
 	widget?: string
 	required?: boolean
 	accept?: string
-	hint?: string
 	options?: unknown[]
+	pattern?: unknown[]
+	hint?: string
+	min?: number
+	max?: number
 	field?: Field
 	fields?: Field[]
 	types?: Field[]
@@ -24,6 +29,7 @@ type Field = {
 type Collection = {
 	name: string
 	label: string
+	description?: string
 	folder?: string
 	extension?: string
 	format?: string
@@ -277,6 +283,115 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 		expect(file, `Missing ${fileName} configuration`).toBeDefined()
 		expect(file!.preview_path).toBe(path)
 	}
+})
+
+const reviewedUrlPattern = [
+	'^(?:https?://|mailto:|tel:|/(?!/)|#)',
+	'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+]
+
+const urlDestinations = {
+	valid: ['https://example.ca/page', '/about', 'mailto:grc@example.ca', 'tel:+14161234567', '#contact'],
+	invalid: ['javascript:alert(1)', '//example.ca/about', 'ftp://example.ca/file']
+}
+
+// The publishing schema gates on `z.email()`, so the CMS pattern must accept exactly the same corpus.
+const emailAddresses = {
+	valid: ['grc.facmed@utoronto.ca', 'a@b.co', 'first.last+tag@sub.example.com', "o'brien@example.com"],
+	invalid: [
+		'a@b.c',
+		'a..b@example.com',
+		'.a@example.com',
+		'a@b..c',
+		'a@b_c.com',
+		'ü@example.com',
+		'a@-b.com',
+		'a@example.com.',
+		'..a@example.com',
+		'a.@example.com',
+		'a@.example.com',
+		'grc.facmed',
+		'grc@utoronto',
+		'grc@utoronto.',
+		'not an email',
+		'@utoronto.ca'
+	]
+}
+
+const executePattern = (field: Field, label: string) => {
+	expect(field.pattern, `${label} pattern`).toHaveLength(2)
+	const [source, message] = field.pattern as [string, string]
+	expect(message, `${label} pattern message`).toBeTruthy()
+	expect(source, `${label} pattern source`).toBeTruthy()
+	return new RegExp(source)
+}
+
+test('URL and email fields share actionable, consistent validation contracts', () => {
+	const { config } = readConfig()
+	const advanced = getCollection(config, 'advanced_site_settings')
+	const navigationFile = advanced.files?.find(({ name }) => name === 'navigation')
+	const siteFile = advanced.files?.find(({ name }) => name === 'site')
+	expect(navigationFile, 'Missing navigation configuration').toBeDefined()
+	expect(siteFile, 'Missing site configuration').toBeDefined()
+
+	const socialUrl = getField(getField(siteFile!.fields, 'socialLinks').fields!, 'url')
+	const navigationUrl = getField(getField(navigationFile!.fields, 'links').fields!, 'url')
+	const featureLinks = getField(
+		getField(getCollection(config, 'homepage').files![0].fields, 'featureSections').fields!,
+		'links'
+	)
+	const featureUrl = getField(featureLinks.fields!, 'url')
+
+	for (const [label, field] of [
+		['social links', socialUrl],
+		['navigation', navigationUrl],
+		['homepage feature links', featureUrl]
+	] as const) {
+		expect(field.pattern, `${label} URL pattern`).toEqual(reviewedUrlPattern)
+		const pattern = executePattern(field, label)
+		for (const url of urlDestinations.valid) expect(pattern.test(url), `${label} accepts ${url}`).toBeTruthy()
+		for (const url of urlDestinations.invalid) expect(pattern.test(url), `${label} rejects ${url}`).toBeFalsy()
+		expect(field.hint, `${label} URL hint`).toMatch(/https:\/\//)
+		expect(field.hint, `${label} URL hint`).toMatch(/#fragment/)
+	}
+
+	const email = getField(getField(siteFile!.fields, 'contact').fields!, 'email')
+	const emailPattern = executePattern(email, 'contact email')
+	expect((email.pattern as string[])[1]).toBe('Use an email address like grc.facmed@utoronto.ca.')
+	for (const address of emailAddresses.valid) {
+		expect(emailPattern.test(address), `CMS email pattern accepts ${address}`).toBeTruthy()
+		expect(z.email().safeParse(address).success, `publishing schema accepts ${address}`).toBeTruthy()
+	}
+	for (const address of emailAddresses.invalid) {
+		expect(emailPattern.test(address), `CMS email pattern rejects ${address}`).toBeFalsy()
+		expect(z.email().safeParse(address).success, `publishing schema rejects ${address}`).toBeFalsy()
+	}
+	expect(email.hint, 'contact email hint').toMatch(/grc\.facmed@utoronto\.ca/)
+})
+
+test('Advanced Site Settings is marked as a site-wide area', () => {
+	const { config } = readConfig()
+	const advanced = getCollection(config, 'advanced_site_settings')
+
+	expect(advanced.label).toBe('Advanced Site Settings')
+	expect(advanced.description).toMatch(/every page/i)
+})
+
+test('resource navigation selects each fixed resource record exactly once in menu order', () => {
+	const { config } = readConfig()
+	const navigation = getCollection(config, 'advanced_site_settings').files?.find(({ name }) => name === 'navigation')
+	expect(navigation, 'Missing navigation configuration').toBeDefined()
+	const resourceLinks = getField(navigation!.fields, 'resourceLinks')
+
+	expect(resourceLinks).toMatchObject({ widget: 'list', min: 8, max: 8 })
+	expect(resourceLinks.hint, 'resource menu hint').toMatch(/drag/i)
+	expect(resourceLinks.hint, 'resource menu hint').toMatch(/order/i)
+
+	const slug = getField(resourceLinks.fields!, 'slug')
+	expect(slug).toMatchObject({ widget: 'select' })
+	const slugs = (slug.options ?? []).map((option) => (option as { value: string }).value)
+	expect(slugs).toEqual(blogTagSchema.options)
+	expect(new Set(slugs).size).toBe(blogTagSchema.options.length)
 })
 
 test('blog lifecycle fields use calendar dates and hide automated metadata', () => {

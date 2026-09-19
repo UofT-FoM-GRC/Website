@@ -8,7 +8,7 @@ Sveltia is staged at `/cms/` but unavailable until OAuth cutover. Do not use it 
 
 ## Edit content
 
-1. Open a collection. **Blog Posts** creates and edits posts. **Resource Pages** edits the eight existing pages. **Site Settings** contains homepage, announcements, navigation, contact/social links, and about/team archive.
+1. Open a task area: **Blog Posts**, **Resource Pages**, **Homepage Announcements**, **Homepage**, **Team and About Page**, or **Advanced Site Settings**. **Blog Posts** creates and edits posts; **Resource Pages** edits the eight existing pages.
 2. Use labels, hints, lists, and image controls. Do not repurpose existing resource section IDs. Reorder lists with drag handles.
 3. Add meaningful alternative text for every informational image. Leave decorative-image text empty only when image adds no information.
 4. Save a draft. Review exact changed fields and links.
@@ -16,6 +16,10 @@ Sveltia is staged at `/cms/` but unavailable until OAuth cutover. Do not use it 
 6. Fix feedback. Publish to `dev` only after go-ahead.
 
 Publishing never changes production. Authoritative preview is Netlify `dev` branch deploy, not CMS pane.
+
+## Advanced Site Settings
+
+**Advanced Site Settings** affects every page. It holds the header brand and navigation links, the resource menu, and the contact email plus social links used in the header, footer, and homepage contact section. In URL fields use `https://` for external pages, `/about` for a page on this site, `mailto:grc.facmed@utoronto.ca` for email, `tel:+14161234567` for telephone, or `#contact` for a section of the current page. The resource menu has one entry per fixed resource page; choose the page from the list instead of typing a route, and drag entries to set menu order.
 
 ## Guardrails
 

@@ -512,10 +512,18 @@ collections:
                 widget: list
                 required: false
                 fields:
-                  [
-                    { label: Link Text, name: label, widget: string },
-                    { label: Destination URL, name: url, widget: string }
-                  ]
+                  - { label: Link Text, name: label, widget: string }
+                  - {
+                      label: Destination URL,
+                      name: url,
+                      widget: string,
+                      hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                      pattern:
+                        [
+                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                          'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                        ]
+                    }
               - { label: Image, name: image, widget: image, required: true, accept: 'image/jpeg,image/png,image/webp' }
               - { label: Image Description, name: imageAlt, widget: string, required: true }
               - { label: Background Tone, name: tone, widget: select, options: [dark, light] }
@@ -600,6 +608,7 @@ collections:
                     }
   - name: advanced_site_settings
     label: Advanced Site Settings
+    description: Navigation and contact/social settings for the whole site. These changes affect every page.
     files:
       - label: Navigation
         name: navigation
@@ -610,13 +619,26 @@ collections:
           - label: Main Navigation Links
             name: links
             widget: list
-            fields: [{ label: Label, name: label, widget: string }, { label: URL, name: url, widget: string }]
+            fields:
+              - { label: Label, name: label, widget: string }
+              - {
+                  label: URL,
+                  name: url,
+                  widget: string,
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                  pattern:
+                    [
+                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                    ]
+                }
           - { label: Resources Menu Label, name: resourceLabel, widget: string }
           - label: Resources Menu Links
             name: resourceLinks
             widget: list
             min: 8
             max: 8
+            hint: One entry per resource page. Drag to set the menu order. Each resource page may appear once.
             fields:
               [
                 { label: Label, name: label, widget: string },
@@ -650,7 +672,18 @@ collections:
           - label: Contact
             name: contact
             widget: object
-            fields: [{ label: Public Email Address, name: email, widget: string }]
+            fields:
+              - {
+                  label: Public Email Address,
+                  name: email,
+                  widget: string,
+                  hint: 'Use a full address, for example grc.facmed@utoronto.ca.',
+                  pattern:
+                    [
+                      '^(?!\.)(?!.*\.\.)([A-Za-z0-9_''+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$',
+                      'Use an email address like grc.facmed@utoronto.ca.'
+                    ]
+                }
           - label: Social Links
             name: socialLinks
             widget: list
@@ -660,7 +693,7 @@ collections:
                   label: Destination URL,
                   name: url,
                   widget: string,
-                  hint: 'Include https:// for external links, / for internal links, mailto: for email, or tel: for telephone.',
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
                   pattern:
                     [
                       '^(?:https?://|mailto:|tel:|/(?!/)|#)',
