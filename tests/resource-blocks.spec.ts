@@ -5,7 +5,6 @@ import {
 	currentResourceSections,
 	generateSectionAnchor,
 	isArchivedSection,
-	isTypedResourceCard,
 	renderResourceCallout,
 	renderResourceMarkdown,
 	visibleResourceCards
@@ -21,6 +20,9 @@ const resourceBase = {
 }
 
 const parseResource = (sections: unknown) => resourceSchema.safeParse({ ...resourceBase, sections })
+
+const expectTypedCardKeys = (card: { title: string }, label = card.title) =>
+	expect(Object.keys(card).sort(), label).toEqual(['blocks', 'status', 'title', 'variant'])
 
 test('every typed resource-card block validates through the public schema', () => {
 	const result = parseResource([
@@ -82,18 +84,15 @@ test('every typed resource-card block validates through the public schema', () =
 	expect(result.success).toBeTruthy()
 	if (!result.success) return
 	const card = result.data.sections[0].cards[0]
-	expect(isTypedResourceCard(card)).toBeTruthy()
-	if (isTypedResourceCard(card)) {
-		expect(card.blocks.map((block) => block.type)).toEqual([
-			'text',
-			'image',
-			'links',
-			'steps',
-			'contact',
-			'contact-panels',
-			'callout'
-		])
-	}
+	expect(card.blocks.map((block) => block.type)).toEqual([
+		'text',
+		'image',
+		'links',
+		'steps',
+		'contact',
+		'contact-panels',
+		'callout'
+	])
 })
 
 test('unknown block types fail with a path-specific validation message', () => {
@@ -230,17 +229,91 @@ const expectStoredPageAccountsForInventory = (file: string) => {
 	}
 }
 
-test('temporary legacy card fields still validate until compatibility is removed', () => {
+test('legacy card fields fail validation with the missing blocks path and the offending keys', () => {
 	const result = parseResource([
 		{
 			id: 'legacy',
 			title: 'Legacy section',
-			cards: [{ title: 'Legacy card', text: ['Still allowed through temporary compatibility.'] }]
+			cards: [
+				{
+					title: 'Legacy card',
+					text: ['Legacy paragraph.'],
+					bullets: ['Legacy bullet.'],
+					listStyle: 'ordered',
+					listItems: [{ text: 'Legacy step.' }],
+					groups: [{ title: 'Legacy group' }],
+					addressLines: ['21 Sussex Avenue'],
+					facts: [{ label: 'Phone:', value: '416-978-2222' }],
+					linkStyle: 'button',
+					image: '/assets/legacy.webp',
+					imageAlt: 'Legacy image',
+					links: [{ label: 'Legacy link', url: 'https://example.com/' }]
+				}
+			]
 		}
 	])
-	expect(result.success).toBeTruthy()
-	if (result.success) {
-		expect(isTypedResourceCard(result.data.sections[0].cards[0])).toBeFalsy()
+
+	expect(result.success).toBeFalsy()
+	if (result.success) return
+	expect(result.error.issues).toContainEqual(
+		expect.objectContaining({
+			code: 'invalid_type',
+			path: ['sections', 0, 'cards', 0, 'blocks']
+		})
+	)
+	const rejectedKeys = result.error.issues.find((issue) => issue.code === 'unrecognized_keys')
+	expect(rejectedKeys, 'Legacy card keys must be named in the validation issues').toBeDefined()
+	if (rejectedKeys?.code === 'unrecognized_keys') {
+		expect(rejectedKeys.path).toEqual(['sections', 0, 'cards', 0])
+		expect(rejectedKeys.keys).toEqual(
+			expect.arrayContaining([
+				'text',
+				'bullets',
+				'listStyle',
+				'listItems',
+				'groups',
+				'addressLines',
+				'facts',
+				'linkStyle',
+				'image',
+				'imageAlt',
+				'links'
+			])
+		)
+	}
+})
+
+test('cards with unknown or partially migrated top-level fields fail at the card path', () => {
+	const unknownField = parseResource([
+		{
+			id: 'unknown',
+			title: 'Unknown field section',
+			cards: [{ title: 'Unknown field card', blocks: [], unexpected: 'not part of the contract' }]
+		}
+	])
+	expect(unknownField.success).toBeFalsy()
+	if (!unknownField.success) {
+		const issue = unknownField.error.issues.find(
+			(candidate) => candidate.code === 'unrecognized_keys' && candidate.path.join('.') === 'sections.0.cards.0'
+		)
+		expect(issue, 'Unknown card fields must fail at the card path').toBeDefined()
+		if (issue?.code === 'unrecognized_keys') expect(issue.keys).toContain('unexpected')
+	}
+
+	const partiallyMigrated = parseResource([
+		{
+			id: 'partial',
+			title: 'Partial section',
+			cards: [{ title: 'Partial card', blocks: [], text: ['Leftover legacy paragraph.'] }]
+		}
+	])
+	expect(partiallyMigrated.success).toBeFalsy()
+	if (!partiallyMigrated.success) {
+		const issue = partiallyMigrated.error.issues.find(
+			(candidate) => candidate.code === 'unrecognized_keys' && candidate.path.join('.') === 'sections.0.cards.0'
+		)
+		expect(issue, 'Leftover legacy fields must fail at the card path').toBeDefined()
+		if (issue?.code === 'unrecognized_keys') expect(issue.keys).toContain('text')
 	}
 })
 
@@ -249,10 +322,11 @@ test('text-and-link resource pages store card details exclusively as typed block
 		const parsed = resourceSchema.safeParse(readResource(file))
 		expect(parsed.success, file).toBeTruthy()
 		if (!parsed.success) continue
-		expect(
-			parsed.data.sections.every((section) => section.cards.every(isTypedResourceCard)),
-			file
-		).toBeTruthy()
+		for (const section of parsed.data.sections) {
+			for (const card of section.cards) {
+				expectTypedCardKeys(card, `${file} ${card.title}`)
+			}
+		}
 		expectStoredPageAccountsForInventory(file)
 	}
 })
@@ -262,10 +336,11 @@ test('contact-rich resource pages store card details exclusively as typed blocks
 		const parsed = resourceSchema.safeParse(readResource(file))
 		expect(parsed.success, file).toBeTruthy()
 		if (!parsed.success) continue
-		expect(
-			parsed.data.sections.every((section) => section.cards.every(isTypedResourceCard)),
-			file
-		).toBeTruthy()
+		for (const section of parsed.data.sections) {
+			for (const card of section.cards) {
+				expectTypedCardKeys(card, `${file} ${card.title}`)
+			}
+		}
 		expectStoredPageAccountsForInventory(file)
 	}
 })
@@ -277,8 +352,10 @@ test('employment stores card details as typed blocks', () => {
 	const parsedEmployment = resourceSchema.safeParse(employment)
 	expect(parsedEmployment.success).toBeTruthy()
 	if (!parsedEmployment.success) return
-	expect(parsedEmployment.data.sections.every((section) => section.cards.every(isTypedResourceCard))).toBeTruthy()
-	expect(parsedEmployment.data.sections[0].cards[0]).toMatchObject({
+	expectStoredPageAccountsForInventory('employment.json')
+	const firstCard = parsedEmployment.data.sections[0].cards[0]
+	expectTypedCardKeys(firstCard)
+	expect(firstCard).toMatchObject({
 		title: 'CUPE 3902 Job Postings',
 		blocks: [
 			{

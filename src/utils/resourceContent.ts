@@ -46,8 +46,6 @@ const rejectUnsupportedResourceMarkdown: Plugin = () => (tree, file) => {
 	})
 }
 
-export const isTypedResourceCard = (card: ResourceCard): card is TypedResourceCard => 'blocks' in card
-
 export const isArchivedSection = (section: ResourceSection) => section.status === 'archived'
 
 export const currentResourceSections = (sections: ResourceSection[]) =>

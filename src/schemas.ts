@@ -182,47 +182,20 @@ export const resourceBlockSchema = z.any().transform((value, context) => {
 
 const resourceVisibilitySchema = z.enum(['current', 'archived']).default('current')
 
-export const typedResourceCardSchema = z.object({
-	title: requiredStringSchema,
-	variant: z.enum(['card', 'plain']).default('card'),
-	status: resourceVisibilitySchema,
-	blocks: z.array(resourceBlockSchema)
-})
-
-// Temporary compatibility for unmigrated resource pages until ticket 10.
-export const legacyResourceCardSchema = z
+export const typedResourceCardSchema = z
 	.object({
 		title: requiredStringSchema,
-		text: z.array(requiredStringSchema).default([]),
-		links: z.array(linkSchema).default([]),
-		bullets: z.array(requiredStringSchema).default([]),
-		listStyle: z.enum(['unordered', 'ordered']).default('unordered'),
-		listItems: z.array(resourceListItemSchema).default([]),
-		groups: z.array(resourceGroupSchema).default([]),
-		addressLines: z.array(requiredStringSchema).default([]),
-		facts: z.array(resourceFactSchema).default([]),
 		variant: z.enum(['card', 'plain']).default('card'),
 		status: resourceVisibilitySchema,
-		linkStyle: z.enum(['link', 'button']).default('link'),
-		image: optionalCmsStringSchema,
-		imageAlt: optionalCmsStringSchema
+		blocks: z.array(resourceBlockSchema)
 	})
-	.superRefine(requireImageDescription('image', 'imageAlt'))
+	.strict()
 
 export type ResourceBlock = z.infer<(typeof resourceBlockSchemas)[keyof typeof resourceBlockSchemas]>
 export type TypedResourceCard = z.infer<typeof typedResourceCardSchema>
-export type LegacyResourceCard = z.infer<typeof legacyResourceCardSchema>
-export type ResourceCard = TypedResourceCard | LegacyResourceCard
+export type ResourceCard = TypedResourceCard
 
-export const resourceCardSchema: z.ZodType<ResourceCard> = z
-	.any()
-	.transform((value, context) =>
-		parseOrNever(
-			value && typeof value === 'object' && 'blocks' in value ? typedResourceCardSchema : legacyResourceCardSchema,
-			value,
-			context
-		)
-	)
+export const resourceCardSchema = typedResourceCardSchema
 
 const resourceSectionSchema = z
 	.object({

@@ -278,20 +278,28 @@ test('optional CMS image pairs accept empty values and report exact nested resou
 		cardTitle: 'Image pair card',
 		cardImage: '/assets/card.webp',
 		cardImageAlt: 'A card image.',
-		sections: [{ id: 'section', title: 'Section', cards: [{ title: 'Optional image card' }] }]
+		sections: [{ id: 'section', title: 'Section', cards: [{ title: 'Optional image card', blocks: [] }] }]
 	}
 	expect(resourceSchema.safeParse(resource).success).toBeTruthy()
 	const result = resourceSchema.safeParse({
 		...resource,
 		sections: [
-			{ ...resource.sections[0], cards: [{ title: 'Optional image card', image: '/assets/test.webp', imageAlt: '' }] }
+			{
+				...resource.sections[0],
+				cards: [
+					{
+						title: 'Optional image card',
+						blocks: [{ type: 'image', image: '/assets/test.webp', imageAlt: '' }]
+					}
+				]
+			}
 		]
 	})
 	expect(result.success).toBeFalsy()
 	if (!result.success) {
 		expect(result.error.issues).toContainEqual(
 			expect.objectContaining({
-				path: ['sections', 0, 'cards', 0, 'imageAlt'],
+				path: ['sections', 0, 'cards', 0, 'blocks', 0, 'imageAlt'],
 				message: 'Image description is required when an image is set.'
 			})
 		)

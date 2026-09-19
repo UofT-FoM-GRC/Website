@@ -13,49 +13,6 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 		tags: 'select',
 		body: 'richtext'
 	},
-	resources: {
-		slug: 'hidden',
-		title: 'string',
-		description: 'text',
-		cardTitle: 'string',
-		cardImage: 'image',
-		cardImageAlt: 'string',
-		sections: {
-			id: 'hidden',
-			title: 'string',
-			intro: { paragraph: 'text' },
-			columns: 'select',
-			status: 'select',
-			archiveNotice: 'text',
-			replacement: { label: 'string', url: 'string' },
-			cards: {
-				title: 'string',
-				status: 'select',
-				text: { paragraph: 'text' },
-				bullets: { bullet: 'string' },
-				variant: 'select',
-				linkStyle: 'select',
-				listStyle: 'select',
-				listItems: {
-					text: 'string',
-					links: { label: 'string', url: 'string' },
-					items: { item: 'string' }
-				},
-				addressLines: { line: 'string' },
-				facts: { label: 'string', value: 'string', url: 'string' },
-				groups: {
-					title: 'string',
-					text: { paragraph: 'text' },
-					addressLines: { line: 'string' },
-					facts: { label: 'string', value: 'string', url: 'string' },
-					links: { label: 'string', url: 'string' }
-				},
-				image: 'image',
-				imageAlt: 'string',
-				links: { label: 'string', url: 'string' }
-			}
-		}
-	},
 	typedResources: {
 		slug: 'hidden',
 		title: 'string',
