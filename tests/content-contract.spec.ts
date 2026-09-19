@@ -263,6 +263,8 @@ for (const visual of visualContracts) {
 		await expect(page.locator(visual.target)).toHaveScreenshot(`${visual.name}.png`, {
 			animations: 'disabled',
 			caret: 'hide',
+			// The link-arrow glyph differs by ~100 antialiased pixels between local and GitHub Linux fonts.
+			maxDiffPixels: 120,
 			scale: 'css'
 		})
 	})
