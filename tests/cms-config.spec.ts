@@ -91,7 +91,7 @@ test('Sveltia foundation has the reviewed GitHub editorial workflow settings', (
 	expect(config.backend).toMatchObject({
 		name: 'github',
 		repo: 'UofT-FoM-GRC/Website',
-		branch: 'main',
+		branch: 'rehearsal/cms-cutover',
 		auth_methods: ['oauth']
 	})
 	expect(config.backend).not.toHaveProperty('automatic_deployments')

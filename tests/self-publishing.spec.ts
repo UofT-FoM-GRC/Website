@@ -10,7 +10,7 @@ test('self-publishing targets main through the GitHub editorial workflow', () =>
 	expect(config.backend).toMatchObject({
 		name: 'github',
 		repo: 'UofT-FoM-GRC/Website',
-		branch: 'main',
+		branch: 'rehearsal/cms-cutover',
 		auth_methods: ['oauth'],
 		preview_context: 'netlify/uoft-fom-grc/deploy-preview',
 		squash_merges: true
@@ -134,8 +134,8 @@ test('CI and Dependabot target main without a routine dev release', () => {
 		updates: Array<{ 'package-ecosystem': string; 'target-branch': string }>
 	}
 
-	expect(ci.on.pull_request.branches).toEqual(['main'])
-	expect(ci.on.push.branches).toEqual(['main'])
+	expect(ci.on.pull_request.branches).toEqual(['main', 'rehearsal/cms-cutover'])
+	expect(ci.on.push.branches).toEqual(['main', 'rehearsal/cms-cutover'])
 	expect(ci.jobs.validate.name).toBe('Validate')
 	for (const update of dependabot.updates) {
 		expect(update['target-branch'], `${update['package-ecosystem']} Dependabot branch`).toBe('main')
