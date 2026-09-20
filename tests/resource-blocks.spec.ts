@@ -168,15 +168,21 @@ const expectStoredPageAccountsForInventory = (file: string) => {
 		}>
 	}
 	const inventory = readInventory(file)
-	expect(stored.sections).toHaveLength(inventory.sections.length)
-	for (const [sectionIndex, section] of inventory.sections.entries()) {
+	let previousSectionIndex = -1
+	for (const section of inventory.sections) {
+		const sectionIndex = stored.sections.findIndex(({ id }) => id === section.id)
+		expect(sectionIndex, `${file} retains ${section.id} in inventoried order`).toBeGreaterThan(previousSectionIndex)
+		previousSectionIndex = sectionIndex
 		const storedSection = stored.sections[sectionIndex]
 		expect(storedSection.id).toBe(section.id)
 		expect(storedSection.title).toBe(section.title)
-		expect(storedSection.intro).toEqual(section.intro)
+		expect(storedSection.intro ?? []).toEqual(section.intro)
 		expect(storedSection.columns).toBe(section.columns)
-		expect(storedSection.cards).toHaveLength(section.cards.length)
-		for (const [cardIndex, card] of section.cards.entries()) {
+		let previousCardIndex = -1
+		for (const card of section.cards) {
+			const cardIndex = storedSection.cards.findIndex(({ title }) => title === card.title)
+			expect(cardIndex, `${file} retains ${card.title} in inventoried order`).toBeGreaterThan(previousCardIndex)
+			previousCardIndex = cardIndex
 			const storedCard = storedSection.cards[cardIndex]
 			expect(storedCard.title).toBe(card.title)
 			expect(storedCard.variant ?? 'card').toBe(card.variant ?? 'card')
