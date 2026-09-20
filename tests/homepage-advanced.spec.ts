@@ -154,7 +154,7 @@ test('homepage feature sections render stored order, images, links, and tone', a
 			'src',
 			new RegExp(sectionData.image.replace(/\.[^.]+$/, ''))
 		)
-		for (const link of sectionData.links) {
+		for (const link of sectionData.links ?? []) {
 			await expect(section.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
 		}
 
