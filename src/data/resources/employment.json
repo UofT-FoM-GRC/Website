@@ -217,6 +217,12 @@
           "status": "current",
           "blocks": [
             {
+              "type": "callout",
+              "body": "Temporary content for CMS validation.",
+              "kind": "information",
+              "title": "Rehearsal note"
+            },
+            {
               "type": "text",
               "body": "This **temporary card** tests formatted resource content."
             },
@@ -244,6 +250,36 @@
                 },
                 {
                   "text": "Submit the application."
+                }
+              ]
+            },
+            {
+              "type": "contact",
+              "addressLines": [
+                "University of Toronto"
+              ],
+              "facts": [
+                {
+                  "label": "Email:",
+                  "value": "grc.facmed@utoronto.ca",
+                  "url": "mailto:grc.facmed@utoronto.ca"
+                }
+              ]
+            },
+            {
+              "type": "contact-panels",
+              "panels": [
+                {
+                  "title": "Questions",
+                  "text": [
+                    "Contact the GRC for help."
+                  ],
+                  "links": [
+                    {
+                      "label": "Email the GRC",
+                      "url": "mailto:grc.facmed@utoronto.ca"
+                    }
+                  ]
                 }
               ]
             }
