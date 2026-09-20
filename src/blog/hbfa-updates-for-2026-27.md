@@ -4,6 +4,7 @@ description: Updated 2026–27 Harmonized Base Funding Agreement amounts for Tem
 pubDate: 2026-09-19
 updatedDate: 2026-09-19
 status: current
+heroImage: /assets/pasted-image-1789862423601.webp
 tags:
   - scholarships-bursaries-awards
 ---
