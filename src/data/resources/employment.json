@@ -210,6 +210,11 @@
       ],
       "columns": 1,
       "status": "archived",
+      "archiveNotice": "This temporary rehearsal section has been archived.",
+      "replacement": {
+        "label": "Browse current opportunities",
+        "url": "https://clnx.utoronto.ca/"
+      },
       "cards": [
         {
           "title": "CMS Rehearsal Section Renamed",
