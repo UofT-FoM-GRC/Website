@@ -190,7 +190,9 @@ Schedule this scenario in an approved window. Use a clearly labelled temporary a
 3. Confirm the action calls the Netlify build hook, Netlify builds current `main`, and the announcement disappears from the homepage after the build.
 4. Confirm source content was not edited or committed by the workflow. Remove the temporary record through a normal correction publish.
 
-**Pass when:** scheduled expiry occurs only after the selected Toronto date, workflow and deploy evidence exist, no draft is published, and no source commit is created by automation.
+If GitHub skips the first newly registered schedule, record the missing event. A `workflow_dispatch` run may verify the hook, rebuild, expiry, and source-immutability path, but it does not replace scheduled-event evidence; verify the first real scheduled run after cutover as an explicit follow-up.
+
+**Pass when:** scheduled expiry occurs only after the selected Toronto date, workflow and deploy evidence exist, no draft is published, and no source commit is created by automation. A manual fallback leaves scheduled-event verification open until the first real cron run succeeds.
 
 **Result:** ☐ Pass ☐ Fail ☐ Blocked
 
