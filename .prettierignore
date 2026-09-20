@@ -1,6 +1,8 @@
 pnpm-lock.yaml
 .agents/
 .scratch/
+# Sveltia owns JSON layout; schemas and round-trip tests validate CMS-managed data instead.
+src/data/**/*.json
 # Prettier indents remark-directive closers after list bodies, breaking CMS round trips.
 src/blog/hbfa-2025-26-update.md
 src/blog/hbfa-explained.md
