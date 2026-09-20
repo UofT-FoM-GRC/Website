@@ -12,6 +12,8 @@ tags:
 
 The 2026–27 [Harmonized Base Funding Agreement](https://physiology.utoronto.ca/2026-27-temerty-faculty-medicine-harmonized-base-funding-agreement) sets base funding, award top-ups, and funding terms for eligible doctoral-stream MSc and PhD students in participating Temerty Faculty of Medicine graduate units.
 
+:accessible-image{src="/assets/hbfa-test-image.webp" description="An overview bird's eye view picture of a St. George University of Toronto campus"}
+
 ## 2026–27 base funding
 
 The published 2026–27 totals, including living allowance, tuition and fees, and UHIP where applicable, are:
