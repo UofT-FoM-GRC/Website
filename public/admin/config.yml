@@ -179,6 +179,7 @@ collections:
             name: sections
             widget: list
             summary: '{{title}}'
+            collapsed: auto
             hint: Reorder sections and cards by dragging. A new section keeps the in-page link created from its first heading.
             fields:
               - &section_id { label: Section Anchor, name: id, widget: hidden }

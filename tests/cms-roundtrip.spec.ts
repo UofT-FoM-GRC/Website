@@ -458,6 +458,11 @@ test('text-and-link resource pages open, reorder, and save typed blocks in CMS',
 
 	await openResourcePage(page, 'Career Planning & Exploration Resources')
 	await page.getByText('3 Page Sections', { exact: true }).click()
+	await page
+		.getByRole('group', { name: /Page Sections/ })
+		.getByRole('button', { name: 'Expand' })
+		.first()
+		.click()
 	await expect(page.getByRole('textbox', { name: 'Section Heading' }).first()).toHaveValue('Upcoming Career Events')
 	await page.getByRole('button', { name: 'Reorder Item' }).first().focus()
 	await page.keyboard.press('ArrowDown')
@@ -482,6 +487,11 @@ test('contact-rich resource pages open, reorder, and save typed blocks in CMS', 
 
 	await openResourcePage(page, 'Housing')
 	await page.getByText('2 Page Sections', { exact: true }).click()
+	await page
+		.getByRole('group', { name: /Page Sections/ })
+		.getByRole('button', { name: 'Expand' })
+		.first()
+		.click()
 	await expect(page.getByRole('textbox', { name: 'Section Heading' }).first()).toHaveValue('Emergency Student Housing')
 	await page.getByRole('button', { name: 'Reorder Item' }).first().focus()
 	await page.keyboard.press('ArrowDown')
