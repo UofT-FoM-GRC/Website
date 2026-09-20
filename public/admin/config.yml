@@ -458,6 +458,8 @@ collections:
           - label: Announcements
             name: items
             widget: list
+            required: false
+            min: 0
             hint: Only active announcements appear below the homepage hero. Drag to set display order.
             fields:
               - { label: Heading, name: title, widget: string }

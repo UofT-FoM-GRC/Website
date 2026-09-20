@@ -232,6 +232,14 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 	}
 })
 
+test('Homepage Announcements permits cleanup to an empty list', () => {
+	const { config } = readConfig()
+	const announcements = getCollection(config, 'homepage_announcements').files!.find(
+		(file) => file.name === 'announcements'
+	)!
+	expect(getField(announcements.fields, 'items')).toMatchObject({ widget: 'list', required: false, min: 0 })
+})
+
 const reviewedUrlPattern = [
 	'^(?:https?://|mailto:|tel:|/(?!/)|#)',
 	'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
