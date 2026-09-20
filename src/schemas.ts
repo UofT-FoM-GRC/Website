@@ -340,15 +340,17 @@ export const siteSchema = z.object({
 export const createAnnouncementsSchema = () =>
 	z
 		.object({
-			items: z.array(
-				z.object({
-					title: requiredStringSchema,
-					text: requiredStringSchema,
-					url: optionalInternalOrExternalUrlSchema,
-					expiresOn: optionalCmsDateSchema,
-					active: z.boolean()
-				})
-			)
+			items: z
+				.array(
+					z.object({
+						title: requiredStringSchema,
+						text: requiredStringSchema,
+						url: optionalInternalOrExternalUrlSchema,
+						expiresOn: optionalCmsDateSchema,
+						active: z.boolean()
+					})
+				)
+				.default([])
 		})
 		.superRefine((announcements, context) => {
 			announcements.items.forEach((item, index) => {
