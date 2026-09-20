@@ -7,8 +7,7 @@ name: Expiry rebuild
 # midnight rather than risking an early expiry.
 on:
   schedule:
-    # Temporary isolated-rehearsal retry after GitHub skipped the first newly registered 09:00 event.
-    - cron: '45 13 * * *'
+    - cron: '0 9 * * *'
   workflow_dispatch:
 
 permissions:
