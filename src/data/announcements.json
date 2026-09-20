@@ -1,9 +1,1 @@
-{
-  "items": [
-    {
-      "title": "CMS Production Cutover Check",
-      "text": "Inactive record used to verify production self-publishing after cutover.",
-      "active": false
-    }
-  ]
-}
+{}
