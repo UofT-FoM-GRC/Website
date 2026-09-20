@@ -1,0 +1,38 @@
+name: Expiry rebuild
+
+# Blog posts and active announcements expire on Toronto calendar dates, but the static
+# site keeps rendering the previous state until Netlify builds again. Toronto midnight is
+# 04:00 UTC during daylight saving and 05:00 UTC outside it, so 09:00 UTC can never run
+# before the selected date has passed in either offset. It intentionally runs later than
+# midnight rather than risking an early expiry.
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild:
+    name: Rebuild production
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Netlify production build
+        env:
+          NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK_URL" ]; then
+            echo "The NETLIFY_BUILD_HOOK_URL repository secret is not configured." >&2
+            exit 1
+          fi
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            --request POST "$NETLIFY_BUILD_HOOK_URL")
+          case "$status" in
+            2??) echo "Netlify build hook accepted (HTTP $status)." ;;
+            *)
+              echo "Netlify build hook failed (HTTP $status)." >&2
+              exit 1
+              ;;
+          esac
