@@ -214,7 +214,40 @@
         {
           "title": "CMS Rehearsal Section Renamed",
           "variant": "card",
-          "status": "current"
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "This **temporary card** tests formatted resource content."
+            },
+            {
+              "type": "image",
+              "image": "/assets/uoft-placeholder-default.webp",
+              "imageAlt": "University of Toronto placeholder graphic."
+            },
+            {
+              "type": "links",
+              "appearance": "button",
+              "items": [
+                {
+                  "label": "Visit U of T",
+                  "url": "https://www.utoronto.ca/"
+                }
+              ]
+            },
+            {
+              "type": "steps",
+              "listStyle": "ordered",
+              "items": [
+                {
+                  "text": "Review the opportunity."
+                },
+                {
+                  "text": "Submit the application."
+                }
+              ]
+            }
+          ]
         }
       ]
     }
