@@ -1,161 +1,222 @@
 {
-	"slug": "employment",
-	"title": "Employment Resources",
-	"description": "Employment, job-search, and career-service resources for University of Toronto graduate students.",
-	"cardTitle": "Employment",
-	"cardImage": "/assets/uoft-placeholder-default.webp",
-	"cardImageAlt": "Employment resources",
-	"sections": [
-		{
-			"id": "cupe",
-			"title": "CUPE Local 3902 Unit 1 Job Postings",
-			"intro": [],
-			"columns": 1,
-			"cards": [
-				{
-					"title": "CUPE 3902 Job Postings",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "These positions are open to Graduate Students in the School of Graduate Studies, Postdoctoral Fellows and Undergraduate Students in the University of Toronto."
-						},
-						{
-							"type": "links",
-							"appearance": "button",
-							"items": [{ "label": "View CUPE Positions →", "url": "https://unit1.hrandequity.utoronto.ca/" }]
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "clnx",
-			"title": "Career & Co-curricular Learning Network (CLNx)",
-			"intro": [],
-			"columns": 3,
-			"cards": [
-				{
-					"title": "Work Study Positions",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "Paid, on-campus positions that provide workplace experience and career development opportunities."
-						},
-						{
-							"type": "links",
-							"items": [
-								{
-									"label": "Browse Work Study →",
-									"url": "https://clnx.utoronto.ca/myAccount/jobs/work-study/aboutws.htm"
-								}
-							]
-						}
-					]
-				},
-				{
-					"title": "On-Campus Jobs",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "Paid positions posted by U of T faculty and staff across various departments."
-						},
-						{
-							"type": "links",
-							"items": [
-								{ "label": "View Campus Jobs →", "url": "https://clnx.utoronto.ca/myAccount/jobs/oncampus.htm" }
-							]
-						}
-					]
-				},
-				{
-					"title": "Off-Campus Jobs",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "External employment opportunities posted by various employers."
-						},
-						{
-							"type": "links",
-							"items": [
-								{ "label": "Explore Off-Campus →", "url": "https://clnx.utoronto.ca/myAccount/jobs/overview.htm" }
-							]
-						}
-					]
-				},
-				{
-					"title": "Casual Jobs",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "Local community positions for work in private residences."
-						},
-						{
-							"type": "links",
-							"items": [
-								{ "label": "Find Casual Work →", "url": "https://clnx.utoronto.ca/myAccount/jobs/casualjobs.htm" }
-							]
-						}
-					]
-				},
-				{
-					"title": "Volunteer Positions",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "On- and off-campus unpaid opportunities that may include stipends."
-						},
-						{
-							"type": "links",
-							"items": [
-								{
-									"label": "Discover Volunteering →",
-									"url": "https://clnx.utoronto.ca/myAccount/jobs/volunteer.htm"
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "resources",
-			"title": "Additional Resources",
-			"intro": [],
-			"columns": 2,
-			"cards": [
-				{
-					"title": "Safety & Rights",
-					"blocks": [
-						{
-							"type": "links",
-							"items": [
-								{
-									"label": "Guide to Avoiding Job Board Fraud",
-									"url": "https://clnx.utoronto.ca/content/documents/Link/Fraudulent%20Job%20Postings%20Guide_2024.pdf"
-								},
-								{
-									"label": "Employee Rights & Obligations",
-									"url": "https://stepstojustice.ca/legal-topic/employment-and-work/"
-								},
-								{ "label": "Report Job Phishing Emails", "url": "https://securitymatters.utoronto.ca/report/" }
-							]
-						}
-					]
-				},
-				{
-					"title": "Contact Career Services",
-					"blocks": [
-						{
-							"type": "text",
-							"body": "For questions about job postings or career services:"
-						},
-						{
-							"type": "links",
-							"items": [{ "label": "careerservices@utoronto.ca", "url": "mailto:careerservices@utoronto.ca" }]
-						}
-					]
-				}
-			]
-		}
-	]
+  "slug": "employment",
+  "title": "Employment Resources",
+  "description": "Employment, job-search, and career-service resources for University of Toronto graduate students.",
+  "cardTitle": "Employment",
+  "cardImage": "/assets/uoft-placeholder-default.webp",
+  "cardImageAlt": "Employment resources",
+  "sections": [
+    {
+      "id": "cupe",
+      "title": "CUPE Local 3902 Unit 1 Job Postings",
+      "columns": 1,
+      "status": "current",
+      "cards": [
+        {
+          "title": "CUPE 3902 Job Postings",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "These positions are open to Graduate Students in the School of Graduate Studies, Postdoctoral Fellows and Undergraduate Students in the University of Toronto."
+            },
+            {
+              "type": "links",
+              "appearance": "button",
+              "items": [
+                {
+                  "label": "View CUPE Positions →",
+                  "url": "https://unit1.hrandequity.utoronto.ca/"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clnx",
+      "title": "Career & Co-curricular Learning Network (CLNx)",
+      "columns": 3,
+      "status": "current",
+      "cards": [
+        {
+          "title": "Work Study Positions",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "Paid, on-campus positions that provide workplace experience and career development opportunities."
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "Browse Work Study →",
+                  "url": "https://clnx.utoronto.ca/myAccount/jobs/work-study/aboutws.htm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "On-Campus Jobs",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "Paid positions posted by U of T faculty and staff across various departments."
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "View Campus Jobs →",
+                  "url": "https://clnx.utoronto.ca/myAccount/jobs/oncampus.htm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Off-Campus Jobs",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "External employment opportunities posted by various employers."
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "Explore Off-Campus →",
+                  "url": "https://clnx.utoronto.ca/myAccount/jobs/overview.htm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Casual Jobs",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "Local community positions for work in private residences."
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "Find Casual Work →",
+                  "url": "https://clnx.utoronto.ca/myAccount/jobs/casualjobs.htm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Volunteer Positions",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "On- and off-campus unpaid opportunities that may include stipends."
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "Discover Volunteering →",
+                  "url": "https://clnx.utoronto.ca/myAccount/jobs/volunteer.htm"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Additional Resources",
+      "columns": 2,
+      "status": "current",
+      "cards": [
+        {
+          "title": "Safety & Rights",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "Guide to Avoiding Job Board Fraud",
+                  "url": "https://clnx.utoronto.ca/content/documents/Link/Fraudulent%20Job%20Postings%20Guide_2024.pdf"
+                },
+                {
+                  "label": "Employee Rights & Obligations",
+                  "url": "https://stepstojustice.ca/legal-topic/employment-and-work/"
+                },
+                {
+                  "label": "Report Job Phishing Emails",
+                  "url": "https://securitymatters.utoronto.ca/report/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Contact Career Services",
+          "variant": "card",
+          "status": "current",
+          "blocks": [
+            {
+              "type": "text",
+              "body": "For questions about job postings or career services:"
+            },
+            {
+              "type": "links",
+              "appearance": "link",
+              "items": [
+                {
+                  "label": "careerservices@utoronto.ca",
+                  "url": "mailto:careerservices@utoronto.ca"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cms-rehearsal-section",
+      "title": "CMS Rehearsal Section",
+      "intro": [
+        "Temporary content used to rehearse resource editing."
+      ],
+      "columns": 1,
+      "status": "current",
+      "cards": [
+        {
+          "title": "CMS Rehearsal Card",
+          "variant": "card",
+          "status": "current"
+        }
+      ]
+    }
+  ]
 }
