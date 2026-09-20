@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import BlogPostCard from '../../components/BlogPostCard.astro'
-import { isCurrentPost } from '../../utils/blog'
+import { blogMonthKey, formatBlogMonth, isCurrentPost } from '../../utils/blog'
 
 const posts = (await getCollection('blog'))
 	.filter((post) => isCurrentPost(post))
@@ -11,8 +11,7 @@ const posts = (await getCollection('blog'))
 // Group posts by month and year
 const groupedPosts = posts.reduce(
 	(acc, post) => {
-		const date = post.data.pubDate
-		const key = `${date.getFullYear()}-${String(date.getMonth()).padStart(2, '0')}`
+		const key = blogMonthKey(post.data.pubDate)
 		if (!acc[key]) acc[key] = []
 		acc[key].push(post)
 		return acc
@@ -37,11 +36,7 @@ const sortedKeys = Object.keys(groupedPosts).sort((a, b) => b.localeCompare(a))
 		</header>
 		{
 			sortedKeys.map((key) => {
-				const [year, month] = key.split('-')
-				const sectionTitle = new Date(parseInt(year), parseInt(month)).toLocaleString('default', {
-					month: 'long',
-					year: 'numeric'
-				})
+				const sectionTitle = formatBlogMonth(key)
 				return (
 					<section class="mb-12">
 						<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{sectionTitle}</h2>

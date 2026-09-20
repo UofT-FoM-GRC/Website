@@ -7,9 +7,9 @@ heroImageAlt: 'Dinosaur fossil exhibit at the Royal Ontario Museum'
 tags: ['other']
 ---
 
-<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
-  Full-time UofT students get free admission to the Royal Ontario Museum every Tuesday. Just show your student ID at the ticket desk.
-</div>
+:::callout{kind="information"}
+Full-time UofT students get free admission to the Royal Ontario Museum every Tuesday. Just show your student ID at the ticket desk.
+:::
 
 ## How It Works
 
@@ -32,17 +32,15 @@ Free admission covers the permanent collections, which include:
 - Art and design collections
 - The Bat Cave (always a crowd favorite)
 
-<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
-  ⚠️ Special exhibitions sometimes require an additional fee, even on Tuesdays. Check the ROM website before visiting if there's a specific exhibit you want to see.
-</div>
+:::callout{kind="warning"}
+Special exhibitions sometimes require an additional fee, even on Tuesdays. Check the ROM website before visiting if there's a specific exhibit you want to see.
+:::
 
 ## Just FYI
 
 Tuesdays can get busy since this deal is available to all post-secondary students, not just UofT. Going earlier in the day (right when they open) or later in the afternoon tends to be less crowded.
 
 The museum cafe is decent if you want to grab a coffee or lunch there, though you're obviously paying regular prices for food.
-
----
 
 Not a bad perk for being a student. The ROM's regular admission is around $23.
 

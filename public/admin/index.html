@@ -5,11 +5,37 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="robots" content="noindex" />
 		<title>GRC Content Manager</title>
-		<!-- Netlify Identity Widget -->
-		<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+		<style>
+			#editor-guide-link {
+				position: fixed;
+				right: 1rem;
+				bottom: 1rem;
+				z-index: 1000;
+				border-radius: 999px;
+				background: #1d4ed8;
+				box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 25%);
+				color: white;
+				font:
+					600 0.95rem/1.2 system-ui,
+					sans-serif;
+				padding: 0.7rem 1rem;
+				text-decoration: none;
+			}
+			#editor-guide-link:hover,
+			#editor-guide-link:focus-visible {
+				background: #1e40af;
+				text-decoration: underline;
+			}
+			#editor-guide-link:focus-visible {
+				outline: 0.2rem solid white;
+				outline-offset: 0.15rem;
+			}
+		</style>
 	</head>
 	<body>
-		<!-- Fallback CMS. Keep this route until Sveltia OAuth cutover passes. -->
-		<script src="https://unpkg.com/decap-cms@3.15.1/dist/decap-cms.js"></script>
+		<a id="editor-guide-link" href="/content-editor-guide/" target="_blank" rel="noopener">Editor guide</a>
+		<!-- Pinned for the technical rehearsal; update only after the next rehearsal. -->
+		<script src="https://unpkg.com/@sveltia/cms@0.214.1/dist/sveltia-cms.js"></script>
+		<script src="/admin/customizations.js"></script>
 	</body>
 </html>

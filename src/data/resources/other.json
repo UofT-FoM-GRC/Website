@@ -14,41 +14,75 @@
 			"cards": [
 				{
 					"title": "Hart House Fitness Centre",
-					"text": [
-						"A comprehensive fitness facility offering a pool, weight room, indoor track, and various drop-in classes, catering to all fitness levels in a supportive environment."
-					],
-					"links": [{ "label": "Explore Hart House →", "url": "https://harthouse.ca/fitness/" }],
-					"bullets": [],
-					"image": "HartHouse.png",
-					"imageAlt": "Hart House Fitness Centre",
-					"linkStyle": "button"
+					"blocks": [
+						{
+							"type": "image",
+							"image": "HartHouse.png",
+							"imageAlt": "Hart House Fitness Centre"
+						},
+						{
+							"type": "text",
+							"body": "A comprehensive fitness facility offering a pool, weight room, indoor track, and various drop-in classes, catering to all fitness levels in a supportive environment."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Explore Hart House →",
+									"url": "https://harthouse.ca/fitness/"
+								}
+							],
+							"appearance": "button"
+						}
+					]
 				},
 				{
 					"title": "Goldring Centre",
-					"text": [
-						"State-of-the-art facility featuring a multi-purpose arena, strength and conditioning center, and specialized training spaces for both recreational users and high-performance athletes."
-					],
-					"links": [
+					"blocks": [
 						{
-							"label": "Visit Goldring →",
-							"url": "https://kpe.utoronto.ca/facility/goldring-centre-high-performance-sport"
+							"type": "image",
+							"image": "GoldringCentre.png",
+							"imageAlt": "Goldring Centre for High Performance Sport"
+						},
+						{
+							"type": "text",
+							"body": "State-of-the-art facility featuring a multi-purpose arena, strength and conditioning center, and specialized training spaces for both recreational users and high-performance athletes."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Visit Goldring →",
+									"url": "https://kpe.utoronto.ca/facility/goldring-centre-high-performance-sport"
+								}
+							],
+							"appearance": "button"
 						}
-					],
-					"bullets": [],
-					"image": "GoldringCentre.png",
-					"imageAlt": "Goldring Centre for High Performance Sport",
-					"linkStyle": "button"
+					]
 				},
 				{
 					"title": "Athletic Centre",
-					"text": [
-						"Historic multi-sport facility including gymnasiums, pools, and a strength training area, supporting academic learning, recreational activities, and competitive sports."
-					],
-					"links": [{ "label": "Visit Athletic Centre →", "url": "https://kpe.utoronto.ca/facility/athletic-centre" }],
-					"bullets": [],
-					"image": "AthleticsCentre.png",
-					"imageAlt": "Athletic Centre",
-					"linkStyle": "button"
+					"blocks": [
+						{
+							"type": "image",
+							"image": "AthleticsCentre.png",
+							"imageAlt": "Athletic Centre"
+						},
+						{
+							"type": "text",
+							"body": "Historic multi-sport facility including gymnasiums, pools, and a strength training area, supporting academic learning, recreational activities, and competitive sports."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Visit Athletic Centre →",
+									"url": "https://kpe.utoronto.ca/facility/athletic-centre"
+								}
+							],
+							"appearance": "button"
+						}
+					]
 				}
 			]
 		},
@@ -60,12 +94,22 @@
 			"cards": [
 				{
 					"title": "Centre for Graduate Mentorship and Supervision (CGMS)",
-					"text": [
-						"The Centre for Graduate Mentorship and Supervision (CGMS) offers support for students who may be experiencing challenges with their supervisors. They provide resources like coaching and workshops focused on improving communication and resolving conflicts, helping you navigate difficult relationships and foster a more productive academic environment. If you're feeling uncertain about your supervisory situation, CGMS can be a valuable ally in finding constructive solutions."
-					],
-					"links": [{ "label": "Access CGMS Resources →", "url": "https://www.cgms.utoronto.ca/" }],
-					"bullets": [],
-					"linkStyle": "button"
+					"blocks": [
+						{
+							"type": "text",
+							"body": "The Centre for Graduate Mentorship and Supervision (CGMS) offers support for students who may be experiencing challenges with their supervisors. They provide resources like coaching and workshops focused on improving communication and resolving conflicts, helping you navigate difficult relationships and foster a more productive academic environment. If you're feeling uncertain about your supervisory situation, CGMS can be a valuable ally in finding constructive solutions."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Access CGMS Resources →",
+									"url": "https://www.cgms.utoronto.ca/"
+								}
+							],
+							"appearance": "button"
+						}
+					]
 				}
 			]
 		}

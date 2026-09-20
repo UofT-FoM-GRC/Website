@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import BlogPostCard from './BlogPostCard.astro'
-import { resolveCmsAsset } from '../utils/cmsAssets'
+import ResourceTypedCard from './ResourceTypedCard.astro'
+import { currentResourceSections, isArchivedSection, visibleResourceCards } from '../utils/resourceContent'
 
 interface Props {
 	resource: CollectionEntry<'resources'>
@@ -23,7 +24,7 @@ const hasRelatedPosts = posts.length > 0
 		<h2 class="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">Quick Navigation</h2>
 		<ul class="space-y-2">
 			{
-				sections.map((section) => (
+				currentResourceSections(sections).map((section) => (
 					<li class="transition-all hover:translate-x-2">
 						<a
 							href={`#${section.id}`}
@@ -56,161 +57,36 @@ const hasRelatedPosts = posts.length > 0
 	</nav>
 	{
 		sections.map((section) => (
-			<section id={section.id} class="mb-12 scroll-mt-24">
+			<section
+				id={section.id}
+				class="mb-12 scroll-mt-24"
+				data-pagefind-ignore={isArchivedSection(section) ? '' : undefined}
+			>
 				<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{section.title}</h2>
-				{section.intro.map((paragraph) => (
-					<p class="mb-4 max-w-[75ch] leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
-				))}
-				<div class:list={['grid gap-6', columns[section.columns]]}>
-					{section.cards.map((card) => (
-						<article
-							class:list={[
-								card.variant !== 'plain' &&
-									'rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50'
-							]}
-						>
-							{card.image && (
-								<img
-									src={resolveCmsAsset(card.image)}
-									alt={card.imageAlt || ''}
-									loading="lazy"
-									decoding="async"
-									class="mb-4 h-48 w-full rounded-lg object-cover"
-								/>
-							)}
-							<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">{card.title}</h3>
-							{card.text.map((paragraph) => (
-								<p class="mb-4 text-slate-700 dark:text-slate-300">{paragraph}</p>
+				{isArchivedSection(section) && (
+					<aside class="mb-6 rounded border-l-4 border-amber-600 bg-amber-50 p-4 text-amber-950 dark:bg-amber-950 dark:text-amber-50">
+						<strong>Archived section.</strong> {section.archiveNotice}
+						{section.replacement && (
+							<p class="mt-2">
+								<a href={section.replacement.url} class="text-blue-600 hover:underline dark:text-blue-400">
+									{section.replacement.label}
+								</a>
+							</p>
+						)}
+					</aside>
+				)}
+				{!isArchivedSection(section) && (
+					<>
+						{section.intro.map((paragraph) => (
+							<p class="mb-4 max-w-[75ch] leading-relaxed text-slate-700 dark:text-slate-300">{paragraph}</p>
+						))}
+						<div class:list={['grid gap-6', columns[section.columns]]}>
+							{visibleResourceCards(section.cards).map((card) => (
+								<ResourceTypedCard card={card} />
 							))}
-							{(card.bullets ?? []).length > 0 && (
-								<ul class="mb-4 list-disc space-y-2 pl-5 text-slate-700 dark:text-slate-300">
-									{(card.bullets ?? []).map((bullet) => (
-										<li>{bullet}</li>
-									))}
-								</ul>
-							)}
-							{(card.listItems ?? []).length > 0 &&
-								(card.listStyle === 'ordered' ? (
-									<ol class="mb-4 list-decimal space-y-2 pl-5 text-slate-700 dark:text-slate-300">
-										{(card.listItems ?? []).map((item) => (
-											<li>
-												<span>{item.text}</span>
-												{(item.links ?? []).map((link) => (
-													<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
-														{link.label}
-													</a>
-												))}
-												{(item.items ?? []).length > 0 && (
-													<ul class="ml-5 list-disc">
-														{(item.items ?? []).map((nestedItem) => (
-															<li>{nestedItem}</li>
-														))}
-													</ul>
-												)}
-											</li>
-										))}
-									</ol>
-								) : (
-									<ul class="mb-4 list-disc space-y-2 pl-5 text-slate-700 dark:text-slate-300">
-										{(card.listItems ?? []).map((item) => (
-											<li>
-												<span>{item.text}</span>
-												{(item.links ?? []).map((link) => (
-													<a href={link.url} class="ml-1 text-blue-600 hover:underline dark:text-blue-400">
-														{link.label}
-													</a>
-												))}
-												{(item.items ?? []).length > 0 && (
-													<ul class="ml-5 list-disc">
-														{(item.items ?? []).map((nestedItem) => (
-															<li>{nestedItem}</li>
-														))}
-													</ul>
-												)}
-											</li>
-										))}
-									</ul>
-								))}
-							{(card.addressLines ?? []).length > 0 && (
-								<address class="mb-4 text-slate-700 not-italic dark:text-slate-300">
-									{(card.addressLines ?? []).map((line) => (
-										<>
-											{line}
-											<br />
-										</>
-									))}
-								</address>
-							)}
-							{(card.facts ?? []).map((fact) => (
-								<p class="mb-2 text-slate-700 dark:text-slate-300">
-									<strong>{fact.label}</strong>{' '}
-									{fact.url ? (
-										<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
-											{fact.value}
-										</a>
-									) : (
-										fact.value
-									)}
-								</p>
-							))}
-							{(card.groups ?? []).length > 0 && (
-								<div class="mb-4 grid gap-6 md:grid-cols-2">
-									{(card.groups ?? []).map((group) => (
-										<section>
-											<h4 class="mb-3 font-semibold text-slate-900 dark:text-slate-100">{group.title}</h4>
-											{(group.text ?? []).map((paragraph) => (
-												<p class="mb-3 text-slate-700 dark:text-slate-300">{paragraph}</p>
-											))}
-											{(group.facts ?? []).map((fact) => (
-												<p class="mb-2 text-slate-700 dark:text-slate-300">
-													<strong>{fact.label}</strong>{' '}
-													{fact.url ? (
-														<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
-															{fact.value}
-														</a>
-													) : (
-														fact.value
-													)}
-												</p>
-											))}
-											{(group.addressLines ?? []).length > 0 && (
-												<address class="mb-3 text-slate-700 not-italic dark:text-slate-300">
-													{(group.addressLines ?? []).map((line) => (
-														<>
-															{line}
-															<br />
-														</>
-													))}
-												</address>
-											)}
-											<div class="flex flex-col items-start gap-2">
-												{(group.links ?? []).map((link) => (
-													<a href={link.url} class="text-blue-600 hover:underline dark:text-blue-400">
-														{link.label}
-													</a>
-												))}
-											</div>
-										</section>
-									))}
-								</div>
-							)}
-							<div class="flex flex-col items-start gap-2">
-								{card.links.map((link) => (
-									<a
-										href={link.url}
-										class:list={
-											card.linkStyle === 'button'
-												? 'inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800'
-												: 'text-blue-600 hover:underline dark:text-blue-400'
-										}
-									>
-										{link.label}
-									</a>
-								))}
-							</div>
-						</article>
-					))}
-				</div>
+						</div>
+					</>
+				)}
 			</section>
 		))
 	}

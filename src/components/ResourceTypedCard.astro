@@ -1,0 +1,92 @@
+---
+import { resolveCmsAsset } from '../utils/cmsAssets'
+import { renderResourceCallout, renderResourceMarkdown, type TypedResourceCard } from '../utils/resourceContent'
+import ResourceContactDetails from './ResourceContactDetails.astro'
+import ResourceContactPanel from './ResourceContactPanel.astro'
+import ResourceStepList from './ResourceStepList.astro'
+
+interface Props {
+	card: TypedResourceCard
+}
+
+const { card } = Astro.props
+const leadingImageCount = card.blocks.findIndex((block) => block.type !== 'image')
+const leadingImages = card.blocks.slice(0, leadingImageCount === -1 ? card.blocks.length : leadingImageCount)
+const remainingBlocks = card.blocks.slice(leadingImages.length)
+const formattedTextClass =
+	'resource-formatted-text mb-4 space-y-4 text-slate-700 dark:text-slate-300 [&_a]:text-blue-600 [&_a]:hover:underline dark:[&_a]:text-blue-400 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5'
+const linkClass = (appearance: 'link' | 'button') =>
+	appearance === 'button'
+		? 'inline-block rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800'
+		: 'text-blue-600 hover:underline dark:text-blue-400'
+---
+
+<article
+	class:list={[
+		card.variant !== 'plain' &&
+			'rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50'
+	]}
+>
+	{
+		leadingImages.map((block) =>
+			block.type === 'image' ? (
+				<img
+					src={resolveCmsAsset(block.image)}
+					alt={block.imageAlt}
+					loading="lazy"
+					decoding="async"
+					class="mb-4 h-48 w-full rounded-lg object-cover"
+				/>
+			) : null
+		)
+	}
+	<h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100">{card.title}</h3>
+	{
+		remainingBlocks.map((block) => {
+			if (block.type === 'text') {
+				return <div class={formattedTextClass} set:html={renderResourceMarkdown(block.body)} />
+			}
+			if (block.type === 'image') {
+				return (
+					<img
+						src={resolveCmsAsset(block.image)}
+						alt={block.imageAlt}
+						loading="lazy"
+						decoding="async"
+						class="mb-4 h-48 w-full rounded-lg object-cover"
+					/>
+				)
+			}
+			if (block.type === 'links') {
+				return (
+					<div class="mb-4 flex flex-col items-start gap-2">
+						{block.items.map((link) => (
+							<a href={link.url} class={linkClass(block.appearance)}>
+								{link.label}
+							</a>
+						))}
+					</div>
+				)
+			}
+			if (block.type === 'steps') {
+				return <ResourceStepList items={block.items} listStyle={block.listStyle} />
+			}
+			if (block.type === 'contact') {
+				return <ResourceContactDetails addressLines={block.addressLines} facts={block.facts} />
+			}
+			if (block.type === 'contact-panels') {
+				return (
+					<div class="mb-4 grid gap-6 md:grid-cols-2">
+						{block.panels.map((panel) => (
+							<ResourceContactPanel panel={panel} />
+						))}
+					</div>
+				)
+			}
+			if (block.type === 'callout') {
+				return <div class="mb-4" set:html={renderResourceCallout(block)} />
+			}
+			return null
+		})
+	}
+</article>

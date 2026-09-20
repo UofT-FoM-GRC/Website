@@ -134,3 +134,132 @@
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+
+/* Portable semantic blocks. Resource blocks reuse these selectors when introduced. */
+.semantic-callout,
+.semantic-action-link {
+	margin-block: 1.5rem;
+	border-radius: 0.5rem;
+}
+
+.semantic-callout {
+	border-inline-start: 0.35rem solid #0369a1;
+	background: #e0f2fe;
+	padding: 1rem 1.25rem;
+	color: #0c4a6e;
+}
+
+.semantic-callout[data-callout-kind='important'] {
+	border-inline-start-color: #a16207;
+	background: #fef3c7;
+	color: #713f12;
+}
+
+.semantic-callout[data-callout-kind='warning'] {
+	border-inline-start-color: #b91c1c;
+	background: #fee2e2;
+	color: #7f1d1d;
+}
+
+.semantic-callout__label,
+.semantic-callout__title,
+.semantic-action-link__primary {
+	margin: 0 0 0.75rem;
+}
+
+.semantic-callout__label {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.9em;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.semantic-callout__icon {
+	display: inline-grid;
+	place-items: center;
+	width: 1.35em;
+	height: 1.35em;
+	border: 0.1em solid currentColor;
+	border-radius: 50%;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.semantic-callout__title {
+	font-size: 1.15em;
+	line-height: 1.35;
+}
+
+.semantic-callout > :last-child,
+.semantic-action-link > :last-child {
+	margin-bottom: 0;
+}
+
+.semantic-action-link {
+	border: 1px solid #1d4ed8;
+	background: #eff6ff;
+	padding: 1rem;
+}
+
+.semantic-action-link__link {
+	display: inline-block;
+	border-radius: 0.35rem;
+	background: #1d4ed8;
+	padding: 0.45rem 0.8rem;
+	color: #fff;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.semantic-action-link__link:hover {
+	background: #1e40af;
+	text-decoration: underline;
+}
+
+.semantic-action-link__link:focus-visible {
+	outline: 0.2rem solid #111827;
+	outline-offset: 0.2rem;
+}
+
+html.dark .semantic-callout {
+	border-inline-start-color: #38bdf8;
+	background: #0c4a6e;
+	color: #e0f2fe;
+}
+
+html.dark .semantic-callout[data-callout-kind='important'] {
+	border-inline-start-color: #fbbf24;
+	background: #78350f;
+	color: #fef3c7;
+}
+
+html.dark .semantic-callout[data-callout-kind='warning'] {
+	border-inline-start-color: #f87171;
+	background: #7f1d1d;
+	color: #fee2e2;
+}
+
+html.dark .semantic-action-link {
+	border-color: #93c5fd;
+	background: #172554;
+}
+
+html.dark .semantic-action-link__link {
+	background: #93c5fd;
+	color: #172554;
+}
+
+html.dark .semantic-action-link__link:hover {
+	background: #bfdbfe;
+}
+
+@media (max-width: 40rem) {
+	.semantic-callout,
+	.semantic-action-link {
+		margin-inline: -0.25rem;
+		padding: 0.9rem;
+	}
+}

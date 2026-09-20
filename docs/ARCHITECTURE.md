@@ -2,10 +2,12 @@
 
 ## Content flow
 
-1. Editor uses Decap at `/admin/`; Netlify Identity + Git Gateway writes approved CMS changes to `dev`.
-2. Netlify builds `dev`. Webmaster reviews exact branch deploy.
-3. Webmaster manually opens `dev` → `main` PR, confirms checks/preview, then merge-commits. Netlify deploys `main` to production.
-4. Astro renders static HTML; Tailwind classes remain in Astro components; Pagefind indexes `dist` during build.
+1. Editor signs in at `/admin/` with GitHub. Sveltia saves a draft to a short-lived CMS branch and opens a draft pull request against `main`.
+2. GitHub Actions runs `Validate`; Netlify builds a deploy preview for the pull request. Sveltia reports the build state and links the exact changed route.
+3. Editor reviews the preview, fixes any validation feedback, confirms "I reviewed the site preview.", and publishes. Sveltia squash-merges the pull request into `main`.
+4. Netlify deploys `main` to production. Astro renders static HTML; Tailwind classes remain in Astro components; Pagefind indexes `dist` during build.
+
+There is no long-lived `dev` branch and no manual release step. Developer source and dependency work uses the same route: short-lived branch, pull request against `main`, required checks, squash merge.
 
 ## CMS data model
 
@@ -14,7 +16,7 @@
 | `src/blog/*.md`               | Blog frontmatter and Markdown body                             | Blog layouts/cards       |
 | `src/data/resources/*.json`   | Eight fixed resource URLs, cards, links, order                 | `ResourcePage.astro`     |
 | `src/data/homepage.json`      | Hero, sections, images, wording, contact wording               | Homepage                 |
-| `src/data/announcements.json` | Homepage announcements and display order                       | Homepage                 |
+| `src/data/announcements.json` | Homepage announcements, expiry, and display order              | Homepage                 |
 | `src/data/team.json`          | About wording, current/past team years, members, photos, order | About/profile components |
 | `src/data/navigation.json`    | Header navigation and resource-menu labels/order               | Header                   |
 | `src/data/site.json`          | Site metadata, public contact email, social links              | Layout, header, footer   |
@@ -23,15 +25,25 @@
 
 `src/utils/cmsAssets.ts` maps existing source images to emitted URLs. New CMS images live in `public/assets/` and are referenced directly. Current imagery remains visible; future images need no code work.
 
-## CMS routes and cutover state
+## Deployment and scheduled builds
 
-- **Now:** `/admin/` loads pinned Decap `3.15.1`, Netlify Identity, Git Gateway, and editorial workflow. Operational.
-- **Staged:** `/cms/` loads pinned Sveltia `0.181.1`. It merges shared collection configuration from `/admin/config.yml` with `/cms/backend.yml`, replacing only backend settings with GitHub OAuth on `dev`.
-- **Blocker:** Sveltia official docs state Git Gateway and Netlify Identity are unsupported. GitHub authorization-code flow needs GitHub OAuth app linked as Netlify site OAuth provider. This external Netlify/GitHub setting is not installed and cannot be stored in repository. Sveltia editorial workflow is also unimplemented, so post-cutover saving is direct-to-`dev`; Netlify `dev` deploy remains review authority.
-- **Cutover:** organization administrator registers/links GitHub OAuth in Netlify, grants webmaster GitHub repository write access, tests `/cms/` on `dev`, checks one no-op/content change and Netlify deploy, then advertises `/cms/`. Retain `/admin/` during rollback window. Do not remove Identity/Git Gateway before successful production rehearsal.
+Netlify builds production from `main` after each CMS publish or merged code pull request. Because the output is static, blog posts and active announcements that reach their expiry date keep rendering the previous state until Netlify builds again. A scheduled GitHub Actions workflow (`.github/workflows/expiry-rebuild.yml`) calls a Netlify production build hook once per day at 09:00 UTC. Toronto midnight is 04:00 UTC during daylight saving and 05:00 UTC outside it, so the schedule always runs after the selected Toronto date has passed, never before it.
 
-Sveltia docs: <https://sveltiacms.app/en/docs/backends>, <https://sveltiacms.app/en/docs/backends/github>, <https://sveltiacms.app/en/docs/migration/netlify-decap-cms>.
+The workflow only POSTs the hook. It does not check out, edit, or commit content, so it cannot publish a CMS draft or change any source file. The technical steward owns the hook and secret: create a production build hook for the Netlify site and store its URL as the `NETLIFY_BUILD_HOOK_URL` repository secret in GitHub, then rotate it if it is exposed. The daily rebuild adds one production build per day (about 30 per month) to the Legacy Free plan usage already consumed by deploy-preview and production builds.
+
+Browser configuration, ownership, monitoring, and rotation steps live in the [technical operations runbook](TECHNICAL_OPERATIONS.md). Cutover and every Sveltia version change require the twelve-scenario [technical rehearsal](TECHNICAL_REHEARSAL.md).
+
+## CMS routes and access
+
+- `/admin/` loads pinned Sveltia CMS `0.214.1` with the project configuration and `customizations.js`.
+- `/cms/` permanently redirects to `/admin/`. There is no second editing surface.
+- The GitHub backend authenticates through the Netlify-linked GitHub OAuth provider and targets `main` with `publish_mode: editorial_workflow`.
+- `preview_context` names the `netlify/uoft-fom-grc/deploy-preview` commit status, so **View Preview** always resolves the changed route on the pull request's deploy preview.
+- A `prePublish` confirmation requires "I reviewed the site preview." before Sveltia attempts the merge. Cancelling aborts the publish; the merge itself is still gated by branch protection.
+- Publishing uses squash merge. Never-published blog drafts can be discarded, but a CMS pre-unpublish guard and CI deletion check both block removal of published blog URLs. Resource pages remain fixed file records, so their routes and protected identities survive routine editing.
+
+Sveltia docs: <https://sveltiacms.app/en/docs/backends>, <https://sveltiacms.app/en/docs/backends/github>, <https://sveltiacms.app/en/docs/workflows/editorial>, <https://sveltiacms.app/en/docs/workflows/deploy-previews>.
 
 ## Boundaries
 
-CMS manages meaningful site content and images, not components, Tailwind, schemas, CMS backend configuration, dependencies, or deployment configuration. Generated `node_modules/`, `.astro/`, and `dist/` are never committed. Emergency developer owns code/config/dependency/access recovery.
+CMS manages meaningful site content and images, not components, Tailwind, schemas, CMS backend configuration, dependencies, or deployment configuration. Generated `node_modules/`, `.astro/`, and `dist/` are never committed. The technical steward owns code/config/dependency/access recovery.

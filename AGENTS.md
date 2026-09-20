@@ -26,7 +26,7 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 ├── pnpm-lock.yaml        # pnpm lock file
 ├── tsconfig.json         # TypeScript configuration
 ├── public/               # Static assets (images, fonts, etc.)
-│   ├── admin/            # Netlify CMS configuration
+│   ├── admin/            # Sveltia CMS configuration
 │   └── assets/           # Images used in the site
 └── src/                  # Source code
     ├── components/       # Reusable Astro components
@@ -43,7 +43,7 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 
 - **`astro.config.mjs`**:
   - Sets the `site` URL to `https://uoftfomgrc.ca`.
-  - Configures integrations: `@astrojs/mdx`, `@astrojs/sitemap`, `astro-icon`, `@astrojs/alpinejs`.
+  - Configures integrations: `@astrojs/mdx`, `astro-icon`, `@astrojs/alpinejs`.
   - Sets the output to `static`.
   - Publishes the fully static `dist` output to Netlify without an Astro deployment adapter.
   - Integrates Tailwind CSS via a Vite plugin.
@@ -68,19 +68,19 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 
 ## Content Management
 
-- **Routine content**: Content editors use Decap CMS only. Save a draft, notify the release webmaster, fix feedback, then publish to `dev` through Decap after go-ahead. No GitHub, Git, or local development.
-- **Release**: Release webmaster uses GitHub and Netlify browser only. Self-review `dev` to `main`, confirm `Validate` and `netlify/uoft-fom-grc/deploy-preview`, then merge with a merge commit.
-- **Emergency development**: Emergency developer handles all source files, local commands, Git, code, configuration, dependencies, conflicts, access recovery, and complex rollback. Routine webmaster work never requires a clone.
+- **Routine content**: Content editors use Sveltia CMS at `/admin/` only. Saving a draft creates a short-lived CMS branch and pull request against `main`; the editor reviews the exact route in the Netlify deploy preview, answers "I reviewed the site preview.", and publishes when `Validate` and `netlify/uoft-fom-grc/deploy-preview` pass. No GitHub, Git, or local development.
+- **Publishing**: Self-publishing is routine. Sveltia squash-merges the reviewed draft pull request into `main`, and Netlify deploys production. No separate release branch or release webmaster exists.
+- **Emergency development**: The technical steward handles all source files, local commands, Git, code, configuration, dependencies, conflicts, access recovery, and complex rollback. Routine publishing never requires a clone.
 - **Blog Posts**: Located in `src/blog/`. Each file is a Markdown file (`.md`) with frontmatter that must adhere to the `blogSchema`.
 - **Pages**: Located in `src/pages/`. Each `.astro` file corresponds to a page on the site. Dynamic routes are used for blog posts.
 - **Static Assets**: Images, fonts, and other static files are in the `public/` directory.
 
 ## External workflow facts
 
-- Production is Netlify `main`; `dev` receives branch deploys; pull requests against either branch receive deploy previews.
-- Feature and dependency pull requests to `dev` use squash merge. Release pull requests from `dev` to `main` use merge commits. Rebase merge is disabled.
-- `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge. Administrators retain bypass ability for documented emergencies, not routine releases.
-- `dev` has only force-push and deletion blocks, enforced for administrators; it has no pull-request, approval, or status-check requirement. Repository auto-delete remains enabled because protected branches are not auto-deleted.
+- `main` is the only long-lived branch for both content and code. Sveltia CMS drafts and developer feature/dependency branches start from `main` and merge through pull requests. The old `dev` branch is retired; do not target it.
+- Sveltia draft pull requests and developer feature/dependency pull requests use squash merge. Rebase merge is disabled.
+- `main` requires pull requests with zero mandatory approvals, `Validate`, `netlify/uoft-fom-grc/deploy-preview`, resolved conversations, and force-push/deletion blocks. Required status checks are non-strict; branches need not be up to date before merge. Administrators retain bypass ability for documented emergencies, not routine publishing.
+- Routine content publishing has no bypass. A merge attempt from Sveltia fails while either required check fails or is missing.
 
 ## Commit messages
 
@@ -90,14 +90,17 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - Write an imperative, lowercase summary without a trailing period.
 - Preferred pairings: `feat` → `:sparkles:`, `fix` → `:bug:`, `docs` → `:memo:`, `style` → `:art:`, `refactor` → `:recycle:`, `perf` → `:zap:`, `test` → `:white_check_mark:`, `build` → `:package:`, `ci` → `:construction_worker:`, `chore` → `:wrench:`, `revert` → `:rewind:`. Dependency upgrades may use `build(deps): :arrow_up:`; urgent fixes may use `fix: :ambulance:`.
 - Examples: `feat(cms): :sparkles: add team collection`, `fix(search): :bug: handle missing index`, `docs(workflow): :memo: explain release process`.
-- Decap CMS and other service-generated commits are exempt. For human-controlled squash or release messages, restore this format before merging.
+- Sveltia CMS and other service-generated commits are exempt. For human-controlled squash or release messages, restore this format before merging.
 
-## Emergency developer commands
+## Technical steward commands
 
-- **Routine blog content**: Use Decap CMS; do not create Markdown files locally.
-- **Source changes**: Create a page in `src/pages/` or change other source only during emergency developer work.
-- **Local site**: Run `pnpm dev` only for emergency developer work.
-- **Build**: Run `pnpm build` only for emergency developer work.
+- **Routine blog content**: Use Sveltia CMS at `/admin/`; do not create Markdown files locally.
+- **Source changes**: Create a page in `src/pages/` or change other source only during technical steward work.
+- **Local site**: Run `pnpm dev` only for technical steward work.
+- **Build**: Run `pnpm build` only for technical steward work.
+- **External operations**: Follow `docs/TECHNICAL_OPERATIONS.md` for OAuth, Netlify, GitHub access/protection, expiry automation, upgrades, cutover, and annual handoff.
+- **CMS rehearsal**: Use all twelve scenarios in `docs/TECHNICAL_REHEARSAL.md` before cutover or any Sveltia version change; store completed evidence privately and never record secrets.
+- **Recovery**: Follow `docs/ROLLBACK.md`; a Netlify restore is temporary until `main` is reconciled, and Decap is not a live fallback.
 
 ## Playwright checks
 
@@ -105,3 +108,13 @@ This is the official website for the University of Toronto, Faculty of Medicine'
 - Use headless Playwright for visual/smoke checks.
 - Do not commit browser binaries or generated output.
 - Do not expand CI unless Playwright tests are deliberately adopted.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs use local Markdown under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+This is a single-context repository using root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.

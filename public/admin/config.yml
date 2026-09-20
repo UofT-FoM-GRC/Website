@@ -1,11 +1,42 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.214.1/schema/sveltia-cms.json
+# Sveltia 0.214.1 is pinned for the technical rehearsal. Upgrade only after a new rehearsal.
 backend:
-  name: git-gateway
-  branch: dev
+  name: github
+  repo: UofT-FoM-GRC/Website
+  branch: main
+  auth_methods: [oauth]
+  # Netlify reports each pull request's deploy preview through this exact check.
+  # Naming it keeps preview links locked to Netlify even if other statuses appear.
+  preview_context: netlify/uoft-fom-grc/deploy-preview
+  # One content publish becomes one commit on main, matching repository squash policy.
   squash_merges: true
 
 publish_mode: editorial_workflow
+site_url: https://uoftfomgrc.ca
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+  trim: true
+  lowercase: true
+editor:
+  preview: false
+output:
+  omit_empty_optional_fields: true
 media_folder: public/assets
 public_folder: /assets
+media_libraries:
+  default:
+    config:
+      # 10 MiB keeps browser-side processing responsive while accepting normal camera exports.
+      max_file_size: 10485760
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048
 
 collections:
   - name: blog
@@ -18,6 +49,9 @@ collections:
     identifier_field: title
     summary: '{{title}} — {{pubDate}}'
     sortable_fields: ['pubDate', 'title']
+    preview_path: '/blog/{{slug}}/'
+    # New drafts may be discarded. A pre-unpublish hook and CI both block removal of published URLs.
+    delete: true
     fields:
       - {
           label: Title,
@@ -26,80 +60,57 @@ collections:
           hint: Main title. Changing it does not change the URL of an existing post.
         }
       - {
-          label: Description,
+          label: Search and Sharing Summary,
           name: description,
           widget: text,
-          hint: One or two sentences for search and page metadata.
+          hint: One or two sentences shown in search results and link previews.
         }
       - {
-          label: Publish Date,
+          label: Publication Date,
           name: pubDate,
           widget: datetime,
+          type: date,
+          default: '{{now}}',
           format: 'YYYY-MM-DD',
           date_format: 'YYYY-MM-DD',
           time_format: false
         }
+      - { label: Updated Date, name: updatedDate, widget: hidden }
       - {
-          label: Updated Date,
-          name: updatedDate,
-          widget: datetime,
-          required: false,
-          format: 'YYYY-MM-DD',
-          date_format: 'YYYY-MM-DD',
-          time_format: false,
-          hint: Leave blank unless the published post changed materially.
-        }
-      - {
-          label: Publication Status,
+          label: Visibility,
           name: status,
           widget: select,
-          options: [published, archived],
-          default: published,
+          options: &visibility_options [{ label: Current, value: current }, { label: Archived, value: archived }],
+          default: current,
           hint: Archive time-limited or superseded posts. Archived posts remain available at their existing URL.
         }
       - {
-          label: Review By,
-          name: reviewBy,
-          widget: datetime,
-          required: false,
-          format: 'YYYY-MM-DD',
-          date_format: 'YYYY-MM-DD',
-          time_format: false,
-          hint: Internal content-freshness review date; this is not shown to visitors.
-        }
-      - {
-          label: Expires On,
+          label: Expires After,
           name: expiresOn,
           widget: datetime,
           required: false,
+          type: date,
           format: 'YYYY-MM-DD',
           date_format: 'YYYY-MM-DD',
           time_format: false,
           hint: Optional Toronto date through which the post stays in current listings. It remains at its URL and changes at the next site build.
         }
       - {
-          label: Content Owner,
-          name: contentOwner,
-          widget: string,
-          required: false,
-          default: GRC,
-          hint: Team or role responsible for reviewing this post.
-        }
-      - {
           label: Hero Image,
           name: heroImage,
           widget: image,
           required: false,
-          hint: Optional banner. Uploads go to /assets.
+          accept: 'image/jpeg,image/png,image/webp',
+          hint: 'Optional banner. JPEG, PNG, and WebP uploads become optimized WebP files in /assets.'
         }
       - {
-          label: Hero Image Alternative Text,
+          label: Hero Image Description,
           name: heroImageAlt,
           widget: string,
           required: false,
-          hint: Describe the image. Required whenever an image conveys information.
+          hint: Describe the image. Required whenever a hero image is supplied.
         }
-      - label: Tags
+      - label: Categories
         name: tags
         widget: select
         multiple: true
@@ -112,262 +123,386 @@ collections:
           - { label: Continuing Education, value: continuing-education }
           - { label: Health & Wellness, value: health-wellness }
           - { label: Housing, value: housing }
-          - { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards }
+          - { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards }
           - { label: Scholarship/Award/Grant Application Support, value: scholarship-award-grant-application-support }
           - { label: Other, value: other }
       - {
           label: Body,
           name: body,
-          widget: markdown,
-          hint: Main post content. Use the image button to add accessible image descriptions.
+          widget: richtext,
+          modes: [rich_text],
+          buttons: [heading-two, heading-three, heading-four, bold, italic, link, bulleted-list, numbered-list],
+          editor_components: [accessible-image, callout, action-link],
+          allow_nested_components: false,
+          sanitize_preview: true,
+          use_markdown_shortcuts: false,
+          hint: 'Main post content. Use Insert to add accessible images, callouts, and action links.'
         }
   - name: resources
     label: Resource Pages
-    folder: src/data/resources
-    extension: json
     format: json
-    create: false
-    identifier_field: title
-    summary: '{{title}}'
-    fields: &resource_fields
-      - { label: Stable URL ID, name: slug, widget: hidden, hint: Fixed by the file name and route. }
-      - { label: Page Heading, name: title, widget: string }
-      - {
-          label: Page Description,
-          name: description,
-          widget: text,
-          hint: One or two sentences for search and page metadata.
-        }
-      - { label: Resource Card Title, name: cardTitle, widget: string, hint: Text on the Resources landing-page card. }
-      - { label: Resource Card Image, name: cardImage, widget: image }
-      - { label: Resource Card Image Alternative Text, name: cardImageAlt, widget: string }
-      - label: Page Sections
-        name: sections
-        widget: list
-        hint: Reorder sections and cards by dragging. Section IDs preserve in-page links; do not change an existing ID. Decap cannot make IDs in a list read-only.
-        fields:
-          - {
-              label: Stable Section ID,
-              name: id,
+    preview_path: '/resources/{{slug}}/'
+    files:
+      - name: employment
+        label: Employment Resources
+        file: src/data/resources/employment.json
+        preview_path: '/resources/{{slug}}/'
+        fields: &typed_resource_fields
+          - &resource_slug { label: Stable URL ID, name: slug, widget: hidden }
+          - &resource_title { label: Page Heading, name: title, widget: string }
+          - &resource_description {
+              label: Search and Sharing Summary,
+              name: description,
+              widget: text,
+              hint: One or two sentences shown in search results and link previews.
+            }
+          - &resource_card_title {
+              label: Resource Card Title,
+              name: cardTitle,
               widget: string,
-              hint: Must stay unique and unchanged after publication.
+              hint: Text on the Resources landing-page card.
             }
-          - { label: Section Heading, name: title, widget: string }
-          - {
-              label: Introductory Paragraphs,
-              name: intro,
-              widget: list,
-              required: false,
-              field: { label: Paragraph, name: paragraph, widget: text }
+          - &resource_card_image {
+              label: Resource Card Image,
+              name: cardImage,
+              widget: image,
+              required: true,
+              accept: 'image/jpeg,image/png,image/webp'
             }
-          - { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
-          - label: Cards
-            name: cards
+          - &resource_card_image_alt {
+              label: Resource Card Image Description,
+              name: cardImageAlt,
+              widget: string,
+              required: true
+            }
+          - label: Page Sections
+            name: sections
             widget: list
+            summary: '{{title}}'
+            collapsed: auto
+            hint: Reorder sections and cards by dragging. A new section keeps the in-page link created from its first heading.
             fields:
-              - { label: Card Heading, name: title, widget: string }
-              - {
-                  label: Paragraphs,
-                  name: text,
+              - &section_id { label: Section Anchor, name: id, widget: hidden }
+              - &section_title { label: Section Heading, name: title, widget: string }
+              - &section_intro {
+                  label: Introductory Paragraphs,
+                  name: intro,
                   widget: list,
                   required: false,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
-              - {
-                  label: Bullet Points,
-                  name: bullets,
-                  widget: list,
+              - &section_columns { label: Cards Per Row, name: columns, widget: select, options: [1, 2, 3], default: 1 }
+              - &section_status {
+                  label: Visibility,
+                  name: status,
+                  widget: select,
+                  options: *visibility_options,
+                  default: current,
+                  hint: 'Archived sections leave quick navigation and search. They keep their heading, a required notice, and an optional replacement link.'
+                }
+              - &section_archive_notice {
+                  label: Archive Notice,
+                  name: archiveNotice,
+                  widget: text,
                   required: false,
-                  field: { label: Bullet, name: bullet, widget: string }
+                  hint: Required when this section is archived.
                 }
-              - {
-                  label: Card Layout,
-                  name: variant,
-                  widget: select,
-                  options: [card, plain],
-                  default: card,
-                  required: false
-                }
-              - {
-                  label: Link Appearance,
-                  name: linkStyle,
-                  widget: select,
-                  options: [link, button],
-                  default: link,
-                  required: false
-                }
-              - {
-                  label: Instruction List Style,
-                  name: listStyle,
-                  widget: select,
-                  options: [unordered, ordered],
-                  default: unordered,
-                  required: false
-                }
-              - label: Instructions
-                name: listItems
-                widget: list
-                required: false
-                hint: Use for ordered steps or nested checklists.
-                fields:
-                  - { label: Step Text, name: text, widget: string }
-                  - label: Step Links
-                    name: links
-                    widget: list
-                    required: false
-                    fields:
-                      - { label: Link Text, name: label, widget: string }
-                      - { label: Destination URL, name: url, widget: string }
-                  - {
-                      label: Nested Items,
-                      name: items,
-                      widget: list,
-                      required: false,
-                      field: { label: Item, name: item, widget: string }
-                    }
-              - {
-                  label: Address Lines,
-                  name: addressLines,
-                  widget: list,
-                  required: false,
-                  field: { label: Address Line, name: line, widget: string }
-                }
-              - label: Labelled Contact Details
-                name: facts
-                widget: list
+              - &section_replacement
+                label: Optional Replacement Link
+                name: replacement
+                widget: object
                 required: false
                 fields:
-                  - { label: Label, name: label, widget: string, hint: 'Example: Phone:' }
-                  - { label: Value, name: value, widget: string }
-                  - { label: Optional Destination URL, name: url, widget: string, required: false }
-              - label: Grouped Contact Panels
-                name: groups
+                  - { label: Link Text, name: label, widget: string, required: false }
+                  - { label: Destination URL, name: url, widget: string, required: false }
+              - label: Cards
+                name: cards
                 widget: list
+                summary: '{{title}}'
                 required: false
+                min: 0
                 fields:
-                  - { label: Panel Heading, name: title, widget: string }
+                  - { label: Card Heading, name: title, widget: string }
                   - {
-                      label: Paragraphs,
-                      name: text,
-                      widget: list,
-                      required: false,
-                      field: { label: Paragraph, name: paragraph, widget: text }
+                      label: Card Layout,
+                      name: variant,
+                      widget: select,
+                      options: [card, plain],
+                      default: card,
+                      required: false
                     }
                   - {
-                      label: Address Lines,
-                      name: addressLines,
-                      widget: list,
-                      required: false,
-                      field: { label: Address Line, name: line, widget: string }
+                      label: Card Visibility,
+                      name: status,
+                      widget: select,
+                      options: *visibility_options,
+                      default: current,
+                      hint: Archived cards remain stored but are not shown to visitors.
                     }
-                  - label: Labelled Contact Details
-                    name: facts
+                  - label: Card Content
+                    name: blocks
                     widget: list
+                    summary: '{{type}}'
                     required: false
-                    fields:
-                      - { label: Label, name: label, widget: string }
-                      - { label: Value, name: value, widget: string }
-                      - { label: Optional Destination URL, name: url, widget: string, required: false }
-                  - label: Links
-                    name: links
-                    widget: list
-                    required: false
-                    fields:
-                      - { label: Link Text, name: label, widget: string }
-                      - { label: Destination URL, name: url, widget: string }
-              - { label: Card Image, name: image, widget: image, required: false }
-              - { label: Card Image Alternative Text, name: imageAlt, widget: string, required: false }
-              - label: Links
-                name: links
-                widget: list
-                fields:
-                  - { label: Link Text, name: label, widget: string }
-                  - {
-                      label: Destination URL,
-                      name: url,
-                      widget: string,
-                      hint: Include https:// for external links,
-                      mailto: for email,
-                      or tel: for telephone.
-                    }
-  - name: site_settings
-    label: Site Settings
+                    min: 0
+                    hint: Add and reorder the information on this card.
+                    types:
+                      - name: text
+                        label: Formatted text
+                        widget: object
+                        fields:
+                          - {
+                              label: Text,
+                              name: body,
+                              widget: richtext,
+                              modes: [rich_text],
+                              buttons: [bold, italic, link, bulleted-list],
+                              editor_components: [],
+                              allow_nested_components: false,
+                              sanitize_preview: true,
+                              use_markdown_shortcuts: false
+                            }
+                      - name: image
+                        label: Image
+                        widget: object
+                        fields:
+                          - {
+                              label: Image,
+                              name: image,
+                              widget: image,
+                              required: true,
+                              accept: 'image/jpeg,image/png,image/webp'
+                            }
+                          - { label: Image Description, name: imageAlt, widget: string, required: true }
+                      - name: links
+                        label: Links and actions
+                        widget: object
+                        fields:
+                          - {
+                              label: Appearance,
+                              name: appearance,
+                              widget: select,
+                              options: [link, button],
+                              default: link
+                            }
+                          - label: Destinations
+                            name: items
+                            widget: list
+                            fields:
+                              - { label: Link Text, name: label, widget: string }
+                              - {
+                                  label: Destination URL,
+                                  name: url,
+                                  widget: string,
+                                  hint: 'Include https:// for external links, mailto: for email, or tel: for telephone.'
+                                }
+                      - name: steps
+                        label: Steps
+                        widget: object
+                        fields:
+                          - {
+                              label: List Style,
+                              name: listStyle,
+                              widget: select,
+                              options: [unordered, ordered],
+                              default: unordered
+                            }
+                          - label: Items
+                            name: items
+                            widget: list
+                            fields:
+                              - { label: Step Text, name: text, widget: string }
+                              - label: Step Links
+                                name: links
+                                widget: list
+                                required: false
+                                fields:
+                                  - { label: Link Text, name: label, widget: string }
+                                  - { label: Destination URL, name: url, widget: string }
+                              - {
+                                  label: Nested Items,
+                                  name: items,
+                                  widget: list,
+                                  required: false,
+                                  field: { label: Item, name: item, widget: string }
+                                }
+                      - name: contact
+                        label: Contact details
+                        widget: object
+                        fields:
+                          - {
+                              label: Address Lines,
+                              name: addressLines,
+                              widget: list,
+                              required: false,
+                              field: { label: Address Line, name: line, widget: string }
+                            }
+                          - label: Labelled Values
+                            name: facts
+                            widget: list
+                            required: false
+                            fields:
+                              - { label: Label, name: label, widget: string, hint: 'Example: Phone:' }
+                              - { label: Value, name: value, widget: string }
+                              - { label: Optional Destination URL, name: url, widget: string, required: false }
+                      - name: contact-panels
+                        label: Contact panels
+                        widget: object
+                        fields:
+                          - label: Panels
+                            name: panels
+                            widget: list
+                            fields:
+                              - { label: Panel Heading, name: title, widget: string }
+                              - {
+                                  label: Paragraphs,
+                                  name: text,
+                                  widget: list,
+                                  required: false,
+                                  field: { label: Paragraph, name: paragraph, widget: text }
+                                }
+                              - {
+                                  label: Address Lines,
+                                  name: addressLines,
+                                  widget: list,
+                                  required: false,
+                                  field: { label: Address Line, name: line, widget: string }
+                                }
+                              - label: Labelled Contact Details
+                                name: facts
+                                widget: list
+                                required: false
+                                fields:
+                                  - { label: Label, name: label, widget: string }
+                                  - { label: Value, name: value, widget: string }
+                                  - { label: Optional Destination URL, name: url, widget: string, required: false }
+                              - label: Links
+                                name: links
+                                widget: list
+                                required: false
+                                fields:
+                                  - { label: Link Text, name: label, widget: string }
+                                  - { label: Destination URL, name: url, widget: string }
+                      - name: callout
+                        label: Callout
+                        widget: object
+                        fields:
+                          - {
+                              label: Callout Kind,
+                              name: kind,
+                              widget: select,
+                              options:
+                                [
+                                  { label: Information, value: information },
+                                  { label: Important, value: important },
+                                  { label: Warning, value: warning }
+                                ],
+                              default: information
+                            }
+                          - { label: Optional Heading, name: title, widget: string, required: false }
+                          - {
+                              label: Callout Message,
+                              name: body,
+                              widget: richtext,
+                              required: true,
+                              modes: [rich_text],
+                              buttons: [bold, italic, link, bulleted-list, numbered-list],
+                              editor_components: [],
+                              allow_nested_components: false,
+                              sanitize_preview: true,
+                              use_markdown_shortcuts: false
+                            }
+      - name: career-planning-exploration
+        label: Career Planning & Exploration Resources
+        file: src/data/resources/career-planning-exploration.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: continuing-education
+        label: Continuing Education
+        file: src/data/resources/continuing-education.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: health-wellness
+        label: Health & Wellness
+        file: src/data/resources/health-wellness.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: housing
+        label: Housing
+        file: src/data/resources/housing.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: other
+        label: Miscellaneous Resources
+        file: src/data/resources/other.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: scholarships-bursaries-awards
+        label: Scholarships, Bursaries & Awards
+        file: src/data/resources/scholarships-bursaries-awards.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: scholarship-award-grant-application-support
+        label: Application Support Resources
+        file: src/data/resources/scholarship-award-grant-application-support.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+  - name: homepage_announcements
+    label: Homepage Announcements
     files:
-      - label: Contact and Social Links
-        name: site
-        file: src/data/site.json
+      - label: Homepage Announcements
+        name: announcements
+        file: src/data/announcements.json
+        preview_path: '/'
         fields:
-          - { label: Site Title, name: title, widget: string }
-          - { label: Site Description, name: description, widget: text }
-          - label: Contact
-            name: contact
-            widget: object
-            fields: [{ label: Public Email Address, name: email, widget: string }]
-          - label: Social Links
-            name: socialLinks
+          - label: Announcements
+            name: items
             widget: list
+            required: false
+            min: 0
+            hint: Only active announcements appear below the homepage hero. Drag to set display order.
             fields:
-              - { label: Accessible Label, name: label, widget: string }
+              - { label: Heading, name: title, widget: string }
+              - { label: Message, name: text, widget: text }
+              - { label: Optional Link URL, name: url, widget: string, required: false }
               - {
-                  label: Destination URL,
-                  name: url,
-                  widget: string,
-                  hint: 'Include https:// for external links, / for internal links, mailto: for email, or tel: for telephone.',
-                  pattern:
-                    [
-                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
-                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
-                    ]
+                  label: Expires On,
+                  name: expiresOn,
+                  widget: datetime,
+                  required: false,
+                  type: date,
+                  format: 'YYYY-MM-DD',
+                  date_format: 'YYYY-MM-DD',
+                  time_format: false,
+                  hint: Active announcements require the Toronto date through which they stay up. They hide at the next scheduled site build after that date.
                 }
-              - { label: Network, name: network, widget: select, options: [instagram, github] }
-      - label: Navigation
-        name: navigation
-        file: src/data/navigation.json
-        fields:
-          - { label: Header Brand, name: brand, widget: string }
-          - label: Main Navigation Links
-            name: links
-            widget: list
-            fields: [{ label: Label, name: label, widget: string }, { label: URL, name: url, widget: string }]
-          - { label: Resources Menu Label, name: resourceLabel, widget: string }
-          - label: Resources Menu Links
-            name: resourceLinks
-            widget: list
-            min: 8
-            max: 8
-            fields:
-              [
-                { label: Label, name: label, widget: string },
-                {
-                  label: Resource Page,
-                  name: slug,
-                  widget: select,
-                  options:
-                    [
-                      { label: Employment, value: employment },
-                      { label: Career Planning & Exploration, value: career-planning-exploration },
-                      { label: Continuing Education, value: continuing-education },
-                      { label: Health & Wellness, value: health-wellness },
-                      { label: Housing, value: housing },
-                      { label: Scholarships, Bursaries & Awards, value: scholarships-bursaries-awards },
-                      {
-                        label: Scholarship/Award/Grant Application Support,
-                        value: scholarship-award-grant-application-support
-                      },
-                      { label: Other, value: other }
-                    ]
+              - {
+                  label: Show on Homepage,
+                  name: active,
+                  widget: boolean,
+                  default: false,
+                  hint: Only active announcements appear below the homepage hero. An active announcement needs an expiry date.
                 }
-              ]
+  - name: homepage
+    label: Homepage
+    files:
       - label: Homepage
         name: homepage
         file: src/data/homepage.json
+        preview_path: '/'
         fields:
           - label: Hero
             name: hero
             widget: object
             fields:
-              - { label: Hero Image, name: image, widget: image }
-              - { label: Hero Image Alternative Text, name: imageAlt, widget: string }
+              - {
+                  label: Hero Image,
+                  name: image,
+                  widget: image,
+                  required: true,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - { label: Hero Image Description, name: imageAlt, widget: string, required: true }
               - {
                   label: Hero Lines,
                   name: lines,
@@ -393,32 +528,31 @@ collections:
                 widget: list
                 required: false
                 fields:
-                  [
-                    { label: Link Text, name: label, widget: string },
-                    { label: Destination URL, name: url, widget: string }
-                  ]
-              - { label: Image, name: image, widget: image }
-              - { label: Image Alternative Text, name: imageAlt, widget: string }
+                  - { label: Link Text, name: label, widget: string }
+                  - {
+                      label: Destination URL,
+                      name: url,
+                      widget: string,
+                      hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                      pattern:
+                        [
+                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                          'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                        ]
+                    }
+              - { label: Image, name: image, widget: image, required: true, accept: 'image/jpeg,image/png,image/webp' }
+              - { label: Image Description, name: imageAlt, widget: string, required: true }
               - { label: Background Tone, name: tone, widget: select, options: [dark, light] }
               - { label: Put Image First on Desktop, name: imageFirst, widget: boolean, default: false }
           - { label: Contact Heading, name: contactHeading, widget: string }
           - { label: Contact Text, name: contactText, widget: text }
-      - label: Homepage Announcements
-        name: announcements
-        file: src/data/announcements.json
-        fields:
-          - label: Announcements
-            name: items
-            widget: list
-            hint: Only active announcements appear below the homepage hero. Drag to set display order.
-            fields:
-              - { label: Heading, name: title, widget: string }
-              - { label: Message, name: text, widget: text }
-              - { label: Optional Link URL, name: url, widget: string, required: false }
-              - { label: Show on Homepage, name: active, widget: boolean, default: false }
+  - name: team_and_about
+    label: Team and About Page
+    files:
       - label: About Page and Team Archive
         name: team
         file: src/data/team.json
+        preview_path: '/about/'
         fields:
           - label: About Page
             name: about
@@ -426,8 +560,14 @@ collections:
             fields:
               - { label: Page Title, name: title, widget: string }
               - { label: Introduction, name: description, widget: text }
-              - { label: Hero Image, name: heroImage, widget: image }
-              - { label: Hero Image Alternative Text, name: heroImageAlt, widget: string }
+              - {
+                  label: Hero Image,
+                  name: heroImage,
+                  widget: image,
+                  required: true,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - { label: Hero Image Description, name: heroImageAlt, widget: string, required: true }
               - { label: Purpose Heading, name: purposeTitle, widget: string }
               - {
                   label: Purpose Paragraphs,
@@ -448,24 +588,132 @@ collections:
                   widget: list,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
+          - {
+              label: Current Team Year,
+              name: currentYear,
+              widget: string,
+              required: true,
+              hint: 'Enter the exact Academic Year text of the current team, for example: 2025 - 2026. It must match one of the Team Years, or the site build fails and the release is blocked.'
+            }
           - label: Team Years
             name: years
             widget: list
-            hint: First year displays first. Add past years here; ordering is preserved.
+            hint: First year displays first. Drag to reorder years; each academic year may appear once.
             fields:
               - { label: Academic Year, name: year, widget: string, hint: 'Example: 2025 - 2026.' }
-              - {
-                  label: Current Team,
-                  name: current,
-                  widget: boolean,
-                  default: false,
-                  hint: Select exactly one current team year.
-                }
               - label: Members
                 name: members
                 widget: list
+                hint: Members display in listed order. Drag to reorder members.
                 fields:
                   - { label: Name, name: name, widget: string }
                   - { label: Position, name: position, widget: string }
-                  - { label: Photo, name: image, widget: image, required: false }
-                  - { label: Photo Alternative Text, name: imageAlt, widget: string, required: false }
+                  - {
+                      label: Photo,
+                      name: image,
+                      widget: image,
+                      required: false,
+                      accept: 'image/jpeg,image/png,image/webp'
+                    }
+                  - {
+                      label: Photo Description,
+                      name: imageAlt,
+                      widget: string,
+                      required: false,
+                      hint: Required whenever a photo is supplied.
+                    }
+  - name: advanced_site_settings
+    label: Advanced Site Settings
+    description: Navigation and contact/social settings for the whole site. These changes affect every page.
+    files:
+      - label: Navigation
+        name: navigation
+        file: src/data/navigation.json
+        preview_path: '/'
+        fields:
+          - { label: Header Brand, name: brand, widget: string }
+          - label: Main Navigation Links
+            name: links
+            widget: list
+            fields:
+              - { label: Label, name: label, widget: string }
+              - {
+                  label: URL,
+                  name: url,
+                  widget: string,
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                  pattern:
+                    [
+                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                    ]
+                }
+          - { label: Resources Menu Label, name: resourceLabel, widget: string }
+          - label: Resources Menu Links
+            name: resourceLinks
+            widget: list
+            min: 8
+            max: 8
+            hint: One entry per resource page. Drag to set the menu order. Each resource page may appear once.
+            fields:
+              [
+                { label: Label, name: label, widget: string },
+                {
+                  label: Resource Page,
+                  name: slug,
+                  widget: select,
+                  options:
+                    [
+                      { label: Employment, value: employment },
+                      { label: Career Planning & Exploration, value: career-planning-exploration },
+                      { label: Continuing Education, value: continuing-education },
+                      { label: Health & Wellness, value: health-wellness },
+                      { label: Housing, value: housing },
+                      { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards },
+                      {
+                        label: Scholarship/Award/Grant Application Support,
+                        value: scholarship-award-grant-application-support
+                      },
+                      { label: Other, value: other }
+                    ]
+                }
+              ]
+      - label: Contact and Social Links
+        name: site
+        file: src/data/site.json
+        preview_path: '/'
+        fields:
+          - { label: Site Title, name: title, widget: string }
+          - { label: Site Description, name: description, widget: text }
+          - label: Contact
+            name: contact
+            widget: object
+            fields:
+              - {
+                  label: Public Email Address,
+                  name: email,
+                  widget: string,
+                  hint: 'Use a full address, for example grc.facmed@utoronto.ca.',
+                  pattern:
+                    [
+                      '^(?!\.)(?!.*\.\.)([A-Za-z0-9_''+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$',
+                      'Use an email address like grc.facmed@utoronto.ca.'
+                    ]
+                }
+          - label: Social Links
+            name: socialLinks
+            widget: list
+            fields:
+              - { label: Accessible Label, name: label, widget: string }
+              - {
+                  label: Destination URL,
+                  name: url,
+                  widget: string,
+                  hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                  pattern:
+                    [
+                      '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                      'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                    ]
+                }
+              - { label: Network, name: network, widget: select, options: [instagram, github] }

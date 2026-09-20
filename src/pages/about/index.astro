@@ -6,7 +6,7 @@ import { resolveCmsAsset } from '../../utils/cmsAssets'
 
 const team = await getEntry('team', 'team')
 if (!team) throw new Error('Missing team content')
-const { about, years } = team.data
+const { about, years, currentYear } = team.data
 ---
 
 <BaseLayout title={about.title} description={about.description}>
@@ -58,7 +58,7 @@ const { about, years } = team.data
 				{
 					years.map((year) => (
 						<div class="rounded-lg bg-white shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
-							<Accordion item={year} />
+							<Accordion item={{ ...year, current: year.year === currentYear }} />
 						</div>
 					))
 				}

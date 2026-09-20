@@ -14,15 +14,15 @@ The Harmonized Base Funding Agreement (HBFA) is a crucial component of your grad
 1. **Funding Structure**:
    - The HBFA provides a **yearly stipend** for students enrolled in thesis-based graduate programs. The stipend can be referred to as the "Total" in the table below.
 
-   ![HBFA 2024/2025 Base Funding Table for MSc and PhD Students - Domestic and International](/assets/hbfa-2024-2025.webp)
+   :accessible-image{src="/assets/hbfa-2024-2025.webp" description="HBFA 2024/2025 Base Funding Table for MSc and PhD Students - Domestic and International"}
 
    - In other words, the stipend is composed of sub-components, two at minimum:
      - one for paying the tuition fees
      - one for a living allowance
 
-    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 my-4 rounded">
-        When defining your Graduate Education Management System (GEMS) budget, use the table above to fill in the appropriate amounts for tuition fees and living allowance. Your "Guaranteed Base Funding" row found in that application should match the stipend amount.
-    </div>
+:::callout{kind="information"}
+When defining your Graduate Education Management System (GEMS) budget, use the table above to fill in the appropriate amounts for tuition fees and living allowance. Your "Guaranteed Base Funding" row found in that application should match the stipend amount.
+:::
 
 2. **Top-Up Funding**:
    - First **the bad news**: just because you get, say, a $20,000 scholarship, **DOES NOT** mean your stipend becomes the number above plus $20,000. Unfortunately, this is not how it works.
@@ -33,18 +33,16 @@ The Harmonized Base Funding Agreement (HBFA) is a crucial component of your grad
 
    - Your stipend then becomes the sum of the base stipend (from the table above) and the top-up.
 
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
-    <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="64" stroke-dashoffset="64" d="M12 3l9 17h-18l9 -17Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10v4"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path><path stroke-dasharray="2" stroke-dashoffset="2" d="M12 17v0.01"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="2;0"/></path></g></svg>
-        Unfortunately, there are certain scholarships/awards that <b>do not qualify for the top-up</b>. These include:
-        <ul>
-            <li>UofT Fellowships, including departmental fellowships</li>
-            <li>Doctoral Completion Awards</li>
-            <li>Entrance Scholarships</li>
-            <li>GSS funds</li>
-            <li>Travel grants/awards</li>
-            <li>Bursaries</li>
-        </ul>
-    </div>
+:::callout{kind="warning"}
+Unfortunately, there are certain scholarships/awards that **do not qualify for the top-up**. These include:
+
+- UofT Fellowships, including departmental fellowships
+- Doctoral Completion Awards
+- Entrance Scholarships
+- GSS funds
+- Travel grants/awards
+- Bursaries
+:::
 
 3. **Duration of Funding**:
    - MSc students = 2 years

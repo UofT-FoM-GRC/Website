@@ -1,45 +1,42 @@
-# Review and release guide
+# Self-publishing and checks guide
 
-Release webmaster routine: GitHub and Netlify browser only. Do not clone, use Git, or push directly to `main`.
+Routine publishing is browser-only. A content editor saves a draft in [Sveltia CMS](CONTENT_EDITOR.md), reviews the exact changed route in the Netlify deploy preview, and self-publishes. No release webmaster and no `dev` to `main` release step exist.
 
-## Review content for `dev`
+## Publish a content draft
 
-1. Open the Decap draft or its associated pull request. Confirm it targets `dev`.
-2. Check changed data: blog dates/tags/body, resource slugs/section IDs/links, homepage and announcement wording, navigation, contact/social links, and team order/photos/alternative text.
-3. Confirm required checks pass: `Validate` and `netlify/uoft-fom-grc/deploy-preview`.
-4. Open the Netlify preview. Check layout, navigation, changed page, and mobile view.
-5. Send feedback, or give the content editor a publish go-ahead. The editor publishes through Decap to `dev`.
+1. Sign in at <https://uoftfomgrc.ca/admin/> with GitHub.
+2. Edit a task area and save. Saving may keep incomplete drafts; missing required fields are reported in the editor until they are fixed.
+3. A valid save creates a short-lived CMS branch and draft pull request against `main`, which starts `Validate` and the Netlify deploy preview.
+4. Open **View Preview**. It points at the changed route (blog post, resource page, homepage, about page, or settings target) on the pull request's deploy preview. While the preview builds, the CMS reports **Building…**; a failed build is shown as **Build Failed**.
+5. Fix reported problems and save again. The same draft pull request is updated.
+6. Move the draft to **Ready** and publish once both required checks pass. Sveltia asks for the confirmation "I reviewed the site preview."; cancelling aborts publishing, and confirming permits the merge attempt.
+7. Sveltia squash-merges the pull request into `main` and deletes its branch. Netlify deploys production from `main`.
 
-Do not give a publish go-ahead while either required check fails or is missing. Escalate broken checks, preview failures, or access problems to the emergency developer.
+If the merge is rejected, the CMS reports that publishing failed and the draft stays unpublished on its branch. Fix the reported problem (usually a failing check or a missing required field) and publish again.
 
-## Release `dev` to `main`
+## Merge gates
 
-1. Open <https://github.com/UofT-FoM-GRC/Website/compare/main...dev?expand=1>.
-2. Create the release pull request with base `main` and compare `dev`. Confirm it includes intended batched `dev` changes. Ask content editors to pause Decap publishing until the release finishes.
-3. Self-review changed files, production impact, and the pull request checklist. No second human review is required.
-4. Confirm `Validate` and `netlify/uoft-fom-grc/deploy-preview` pass and all conversations are resolved.
-5. Make the release decision. Select **Create a merge commit**; do not squash or rebase this release.
-6. Wait for the Netlify production deploy from `main`. Read the deploy log if it fails.
-7. Run the production smoke test. Record the decision and result in the release pull request, then tell content editors that publishing may resume.
+Hard gates for every routine publish:
 
-Do not bypass protection. If GitHub blocks the release, checks fail, a conflict appears, or production fails, stop and escalate to the emergency developer with relevant URLs and screenshots.
+1. `Validate` succeeds.
+2. `netlify/uoft-fom-grc/deploy-preview` succeeds.
+3. All branch-protection conversations are resolved.
+4. The "I reviewed the site preview." confirmation is accepted.
+
+Routine content editors have no bypass. The technical steward retains GitHub administrator bypass for documented emergencies only; record the reason, actor, affected refs, skipped checks, time, and recovery action.
+
+Do not publish, and do not bypass branch protection, while either required check fails or is missing. Escalate broken checks, preview failures, or access problems to the technical steward at <grc.facmed@utoronto.ca>.
 
 ## Merge methods
 
-- Feature and dependency pull requests targeting `dev`: use **Squash and merge**.
-- Decap CMS editorial changes: publish through Decap after the webmaster's go-ahead; do not manually merge during routine operation.
-- Release pull requests from `dev` to `main`: use **Create a merge commit**.
-- Do not use **Rebase and merge**.
-
-Squashing a feature or dependency pull request turns its work-in-progress commits into one clear change on `dev`, making history and rollback easier. A release merge commit keeps the exact `dev` commits in `main` and adds one visible marker for the production release. Rebase merge is disabled because replaying commits changes their identities and removes that release boundary.
-
-Repository settings allow squash merges and merge commits, disable rebase merges, and keep required linear history disabled on `main`.
-
-Required status checks on `main` are non-strict: `dev` does not need to contain the previous release merge commit. One release webmaster pauses Decap publishing during release, so routine releases have no concurrent writers. After any exceptional main-only change or rollback, the emergency developer must reconcile `dev` before the next release.
+- Sveltia draft pull requests: **Squash and merge**. Sveltia performs this merge when the editor publishes.
+- Developer feature and dependency pull requests targeting `main`: **Squash and merge**.
+- Do not use **Rebase and merge**. It is disabled repository-wide.
+- Never push directly to `main`.
 
 ## Build use
 
-This Netlify site uses a Legacy Free usage-based plan with one concurrent build. The standard release path uses four Netlify builds: content preview, `dev` branch deploy, release preview, and production deploy. Batch ready `dev` changes into releases. Check monthly usage; do not migrate plans casually because credit-pricing migration is irreversible.
+This Netlify site uses a Legacy Free usage-based plan with one concurrent build. One routine publish uses a deploy-preview build and a production deploy. The daily scheduled expiry rebuild adds one production build per day. Check monthly usage; do not migrate plans casually because credit-pricing migration is irreversible.
 
 ## Production smoke test
 
@@ -54,16 +51,16 @@ This Netlify site uses a Legacy Free usage-based plan with one concurrent build.
 - RSS and sitemap respond at `/rss.xml` and `/sitemap-index.xml`.
 - Browser console has no obvious new errors.
 
-If production fails smoke test, stop further releases and follow [rollback](ROLLBACK.md). Escalate with production URL, release pull request, deployment URL, symptom, urgency, and screenshots.
+If production fails the smoke test, stop publishing and follow [rollback](ROLLBACK.md). Escalate with production URL, published pull request, deployment URL, symptom, urgency, and screenshots.
 
 ## Dependency updates
 
-Dependabot groups package and GitHub Actions version updates monthly, targets `dev`, and allows one open pull request per ecosystem. Review required checks and preview. Major-version updates need emergency-developer compatibility and local validation before release.
-
-GitHub can raise Dependabot security-update pull requests against the default branch even when version updates target `dev`. Do not merge one targeting `main` as routine maintenance. Emergency developer applies or retargets it through `dev`, validates it, then uses the normal release path. Record any urgent exception and reconcile it to `dev` immediately.
+Dependabot groups package and GitHub Actions version updates monthly, targets `main`, and allows one open pull request per ecosystem. Review required checks and the deploy preview. Major-version updates need technical-steward compatibility and local validation before merge. Dependency pull requests are human-authored squash merges and follow the repository commit-message rules.
 
 ## Related guides
 
 - [Content editor guide](CONTENT_EDITOR.md)
 - [Local development guide](LOCAL_DEVELOPMENT.md)
 - [Rollback guide](ROLLBACK.md)
+- [Technical operations runbook](TECHNICAL_OPERATIONS.md)
+- [Technical rehearsal record](TECHNICAL_REHEARSAL.md)

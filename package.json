@@ -11,7 +11,7 @@
 		"start": "astro dev",
 		"preview": "astro preview",
 		"check": "astro check",
-		"build": "astro build && pnpm exec pagefind --site dist",
+		"build": "astro build --force && pnpm exec pagefind --site dist",
 		"test": "playwright test",
 		"astro": "astro",
 		"format": "prettier --write .",
@@ -20,26 +20,35 @@
 	"dependencies": {
 		"@astrojs/alpinejs": "^1.0.0",
 		"@astrojs/check": "^0.9.10",
+		"@astrojs/markdown-remark": "7.3.1",
 		"@astrojs/mdx": "^7.0.5",
 		"@astrojs/rss": "^4.0.19",
-		"@astrojs/sitemap": "^3.7.3",
 		"@iconify-json/mdi": "^1.2.3",
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/alpinejs": "^3.13.11",
 		"alpinejs": "^3.15.12",
-		"astro": "^7.1.6",
-		"astro-icon": "^1.1.5",
-		"sharp": "^0.35.3",
+		"astro": "^7.3.3",
+		"astro-icon": "^1.2.0",
+		"remark-directive": "^4.0.0",
+		"sharp": "^0.35.4",
 		"tailwindcss": "^4.3.3",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"unist-util-visit": "^5.1.0"
 	},
 	"devDependencies": {
 		"@playwright/test": "1.62.1",
+		"@sveltia/cms": "0.214.1",
 		"@tailwindcss/typography": "^0.5.20",
+		"ajv": "8.20.0",
 		"pagefind": "^1.5.2",
 		"playwright": "1.62.1",
 		"prettier": "^3.9.6",
 		"prettier-plugin-astro": "^0.14.1",
-		"prettier-plugin-tailwindcss": "^0.8.1"
+		"prettier-plugin-tailwindcss": "^0.8.1",
+		"rehype-stringify": "^10.0.1",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.1.2",
+		"unified": "^11.0.5",
+		"yaml": "2.9.0"
 	}
 }

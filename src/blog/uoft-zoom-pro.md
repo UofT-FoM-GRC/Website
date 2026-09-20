@@ -7,9 +7,9 @@ heroImageAlt: 'Zoom logo on a banner'
 tags: ['other']
 ---
 
-<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
-  As a UofT student, you have access to a free Zoom Pro account that removes the 40-minute meeting limit and provides additional features!
-</div>
+:::callout{kind="information"}
+As a UofT student, you have access to a free Zoom Pro account that removes the 40-minute meeting limit and provides additional features!
+:::
 
 ## Getting Started
 
@@ -19,9 +19,9 @@ tags: ['other']
 4. Enter your UTORid and password
 5. This will activate your Zoom Pro account and take you to your profile dashboard
 
-<div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 my-4 rounded">
-  💡 Tip: The profile dashboard is where you can customize your Zoom settings, including meeting preferences, security options, and recording settings.
-</div>
+:::callout{kind="information"}
+The profile dashboard is where you can customize your Zoom settings, including meeting preferences, security options, and recording settings.
+:::
 
 ## Using Pro Features in the Zoom App
 
@@ -31,7 +31,7 @@ Follow these steps to use your UofT Zoom Pro account in the desktop or mobile ap
 2. If you're logged in with a different account, sign out first
 3. Look for the "SSO" (Single Sign-On) option on the login screen (usually marked with a key icon)
 
-<img src="/assets/zoom-sso.webp" alt="Zoom SSO" class="w-full max-w-md mx-auto my-4 rounded">
+:accessible-image{src="/assets/zoom-sso.webp" description="Zoom SSO"}
 
 4. Click SSO
 5. When prompted for the domain, enter: **utoronto.zoom.us**
@@ -40,9 +40,9 @@ Follow these steps to use your UofT Zoom Pro account in the desktop or mobile ap
 8. Enter your UTORid and password
 9. The app will now log you in with your UofT Zoom Pro account
 
-<div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
-  ⚠️ Important: Always ensure you're logged in with your UofT account when hosting meetings to take advantage of the Pro features!
-</div>
+:::callout{kind="important"}
+Always ensure you're logged in with your UofT account when hosting meetings to take advantage of the Pro features!
+:::
 
 ## Benefits of Your Zoom Pro Account
 
@@ -54,6 +54,6 @@ Follow these steps to use your UofT Zoom Pro account in the desktop or mobile ap
 - Custom personal meeting ID
 - Meeting scheduling and calendar integration
 
-<div class="bg-purple-100 border-l-4 border-purple-500 text-purple-700 p-4 mt-4 rounded">
-  🎓 Remember: Your UofT Zoom Pro account is available as long as you're an active student. Make the most of it for your academic collaborations!
-</div>
+:::callout{kind="information"}
+Your UofT Zoom Pro account is available as long as you're an active student. Make the most of it for your academic collaborations!
+:::

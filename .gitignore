@@ -12,6 +12,7 @@ pagefind/
 test-results/
 playwright-report/
 blob-report/
+.playwright-cli/
 
 # dependencies
 node_modules/

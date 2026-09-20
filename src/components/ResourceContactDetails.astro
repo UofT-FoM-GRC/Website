@@ -1,0 +1,69 @@
+---
+interface Props {
+	addressLines?: string[]
+	facts?: Array<{ label: string; value: string; url?: string }>
+	addressClass?: string
+	factsFirst?: boolean
+}
+
+const {
+	addressLines = [],
+	facts = [],
+	addressClass = 'mb-4 text-slate-700 not-italic dark:text-slate-300',
+	factsFirst = false
+} = Astro.props
+---
+
+{
+	factsFirst ? (
+		<>
+			{facts.map((fact) => (
+				<p class="mb-2 text-slate-700 dark:text-slate-300">
+					<strong>{fact.label}</strong>{' '}
+					{fact.url ? (
+						<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
+							{fact.value}
+						</a>
+					) : (
+						fact.value
+					)}
+				</p>
+			))}
+			{addressLines.length > 0 && (
+				<address class={addressClass}>
+					{addressLines.map((line) => (
+						<>
+							{line}
+							<br />
+						</>
+					))}
+				</address>
+			)}
+		</>
+	) : (
+		<>
+			{addressLines.length > 0 && (
+				<address class={addressClass}>
+					{addressLines.map((line) => (
+						<>
+							{line}
+							<br />
+						</>
+					))}
+				</address>
+			)}
+			{facts.map((fact) => (
+				<p class="mb-2 text-slate-700 dark:text-slate-300">
+					<strong>{fact.label}</strong>{' '}
+					{fact.url ? (
+						<a href={fact.url} class="text-blue-600 hover:underline dark:text-blue-400">
+							{fact.value}
+						</a>
+					) : (
+						fact.value
+					)}
+				</p>
+			))}
+		</>
+	)
+}

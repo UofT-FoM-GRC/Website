@@ -16,31 +16,60 @@
 			"cards": [
 				{
 					"title": "Programs & Courses",
-					"text": ["Explore our comprehensive range of professional development courses and certificate programs."],
-					"links": [{ "label": "Browse Programs →", "url": "https://learn.utoronto.ca/programs-courses" }],
-					"bullets": [],
-					"linkStyle": "button"
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Explore our comprehensive range of professional development courses and certificate programs."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Browse Programs →",
+									"url": "https://learn.utoronto.ca/programs-courses"
+								}
+							],
+							"appearance": "button"
+						}
+					]
 				},
 				{
 					"title": "Bursaries & Awards",
-					"text": ["Discover financial aid opportunities to support your continuing education journey."],
-					"links": [
+					"blocks": [
 						{
-							"label": "View Financial Aid →",
-							"url": "https://learn.utoronto.ca/about-scs/financial-aid/bursaries-and-awards"
+							"type": "text",
+							"body": "Discover financial aid opportunities to support your continuing education journey."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "View Financial Aid →",
+									"url": "https://learn.utoronto.ca/about-scs/financial-aid/bursaries-and-awards"
+								}
+							],
+							"appearance": "button"
 						}
-					],
-					"bullets": [],
-					"linkStyle": "button"
+					]
 				},
 				{
 					"title": "Tech Courses for Teens",
-					"text": ["Pre-university summer technology programs designed specifically for teenagers."],
-					"links": [
-						{ "label": "Explore Teen Programs →", "url": "https://utoronto-scs.xrcourse.com/lp/pre-uni-summer" }
-					],
-					"bullets": [],
-					"linkStyle": "button"
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Pre-university summer technology programs designed specifically for teenagers."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Explore Teen Programs →",
+									"url": "https://utoronto-scs.xrcourse.com/lp/pre-uni-summer"
+								}
+							],
+							"appearance": "button"
+						}
+					]
 				}
 			]
 		}
