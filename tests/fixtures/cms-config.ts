@@ -11,6 +11,7 @@ export type Field = {
 	hint?: string
 	min?: number
 	max?: number
+	collapsed?: boolean | 'auto'
 	default?: unknown
 	field?: Field
 	fields?: Field[]
