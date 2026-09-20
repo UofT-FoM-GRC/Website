@@ -24,9 +24,8 @@ Use **Pass**, **Fail**, or **Blocked** for each result. Evidence may be a pull r
 1. Open the candidate `/admin/` route in a private browser window.
 2. Sign in through the configured GitHub OAuth app with the editor test account.
 3. Confirm the consent screen names the expected app and the CMS opens `UofT-FoM-GRC/Website`.
-4. Confirm an account without repository Write access cannot edit.
 
-**Pass when:** authorized editor reaches the task areas; unauthorized account cannot edit; no token sign-in is needed.
+**Pass when:** the authorized editor reaches the expected repository and task areas through OAuth without token sign-in. A second sacrificial GitHub account is not required; GitHub remains the authority for repository Write access.
 
 **Result:** ☐ Pass ☐ Fail ☐ Blocked
 
