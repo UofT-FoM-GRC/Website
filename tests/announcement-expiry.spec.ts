@@ -4,6 +4,10 @@ import { isAnnouncementVisible } from '../src/utils/announcements'
 
 const schema = createAnnouncementsSchema()
 
+test('omitted empty announcement list defaults to an empty array', () => {
+	expect(schema.parse({})).toEqual({ items: [] })
+})
+
 test('active announcements require an expiry date at the item field path', () => {
 	const result = schema.safeParse({
 		items: [{ title: 'Training announcement', text: 'A valid message.', active: true }]
