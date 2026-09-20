@@ -548,6 +548,7 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 test('Employment CMS uses typed card blocks and hides section anchors from routine controls', () => {
 	const { config } = readConfig()
 	const sections = getField(getResourceFile(config, 'employment').fields, 'sections')
+	expect(sections.collapsed).toBe('auto')
 	expect(getField(sections.fields!, 'id')).toMatchObject({ widget: 'hidden' })
 	expect(getField(sections.fields!, 'status')).toMatchObject({
 		widget: 'select',
