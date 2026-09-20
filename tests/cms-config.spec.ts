@@ -545,6 +545,11 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 	expect(getField(getField(navigation!.fields, 'resourceLinks').fields!, 'slug').options).toEqual(resourceCategories)
 })
 
+test('CMS-managed JSON is schema-checked without imposing developer-only formatting', () => {
+	const prettierIgnore = readFileSync(new URL('../.prettierignore', import.meta.url), 'utf8')
+	expect(prettierIgnore).toContain('src/data/**/*.json')
+})
+
 test('Employment CMS uses typed card blocks and hides section anchors from routine controls', () => {
 	const { config } = readConfig()
 	const sections = getField(getResourceFile(config, 'employment').fields, 'sections')
