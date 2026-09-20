@@ -1,1 +1,11 @@
-{ "items": [] }
+{
+  "items": [
+    {
+      "title": "CMS Rehearsal Announcement",
+      "text": "Temporary announcement used to verify the homepage preview workflow.",
+      "url": "/content-editor-guide/",
+      "expiresOn": "2026-09-20",
+      "active": false
+    }
+  ]
+}
