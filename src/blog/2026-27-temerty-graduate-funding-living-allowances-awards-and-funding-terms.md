@@ -16,6 +16,17 @@ Temerty has published its harmonized base funding agreement for 2026-27. It cove
 
 The annual living allowance is $30,416.28 for MSc students and $33,568.69 for PhD students. The agreement lists the same living allowances for domestic and international students.
 
+| Annual funding component | Domestic MSc | Domestic PhD | International MSc | International PhD |
+| --- | --- | --- | --- | --- |
+| Living allowance | $30,416.28 | $33,568.69 | $30,416.28 | $33,568.69 |
+| Tuition and fees | $9,982.39 | $8,622.39 | $35,752.39 | $8,622.39 |
+| UHIP | Not applicable | Not applicable | $948.00 | $948.00 |
+| Total as published | $40,308.67 | $42,191.08 | $67,116.67 | $43,139.08 |
+
+These figures reproduce the agreement as published. The domestic MSc total appears to contain an error. Its listed living allowance and tuition and fees add up to $40,398.67, not $40,308.67. Ask your graduate unit to confirm the correct amount.
+
+The source labels the domestic MSc column for the 2026-27 Fall and Winter session or earlier. Tuition and fees include program fees, mandatory incidental fees, system access fees and ancillary fees. Graduate Student Supplement funding partly offsets stipends for eligible students.
+
 Your total funding package also includes tuition and mandatory fees, plus UHIP health insurance where applicable. That total is not the amount you have available for living expenses. If your funding letter does not separate these amounts, ask your graduate unit for a breakdown.
 
 ## What happens when you receive an award?
