@@ -10,11 +10,11 @@ tags:
   - scholarships-bursaries-awards
 ---
 
-Temerty has published its harmonized base funding agreement for 2026-27. It covers living allowances, scholarship top-ups and guaranteed funding periods for doctoral-stream MSc and PhD students. The Department of Physiology has posted the full agreement, last updated June 24, 2026.
+Your funding letter can be hard to make sense of, especially when tuition and scholarships enter the picture. We've put together this guide to Temerty's 2026-27 harmonized base funding agreement to help you check your own package. It applies to doctoral-stream MSc and PhD students.
 
 ## What is included in your funding?
 
-The annual living allowance is $30,416.28 for MSc students and $33,568.69 for PhD students. The agreement lists the same living allowances for domestic and international students.
+For your day-to-day budget, start with the living allowance. It's $30,416.28 a year for MSc students and $33,568.69 for PhD students, whether you're a domestic or international student.
 
 | Annual funding component | Domestic MSc | Domestic PhD | International MSc | International PhD |
 | --- | --- | --- | --- | --- |
@@ -23,15 +23,15 @@ The annual living allowance is $30,416.28 for MSc students and $33,568.69 for Ph
 | UHIP | Not applicable | Not applicable | $948.00 | $948.00 |
 | Total calculated from components | $40,398.67 | $42,191.08 | $67,116.67 | $43,139.08 |
 
-The totals above are calculated from the listed components. The source gives a domestic MSc total of $40,308.67, which is $90 lower than the sum of its living allowance and tuition and fees. We have used the calculated total of $40,398.67 here.
+We calculated the totals above from the listed components. The source gives a domestic MSc total of $40,308.67, but its figures add up to $40,398.67. We've used $40,398.67 in the table.
 
-The source labels the domestic MSc column for the 2026-27 Fall and Winter session or earlier. Tuition and fees include program fees, mandatory incidental fees, system access fees and ancillary fees. Graduate Student Supplement funding partly offsets stipends for eligible students.
+The agreement labels the domestic MSc figures for the 2026-27 Fall and Winter session or earlier. Tuition and fees include program fees, mandatory incidental fees, system access fees and ancillary fees. For eligible students, Graduate Student Supplement funding covers part of the stipend.
 
-Your total funding package also includes tuition and mandatory fees, plus UHIP health insurance where applicable. That total is not the amount you have available for living expenses. If your funding letter does not separate these amounts, ask your graduate unit for a breakdown.
+The total package also covers tuition and mandatory fees, plus UHIP health insurance where it applies. That means the full total isn't available for rent, groceries and other living costs. If your letter doesn't show the breakdown, it's worth asking your graduate unit for one.
 
 ## What happens when you receive an award?
 
-A scholarship does not always add its full value to your stipend. For eligible awards that require a student application, the agreement sets these rules based on the combined value of your awards:
+If you win a scholarship, check how it affects your funding before budgeting around it. Some awards replace part of your base funding rather than adding their full value to your stipend. For eligible awards that require an application, here is what you keep above base funding, based on the combined value of your awards:
 
 - Up to $2,000, you keep the award money without a reduction in base funding. There is no additional top-up.
 - From $2,001 to $9,999, the awards count toward base funding and you receive a $2,000 top-up.
@@ -40,21 +40,21 @@ A scholarship does not always add its full value to your stipend. For eligible a
 - From $40,000 to $45,000, the awards count toward base funding and you receive a $5,000 top-up. The agreement limits cumulative awards plus the top-up to $50,000.
 - From $45,001 to $50,000, there is no top-up. The agreement also states that students with awards above $50,000 receive no top-up and can retain no more than $50,000 in awards.
 
-You cannot receive more than $5,000 in combined top-ups in an academic year or 12-month period. Top-ups are paid annually for the duration of an award. When it ends, you return to the applicable base funding package.
+The most you can receive in combined top-ups is $5,000 in an academic year or 12-month period. You receive the top-up each year for the duration of the award, then return to your applicable base funding package when it ends.
 
-If an award spans two academic years, you receive only one top-up for that award period. The agreement recommends a September start where possible. Ask your graduate unit how the timing affects your payments.
+The start date matters too. An award that spans two academic years receives only one top-up for that award period. The agreement recommends starting in September where possible. Your graduate unit can explain how the dates affect your payments.
 
-Some funding does not qualify for a top-up. The exclusions include University of Toronto Fellowships such as UTF Open, Doctoral Completion Awards, the Temerty Faculty of Medicine Entrance Scholarship, Graduate Student Supplement funds, travel awards and bursaries.
+Before counting on a top-up, check that your award qualifies. University of Toronto Fellowships such as UTF Open, Doctoral Completion Awards, the Temerty Faculty of Medicine Entrance Scholarship, Graduate Student Supplement funds, travel awards and bursaries do not qualify.
 
 ## Entrance scholarships and financial help
 
-An approved Merit-based Entrance Scholarship can add up to $5,000 above base funding for one year. Graduate units may offer these scholarships to up to 20% of their most highly rated applicants, based on the previous year's enrolment. Each unit decides who qualifies.
+If your graduate unit offers you an approved Merit-based Entrance Scholarship, you keep it above base funding. These scholarships can be worth up to $5,000 for one year. Units may offer them to up to 20% of their most highly rated applicants, based on the previous year's enrolment. Your unit decides who qualifies.
 
-UTAPS and the SGS Emergency Grant do not count toward base funding. You keep the full grant if you receive one. OSOTF needs-based and merit awards do count toward base funding, with top-ups governed by the award rules above.
+If you receive UTAPS or an SGS Emergency Grant, you keep the full grant without a reduction in base funding. OSOTF needs-based and merit awards work differently. They count toward base funding and follow the award top-up rules above.
 
 ## How many years of funding are guaranteed?
 
-The agreement sets the following funding periods for students who remain in good standing, subject to their graduate unit's approved funded years:
+It's also worth checking how many funded years you have left. These are the periods set out in the agreement, provided you remain in good standing and subject to your graduate unit's approved funded years:
 
 - Full-time MSc students receive base funding for their first two years.
 - PhD students entering with a completed master's degree receive at least four years.
@@ -63,10 +63,10 @@ The agreement sets the following funding periods for students who remain in good
 
 ## Does this agreement apply to you?
 
-The agreement excludes students who receive funding above base funding in Physician Scientist Training Programs, including MD/PhD, Residents and CIP, and the MD Research Fellowship Training Program, including clinical fellows.
+There are exceptions to who this agreement covers. It excludes students who receive funding above base funding in Physician Scientist Training Programs, including MD/PhD, Residents and CIP, and in the MD Research Fellowship Training Program, including clinical fellows.
 
-Compare the agreement with your funding letter. If a deduction, top-up or funding period does not match what you expected, ask your graduate unit to explain it in writing.
+Keep your funding letter handy when you read the agreement. If a deduction, top-up or funding period doesn't match what you expected, ask your graduate unit for a written explanation. You should be able to see how they calculated your package.
 
 [Read the full 2026-27 Temerty Harmonized Base Funding Agreement.](https://physiology.utoronto.ca/2026-27-temerty-faculty-medicine-harmonized-base-funding-agreement)
 
-This post summarizes the agreement published by the Department of Physiology. The full agreement and your graduate unit should guide decisions about your own funding.
+This is a GRC summary of the agreement, not a replacement for it. For questions about your own payments or eligibility, check the full agreement and speak with your graduate unit.
