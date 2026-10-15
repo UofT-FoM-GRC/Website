@@ -4,6 +4,8 @@ description: A guide to Temerty’s 2026–27 harmonized base funding agreement 
 pubDate: 2026-10-15
 updatedDate: 2026-10-15
 status: current
+heroImage: /assets/fom-backgrounds/ffom-zoom-backgrounds-3-1080.webp
+heroImageAlt: University of Toronto campus and downtown Toronto skyline, with Temerty Faculty of Medicine branding.
 tags:
   - scholarships-bursaries-awards
 ---
