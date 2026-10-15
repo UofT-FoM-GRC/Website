@@ -50,6 +50,11 @@ Format files you changed, not repository-wide files:
 pnpm exec prettier --write path/to/changed-file
 ```
 
+Sveltia owns formatting for blog Markdown in `src/blog/**/*.md` and CMS-managed JSON in `src/data/**/*.json`.
+Prettier excludes these files so routine CMS saves do not fail on table spacing or alter content-block syntax.
+Content schemas, production builds, and CMS round-trip tests still validate them. Code, documentation, and MDX remain
+subject to formatting checks. Do not manually reformat a content draft to make it publishable.
+
 ## Feature branch workflow
 
 ```bash
