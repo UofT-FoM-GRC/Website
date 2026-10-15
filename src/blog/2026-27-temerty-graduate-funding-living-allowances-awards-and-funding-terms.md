@@ -16,12 +16,12 @@ Your funding letter can be hard to make sense of, especially when tuition and sc
 
 For your day-to-day budget, start with the living allowance. It's $30,416.28 a year for MSc students and $33,568.69 for PhD students, whether you're a domestic or international student.
 
-| Annual funding component | Domestic MSc | Domestic PhD | International MSc | International PhD |
-| --- | --- | --- | --- | --- |
-| Living allowance | $30,416.28 | $33,568.69 | $30,416.28 | $33,568.69 |
-| Tuition and fees | $9,982.39 | $8,622.39 | $35,752.39 | $8,622.39 |
-| UHIP | Not applicable | Not applicable | $948.00 | $948.00 |
-| Total calculated from components | $40,398.67 | $42,191.08 | $67,116.67 | $43,139.08 |
+| Annual funding component         | Domestic MSc   | Domestic PhD   | International MSc | International PhD |
+| -------------------------------- | -------------- | -------------- | ----------------- | ----------------- |
+| Living allowance                 | $30,416.28     | $33,568.69     | $30,416.28        | $33,568.69        |
+| Tuition and fees                 | $9,982.39      | $8,622.39      | $35,752.39        | $8,622.39         |
+| UHIP                             | Not applicable | Not applicable | $948.00           | $948.00           |
+| Total calculated from components | $40,398.67     | $42,191.08     | $67,116.67        | $43,139.08        |
 
 We calculated the totals above from the listed components. The source gives a domestic MSc total of $40,308.67, but its figures add up to $40,398.67. We've used $40,398.67 in the table.
 
