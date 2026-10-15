@@ -21,9 +21,9 @@ The annual living allowance is $30,416.28 for MSc students and $33,568.69 for Ph
 | Living allowance | $30,416.28 | $33,568.69 | $30,416.28 | $33,568.69 |
 | Tuition and fees | $9,982.39 | $8,622.39 | $35,752.39 | $8,622.39 |
 | UHIP | Not applicable | Not applicable | $948.00 | $948.00 |
-| Total as published | $40,308.67 | $42,191.08 | $67,116.67 | $43,139.08 |
+| Total calculated from components | $40,398.67 | $42,191.08 | $67,116.67 | $43,139.08 |
 
-These figures reproduce the agreement as published. The domestic MSc total appears to contain an error. Its listed living allowance and tuition and fees add up to $40,398.67, not $40,308.67. Ask your graduate unit to confirm the correct amount.
+The totals above are calculated from the listed components. The source gives a domestic MSc total of $40,308.67, which is $90 lower than the sum of its living allowance and tuition and fees. We have used the calculated total of $40,398.67 here.
 
 The source labels the domestic MSc column for the 2026-27 Fall and Winter session or earlier. Tuition and fees include program fees, mandatory incidental fees, system access fees and ancillary fees. Graduate Student Supplement funding partly offsets stipends for eligible students.
 
