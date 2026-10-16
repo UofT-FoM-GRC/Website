@@ -189,6 +189,20 @@ test('a member bio appears over the photo on hover and on keyboard focus', async
 
 	await cards.first().hover()
 	await expect(bio).toHaveCSS('opacity', '1')
+	// Once fully shown, the bio must stay on top of the photo wherever the pointer rests.
+	const photo = (await cards.first().locator('img').boundingBox())!
+	for (const [fx, fy] of [
+		[0.5, 0.5],
+		[0.1, 0.1],
+		[0.9, 0.9]
+	]) {
+		const onTop = await page.evaluate(
+			([x, y]) => Boolean(document.elementFromPoint(x, y)?.closest('[data-team-bio]')),
+			[photo.x + photo.width * fx, photo.y + photo.height * fy]
+		)
+		expect(onTop).toBe(true)
+	}
+	await expect(bio).not.toHaveCSS('font-style', 'italic')
 
 	await page.mouse.move(0, 0)
 	await expect(bio).toHaveCSS('opacity', '0')

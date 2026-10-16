@@ -24,7 +24,7 @@ const pastYears = years
 <BaseLayout title={teamPage.title} description={teamPage.description}>
 	<main id="main-content" data-pagefind-body class="bg-[#F4F6FA] dark:bg-slate-900">
 		<section
-			class="relative isolate flex min-h-[220px] items-center justify-center overflow-hidden px-6 py-10 text-center"
+			class="relative isolate flex min-h-[150px] items-center justify-center overflow-hidden px-6 py-7 text-center"
 		>
 			<img
 				src={resolveCmsAsset(teamPage.image)}
@@ -35,11 +35,11 @@ const pastYears = years
 				class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover object-[center_40%] blur-[2px]"
 			/>
 			<div class="absolute inset-0 -z-10 bg-[#1E3765]/75 dark:bg-[#1E3765]/80" aria-hidden="true"></div>
-			<div class="flex flex-col items-center gap-2.5 text-white [text-shadow:0_1px_12px_rgb(10_20_40/0.35)]">
+			<div class="flex flex-col items-center gap-2 text-white [text-shadow:0_1px_12px_rgb(10_20_40/0.35)]">
 				<p class="font-mono text-xs font-medium tracking-[0.2em] text-balance text-[#EEF2F8] uppercase md:text-sm">
 					{teamPage.label}
 				</p>
-				<h1 class="text-4xl leading-tight font-bold md:text-[2.4rem]">{teamPage.title}</h1>
+				<h1 class="text-3xl leading-tight font-bold md:text-[2.1rem]">{teamPage.title}</h1>
 				<p class="text-base text-balance text-[#F1F4FA] md:text-[17px]">{teamPage.description}</p>
 			</div>
 		</section>

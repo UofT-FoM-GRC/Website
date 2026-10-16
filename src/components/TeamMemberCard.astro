@@ -16,6 +16,8 @@ const { name, pronouns, position, image, imageAlt, bio } = Astro.props
 <!--
 	On phones the bio sits under the name, because touch screens cannot hover.
 	From the small breakpoint up, it shares the photo's grid cell and fades in over the photo on hover or keyboard focus.
+	It is positioned above the photo so it stays on top once fully shown, and it lingers briefly after the pointer leaves.
+	Scrolling a long bio stays inside the card instead of moving the page.
 -->
 <li
 	data-team-card
@@ -60,9 +62,9 @@ const { name, pronouns, position, image, imageAlt, bio } = Astro.props
 			<div
 				data-team-bio
 				tabindex="0"
-				class="row-start-3 px-4 pb-4 text-[0.95rem] leading-relaxed text-[#2A3550] focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-[#F2C46B] motion-reduce:transition-none sm:col-start-1 sm:row-start-1 sm:overflow-y-auto sm:bg-[#1E3765]/92 sm:p-5 sm:text-[#F1F4FA] sm:opacity-0 sm:transition-opacity sm:duration-200 sm:contain-size sm:group-hover/card:opacity-100 sm:focus:opacity-100 dark:text-slate-300 sm:dark:text-[#F1F4FA]"
+				class="row-start-3 px-4 pb-4 text-[0.95rem] leading-relaxed text-[#2A3550] focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-[#F2C46B] motion-reduce:transition-none sm:relative sm:z-10 sm:col-start-1 sm:row-start-1 sm:overflow-y-auto sm:overscroll-contain sm:bg-[#1E3765]/95 sm:p-5 sm:text-[#F1F4FA] sm:opacity-0 sm:transition-opacity sm:delay-300 sm:duration-200 sm:contain-size sm:group-hover/card:opacity-100 sm:group-hover/card:delay-0 sm:focus:opacity-100 sm:focus:delay-0 dark:text-slate-300 sm:dark:text-[#F1F4FA]"
 			>
-				<p class="italic sm:flex sm:min-h-full sm:items-center">{bio}</p>
+				<p class="sm:flex sm:min-h-full sm:items-center">{bio}</p>
 			</div>
 		)
 	}
