@@ -2,7 +2,14 @@ import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { teamSchema } from '../src/schemas'
 
-type TeamMember = { name: string; position: string; image?: string; imageAlt?: string }
+type TeamMember = {
+	name: string
+	pronouns?: string
+	position: string
+	image?: string
+	imageAlt?: string
+	bio?: string
+}
 type TeamYear = { year: string; members: TeamMember[] }
 type TeamData = { about: Record<string, unknown>; currentYear: string; years: TeamYear[] }
 
@@ -78,7 +85,8 @@ test('team schema accepts the stored team data and preserves year and member ord
 	expect(result.success).toBeTruthy()
 	if (!result.success) return
 
-	expect(result.data.currentYear).toBe('2025 - 2026')
+	// The stored year changes every September through the site editor, so check the rule rather than a fixed value.
+	expect(result.data.years.map(({ year }) => year)).toContain(result.data.currentYear)
 
 	const ordered = validTeam()
 	ordered.years = [
@@ -142,4 +150,58 @@ test('about page renders members in stored order with avatar fallback and image 
 		const image = panel.getByRole('img', { name: member.imageAlt, exact: true })
 		await expect(image).toHaveAttribute('src', member.image!)
 	}
+
+	for (const member of currentYear.members.filter(({ pronouns }) => pronouns)) {
+		await expect(panel.getByText(`Pronouns: ${member.pronouns}`, { exact: true }).first()).toBeAttached()
+	}
+	for (const member of currentYear.members.filter(({ bio }) => bio)) {
+		await expect(panel.getByText(member.bio!, { exact: true })).toBeVisible()
+	}
+})
+
+test('team schema accepts optional pronouns and bios and drops empty CMS values', () => {
+	const team = validTeam()
+	team.years[0].members = [
+		{ name: 'Zed Leader', pronouns: 'they/them', position: 'Director', bio: 'Studies cell biology.' },
+		{ name: 'Empty Fields', pronouns: '', position: 'Member', bio: '' }
+	]
+
+	const result = teamSchema.safeParse(team)
+
+	expect(result.success).toBeTruthy()
+	if (!result.success) return
+	expect(result.data.years[0].members[0]).toMatchObject({ pronouns: 'they/them', bio: 'Studies cell biology.' })
+	expect(result.data.years[0].members[1].pronouns).toBeUndefined()
+	expect(result.data.years[0].members[1].bio).toBeUndefined()
+})
+
+test('bios share one box height on wider screens, scroll when long, and show in full on phones', async ({ page }) => {
+	const team = readTeam()
+	const currentYear = team.years.find(({ year }) => year === team.currentYear)!
+	const bioCount = currentYear.members.filter(({ bio }) => bio).length
+	test.skip(bioCount === 0, 'The current team year has no bios.')
+	const panel = page.locator(`#${accordionContentId(currentYear.year)}`)
+	const bios = panel.locator('[data-profile-bio]')
+	const measure = () =>
+		bios.evaluateAll((els) =>
+			els.map((el) => ({
+				height: el.clientHeight,
+				scrolls: el.scrollHeight > el.clientHeight + 1,
+				focusable: el.tabIndex === 0
+			}))
+		)
+
+	await page.setViewportSize({ width: 1280, height: 800 })
+	await page.goto('/about/')
+	await expect(bios).toHaveCount(bioCount)
+	// Every box is the same height, and only boxes that scroll join the keyboard tab order.
+	await expect
+		.poll(async () => {
+			const boxes = await measure()
+			return new Set(boxes.map(({ height }) => height)).size === 1 && boxes.every((b) => b.focusable === b.scrolls)
+		})
+		.toBe(true)
+
+	await page.setViewportSize({ width: 390, height: 844 })
+	await expect.poll(async () => (await measure()).every(({ scrolls, focusable }) => !scrolls && !focusable)).toBe(true)
 })

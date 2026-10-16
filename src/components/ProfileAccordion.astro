@@ -10,9 +10,11 @@ export type ProfileAccordionItem = {
 
 type Profile = {
 	name: string
+	pronouns?: string
 	position: string
 	image?: string
 	imageAlt?: string
+	bio?: string
 }
 
 interface Props {
@@ -21,6 +23,9 @@ interface Props {
 
 const { item } = Astro.props
 const contentId = `accordion-content-${item.year.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`
+// Line up cards within a year: reserve the pronouns line and bio box when any member in that year has them.
+const reservePronouns = item.members.some(({ pronouns }) => pronouns)
+const reserveBio = item.members.some(({ bio }) => bio)
 ---
 
 <div x-data={`{ open: ${item.current} }`} class="my-4">
@@ -45,9 +50,13 @@ const contentId = `accordion-content-${item.year.replace(/[^a-z0-9]+/gi, '-').to
 				item.members.map((profile) => (
 					<ProfileCard
 						name={profile.name}
+						pronouns={profile.pronouns}
 						position={profile.position}
 						image={profile.image}
 						imageAlt={profile.imageAlt}
+						bio={profile.bio}
+						reservePronouns={reservePronouns}
+						reserveBio={reserveBio}
 					/>
 				))
 			}

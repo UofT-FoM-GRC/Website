@@ -607,6 +607,13 @@ collections:
                 hint: Members display in listed order. Drag to reorder members.
                 fields:
                   - { label: Name, name: name, widget: string }
+                  - {
+                      label: Pronouns,
+                      name: pronouns,
+                      widget: string,
+                      required: false,
+                      hint: 'Optional. Write them exactly as the member wants them shown, for example: she/her.'
+                    }
                   - { label: Position, name: position, widget: string }
                   - {
                       label: Photo,
@@ -621,6 +628,13 @@ collections:
                       widget: string,
                       required: false,
                       hint: Required whenever a photo is supplied.
+                    }
+                  - {
+                      label: Bio,
+                      name: bio,
+                      widget: text,
+                      required: false,
+                      hint: "Optional. Two to four sentences in the member's own words. On wider screens, a bio longer than about ten lines scrolls inside its card."
                     }
   - name: advanced_site_settings
     label: Advanced Site Settings
