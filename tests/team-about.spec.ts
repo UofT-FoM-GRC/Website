@@ -210,7 +210,7 @@ test('on phones a member bio shows under the name without hovering', async ({ pa
 	expect(bioBox!.y).toBeGreaterThan(nameBox!.y)
 })
 
-test('past teams are folded by year in stored order and open one at a time', async ({ page }) => {
+test('past teams are folded by year in stored order and can be opened together', async ({ page }) => {
 	const team = readTeam()
 	const pastYears = team.years.filter(({ year }) => year !== team.currentYear)
 	test.skip(pastYears.length === 0, 'There are no past team years.')
@@ -230,11 +230,12 @@ test('past teams are folded by year in stored order and open one at a time', asy
 	const expectedOrder = [...firstYear.members.filter((m) => !isAdvisor(m)), ...firstYear.members.filter(isAdvisor)]
 	await expect(first.locator('[data-team-chip] p:first-of-type')).toHaveText(expectedOrder.map(({ name }) => name))
 
+	// Several years can be open at once for comparing teams.
 	if (pastYears.length > 1) {
 		const second = folds.nth(1)
 		await second.locator('summary').click()
 		await expect(second).toHaveAttribute('open', '')
-		await expect(first).not.toHaveAttribute('open', '')
+		await expect(first).toHaveAttribute('open', '')
 	}
 })
 

@@ -1,45 +1,13 @@
 ---
-import { getEntry } from 'astro:content'
-import { Icon } from 'astro-icon/components'
-interface Props {
-	/** The homepage hero already shows these links, so the homepage hides this row. */
-	showLinks?: boolean
-}
-
-const { showLinks = true } = Astro.props
-const site = await getEntry('site', 'site')
-if (!site) throw new Error('Missing site settings')
+// Contact and social links live in the homepage hero, the header icons and the Contact page, so the footer keeps only the copyright line.
 const today = new Date()
-const iconName = { instagram: 'mdi:instagram', github: 'mdi:github' } as const
 ---
 
 <footer
 	class="w-full bg-linear-to-b from-slate-800 to-slate-900 px-4 py-2 text-center text-gray-200 transition-colors duration-200 dark:from-slate-800 dark:to-slate-950 dark:text-slate-300"
 >
-	<p class:list={[showLinks ? 'mb-4' : 'py-2']}>
+	<p class="py-2">
 		&copy; {today.getFullYear()} University of Toronto, Faculty of Medicine, Graduate Representation Committee. All rights
 		reserved.
-	</p>{
-		showLinks && (
-			<div class="mt-4 flex flex-wrap items-center justify-center gap-4">
-				<a
-					href={`mailto:${site.data.contact.email}`}
-					class="text-gray-200 underline underline-offset-4 transition-colors hover:text-white dark:text-slate-300 dark:hover:text-slate-100"
-				>
-					{site.data.contact.email}
-				</a>
-				{site.data.socialLinks.map((link) => (
-					<a
-						href={link.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-gray-200 transition-colors hover:text-gray-300 dark:text-slate-300 dark:hover:text-slate-100"
-						aria-label={link.label}
-					>
-						<Icon name={iconName[link.network]} class="h-8 w-8" />
-					</a>
-				))}
-			</div>
-		)
-	}
+	</p>
 </footer>

@@ -3,7 +3,6 @@ import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
 import GRCLogo from '../assets/GRC_Logo.png'
-import Footer from '../components/Footer.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { isAnnouncementVisible } from '../utils/announcements'
 import { resolveCmsAsset } from '../utils/cmsAssets'
@@ -90,5 +89,4 @@ const heroSocialLinks = [
 			</div>
 		</section>
 	</main>
-	<Footer slot="footer" showLinks={false} />
 </BaseLayout>

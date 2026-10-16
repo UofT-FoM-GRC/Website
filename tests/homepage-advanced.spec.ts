@@ -164,7 +164,7 @@ test('header and footer render stored navigation, contact, and social destinatio
 	await nav.getByRole('button', { name: navigation.resourceLabel, exact: true }).filter({ visible: true }).click()
 	await expect(nav.locator('#resources-menu')).toBeVisible()
 
-	// The homepage hero carries the social and email links, so the homepage header and footer leave them out.
+	// The homepage hero carries the social and email links, so the homepage header leaves them out.
 	const instagram = site.socialLinks.find(({ network }) => network === 'instagram')!
 	await expect(page.locator('header').getByRole('link', { name: instagram.label, exact: true })).toHaveCount(0)
 	await expect(page.locator('header').getByRole('link', { name: 'Email the GRC', exact: true })).toHaveCount(0)
@@ -180,12 +180,7 @@ test('header and footer render stored navigation, contact, and social destinatio
 		'href',
 		`mailto:${site.contact.email}`
 	)
-	const footer = page.locator('footer')
-	await expect(footer.getByRole('link', { name: site.contact.email, exact: true })).toHaveAttribute(
-		'href',
-		`mailto:${site.contact.email}`
-	)
-	for (const link of site.socialLinks) {
-		await expect(footer.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
-	}
+	// Every footer keeps only the copyright line.
+	await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
+	await expect(page.locator('footer')).toContainText('All rights reserved.')
 })
