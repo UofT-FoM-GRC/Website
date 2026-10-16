@@ -659,7 +659,7 @@ collections:
               value_type: int,
               min: 0,
               required: false,
-              hint: 'How many main links come before the Resources menu, for example 3. Leave empty to put the menu after all main links.'
+              hint: 'How many main links come before the Resources link, for example 3. Leave empty to put it after all main links.'
             }
           - { label: Resources Menu Label, name: resourceLabel, widget: string }
           - label: Resources Menu Links
@@ -667,7 +667,7 @@ collections:
             widget: list
             min: 8
             max: 8
-            hint: One entry per resource page. Drag to set the menu order. Each resource page may appear once.
+            hint: One entry per resource page. Drag to set the order of the topic cards on the Resources page. Each resource page may appear once.
             fields:
               [
                 { label: Label, name: label, widget: string },

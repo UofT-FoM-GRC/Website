@@ -18,7 +18,7 @@ The in-editor split preview is disabled. **View Preview** is the only authoritat
 
 ## Advanced Site Settings
 
-**Advanced Site Settings** affects every page. It holds the header brand and navigation links, the resource menu, and the contact email plus social links used in the header and homepage hero. Turn on **Coming Soon** for a navigation link whose page is not published yet: it shows the label with a "Soon" tag and no link. **Resources Menu Position** sets how many main links come before the Resources menu. In URL fields use `https://` for external pages, `/about` for a page on this site, `mailto:grc.facmed@utoronto.ca` for email, `tel:+14161234567` for telephone, or `#contact` for a section of the current page. The resource menu has one entry per fixed resource page; choose the page from the list instead of typing a route, and drag entries to set menu order.
+**Advanced Site Settings** affects every page. It holds the header brand and navigation links, the Resources link, and the contact email plus social links used in the homepage hero. Turn on **Coming Soon** for a navigation link whose page is not published yet: it shows the label with a "Soon" tag and no link. **Resources Menu Label** is the text of the Resources link in the top bar, and **Resources Menu Position** sets how many main links come before it. In URL fields use `https://` for external pages, `/about` for a page on this site, `mailto:grc.facmed@utoronto.ca` for email, `tel:+14161234567` for telephone, or `#contact` for a section of the current page. **Resources Menu Links** has one entry per fixed resource page; choose the page from the list instead of typing a route, and drag entries to set the order of the topic cards on the Resources page.
 
 ## Guardrails
 

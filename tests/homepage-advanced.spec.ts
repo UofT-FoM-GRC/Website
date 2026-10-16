@@ -129,9 +129,20 @@ test('homepage is one full-screen hero between the header and footer, light in l
 	await page.evaluate(() => localStorage.setItem('grc-theme', 'dark'))
 	await page.reload()
 	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
+
+	// With no saved choice, the site follows the device's light or dark setting.
+	await page.evaluate(() => localStorage.removeItem('grc-theme'))
+	await page.emulateMedia({ colorScheme: 'dark' })
+	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
+	await page.emulateMedia({ colorScheme: 'light' })
+	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(30, 55, 101)')
 })
 
-test('header and footer render stored navigation, contact, and social destinations', async ({ page }) => {
+test('header renders stored navigation with a plain Resources link, and header and footer carry no contact icons', async ({
+	page
+}) => {
 	await page.setViewportSize({ width: 1280, height: 900 })
 	await page.goto('/')
 
@@ -155,32 +166,24 @@ test('header and footer render stored navigation, contact, and social destinatio
 		}
 	}
 
-	const resourceMenu = nav.locator('#resources-menu a')
-	await expect(resourceMenu).toHaveCount(navigation.resourceLinks.length)
-	for (const [index, link] of navigation.resourceLinks.entries()) {
-		await expect(resourceMenu.nth(index)).toHaveText(link.label)
-		await expect(resourceMenu.nth(index)).toHaveAttribute('href', `/resources/${link.slug}`)
+	// Resources is a plain link to the Resources page, which lists every topic.
+	await expect(nav.getByRole('link', { name: navigation.resourceLabel, exact: true }).first()).toHaveAttribute(
+		'href',
+		'/resources'
+	)
+	await expect(nav.locator('#resources-menu')).toHaveCount(0)
+
+	// The top bar keeps only the brand, the page links and search on every page; the footer keeps only the copyright line.
+	for (const route of ['/', '/about/']) {
+		await page.goto(route)
+		const header = page.locator('header')
+		await expect(header.getByRole('link', { name: 'Email the GRC', exact: true })).toHaveCount(0)
+		for (const link of site.socialLinks) {
+			await expect(header.getByRole('link', { name: link.label, exact: true })).toHaveCount(0)
+		}
+		await expect(header.getByRole('button', { name: /dark mode/i })).toHaveCount(0)
+		await expect(header.getByRole('button', { name: 'Open search' }).first()).toBeVisible()
+		await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
+		await expect(page.locator('footer')).toContainText('All rights reserved.')
 	}
-	await nav.getByRole('button', { name: navigation.resourceLabel, exact: true }).filter({ visible: true }).click()
-	await expect(nav.locator('#resources-menu')).toBeVisible()
-
-	// The homepage hero carries the social and email links, so the homepage header leaves them out.
-	const instagram = site.socialLinks.find(({ network }) => network === 'instagram')!
-	await expect(page.locator('header').getByRole('link', { name: instagram.label, exact: true })).toHaveCount(0)
-	await expect(page.locator('header').getByRole('link', { name: 'Email the GRC', exact: true })).toHaveCount(0)
-	await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
-	await expect(page.locator('footer')).toContainText('All rights reserved.')
-
-	await page.goto('/about/')
-	await expect(page.locator('header').getByRole('link', { name: instagram.label, exact: true })).toHaveAttribute(
-		'href',
-		instagram.url
-	)
-	await expect(page.locator('header').getByRole('link', { name: 'Email the GRC', exact: true })).toHaveAttribute(
-		'href',
-		`mailto:${site.contact.email}`
-	)
-	// Every footer keeps only the copyright line.
-	await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
-	await expect(page.locator('footer')).toContainText('All rights reserved.')
 })

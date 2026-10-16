@@ -1,13 +1,15 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { BLOG_TAGS } from '../../consts'
 import { resolveCmsAsset } from '../../utils/cmsAssets'
 
+const navigation = await getEntry('navigation', 'navigation')
+if (!navigation) throw new Error('Missing site navigation')
+// Cards follow the Resources Menu Links order that editors set by dragging in Advanced Site Settings.
 const bySlug = new Map((await getCollection('resources')).map((resource) => [resource.data.slug, resource]))
-const resources = BLOG_TAGS.map((tag) => bySlug.get(tag)).filter((resource): resource is NonNullable<typeof resource> =>
-	Boolean(resource)
-)
+const resources = navigation.data.resourceLinks
+	.map(({ slug }) => bySlug.get(slug))
+	.filter((resource): resource is NonNullable<typeof resource> => Boolean(resource))
 ---
 
 <BaseLayout
