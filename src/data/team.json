@@ -57,7 +57,11 @@
 				},
 				{
 					"name": "Jia Du",
-					"position": "Data Analyst"
+					"pronouns": "She/Her",
+					"position": "Data Analyst",
+					"image": "/teams/2026/jia-du.webp",
+					"imageAlt": "Headshot of Jia Du",
+					"bio": "I'm a PhD student in the Buechler/Epelman Labs in the Department of Immunology. I study tissue inflammation in the context of ischemic heart injury. I enjoy running and playing volleyball outside of the lab. I joined the GRC to better understand graduate student needs and advocate for the overall well-being of my peers to FoM staff through evidence-based analysis."
 				},
 				{
 					"name": "Tianyi/Amanda Liu",
