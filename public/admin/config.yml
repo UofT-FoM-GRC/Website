@@ -460,7 +460,7 @@ collections:
             widget: list
             required: false
             min: 0
-            hint: Only active announcements appear below the homepage hero. Drag to set display order.
+            hint: Only active announcements appear above the homepage hero. Drag to set display order.
             fields:
               - { label: Heading, name: title, widget: string }
               - { label: Message, name: text, widget: text }
@@ -481,7 +481,7 @@ collections:
                   name: active,
                   widget: boolean,
                   default: false,
-                  hint: Only active announcements appear below the homepage hero. An active announcement needs an expiry date.
+                  hint: Only active announcements appear above the homepage hero. An active announcement needs an expiry date.
                 }
   - name: homepage
     label: Homepage
@@ -509,50 +509,16 @@ collections:
                   widget: list,
                   min: 2,
                   max: 5,
-                  hint: The second line is the main page heading. Keep it descriptive.,
+                  hint: 'Line 1 is the small label above the heading, line 2 is the main page heading (keep it descriptive), and any further lines appear under it as a tagline.',
                   field: { label: Line, name: line, widget: string }
                 }
-          - label: Feature Sections
-            name: featureSections
-            widget: list
-            fields:
-              - { label: Heading, name: title, widget: string }
-              - {
-                  label: Paragraphs,
-                  name: paragraphs,
-                  widget: list,
-                  field: { label: Paragraph, name: paragraph, widget: text }
-                }
-              - label: Links
-                name: links
-                widget: list
-                required: false
-                fields:
-                  - { label: Link Text, name: label, widget: string }
-                  - {
-                      label: Destination URL,
-                      name: url,
-                      widget: string,
-                      hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
-                      pattern:
-                        [
-                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
-                          'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
-                        ]
-                    }
-              - { label: Image, name: image, widget: image, required: true, accept: 'image/jpeg,image/png,image/webp' }
-              - { label: Image Description, name: imageAlt, widget: string, required: true }
-              - { label: Background Tone, name: tone, widget: select, options: [dark, light] }
-              - { label: Put Image First on Desktop, name: imageFirst, widget: boolean, default: false }
-          - { label: Contact Heading, name: contactHeading, widget: string }
-          - { label: Contact Text, name: contactText, widget: text }
   - name: team_and_about
     label: Team and About Page
     files:
       - label: About Page and Team Archive
         name: team
         file: src/data/team.json
-        preview_path: '/about/'
+        preview_path: '/team/'
         fields:
           - label: About Page
             name: about
@@ -588,6 +554,22 @@ collections:
                   widget: list,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
+          - label: Team Page Heading
+            name: teamPage
+            widget: object
+            hint: The photo band at the top of the Team page.
+            fields:
+              - { label: Small Label, name: label, widget: string }
+              - { label: Heading, name: title, widget: string }
+              - { label: Short Description, name: description, widget: text }
+              - {
+                  label: Background Photo,
+                  name: image,
+                  widget: image,
+                  required: true,
+                  accept: 'image/jpeg,image/png,image/webp'
+                }
+              - { label: Background Photo Description, name: imageAlt, widget: string, required: true }
           - {
               label: Current Team Year,
               name: currentYear,
@@ -604,7 +586,7 @@ collections:
               - label: Members
                 name: members
                 widget: list
-                hint: Members display in listed order. Drag to reorder members.
+                hint: Members display in listed order. Drag to reorder members. Anyone whose Position includes "Advisor" is listed under Advisors.
                 fields:
                   - { label: Name, name: name, widget: string }
                   - {
@@ -634,7 +616,7 @@ collections:
                       name: bio,
                       widget: text,
                       required: false,
-                      hint: "Optional. Two to four sentences in the member's own words. On wider screens, a bio longer than about ten lines scrolls inside its card."
+                      hint: "Optional. Two to four sentences in the member's own words. It appears over the member's photo when visitors hover over or tab to their card."
                     }
   - name: advanced_site_settings
     label: Advanced Site Settings
@@ -662,6 +644,23 @@ collections:
                       'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
                     ]
                 }
+              - {
+                  label: Coming Soon,
+                  name: comingSoon,
+                  widget: boolean,
+                  default: false,
+                  required: false,
+                  hint: 'Turn on to show the label with a "Soon" tag and no link, for a page that is not published yet. Turn off once the page exists and its URL is set.'
+                }
+          - {
+              label: Resources Menu Position,
+              name: resourcePosition,
+              widget: number,
+              value_type: int,
+              min: 0,
+              required: false,
+              hint: 'How many main links come before the Resources menu, for example 3. Leave empty to put the menu after all main links.'
+            }
           - { label: Resources Menu Label, name: resourceLabel, widget: string }
           - label: Resources Menu Links
             name: resourceLinks

@@ -1,6 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
+import GRCLogo from '../assets/GRC_Logo.png'
+import Footer from '../components/Footer.astro'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { isAnnouncementVisible } from '../utils/announcements'
 import { resolveCmsAsset } from '../utils/cmsAssets'
@@ -11,173 +14,81 @@ const [homepage, site, announcements] = await Promise.all([
 	getEntry('announcements', 'announcements')
 ])
 if (!homepage || !site || !announcements) throw new Error('Missing homepage settings')
-const { hero, featureSections, contactHeading, contactText } = homepage.data
+const { hero } = homepage.data
+// Hero lines: the first is a small label above the heading, the second is the page heading, and any others sit below it.
+const [heroLabel, heroHeading, ...heroTaglines] = hero.lines
+const visibleAnnouncements = announcements.data.items.filter((item) => isAnnouncementVisible(item))
+const socialIcon = { instagram: 'mdi:instagram', github: 'mdi:github' } as const
+const heroSocialLinks = [
+	...site.data.socialLinks.map((link) => ({ ...link, icon: socialIcon[link.network], external: true })),
+	{ label: 'Email the GRC', url: `mailto:${site.data.contact.email}`, icon: 'mdi:email-outline', external: false }
+]
 ---
 
 <BaseLayout title={site.data.title} description={site.data.description}>
-	<main id="main-content" data-pagefind-body class="mx-auto flex w-full flex-col items-center overflow-hidden">
-		<section class="fade-in-section relative h-[50vh] min-h-[300px] w-full rounded-t-xl">
-			<div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div><div class="relative h-full w-full">
-				<img
-					src={resolveCmsAsset(hero.image)}
-					alt={hero.imageAlt}
-					class="fade-in-image h-full w-full object-cover brightness-50"
-					width="1920"
-					height="1080"
-					fetchpriority="high"
-				/>
-			</div><div class="fade-in-text absolute inset-0 flex flex-col items-center justify-center space-y-4">
-				{
-					hero.lines.map((line, index) =>
-						index === 1 ? (
-							<h1 class="text-center text-5xl font-bold text-white md:text-6xl lg:text-7xl">{line}</h1>
-						) : (
-							<p class="text-center text-xl font-bold text-white md:text-3xl">{line}</p>
-						)
-					)
-				}
-			</div>
-		</section>
+	<main id="main-content" data-pagefind-body class="flex w-full flex-col">
 		{
-			announcements.data.items
-				.filter((item) => isAnnouncementVisible(item))
-				.map((item) => (
-					<section class="w-full bg-blue-100 px-4 py-4 text-center text-slate-900 dark:bg-blue-950 dark:text-slate-100">
-						<span> {item.text}</span>
-						{item.url && (
-							<a class="ml-2 text-blue-700 underline dark:text-blue-300" href={item.url}>
-								Learn more
-							</a>
-						)}
-					</section>
-				))
-		}
-		{
-			featureSections.map((section) => (
-				<section
-					class:list={[
-						'fade-in-section relative flex min-h-120 w-full items-center py-20 transition-colors duration-200',
-						section.tone === 'dark' ? 'bg-gray-800 dark:bg-slate-950' : 'bg-slate-50 dark:bg-slate-900'
-					]}
-				>
-					<div class="container mx-auto px-4">
-						<div class="flex flex-col items-center gap-8 md:flex-row">
-							<>
-								<div class:list={['fade-in-image md:w-1/2', section.imageFirst ? 'md:order-1' : 'md:order-2']}>
-									<img
-										src={resolveCmsAsset(section.image)}
-										alt={section.imageAlt}
-										width="500"
-										height="300"
-										loading="lazy"
-										decoding="async"
-										class="h-auto w-full rounded-lg shadow-md"
-									/>
-								</div>
-								<div class:list={['fade-in-text prose md:w-1/2', section.imageFirst ? 'md:order-2' : 'md:order-1']}>
-									<h2
-										class:list={[
-											'text-4xl font-bold md:text-5xl lg:text-6xl',
-											section.tone === 'dark' ? 'text-white dark:text-slate-100' : 'text-slate-900 dark:text-slate-100'
-										]}
-									>
-										{section.title}
-									</h2>
-									{section.paragraphs.map((paragraph) => (
-										<p
-											class:list={[
-												'text-md mt-4 leading-relaxed md:text-lg lg:text-xl',
-												section.tone === 'dark'
-													? 'text-gray-200 dark:text-slate-300'
-													: 'text-gray-700 dark:text-slate-300'
-											]}
-										>
-											{paragraph}
-										</p>
-									))}
-									{section.links.map((link) => (
-										<a href={link.url} class="mr-4 text-lg font-bold text-blue-500 dark:text-blue-400">
-											{link.label}
-										</a>
-									))}
-								</div>
-							</>
+			visibleAnnouncements.length > 0 && (
+				<aside aria-label="Announcements">
+					{visibleAnnouncements.map((item) => (
+						<div class="w-full bg-blue-100 px-4 py-3 text-center text-slate-900 dark:bg-blue-950 dark:text-slate-100">
+							<span>{item.text}</span>
+							{item.url && (
+								<a class="ml-2 text-blue-700 underline dark:text-blue-300" href={item.url}>
+									Learn more
+								</a>
+							)}
 						</div>
-					</div>
-				</section>
-			))
+					))}
+				</aside>
+			)
 		}
+		<!-- Full-screen hero: a light wash in the light theme (mood board option A), a UofT-blue tint in the dark theme (option B). -->
 		<section
-			class="fade-in-section relative flex min-h-120 w-full flex-col items-center bg-slate-50 py-20 transition-colors duration-200 dark:bg-slate-900"
+			class="relative isolate flex min-h-[calc(100svh-4.5rem)] w-full items-center justify-center overflow-hidden"
 		>
-			<div class="container mx-auto px-4">
-				<div class="fade-in-text flex flex-col items-center gap-8">
-					<h2 class="text-4xl font-bold text-slate-900 md:text-5xl lg:text-6xl dark:text-slate-100">
-						{contactHeading}
-					</h2><p class="text-md mt-4 leading-relaxed text-gray-700 md:text-lg lg:text-xl dark:text-slate-300">
-						{contactText}
-					</p>
-				</div><div class="mt-12 flex flex-col items-center gap-8">
-					<div class="flex items-center gap-4">
-						<Icon name="mdi:email" class="h-12 w-12 text-slate-700 dark:text-slate-300" /><div>
-							<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Email</h3><a
-								href={`mailto:${site.data.contact.email}`}
-								class="text-lg text-blue-500 dark:text-blue-400">{site.data.contact.email}</a
-							>
-						</div>
-					</div>
+			<img
+				src={resolveCmsAsset(hero.image)}
+				alt={hero.imageAlt}
+				class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover object-[center_45%] blur-[2px]"
+				width="1920"
+				height="1080"
+				fetchpriority="high"
+			/>
+			<div class="absolute inset-0 -z-10 bg-[#F6F8FB]/60 dark:bg-[#1E3765]/75" aria-hidden="true"></div>
+			<div
+				class="flex max-w-5xl flex-col items-center gap-4 px-6 py-16 text-center text-[#1E3765] dark:text-white dark:[text-shadow:0_1px_12px_rgb(10_20_40/0.35)]"
+			>
+				<div
+					class="mb-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#1E3765] bg-white shadow-lg md:h-28 md:w-28 dark:border-0"
+				>
+					<Image src={GRCLogo} alt="" class="h-16 w-16 md:h-20 md:w-20" />
 				</div>
+				<p
+					class="font-mono text-xs font-medium tracking-[0.16em] text-balance text-[#1E3765] uppercase md:text-sm md:tracking-[0.2em] dark:text-[#EEF2F8]"
+				>
+					{heroLabel}
+				</p>
+				<h1 class="text-4xl leading-tight font-bold text-balance md:text-5xl">{heroHeading}</h1>
+				{heroTaglines.map((line) => <p class="text-lg text-[#2E3A52] md:text-xl dark:text-[#F1F4FA]">{line}</p>)}
+				<ul class="mt-3 flex gap-3 [text-shadow:none]" aria-label="GRC social media and email">
+					{
+						heroSocialLinks.map((link) => (
+							<li>
+								<a
+									href={link.url}
+									aria-label={link.label}
+									{...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+									class="flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-[#1E3765] bg-white/70 text-[#1E3765] transition-colors hover:bg-[#1E3765] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] dark:border-white dark:bg-transparent dark:text-white dark:hover:bg-white dark:hover:text-[#1E3765] dark:focus-visible:outline-white"
+								>
+									<Icon name={link.icon} class="h-5 w-5" />
+								</a>
+							</li>
+						))
+					}
+				</ul>
 			</div>
 		</section>
 	</main>
-	<script>
-		const observer = new IntersectionObserver(
-			(entries, currentObserver) =>
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('visible')
-						currentObserver.unobserve(entry.target)
-					}
-				}),
-			{ rootMargin: '0px 0px -50px 0px', threshold: 0.4 }
-		)
-		const setUpIntersectionObserver = () => {
-			document.documentElement.classList.add('motion-ready')
-			document.querySelectorAll('.fade-in-section').forEach((section) => {
-				const image = section.querySelector('.fade-in-image')
-				const text = section.querySelector('.fade-in-text')
-				if (image) observer.observe(image)
-				if (text) observer.observe(text)
-			})
-		}
-		document.addEventListener('astro:page-load', setUpIntersectionObserver)
-		document.addEventListener('DOMContentLoaded', setUpIntersectionObserver)
-	</script>
+	<Footer slot="footer" showLinks={false} />
 </BaseLayout>
-
-<style>
-	.fade-in-section {
-		opacity: 1;
-		transition:
-			opacity 0.5s ease-out,
-			transform 0.5s ease-out;
-	}
-	@media (prefers-reduced-motion: no-preference) {
-		:global(.motion-ready) .fade-in-image,
-		:global(.motion-ready) .fade-in-text {
-			opacity: 0;
-			transform: translateY(20px);
-			transition:
-				opacity 0.5s ease-out,
-				transform 0.5s ease-out;
-		}
-		:global(.motion-ready) .fade-in-image.visible,
-		:global(.motion-ready) .fade-in-text.visible {
-			opacity: 1;
-			transform: translateY(0);
-		}
-		:global(.motion-ready) .fade-in-text.visible {
-			transition-delay: 0.2s;
-		}
-	}
-</style>

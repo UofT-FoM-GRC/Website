@@ -1,0 +1,42 @@
+---
+import { memberInitials } from '../utils/team'
+
+interface Props {
+	name: string
+	position: string
+	image?: string
+	imageAlt?: string
+}
+
+const { name, position, image, imageAlt } = Astro.props
+---
+
+<li
+	data-team-chip
+	class="flex items-center gap-3.5 rounded-xl border border-[#D6DDE9] bg-white px-4 py-3.5 dark:border-slate-700 dark:bg-slate-800"
+>
+	{
+		image ? (
+			<img
+				src={image}
+				alt={imageAlt}
+				width="56"
+				height="56"
+				loading="lazy"
+				decoding="async"
+				class="h-14 w-14 shrink-0 rounded-full object-cover"
+			/>
+		) : (
+			<div
+				aria-hidden="true"
+				class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#DCE4F1] text-[19px] font-semibold text-[#1E3765] dark:bg-slate-700 dark:text-slate-200"
+			>
+				{memberInitials(name)}
+			</div>
+		)
+	}
+	<div class="flex min-w-0 flex-col gap-0.5">
+		<p class="text-[17px] leading-snug font-semibold text-[#13203A] dark:text-slate-100">{name}</p>
+		<p class="text-sm leading-snug text-[#4B5872] dark:text-slate-400">{position}</p>
+	</div>
+</li>

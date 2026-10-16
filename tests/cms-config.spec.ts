@@ -161,12 +161,6 @@ test('every CMS image field accepts routine raster formats and has an image-desc
 			imageRequired: true
 		},
 		{
-			fields: getField(getCollection(config, 'homepage').files![0].fields, 'featureSections').fields!,
-			image: 'image',
-			description: 'imageAlt',
-			imageRequired: true
-		},
-		{
 			fields: getField(getCollection(config, 'team_and_about').files![0].fields, 'about').fields!,
 			image: 'heroImage',
 			description: 'heroImageAlt',
@@ -221,7 +215,7 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 	for (const [collectionName, fileName, path] of [
 		['homepage_announcements', 'announcements', '/'],
 		['homepage', 'homepage', '/'],
-		['team_and_about', 'team', '/about/'],
+		['team_and_about', 'team', '/team/'],
 		['advanced_site_settings', 'navigation', '/'],
 		['advanced_site_settings', 'site', '/']
 	] as const) {
@@ -291,16 +285,10 @@ test('URL and email fields share actionable, consistent validation contracts', (
 
 	const socialUrl = getField(getField(siteFile!.fields, 'socialLinks').fields!, 'url')
 	const navigationUrl = getField(getField(navigationFile!.fields, 'links').fields!, 'url')
-	const featureLinks = getField(
-		getField(getCollection(config, 'homepage').files![0].fields, 'featureSections').fields!,
-		'links'
-	)
-	const featureUrl = getField(featureLinks.fields!, 'url')
 
 	for (const [label, field] of [
 		['social links', socialUrl],
-		['navigation', navigationUrl],
-		['homepage feature links', featureUrl]
+		['navigation', navigationUrl]
 	] as const) {
 		expect(field.pattern, `${label} URL pattern`).toEqual(reviewedUrlPattern)
 		const pattern = executePattern(field, label)

@@ -35,7 +35,7 @@ test('every editable area exposes an exact route-specific site preview', () => {
 	for (const [collectionName, fileName, path] of [
 		['homepage_announcements', 'announcements', '/'],
 		['homepage', 'homepage', '/'],
-		['team_and_about', 'team', '/about/'],
+		['team_and_about', 'team', '/team/'],
 		['advanced_site_settings', 'navigation', '/'],
 		['advanced_site_settings', 'site', '/']
 	] as const) {

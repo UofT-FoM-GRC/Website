@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { isExpired } from '../src/utils/blog'
 
-const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/']
+const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/', '/team/']
 
 test('key routes expose one main landmark and one page heading', async ({ page }) => {
 	for (const route of keyRoutes) {
@@ -41,7 +41,7 @@ test('expiry dates use Toronto calendar days', () => {
 	expect(isExpired(post, new Date('2026-08-09T04:00:00.000Z'))).toBeTruthy()
 })
 
-test('search dialog restores focus and team accordion updates state', async ({ page }) => {
+test('search dialog restores focus and a past team year opens', async ({ page }) => {
 	await page.goto('/')
 	const searchButton = page.getByRole('button', { name: 'Open search' }).first()
 	await searchButton.click()
@@ -67,8 +67,8 @@ test('search dialog restores focus and team accordion updates state', async ({ p
 	await expect(page.locator('.pagefind-ui__search-input')).toBeFocused()
 	await page.keyboard.press('Escape')
 
-	await page.goto('/about/')
-	const accordion = page.getByRole('button', { name: '2024 - 2025' })
-	await accordion.click()
-	await expect(accordion).toHaveAttribute('aria-expanded', 'true')
+	await page.goto('/team/')
+	const pastYear = page.locator('details[data-team-year="2024 - 2025"]')
+	await pastYear.locator('summary').click()
+	await expect(pastYear).toHaveAttribute('open', '')
 })

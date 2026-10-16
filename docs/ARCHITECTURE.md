@@ -11,15 +11,15 @@ There is no long-lived `dev` branch and no manual release step. Developer source
 
 ## CMS data model
 
-| Location                      | CMS content                                                    | Render owner             |
-| ----------------------------- | -------------------------------------------------------------- | ------------------------ |
-| `src/blog/*.md`               | Blog frontmatter and Markdown body                             | Blog layouts/cards       |
-| `src/data/resources/*.json`   | Eight fixed resource URLs, cards, links, order                 | `ResourcePage.astro`     |
-| `src/data/homepage.json`      | Hero, sections, images, wording, contact wording               | Homepage                 |
-| `src/data/announcements.json` | Homepage announcements, expiry, and display order              | Homepage                 |
-| `src/data/team.json`          | About wording, current/past team years, members, photos, order | About/profile components |
-| `src/data/navigation.json`    | Header navigation and resource-menu labels/order               | Header                   |
-| `src/data/site.json`          | Site metadata, public contact email, social links              | Layout, header, footer   |
+| Location                      | CMS content                                                    | Render owner           |
+| ----------------------------- | -------------------------------------------------------------- | ---------------------- |
+| `src/blog/*.md`               | Blog frontmatter and Markdown body                             | Blog layouts/cards     |
+| `src/data/resources/*.json`   | Eight fixed resource URLs, cards, links, order                 | `ResourcePage.astro`   |
+| `src/data/homepage.json`      | Full-screen hero image, image description, and text lines      | Homepage               |
+| `src/data/announcements.json` | Homepage announcements, expiry, and display order              | Homepage               |
+| `src/data/team.json`          | About wording, current/past team years, members, photos, order | About and Team pages   |
+| `src/data/navigation.json`    | Header navigation and resource-menu labels/order               | Header                 |
+| `src/data/site.json`          | Site metadata, public contact email, social links              | Layout, header, footer |
 
 `src/schemas.ts` validates every data source through Astro collections in `src/content.config.ts`. Immutable resource slugs match blog tag IDs and preserve all eight URLs. Resource-menu entries store a resource slug, not a copied URL, so menu links cannot drift from resource routes.
 

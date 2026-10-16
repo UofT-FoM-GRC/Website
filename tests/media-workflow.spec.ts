@@ -217,6 +217,13 @@ test('team member image descriptions allow empty CMS values and report the neste
 			workTitle: 'Work',
 			workParagraphs: ['Work paragraph']
 		},
+		teamPage: {
+			label: 'Graduate Representation Committee',
+			title: 'Meet the team',
+			description: 'Description',
+			image: '/assets/team.webp',
+			imageAlt: 'Building'
+		},
 		currentYear: '2026 - 2027',
 		years: [{ year: '2026 - 2027', members: [{ name: 'Photo-free member', position: 'Member' }] }]
 	}

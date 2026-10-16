@@ -1,0 +1,69 @@
+---
+import { memberInitials } from '../utils/team'
+
+interface Props {
+	name: string
+	pronouns?: string
+	position: string
+	image?: string
+	imageAlt?: string
+	bio?: string
+}
+
+const { name, pronouns, position, image, imageAlt, bio } = Astro.props
+---
+
+<!--
+	On phones the bio sits under the name, because touch screens cannot hover.
+	From the small breakpoint up, it shares the photo's grid cell and fades in over the photo on hover or keyboard focus.
+-->
+<li
+	data-team-card
+	class="group/card grid grid-cols-1 content-start overflow-hidden rounded-xl border border-[#D6DDE9] bg-white dark:border-slate-700 dark:bg-slate-800"
+>
+	<div class="relative col-start-1 row-start-1 aspect-square overflow-hidden bg-[#DCE4F1] dark:bg-slate-700">
+		{
+			image ? (
+				<img
+					src={image}
+					alt={imageAlt}
+					width="640"
+					height="640"
+					loading="lazy"
+					decoding="async"
+					class="h-full w-full object-cover"
+				/>
+			) : (
+				<div
+					aria-hidden="true"
+					class="flex h-full w-full items-center justify-center text-5xl font-semibold text-[#1E3765] dark:text-slate-200"
+				>
+					{memberInitials(name)}
+				</div>
+			)
+		}
+	</div>
+	<div class="row-start-2 flex flex-col gap-0.5 px-4 pt-3.5 pb-4">
+		<p class="font-mono text-[11px] tracking-[0.08em] text-[#0B6E8A] uppercase dark:text-sky-300">{position}</p>
+		<h4 class="text-[19px] leading-snug font-semibold text-[#13203A] dark:text-slate-100">{name}</h4>
+		{
+			pronouns && (
+				<p class="text-sm text-[#5A6680] dark:text-slate-400">
+					<span class="sr-only">Pronouns: </span>
+					{pronouns}
+				</p>
+			)
+		}
+	</div>
+	{
+		bio && (
+			<div
+				data-team-bio
+				tabindex="0"
+				class="row-start-3 px-4 pb-4 text-[0.95rem] leading-relaxed text-[#2A3550] focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-[#F2C46B] motion-reduce:transition-none sm:col-start-1 sm:row-start-1 sm:overflow-y-auto sm:bg-[#1E3765]/92 sm:p-5 sm:text-[#F1F4FA] sm:opacity-0 sm:transition-opacity sm:duration-200 sm:contain-size sm:group-hover/card:opacity-100 sm:focus:opacity-100 dark:text-slate-300 sm:dark:text-[#F1F4FA]"
+			>
+				<p class="italic sm:flex sm:min-h-full sm:items-center">{bio}</p>
+			</div>
+		)
+	}
+</li>

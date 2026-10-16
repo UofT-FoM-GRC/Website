@@ -66,18 +66,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 	},
 	announcements: { items: { title: 'string', text: 'text', url: 'string', expiresOn: 'datetime', active: 'boolean' } },
 	homepage: {
-		hero: { image: 'image', imageAlt: 'string', lines: { line: 'string' } },
-		featureSections: {
-			title: 'string',
-			paragraphs: { paragraph: 'text' },
-			links: { label: 'string', url: 'string' },
-			image: 'image',
-			imageAlt: 'string',
-			tone: 'select',
-			imageFirst: 'boolean'
-		},
-		contactHeading: 'string',
-		contactText: 'text'
+		hero: { image: 'image', imageAlt: 'string', lines: { line: 'string' } }
 	},
 	team: {
 		about: {
@@ -91,6 +80,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 			workTitle: 'string',
 			workParagraphs: { paragraph: 'text' }
 		},
+		teamPage: { label: 'string', title: 'string', description: 'text', image: 'image', imageAlt: 'string' },
 		currentYear: 'string',
 		years: {
 			year: 'string',
@@ -106,7 +96,8 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 	},
 	navigation: {
 		brand: 'string',
-		links: { label: 'string', url: 'string' },
+		links: { label: 'string', url: 'string', comingSoon: 'boolean' },
+		resourcePosition: 'number',
 		resourceLabel: 'string',
 		resourceLinks: { label: 'string', slug: 'select' }
 	},

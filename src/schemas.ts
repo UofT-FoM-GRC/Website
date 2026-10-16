@@ -244,20 +244,7 @@ export const homepageSchema = z.object({
 		image: requiredStringSchema,
 		imageAlt: requiredStringSchema,
 		lines: z.array(requiredStringSchema).min(2).max(5)
-	}),
-	featureSections: z.array(
-		z.object({
-			title: requiredStringSchema,
-			paragraphs: z.array(requiredStringSchema).min(1),
-			links: z.array(linkSchema).default([]),
-			image: requiredStringSchema,
-			imageAlt: requiredStringSchema,
-			tone: z.enum(['dark', 'light']),
-			imageFirst: z.boolean().default(false)
-		})
-	),
-	contactHeading: requiredStringSchema,
-	contactText: requiredStringSchema
+	})
 })
 
 const teamMemberImageSchema = z
@@ -283,6 +270,13 @@ export const teamSchema = z
 			objectives: z.array(requiredStringSchema),
 			workTitle: requiredStringSchema,
 			workParagraphs: z.array(requiredStringSchema)
+		}),
+		teamPage: z.object({
+			label: requiredStringSchema,
+			title: requiredStringSchema,
+			description: requiredStringSchema,
+			image: requiredStringSchema,
+			imageAlt: requiredStringSchema
 		}),
 		currentYear: requiredStringSchema,
 		years: z.array(
@@ -315,7 +309,16 @@ export const teamSchema = z
 
 export const navigationSchema = z.object({
 	brand: requiredStringSchema,
-	links: z.array(z.object({ label: requiredStringSchema, url: internalOrExternalUrlSchema })),
+	links: z.array(
+		z.object({
+			label: requiredStringSchema,
+			url: internalOrExternalUrlSchema,
+			// A coming-soon link shows its label with a "Soon" tag and no link until the page exists.
+			comingSoon: z.boolean().default(false)
+		})
+	),
+	// How many main links come before the Resources menu; omitted puts the menu after every link.
+	resourcePosition: z.number().int().min(0).optional(),
 	resourceLabel: requiredStringSchema,
 	resourceLinks: z
 		.array(z.object({ label: requiredStringSchema, slug: blogTagSchema }))
