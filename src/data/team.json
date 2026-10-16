@@ -19,8 +19,72 @@
 			"The GRC primarily focuses on student stipends and the Faculty of Medicine Harmonized Base Funding Agreement (HBFA). Each year, we conduct the \"GRC Finance and Living Survey\" to gather data on your finances, living conditions, career prospects, and well-being. This data, combined with Statistics Canada metrics on Toronto's cost of living, helps us create the \"GRC Finance and Living Report\". This report highlights the realities of graduate student life and includes our recommendations for HBFA changes."
 		]
 	},
-	"currentYear": "2025 - 2026",
+	"currentYear": "2026 - 2027",
 	"years": [
+		{
+			"year": "2026 - 2027",
+			"members": [
+				{
+					"name": "Yumnah Jafri",
+					"position": "Director",
+					"image": "/teams/2026/yumnah-jafri.webp",
+					"imageAlt": "Headshot of Yumnah Jafri",
+					"bio": "I am a second-year MSc student in Nutritional Sciences exploring the implementation of a combined community gardening and nutrition education program in Mississauga, Ontario. Through the GRC, I hope to strengthen outreach across departments and collaborate with the team to ensure that the perspectives of a diverse range of graduate students are meaningfully represented. In my free time, I enjoy reading and running."
+				},
+				{
+					"name": "Kattreen Hanna",
+					"pronouns": "She/Her",
+					"position": "Communications Director",
+					"image": "/teams/2026/kattreen-hanna.webp",
+					"imageAlt": "Headshot of Kattreen Hanna",
+					"bio": "I am a PhD student in Laboratory Medicine and Pathobiology at the University of Toronto, where my research focuses on developing a cancer-on-chip model for kidney cancer to better understand tumour–immune interactions and support personalized treatment approaches. Outside of research, I enjoy travelling, exploring new places, trying new things, and staying involved in science communication and community events. I joined the GRC to contribute to a supportive graduate community and help amplify the voices and experiences of students across the Faculty of Medicine."
+				},
+				{
+					"name": "Ellie Yang",
+					"pronouns": "She/Her",
+					"position": "Communications Coordinator",
+					"image": "/teams/2026/ellie-yang.webp",
+					"imageAlt": "Headshot of Ellie Yang",
+					"bio": "Ellie is a PhD student in the Department of Medical Biophysics at the University of Toronto, where her research focuses on cancer nanomedicine and antitumour immune responses. She joined the GRC to help improve communication between graduate students and the Faculty and to support student engagement and advocacy. Outside of research, she enjoys contributing to student and community initiatives."
+				},
+				{
+					"name": "Michael Maddalena",
+					"pronouns": "He/Him",
+					"position": "Data Analyst",
+					"image": "/teams/2026/michael-maddalena.webp",
+					"imageAlt": "Headshot of Michael Maddalena",
+					"bio": "Fifth-year PhD student in the Department of Medical Biophysics. My research is primarily linked to radiation oncology, specifically focusing on advanced medical imaging techniques and computational approaches applied to neuroendocrine oncology. Outside of research, I mainly spend my time playing ice hockey, bouldering, and enjoying various board games."
+				},
+				{
+					"name": "Jia Du",
+					"position": "Data Analyst"
+				},
+				{
+					"name": "Tianyi/Amanda Liu",
+					"pronouns": "She/Her",
+					"position": "Webmaster",
+					"image": "/teams/2026/amanda-liu.webp",
+					"imageAlt": "Headshot of Tianyi/Amanda Liu",
+					"bio": "Amanda is a third-year PhD student in the Institute of Medical Science, where her research focuses on gene and environment interaction for bipolar disorder. Through GRC, she hopes to advocate for students’ voices and build better communication between graduate students and the faculty. Outside of research, she enjoys travelling and skiing."
+				},
+				{
+					"name": "Ally Suarez",
+					"position": "GRC Advisor"
+				},
+				{
+					"name": "Maurice Pasternak",
+					"position": "GRC Advisor",
+					"image": "/teams/2025/maurice-pasternak.webp",
+					"imageAlt": "Headshot of Maurice Pasternak"
+				},
+				{
+					"name": "Willow Squires",
+					"position": "GRC Advisor",
+					"image": "/teams/2025/willow-squires.webp",
+					"imageAlt": "Headshot of Willow Squires"
+				}
+			]
+		},
 		{
 			"year": "2025 - 2026",
 			"members": [

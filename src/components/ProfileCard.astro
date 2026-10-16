@@ -1,12 +1,30 @@
 ---
 interface Props {
 	name: string
+	pronouns?: string
 	position: string
 	image?: string
 	imageAlt?: string
+	bio?: string
+	/** Keep an empty pronouns line so positions line up when other cards in the year show pronouns. */
+	reservePronouns?: boolean
+	/** Keep an empty bio box so cards stay the same height when other cards in the year have bios. */
+	reserveBio?: boolean
 }
 
-const { name, position, image, imageAlt } = Astro.props
+const { name, pronouns, position, image, imageAlt, bio, reservePronouns = false, reserveBio = false } = Astro.props
+
+// On screens with more than one column, every bio box is ten lines tall; longer bios scroll inside it.
+// The box becomes keyboard-focusable only when it scrolls, and fades at the bottom while more text is below.
+const bioScroll = `{
+	more: false,
+	check() {
+		const el = this.$el
+		const scrolls = el.scrollHeight > el.clientHeight + 1
+		el.tabIndex = scrolls ? 0 : -1
+		this.more = scrolls && el.scrollTop + el.clientHeight < el.scrollHeight - 1
+	}
+}`
 ---
 
 <div
@@ -37,5 +55,36 @@ const { name, position, image, imageAlt } = Astro.props
 	}
 	<hr class="my-2 border-slate-200 dark:border-slate-600" />
 	<h3 class="text-xl font-semibold dark:text-slate-100">{name}</h3>
+	{
+		pronouns ? (
+			<p class="text-sm text-gray-500 dark:text-slate-400">
+				<span class="sr-only">Pronouns: </span>
+				{pronouns}
+			</p>
+		) : (
+			reservePronouns && (
+				<p class="text-sm" aria-hidden="true">
+					&nbsp;
+				</p>
+			)
+		)
+	}
 	<p class="text-gray-600 dark:text-slate-400">{position}</p>
+	{
+		bio ? (
+			<div
+				x-data={bioScroll}
+				x-init="check(); $el.addEventListener('scroll', () => check(), { passive: true }); new ResizeObserver(() => check()).observe($el)"
+				x-bind:class="more && '[mask-image:linear-gradient(to_bottom,#000_70%,transparent)]'"
+				data-profile-bio
+				class="mt-3 rounded px-2 pb-2 text-left text-sm leading-relaxed text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:h-[calc(10lh+0.5rem)] sm:overflow-y-auto dark:text-slate-300"
+			>
+				<p>{bio}</p>
+			</div>
+		) : (
+			reserveBio && (
+				<div class="mt-3 hidden text-sm leading-relaxed sm:block sm:h-[calc(10lh+0.5rem)]" aria-hidden="true" />
+			)
+		)
+	}
 </div>

@@ -94,7 +94,14 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 		currentYear: 'string',
 		years: {
 			year: 'string',
-			members: { name: 'string', position: 'string', image: 'image', imageAlt: 'string' }
+			members: {
+				name: 'string',
+				pronouns: 'string',
+				position: 'string',
+				image: 'image',
+				imageAlt: 'string',
+				bio: 'text'
+			}
 		}
 	},
 	navigation: {

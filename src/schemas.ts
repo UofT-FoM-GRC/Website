@@ -263,9 +263,11 @@ export const homepageSchema = z.object({
 const teamMemberImageSchema = z
 	.object({
 		name: requiredStringSchema,
+		pronouns: optionalCmsStringSchema,
 		position: requiredStringSchema,
 		image: optionalCmsStringSchema,
-		imageAlt: optionalCmsStringSchema
+		imageAlt: optionalCmsStringSchema,
+		bio: optionalCmsStringSchema
 	})
 	.superRefine(requireImageDescription('image', 'imageAlt'))
 
