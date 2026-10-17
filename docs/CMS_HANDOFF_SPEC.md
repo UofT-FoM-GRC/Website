@@ -215,7 +215,7 @@ Block schemas are discriminated unions. Unknown block types fail validation with
 - Retain purpose-built About fields and ordered team-year/member records.
 - Replace independent `current` booleans with one explicit current-year selection so exactly one year is current.
 - Require image descriptions for every supplied member photo.
-- Preserve standard avatar behavior when no photo exists.
+- Show the member's initials when no photo exists.
 
 ### Advanced site settings
 

@@ -1,22 +1,62 @@
 {
 	"brand": "UofT FoM GRC",
 	"links": [
-		{ "label": "Home", "url": "/" },
-		{ "label": "About", "url": "/about" },
-		{ "label": "Blog", "url": "/blog" }
+		{
+			"label": "About",
+			"url": "/about"
+		},
+		{
+			"label": "Team",
+			"url": "/team"
+		},
+		{
+			"label": "Survey & Report",
+			"url": "/survey",
+			"comingSoon": true
+		},
+		{
+			"label": "Blog",
+			"url": "/blog"
+		},
+		{
+			"label": "Contact",
+			"url": "mailto:grc.facmed@utoronto.ca"
+		}
 	],
+	"resourcePosition": 3,
 	"resourceLabel": "Resources",
 	"resourceLinks": [
-		{ "label": "Health & Wellness", "slug": "health-wellness" },
-		{ "label": "Housing", "slug": "housing" },
-		{ "label": "Continuing Education", "slug": "continuing-education" },
-		{ "label": "Scholarships/Bursaries/Awards", "slug": "scholarships-bursaries-awards" },
+		{
+			"label": "Health & Wellness",
+			"slug": "health-wellness"
+		},
+		{
+			"label": "Housing",
+			"slug": "housing"
+		},
+		{
+			"label": "Continuing Education",
+			"slug": "continuing-education"
+		},
+		{
+			"label": "Scholarships/Bursaries/Awards",
+			"slug": "scholarships-bursaries-awards"
+		},
 		{
 			"label": "Scholarship/Award/Grant Application Support",
 			"slug": "scholarship-award-grant-application-support"
 		},
-		{ "label": "Employment", "slug": "employment" },
-		{ "label": "Career Planning/Exploration", "slug": "career-planning-exploration" },
-		{ "label": "Other", "slug": "other" }
+		{
+			"label": "Employment",
+			"slug": "employment"
+		},
+		{
+			"label": "Career Planning/Exploration",
+			"slug": "career-planning-exploration"
+		},
+		{
+			"label": "Other",
+			"slug": "other"
+		}
 	]
 }

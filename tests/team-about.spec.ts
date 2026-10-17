@@ -11,7 +11,12 @@ type TeamMember = {
 	bio?: string
 }
 type TeamYear = { year: string; members: TeamMember[] }
-type TeamData = { about: Record<string, unknown>; currentYear: string; years: TeamYear[] }
+type TeamData = {
+	about: Record<string, unknown>
+	teamPage: Record<string, string>
+	currentYear: string
+	years: TeamYear[]
+}
 
 const readTeam = () => JSON.parse(readFileSync(new URL('../src/data/team.json', import.meta.url), 'utf8')) as TeamData
 
@@ -27,6 +32,13 @@ const validTeam = (): TeamData => ({
 		workTitle: 'Work',
 		workParagraphs: ['Work paragraph']
 	},
+	teamPage: {
+		label: 'Graduate Representation Committee',
+		title: 'Meet the team',
+		description: 'Description',
+		image: '/assets/team.webp',
+		imageAlt: 'Building'
+	},
 	currentYear: '2030 - 2031',
 	years: [
 		{ year: '2030 - 2031', members: [{ name: 'Zed Leader', position: 'Director' }] },
@@ -34,7 +46,8 @@ const validTeam = (): TeamData => ({
 	]
 })
 
-const accordionContentId = (year: string) => `accordion-content-${year.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`
+const isAdvisor = ({ position }: TeamMember) => /advisor/i.test(position)
+const shortYear = (year: string) => year.replace(/^(\d{4})\s*-\s*\d{2}(\d{2})$/, '$1–$2')
 
 test('team schema requires a current year selection', () => {
 	const team = validTeam()
@@ -109,56 +122,6 @@ test('team schema accepts a current year listed after the first year', () => {
 	expect(result.success).toBeTruthy()
 })
 
-test('about page renders team years in stored order with only the current year expanded', async ({ page }) => {
-	const team = readTeam()
-	await page.goto('/about/')
-
-	const accordions = page.locator('#about-team button')
-	await expect(accordions).toHaveCount(team.years.length)
-	expect((await accordions.allTextContents()).map((text) => text.trim())).toEqual(team.years.map(({ year }) => year))
-
-	const current = page.getByRole('button', { name: team.currentYear, exact: true })
-	await expect(current).toHaveAttribute('aria-expanded', 'true')
-	await expect(page.locator(`#${accordionContentId(team.currentYear)}`)).toBeVisible()
-
-	const archivedYear = team.years.find(({ year }) => year !== team.currentYear)!.year
-	const archived = page.getByRole('button', { name: archivedYear, exact: true })
-	await expect(archived).toHaveAttribute('aria-expanded', 'false')
-	await expect(page.locator(`#${accordionContentId(archivedYear)}`)).toBeHidden()
-
-	await archived.click()
-	await expect(archived).toHaveAttribute('aria-expanded', 'true')
-	await expect(page.locator(`#${accordionContentId(archivedYear)}`)).toBeVisible()
-})
-
-test('about page renders members in stored order with avatar fallback and image descriptions', async ({ page }) => {
-	const team = readTeam()
-	const currentYear = team.years.find(({ year }) => year === team.currentYear)!
-	const panel = page.locator(`#${accordionContentId(currentYear.year)}`)
-	await page.goto('/about/')
-	await expect(panel).toBeVisible()
-
-	await expect(panel.getByRole('heading', { level: 3 })).toHaveText(currentYear.members.map(({ name }) => name))
-
-	const photoFreeMembers = currentYear.members.filter(({ image }) => !image)
-	await expect(panel.locator('img[src="/teams/profile-avatar-placeholder.webp"]')).toHaveCount(photoFreeMembers.length)
-	if (photoFreeMembers.length > 0) {
-		await expect(panel.locator('img[src="/teams/profile-avatar-placeholder.webp"]').first()).toHaveAttribute('alt', '')
-	}
-
-	for (const member of currentYear.members.filter(({ image }) => image)) {
-		const image = panel.getByRole('img', { name: member.imageAlt, exact: true })
-		await expect(image).toHaveAttribute('src', member.image!)
-	}
-
-	for (const member of currentYear.members.filter(({ pronouns }) => pronouns)) {
-		await expect(panel.getByText(`Pronouns: ${member.pronouns}`, { exact: true }).first()).toBeAttached()
-	}
-	for (const member of currentYear.members.filter(({ bio }) => bio)) {
-		await expect(panel.getByText(member.bio!, { exact: true })).toBeVisible()
-	}
-})
-
 test('team schema accepts optional pronouns and bios and drops empty CMS values', () => {
 	const team = validTeam()
 	team.years[0].members = [
@@ -175,33 +138,124 @@ test('team schema accepts optional pronouns and bios and drops empty CMS values'
 	expect(result.data.years[0].members[1].bio).toBeUndefined()
 })
 
-test('bios share one box height on wider screens, scroll when long, and show in full on phones', async ({ page }) => {
+test('team page heading comes from the site editor and the current year is labelled', async ({ page }) => {
 	const team = readTeam()
-	const currentYear = team.years.find(({ year }) => year === team.currentYear)!
-	const bioCount = currentYear.members.filter(({ bio }) => bio).length
-	test.skip(bioCount === 0, 'The current team year has no bios.')
-	const panel = page.locator(`#${accordionContentId(currentYear.year)}`)
-	const bios = panel.locator('[data-profile-bio]')
-	const measure = () =>
-		bios.evaluateAll((els) =>
-			els.map((el) => ({
-				height: el.clientHeight,
-				scrolls: el.scrollHeight > el.clientHeight + 1,
-				focusable: el.tabIndex === 0
-			}))
+	await page.goto('/team/')
+
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(team.teamPage.title)
+	await expect(page.getByText(team.teamPage.description, { exact: true })).toBeVisible()
+	await expect(page.locator('#current-team-heading')).toHaveText(shortYear(team.currentYear))
+	await expect(page).toHaveTitle(new RegExp(team.teamPage.title))
+})
+
+test('current team lists executives as photo cards and advisors as chips, in stored order', async ({ page }) => {
+	const team = readTeam()
+	const current = team.years.find(({ year }) => year === team.currentYear)!
+	const executives = current.members.filter((member) => !isAdvisor(member))
+	const advisors = current.members.filter(isAdvisor)
+	const section = page.locator('section[aria-labelledby="current-team-heading"]')
+	await page.goto('/team/')
+
+	await expect(section.locator('[data-team-card] h4')).toHaveText(executives.map(({ name }) => name))
+	await expect(section.locator('[data-team-chip] p:first-of-type')).toHaveText(advisors.map(({ name }) => name))
+
+	for (const member of executives.filter(({ image }) => image)) {
+		await expect(section.getByRole('img', { name: member.imageAlt, exact: true })).toHaveAttribute('src', member.image!)
+	}
+	for (const member of executives.filter(({ pronouns }) => pronouns)) {
+		const card = section.locator('[data-team-card]', { has: page.getByRole('heading', { name: member.name }) })
+		await expect(card).toContainText(`Pronouns: ${member.pronouns}`)
+	}
+	// Members without a photo show their initials instead of an empty box.
+	for (const member of current.members.filter(({ image }) => !image)) {
+		const item = section.locator('li', { hasText: member.name })
+		await expect(item.locator('img')).toHaveCount(0)
+		await expect(item.locator('[aria-hidden="true"]').first()).toHaveText(/^\s*[A-Z]{1,2}\s*$/)
+	}
+})
+
+test('a member bio appears over the photo on hover and on keyboard focus', async ({ page }) => {
+	const team = readTeam()
+	const current = team.years.find(({ year }) => year === team.currentYear)!
+	const withBio = current.members.filter((member) => member.bio && !isAdvisor(member))
+	test.skip(withBio.length === 0, 'The current team year has no bios.')
+	await page.goto('/team/')
+
+	const cards = page.locator('[data-team-card]', { has: page.locator('[data-team-bio]') })
+	await expect(cards).toHaveCount(withBio.length)
+	const bio = cards.first().locator('[data-team-bio]')
+	await expect(bio).toHaveText(withBio[0].bio!)
+	await expect(bio).toHaveCSS('opacity', '0')
+
+	await cards.first().hover()
+	await expect(bio).toHaveCSS('opacity', '1')
+	// Once fully shown, the bio must stay on top of the photo wherever the pointer rests.
+	const photo = (await cards.first().locator('img').boundingBox())!
+	for (const [fx, fy] of [
+		[0.5, 0.5],
+		[0.1, 0.1],
+		[0.9, 0.9]
+	]) {
+		const onTop = await page.evaluate(
+			([x, y]) => Boolean(document.elementFromPoint(x, y)?.closest('[data-team-bio]')),
+			[photo.x + photo.width * fx, photo.y + photo.height * fy]
 		)
+		expect(onTop).toBe(true)
+	}
+	await expect(bio).not.toHaveCSS('font-style', 'italic')
 
-	await page.setViewportSize({ width: 1280, height: 800 })
-	await page.goto('/about/')
-	await expect(bios).toHaveCount(bioCount)
-	// Every box is the same height, and only boxes that scroll join the keyboard tab order.
-	await expect
-		.poll(async () => {
-			const boxes = await measure()
-			return new Set(boxes.map(({ height }) => height)).size === 1 && boxes.every((b) => b.focusable === b.scrolls)
-		})
-		.toBe(true)
+	await page.mouse.move(0, 0)
+	await expect(bio).toHaveCSS('opacity', '0')
+	await bio.focus()
+	await expect(bio).toHaveCSS('opacity', '1')
+})
 
+test('on phones a member bio shows under the name without hovering', async ({ page }) => {
+	const team = readTeam()
+	const current = team.years.find(({ year }) => year === team.currentYear)!
+	test.skip(!current.members.some((member) => member.bio && !isAdvisor(member)), 'The current team year has no bios.')
 	await page.setViewportSize({ width: 390, height: 844 })
-	await expect.poll(async () => (await measure()).every(({ scrolls, focusable }) => !scrolls && !focusable)).toBe(true)
+	await page.goto('/team/')
+
+	const card = page.locator('[data-team-card]', { has: page.locator('[data-team-bio]') }).first()
+	const bio = card.locator('[data-team-bio]')
+	await expect(bio).toHaveCSS('opacity', '1')
+	const [nameBox, bioBox] = await Promise.all([card.locator('h4').boundingBox(), bio.boundingBox()])
+	expect(bioBox!.y).toBeGreaterThan(nameBox!.y)
+})
+
+test('past teams are folded by year in stored order and can be opened together', async ({ page }) => {
+	const team = readTeam()
+	const pastYears = team.years.filter(({ year }) => year !== team.currentYear)
+	test.skip(pastYears.length === 0, 'There are no past team years.')
+	await page.goto('/team/')
+
+	const folds = page.locator('details[data-team-year]')
+	await expect(folds).toHaveCount(pastYears.length)
+	expect(await folds.evaluateAll((els) => els.map((el) => el.getAttribute('data-team-year')))).toEqual(
+		pastYears.map(({ year }) => year)
+	)
+	expect(await folds.evaluateAll((els) => els.some((el) => (el as HTMLDetailsElement).open))).toBe(false)
+
+	const first = folds.first()
+	await first.locator('summary').click()
+	await expect(first).toHaveAttribute('open', '')
+	const firstYear = pastYears[0]
+	const expectedOrder = [...firstYear.members.filter((m) => !isAdvisor(m)), ...firstYear.members.filter(isAdvisor)]
+	await expect(first.locator('[data-team-chip] p:first-of-type')).toHaveText(expectedOrder.map(({ name }) => name))
+
+	// Several years can be open at once for comparing teams.
+	if (pastYears.length > 1) {
+		const second = folds.nth(1)
+		await second.locator('summary').click()
+		await expect(second).toHaveAttribute('open', '')
+		await expect(first).toHaveAttribute('open', '')
+	}
+})
+
+test('about page links to the team page instead of listing members', async ({ page }) => {
+	await page.goto('/about/')
+	await expect(page.locator('[data-team-card], [data-team-chip]')).toHaveCount(0)
+	await page.getByRole('link', { name: /Meet the team/ }).click()
+	await expect(page).toHaveURL(/\/team\/?$/)
 })

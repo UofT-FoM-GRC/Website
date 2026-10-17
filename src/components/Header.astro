@@ -3,153 +3,58 @@ import { getEntry } from 'astro:content'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
 import GRCLogo from '../assets/GRC_Logo.png'
-import HeaderLink from './HeaderLink.astro'
+import NavItem from './NavItem.astro'
 import SearchModal from './SearchModal.astro'
 
-const [navigation, site] = await Promise.all([getEntry('navigation', 'navigation'), getEntry('site', 'site')])
-if (!navigation || !site) throw new Error('Missing site navigation')
-const instagram = site.data.socialLinks.find((link) => link.network === 'instagram')
+const navigation = await getEntry('navigation', 'navigation')
+if (!navigation) throw new Error('Missing site navigation')
+const { links, resourceLabel, resourcePosition = links.length } = navigation.data
+// Resources is a plain link to the Resources page, which lists every topic; it sits at the position editors choose.
+const items = [
+	...links.slice(0, resourcePosition),
+	{ label: resourceLabel, url: '/resources', comingSoon: false },
+	...links.slice(resourcePosition)
+]
 ---
 
 <header
-	x-data="{ isOpen: false, resourcesOpen: false, isDark: document.documentElement.classList.contains('dark') }"
-	class="sticky top-0 z-50 bg-white shadow-md transition-colors duration-200 dark:bg-slate-900"
+	x-data="{ isOpen: false }"
+	class="sticky top-0 z-50 bg-[#1E3765] shadow-md transition-colors duration-200 dark:bg-slate-900"
 >
-	<nav class="flex items-center justify-between p-2" aria-label="Main navigation">
-		<div class="flex items-center gap-2">
-			<div class="logo rounded-full p-1 dark:bg-neutral-100">
-				<a href="/" aria-label="Go to UofT FoM GRC homepage"
-					><Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-12 w-12" /></a
-				>
-			</div><div class="flex items-center text-2xl font-bold text-slate-700 dark:text-slate-100">
-				<a href="/">{navigation.data.brand}</a>
-			</div>
-		</div>
-		<div class="hidden items-center space-x-1 md:flex">
-			{
-				navigation.data.links.map((link) => (
-					<HeaderLink
-						href={link.url}
-						class="relative px-4 py-2 text-xl text-slate-800 transition-colors after:absolute after:right-4 after:bottom-1 after:left-4 after:h-0.5 after:origin-right after:scale-x-0 after:bg-slate-800 after:transition-transform after:duration-300 after:content-[''] hover:text-slate-900 hover:after:origin-left hover:after:scale-x-100 dark:text-slate-100 dark:after:bg-slate-100 dark:hover:text-slate-50"
-					>
-						{link.label}
-					</HeaderLink>
-				))
-			}
-			<div class="relative">
-				<button
-					@click="resourcesOpen = !resourcesOpen"
-					id="resources-menu-button"
-					class="flex items-center gap-1 px-4 py-2 text-xl text-slate-800 dark:text-slate-100"
-					aria-controls="resources-menu"
-					:aria-expanded="resourcesOpen"
-					>{navigation.data.resourceLabel}<Icon
-						name="mdi:chevron-down"
-						class="h-5 w-5"
-						:class="resourcesOpen ? 'rotate-180' : ''"
-					/></button
-				><div
-					x-show="resourcesOpen"
-					x-cloak
-					id="resources-menu"
-					aria-labelledby="resources-menu-button"
-					@click.away="resourcesOpen = false"
-					@keydown.escape.window="resourcesOpen = false"
-					class="absolute right-0 mt-2 w-fit bg-white px-4 shadow-md dark:bg-slate-800"
-				>
-					{
-						navigation.data.resourceLinks.map((link) => (
-							<a
-								href={`/resources/${link.slug}`}
-								class="block px-4 py-2 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							>
-								{link.label}
-							</a>
-						))
-					}
-				</div>
-			</div>
+	<nav class="flex h-16 items-center justify-between gap-6 px-3 lg:px-10" aria-label="Main navigation">
+		<a href="/" class="flex shrink-0 items-center gap-3" aria-label="Go to UofT FoM GRC homepage">
+			<span class="logo rounded-full bg-white p-1">
+				<Image src={GRCLogo} alt="UofT FoM GRC logo" transition:persist class="h-8 w-8" />
+			</span>
+			<span class="text-[17px] font-semibold whitespace-nowrap text-white dark:text-slate-100"
+				>{navigation.data.brand}</span
+			>
+		</a>
+		<div class="hidden items-center gap-7 lg:flex xl:gap-[30px]">
+			{items.map((item) => <NavItem {...item} variant="desktop" />)}
 			<button
 				@click="$dispatch('open-search', { opener: $el })"
-				class="flex items-center gap-2 px-2 py-1 text-slate-800 dark:text-slate-100"
-				aria-label="Open search"
-				><Icon name="mdi:magnify" class="h-8 w-8" /><span class="hidden lg:inline">Search</span></button
+				class="flex items-center text-white hover:text-white/80 dark:text-slate-100"
+				aria-label="Open search"><Icon name="mdi:magnify" class="h-6 w-6" /></button
 			>
 		</div>
-		<div class="flex items-center gap-4 px-2">
-			<button
-				@click="isDark = !isDark; $dispatch('toggle-theme')"
-				class="text-slate-800 md:hidden dark:text-slate-100"
-				aria-label="Toggle dark mode"
-				><Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" /><Icon
-					name="mdi:moon-waning-crescent"
-					class="hidden h-8 w-8 dark:block"
-				/></button
-			><button
-				@click="isOpen = !isOpen"
-				class="text-slate-800 md:hidden dark:text-slate-100"
-				aria-controls="mobile-menu"
-				:aria-label="isOpen ? 'Close mobile menu' : 'Open mobile menu'"
-				:aria-expanded="isOpen"><Icon name="mdi:menu" class="h-8 w-8" /></button
-			><button
-				@click="isDark = !isDark; $dispatch('toggle-theme')"
-				class="hidden text-slate-800 md:block dark:text-slate-100"
-				aria-label="Toggle dark mode"
-				><Icon name="mdi:white-balance-sunny" class="h-8 w-8 dark:hidden" /><Icon
-					name="mdi:moon-waning-crescent"
-					class="hidden h-8 w-8 dark:block"
-				/></button
-			>{
-				instagram && (
-					<a
-						href={instagram.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="hidden text-slate-800 md:block dark:text-slate-100"
-						aria-label={instagram.label}
-					>
-						<Icon name="mdi:instagram" class="h-8 w-8" />
-					</a>
-				)
-			}
-		</div>
+		<button
+			@click="isOpen = !isOpen"
+			class="text-white lg:hidden dark:text-slate-100"
+			aria-controls="mobile-menu"
+			:aria-label="isOpen ? 'Close mobile menu' : 'Open mobile menu'"
+			:aria-expanded="isOpen"><Icon name="mdi:menu" class="h-8 w-8" /></button
+		>
 		<div
 			id="mobile-menu"
 			x-show="isOpen"
 			x-cloak
 			@click.away="isOpen = false"
 			@keydown.escape.window="isOpen = false"
-			class="absolute top-full right-0 left-0 bg-white shadow-md md:hidden dark:bg-slate-800"
+			class="absolute top-full right-0 left-0 bg-white shadow-md lg:hidden dark:bg-slate-800"
 		>
 			<div class="flex flex-col p-4">
-				{
-					navigation.data.links.map((link) => (
-						<HeaderLink
-							href={link.url}
-							class="py-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-						>
-							{link.label}
-						</HeaderLink>
-					))
-				}<button
-					@click="resourcesOpen = !resourcesOpen"
-					id="mobile-resources-menu-button"
-					class="flex w-full items-center justify-between py-2 pr-2 pl-4 text-xl text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-					aria-controls="mobile-resources-menu"
-					:aria-expanded="resourcesOpen"
-					>{navigation.data.resourceLabel}<Icon name="mdi:chevron-down" class="h-7 w-7" /></button
-				><div id="mobile-resources-menu" x-show="resourcesOpen" x-cloak>
-					{
-						navigation.data.resourceLinks.map((link) => (
-							<a
-								href={`/resources/${link.slug}`}
-								class="block py-2 pl-6 text-slate-800 hover:bg-slate-200 dark:text-slate-100 dark:hover:bg-slate-700"
-							>
-								{link.label}
-							</a>
-						))
-					}
-				</div><button
+				{items.map((item) => <NavItem {...item} variant="mobile" />)}<button
 					@click="$dispatch('open-search', { opener: $el })"
 					class="mt-2 ml-4 flex items-center gap-2 text-slate-800 dark:text-slate-100"
 					aria-label="Open search"><Icon name="mdi:magnify" class="h-8 w-8" /><span>Search</span></button
@@ -159,7 +64,3 @@ const instagram = site.data.socialLinks.find((link) => link.network === 'instagr
 	</nav>
 </header>
 <SearchModal />
-<script>
-	import { toggleTheme } from '../utils/theme'
-	window.addEventListener('toggle-theme', () => toggleTheme())
-</script>

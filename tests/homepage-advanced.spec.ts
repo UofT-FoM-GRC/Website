@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import { blogTagSchema, homepageSchema, navigationSchema, siteSchema } from '../src/schemas'
 
@@ -6,22 +6,12 @@ type Link = { label: string; url: string }
 
 type Homepage = {
 	hero: { image: string; imageAlt: string; lines: string[] }
-	featureSections: Array<{
-		title: string
-		paragraphs: string[]
-		links: Link[]
-		image: string
-		imageAlt: string
-		tone: 'dark' | 'light'
-		imageFirst: boolean
-	}>
-	contactHeading: string
-	contactText: string
 }
 
 type Navigation = {
 	brand: string
-	links: Link[]
+	links: Array<Link & { comingSoon?: boolean }>
+	resourcePosition?: number
 	resourceLabel: string
 	resourceLinks: Array<{ label: string; slug: string }>
 }
@@ -46,9 +36,6 @@ const issuePaths = (result: ReturnType<typeof homepageSchema.safeParse>): string
 const validDestinations = ['https://example.ca/page', '/about', 'mailto:grc@example.ca', 'tel:+14161234567', '#contact']
 const invalidDestinations = ['javascript:alert(1)', '//example.ca/about', 'ftp://example.ca/file']
 
-const featureSection = (page: Page, title: string): Locator =>
-	page.locator('main > section').filter({ has: page.getByRole('heading', { level: 2, name: title, exact: true }) })
-
 test('homepage hero lines require two to five entries', () => {
 	const withLines = (count: number) => ({
 		...homepage,
@@ -61,33 +48,12 @@ test('homepage hero lines require two to five entries', () => {
 	expect(issuePaths(homepageSchema.safeParse(withLines(6)))).toEqual(['hero.lines'])
 })
 
-test('navigation and homepage feature links accept internal, https, mail, telephone, and fragment destinations', () => {
+test('navigation links accept internal, https, mail, telephone, and fragment destinations', () => {
 	for (const url of validDestinations) {
 		expect(navigationSchema.safeParse({ ...navigation, links: [{ label: 'Example', url }] }).success, url).toBeTruthy()
-		expect(
-			homepageSchema.safeParse({
-				...homepage,
-				featureSections: [{ ...homepage.featureSections[0], links: [{ label: 'Example', url }] }]
-			}).success,
-			url
-		).toBeTruthy()
 	}
-
 	for (const url of invalidDestinations) {
 		expect(navigationSchema.safeParse({ ...navigation, links: [{ label: 'Example', url }] }).success, url).toBeFalsy()
-		const rejected = homepageSchema.safeParse({
-			...homepage,
-			featureSections: [{ ...homepage.featureSections[0], links: [{ label: 'Example', url }] }]
-		})
-		expect(rejected.success, url).toBeFalsy()
-		if (!rejected.success) {
-			expect(rejected.error.issues).toContainEqual(
-				expect.objectContaining({
-					path: ['featureSections', 0, 'links', 0, 'url'],
-					message: 'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
-				})
-			)
-		}
 	}
 })
 
@@ -135,68 +101,89 @@ test('homepage hero renders the second stored line as the only page heading', as
 	await expect(hero.getByRole('img', { name: homepage.hero.imageAlt, exact: true })).toHaveCount(1)
 })
 
-test('homepage feature sections render stored order, images, links, and tone', async ({ page }) => {
-	await page.setViewportSize({ width: 1280, height: 900 })
+test('homepage is one full-screen hero between the header and footer, light in light theme and blue in dark theme', async ({
+	page
+}) => {
+	const viewport = { width: 1280, height: 900 }
+	await page.setViewportSize(viewport)
 	await page.goto('/')
 
-	await expect(page.locator('main > section h2')).toHaveText([
-		...homepage.featureSections.map(({ title }) => title),
-		homepage.contactHeading
-	])
-	await expect(page.locator('main')).toContainText(homepage.contactText)
+	await expect(page.locator('main > section')).toHaveCount(1)
+	await expect(page.locator('main h2')).toHaveCount(0)
+	const headerBox = await page.locator('header').first().boundingBox()
+	const heroBox = await page.locator('main > section').boundingBox()
+	expect(heroBox!.height).toBeGreaterThanOrEqual(viewport.height - headerBox!.height - 1)
+	await expect(page.locator('footer')).toContainText('Graduate Representation Committee. All rights reserved.')
 
-	const backgroundByTone: Record<Homepage['featureSections'][number]['tone'], string[]> = { dark: [], light: [] }
-
-	for (const sectionData of homepage.featureSections) {
-		const section = featureSection(page, sectionData.title)
-		await expect(section).toHaveCount(1)
-		await expect(section.getByRole('img', { name: sectionData.imageAlt, exact: true })).toHaveAttribute(
-			'src',
-			new RegExp(sectionData.image.replace(/\.[^.]+$/, ''))
-		)
-		for (const link of sectionData.links ?? []) {
-			await expect(section.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
-		}
-
-		await expect(section.locator('div.flex > div:has(> img)')).toHaveCSS('order', sectionData.imageFirst ? '1' : '2')
-		await expect(section.locator('div.flex > div:has(> h2)')).toHaveCSS('order', sectionData.imageFirst ? '2' : '1')
-
-		backgroundByTone[sectionData.tone].push(
-			await section.evaluate((element) => getComputedStyle(element).backgroundColor)
-		)
+	const hero = page.locator('main > section')
+	for (const link of site.socialLinks) {
+		await expect(hero.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
 	}
+	await expect(hero.getByRole('link', { name: 'Email the GRC', exact: true })).toHaveAttribute(
+		'href',
+		`mailto:${site.contact.email}`
+	)
 
-	expect(new Set(backgroundByTone.dark).size).toBe(1)
-	expect(new Set(backgroundByTone.light).size).toBe(1)
-	expect(backgroundByTone.dark[0]).not.toBe(backgroundByTone.light[0])
+	// Light theme: navy text on a light wash. Dark theme: white text on a blue tint.
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(30, 55, 101)')
+	await page.evaluate(() => localStorage.setItem('grc-theme', 'dark'))
+	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
+
+	// With no saved choice, the site follows the device's light or dark setting.
+	await page.evaluate(() => localStorage.removeItem('grc-theme'))
+	await page.emulateMedia({ colorScheme: 'dark' })
+	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
+	await page.emulateMedia({ colorScheme: 'light' })
+	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(30, 55, 101)')
 })
 
-test('header and footer render stored navigation, contact, and social destinations', async ({ page }) => {
+test('header renders stored navigation with a plain Resources link, and header and footer carry no contact icons', async ({
+	page
+}) => {
 	await page.setViewportSize({ width: 1280, height: 900 })
 	await page.goto('/')
 
 	const nav = page.getByRole('navigation', { name: 'Main navigation' })
-	for (const link of navigation.links) {
-		await expect(nav.getByRole('link', { name: link.label, exact: true }).first()).toHaveAttribute('href', link.url)
-	}
-
-	const resourceMenu = nav.locator('#resources-menu a')
-	await expect(resourceMenu).toHaveCount(navigation.resourceLinks.length)
-	for (const [index, link] of navigation.resourceLinks.entries()) {
-		await expect(resourceMenu.nth(index)).toHaveText(link.label)
-		await expect(resourceMenu.nth(index)).toHaveAttribute('href', `/resources/${link.slug}`)
-	}
-	await nav.getByRole('button', { name: navigation.resourceLabel, exact: true }).filter({ visible: true }).click()
-	await expect(nav.locator('#resources-menu')).toBeVisible()
-
-	await expect(page.getByRole('link', { name: site.contact.email, exact: true })).toHaveAttribute(
-		'href',
-		`mailto:${site.contact.email}`
+	const desktopItems = nav.locator(':scope > div.lg\\:flex > *')
+	const expectedOrder = navigation.links.map(({ label }) => label)
+	expectedOrder.splice(navigation.resourcePosition ?? navigation.links.length, 0, navigation.resourceLabel)
+	const shownOrder = (await desktopItems.allInnerTexts()).map((text) => text.replace(/\s+/g, ' ').trim())
+	expect(shownOrder.slice(0, expectedOrder.length).map((text) => text.replace(/ coming soon$/i, ''))).toEqual(
+		expectedOrder.map((label) => label.toUpperCase())
 	)
-	for (const link of site.socialLinks) {
-		await expect(page.locator('footer').getByRole('link', { name: link.label, exact: true })).toHaveAttribute(
-			'href',
-			link.url
-		)
+	for (const link of navigation.links) {
+		if (link.comingSoon) {
+			// A coming-soon page shows its label and a "Soon" tag, but no link.
+			await expect(nav.getByRole('link', { name: link.label, exact: true })).toHaveCount(0)
+			await expect(nav.locator('[data-coming-soon]', { hasText: link.label }).filter({ visible: true })).toContainText(
+				'Soon'
+			)
+		} else {
+			await expect(nav.getByRole('link', { name: link.label, exact: true }).first()).toHaveAttribute('href', link.url)
+		}
+	}
+
+	// Resources is a plain link to the Resources page, which lists every topic.
+	await expect(nav.getByRole('link', { name: navigation.resourceLabel, exact: true }).first()).toHaveAttribute(
+		'href',
+		'/resources'
+	)
+	await expect(nav.locator('#resources-menu')).toHaveCount(0)
+
+	// The top bar keeps only the brand, the page links and search on every page; the footer keeps only the copyright line.
+	for (const route of ['/', '/about/']) {
+		await page.goto(route)
+		const header = page.locator('header')
+		await expect(header.getByRole('link', { name: 'Email the GRC', exact: true })).toHaveCount(0)
+		for (const link of site.socialLinks) {
+			await expect(header.getByRole('link', { name: link.label, exact: true })).toHaveCount(0)
+		}
+		await expect(header.getByRole('button', { name: /dark mode/i })).toHaveCount(0)
+		await expect(header.getByRole('button', { name: 'Open search' }).first()).toBeVisible()
+		await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
+		await expect(page.locator('footer')).toContainText('All rights reserved.')
 	}
 })
