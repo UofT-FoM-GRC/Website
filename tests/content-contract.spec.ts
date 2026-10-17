@@ -187,7 +187,9 @@ test('resource landing cards retain their routes and summaries, and each card im
 	await expectPublishedRoute(page, '/resources/')
 	for (const contract of contentContract.resources) {
 		const resource = resourceFixture(contract.fixture)
-		const card = page.getByRole('link', { name: new RegExp(resource.cardTitle) })
+		const card = page
+			.locator('section[aria-labelledby="topics-heading"]')
+			.getByRole('link', { name: new RegExp(resource.cardTitle) })
 		await expect(card).toHaveAttribute('href', contract.route)
 		await expect(card).toContainText(resource.description)
 	}

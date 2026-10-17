@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro'
 import BlogTopicCard from '../../components/BlogTopicCard.astro'
 import FormattedDate from '../../components/FormattedDate.astro'
 import PageBand from '../../components/PageBand.astro'
-import RuledSection from '../../components/RuledSection.astro'
+import PageSection from '../../components/PageSection.astro'
 import { BLOG_TOPICS } from '../../consts'
 import { academicYear, isCurrentPost } from '../../utils/blog'
 
@@ -61,19 +61,19 @@ const countLabel = (count: number, noun: string) => `${count} ${noun}${count ===
 
 			{
 				topicGroups.map(({ id, label, posts }) => (
-					<RuledSection id={id} title={label} tag={countLabel(posts.length, 'post')}>
+					<PageSection id={id} title={label} tag={countLabel(posts.length, 'post')}>
 						<ul class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
 							{posts.map((post) => (
 								<BlogTopicCard post={post} />
 							))}
 						</ul>
-					</RuledSection>
+					</PageSection>
 				))
 			}
 
 			{
 				archiveYears.length > 0 && (
-					<RuledSection id="archive-heading" title="Archive" tag="Ended posts, by year" tone="ink">
+					<PageSection id="archive-heading" title="Archive" tag="Ended posts, by year">
 						{/* Ended posts stay out of site search, as on their own pages. */}
 						<div class="flex flex-col gap-3" data-pagefind-ignore>
 							{archiveYears.map(({ year, posts }) => (
@@ -113,7 +113,7 @@ const countLabel = (count: number, noun: string) => `${count} ${noun}${count ===
 								</details>
 							))}
 						</div>
-					</RuledSection>
+					</PageSection>
 				)
 			}
 		</div>

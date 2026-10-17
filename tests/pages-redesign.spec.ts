@@ -61,8 +61,16 @@ test('resources page shows urgent numbers, then every topic in menu order', asyn
 	)
 	await expect(page.locator('#topics-heading + span')).toHaveText(`${navigation.resourceLinks.length} topics`)
 
-	// The new-and-coming-soon row stays hidden until editors add items.
-	await expect(page.locator('#updates-heading')).toHaveCount(pages.resources.updates.length > 0 ? 1 : 0)
+	// The new-and-coming-soon row shows every stored item in order, and stays hidden when the list is empty.
+	const updates = pages.resources.updates as { kind: string; title: string; url?: string }[]
+	await expect(page.locator('#updates-heading')).toHaveCount(updates.length > 0 ? 1 : 0)
+	const cards = page.locator('section[aria-labelledby="updates-heading"] li')
+	await expect(cards).toHaveCount(updates.length)
+	for (const [index, item] of updates.entries()) {
+		await expect(cards.nth(index)).toContainText(item.title)
+		await expect(cards.nth(index)).toContainText(item.kind === 'coming-soon' ? 'Coming soon' : 'New')
+		if (item.url) await expect(cards.nth(index).getByRole('link')).toHaveAttribute('href', item.url)
+	}
 
 	await page.getByRole('button', { name: pages.resources.searchPrompt }).click()
 	await expect(page.getByRole('dialog', { name: 'Search this site' })).toBeVisible()

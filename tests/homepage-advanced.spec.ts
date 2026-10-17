@@ -130,17 +130,21 @@ test('homepage is one full-screen hero between the header and footer, light in l
 	await page.reload()
 	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
 
-	// With no saved choice, the site follows the device's light or dark setting.
+	// With no saved choice the site stays light, even on a device set to dark; the top-bar switch changes it and is remembered.
 	await page.evaluate(() => localStorage.removeItem('grc-theme'))
 	await page.emulateMedia({ colorScheme: 'dark' })
 	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(30, 55, 101)')
+	const toggle = page.locator('header').getByRole('button', { name: 'Toggle dark mode' }).filter({ visible: true })
+	await toggle.click()
 	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
-	await page.emulateMedia({ colorScheme: 'light' })
 	await page.reload()
+	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(255, 255, 255)')
+	await page.locator('header').getByRole('button', { name: 'Toggle dark mode' }).filter({ visible: true }).click()
 	await expect(page.locator('h1')).toHaveCSS('color', 'rgb(30, 55, 101)')
 })
 
-test('header renders stored navigation with a plain Resources link, and header and footer carry no contact icons', async ({
+test('header renders stored navigation with a plain Resources link and a theme switch, and carries no contact icons', async ({
 	page
 }) => {
 	await page.setViewportSize({ width: 1280, height: 900 })
@@ -181,7 +185,7 @@ test('header renders stored navigation with a plain Resources link, and header a
 		for (const link of site.socialLinks) {
 			await expect(header.getByRole('link', { name: link.label, exact: true })).toHaveCount(0)
 		}
-		await expect(header.getByRole('button', { name: /dark mode/i })).toHaveCount(0)
+		await expect(header.getByRole('button', { name: 'Toggle dark mode' }).filter({ visible: true })).toHaveCount(1)
 		await expect(header.getByRole('button', { name: 'Open search' }).first()).toBeVisible()
 		await expect(page.locator('footer').getByRole('link')).toHaveCount(0)
 		await expect(page.locator('footer')).toContainText('All rights reserved.')

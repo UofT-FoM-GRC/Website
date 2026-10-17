@@ -255,6 +255,8 @@ test('test backend opens all existing content and preserves Markdown and JSON en
 		.locator('xpath=following::input[@type="date"][1]')
 	await page.getByRole('combobox').click()
 	await page.getByText('Other', { exact: true }).last().click()
+	// Every post needs a Blog page topic before the editor will save it.
+	await page.getByRole('radio', { name: 'Free tools & perks' }).check()
 	await expect(newPublicationDate).toHaveValue('2026-01-15')
 	await newTitle.fill('New lifecycle post')
 	await page.locator('textarea:visible').first().fill('New post description.')
@@ -312,11 +314,22 @@ test('pinned Sveltia opens, saves, and reloads every migrated blog without seman
 	}
 })
 
+// Sveltia draws long forms lazily as they scroll into view, so scroll the editor until the Body field exists.
+const revealBody = async (page: Page) => {
+	const body = page.locator('[data-key-path="body"]')
+	await page.locator('[data-key-path="title"]').hover()
+	for (let attempt = 0; attempt < 10 && (await body.count()) === 0; attempt += 1) {
+		await page.mouse.wheel(0, 600)
+		await page.waitForTimeout(200)
+	}
+	return body
+}
+
 test('offline pinned Sveltia exposes only the semantic blog insert controls', async ({ page }) => {
 	await openTestBackend(page, `cms-semantic-controls-${test.info().parallelIndex}-${test.info().repeatEachIndex}`)
 	await page.getByText(/^UofT Zoom Pro — /).click()
 
-	const body = page.locator('[data-key-path="body"]')
+	const body = await revealBody(page)
 	await expect(body.getByRole('button', { name: 'Insert' })).toBeVisible()
 	await body.getByRole('button', { name: 'Insert' }).click()
 	await expect(page.getByRole('menuitem', { name: 'Accessible image' })).toBeVisible()
@@ -352,6 +365,7 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 
 	await page.reload()
 	await page.getByText(/^UofT Zoom Pro — /).click()
+	await revealBody(page)
 	await expect(page.getByRole('textbox', { name: 'Optional Heading' }).last()).toHaveValue('Before you host')
 	await body.getByRole('button', { name: 'Action link' }).click()
 	await expect(
@@ -395,6 +409,7 @@ test('offline pinned Sveltia exposes only the semantic blog insert controls', as
 
 	await page.reload()
 	await page.getByText(/^UofT Zoom Pro — /).click()
+	await revealBody(page)
 	const reloadedImage = page.getByRole('group', { name: 'Accessible image' }).last()
 	await expect(reloadedImage.getByRole('textbox', { name: 'Image Description' })).toHaveValue(
 		'Diagram showing a callout beside an action link.'
