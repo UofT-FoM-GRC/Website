@@ -5,6 +5,7 @@ pubDate: 'Nov 1 2024'
 heroImage: '/assets/fom-backgrounds/ffom-zoom-backgrounds-4-1080.webp'
 heroImageAlt: 'Faculty of Medicine branded background'
 tags: ['other']
+topic: funding-awards
 ---
 
 The Harmonized Base Funding Agreement (HBFA) is a crucial component of your graduate experience at the University of Toronto. This funding helps maximize your financial support so that you can focus on your studies and research.

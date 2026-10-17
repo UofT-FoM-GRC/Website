@@ -5,6 +5,7 @@ pubDate: 'Nov 26 2024'
 heroImage: '/assets/zoom-banner.webp'
 heroImageAlt: 'Zoom logo on a banner'
 tags: ['other']
+topic: tools-perks
 ---
 
 :::callout{kind="information"}

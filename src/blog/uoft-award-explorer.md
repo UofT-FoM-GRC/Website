@@ -5,6 +5,7 @@ pubDate: 'Sep 8 2024'
 heroImage: '/assets/waiter-serving-money.webp'
 heroImageAlt: 'Person holding a tray of coins'
 tags: ['scholarships-bursaries-awards']
+topic: funding-awards
 ---
 
 ## Discover scholarships with UofT's Award Explorer

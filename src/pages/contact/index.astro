@@ -1,0 +1,79 @@
+---
+import { getEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageBand from '../../components/PageBand.astro'
+
+const [pages, site] = await Promise.all([getEntry('pages', 'pages'), getEntry('site', 'site')])
+if (!pages || !site) throw new Error('Missing page or site content')
+const { band } = pages.data.contact
+const { email } = site.data.contact
+
+const networkDetails = {
+	instagram: { name: 'Instagram', icon: 'mdi:instagram', note: 'Updates, reminders and event photos.' },
+	github: { name: 'GitHub', icon: 'mdi:github', note: 'The code behind this website.' }
+} as const
+// Show the handle or organization name from the link, for example @grc_uoftfacmed.
+const handleFrom = (url: string, network: keyof typeof networkDetails) => {
+	const last = url.replace(/\/+$/, '').split('/').at(-1) ?? url
+	return network === 'instagram' ? `@${last}` : last
+}
+const channels = [
+	{
+		name: 'Email',
+		icon: 'mdi:email-outline',
+		value: email,
+		url: `mailto:${email}`,
+		note: 'Questions, ideas or concerns. We reply by email.',
+		external: false
+	},
+	...site.data.socialLinks.map((link) => ({
+		...networkDetails[link.network],
+		value: handleFrom(link.url, link.network),
+		url: link.url,
+		external: true
+	}))
+]
+---
+
+<BaseLayout title={`${band.label} | Graduate Representation Committee`} description={band.description}>
+	<!-- A short page: fill the window so the footer sits at the bottom (64px header, 66px footer). -->
+	<main id="main-content" data-pagefind-body class="min-h-[calc(100svh-130px)] bg-[#F4F6FA] dark:bg-slate-900">
+		<PageBand {...band} />
+
+		<div class="mx-auto max-w-[1100px] px-5 py-10 md:px-6 md:py-12">
+			<ul aria-label="Ways to reach us" data-contact-channels class="grid grid-cols-1 gap-4 md:grid-cols-3">
+				{
+					channels.map((channel) => (
+						<li class="flex">
+							<a
+								href={channel.url}
+								{...(channel.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+								class="flex grow flex-col items-start gap-3 rounded-xl border border-[#D6DDE9] bg-white p-6 transition-[border-color,box-shadow] hover:border-[#0B6E8A] hover:shadow-[0_2px_12px_rgb(19_32_58/0.08)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-700 dark:bg-slate-800 dark:hover:border-sky-400"
+							>
+								<span
+									class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#EEF2F8] text-[#1E3765] dark:bg-slate-700 dark:text-slate-100"
+									aria-hidden="true"
+								>
+									<Icon name={channel.icon} class="h-6 w-6" />
+								</span>
+								<span class="flex min-w-0 flex-col gap-1">
+									<span class="font-mono text-[11px] tracking-[0.08em] text-[#0B6E8A] uppercase dark:text-sky-300">
+										{channel.name}
+									</span>
+									<span class="text-lg font-semibold break-all text-[#13203A] dark:text-slate-100">
+										{channel.value}
+									</span>
+									<span class="text-[15px] text-[#4B5872] dark:text-slate-400">
+										{channel.note}
+										{channel.external && <span class="sr-only"> (opens in a new tab)</span>}
+									</span>
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</main>
+</BaseLayout>

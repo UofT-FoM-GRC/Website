@@ -5,6 +5,7 @@ import {
 	blogSchema,
 	homepageSchema,
 	navigationSchema,
+	pagesSchema,
 	resourceSchema,
 	siteSchema,
 	teamSchema
@@ -40,10 +41,15 @@ const site = defineCollection({
 	schema: siteSchema
 })
 
+const pages = defineCollection({
+	loader: glob({ pattern: 'pages.json', base: './src/data' }),
+	schema: pagesSchema
+})
+
 const announcements = defineCollection({
 	loader: glob({ pattern: 'announcements.json', base: './src/data' }),
 	schema: announcementsSchema
 })
 
 // Export the collections; Astro will automatically register them
-export const collections = { blog, resources, homepage, team, navigation, site, announcements }
+export const collections = { blog, resources, homepage, team, navigation, site, pages, announcements }

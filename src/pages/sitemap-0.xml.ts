@@ -20,8 +20,10 @@ export const GET: APIRoute = async () => {
 	const routes = [
 		'/',
 		'/about/',
+		'/team/',
 		'/blog/',
 		'/resources/',
+		'/contact/',
 		...resources.map((resource) => `/resources/${resource.data.slug}/`),
 		...blogs.filter((post) => isCurrentPost(post)).map((post) => `/blog/${post.id}/`)
 	]

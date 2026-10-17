@@ -5,6 +5,7 @@ pubDate: 'Dec 1 2025'
 heroImage: '/assets/fom-backgrounds/ffom-zoom-backgrounds-5-1080.webp'
 heroImageAlt: 'Faculty of Medicine branded background'
 tags: ['other']
+topic: funding-awards
 ---
 
 The Harmonized Base Funding Agreement (HBFA) has been updated for the 2025-26 academic year. Whether you're just starting out or you've been around for a while, there are some changes worth knowing about.

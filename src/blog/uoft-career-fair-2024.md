@@ -6,6 +6,7 @@ heroImage: '/assets/uoft-career-fair-banner.webp'
 heroImageAlt: 'University of Toronto Career Fair banner'
 status: archived
 tags: ['career-planning-exploration']
+topic: study-careers
 ---
 
 ## Talk to potential employers

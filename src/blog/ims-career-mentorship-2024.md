@@ -6,6 +6,7 @@ heroImage: '/assets/mentor-mentee.webp'
 heroImageAlt: 'Two people meeting for mentorship'
 status: archived
 tags: ['career-planning-exploration']
+topic: study-careers
 ---
 
 :::callout{kind="information"}

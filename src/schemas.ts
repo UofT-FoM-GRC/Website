@@ -14,6 +14,10 @@ export const blogTagSchema = z.enum([
 ])
 export type BlogTag = z.infer<typeof blogTagSchema>
 
+// Blog page topics. Each post sits under one topic heading on the Blog page.
+export const blogTopicSchema = z.enum(['funding-awards', 'tools-perks', 'study-careers'])
+export type BlogTopic = z.infer<typeof blogTopicSchema>
+
 const emptyStringToUndefined = (value: unknown) => (value === '' ? undefined : value)
 
 const requiredStringSchema = z.string().trim().min(1, 'Value cannot be empty.')
@@ -47,6 +51,8 @@ export const createBlogSchema = (now = new Date()) =>
 			heroImage: optionalCmsStringSchema,
 			heroImageAlt: optionalCmsStringSchema,
 			tags: z.array(blogTagSchema).min(1).max(3),
+			// Optional so older posts still build; posts without a topic appear under "More posts".
+			topic: blogTopicSchema.optional(),
 			status: z.enum(['current', 'archived']).default('current'),
 			expiresOn: optionalCmsDateSchema
 		})
@@ -239,6 +245,15 @@ export const resourceSchema = z
 		}
 	})
 
+// The photo band with a small label, a heading and one line of text at the top of the inner pages.
+const pageBandSchema = z.object({
+	label: requiredStringSchema,
+	title: requiredStringSchema,
+	description: requiredStringSchema,
+	image: requiredStringSchema,
+	imageAlt: requiredStringSchema
+})
+
 export const homepageSchema = z.object({
 	hero: z.object({
 		image: requiredStringSchema,
@@ -271,13 +286,7 @@ export const teamSchema = z
 			workTitle: requiredStringSchema,
 			workParagraphs: z.array(requiredStringSchema)
 		}),
-		teamPage: z.object({
-			label: requiredStringSchema,
-			title: requiredStringSchema,
-			description: requiredStringSchema,
-			image: requiredStringSchema,
-			imageAlt: requiredStringSchema
-		}),
+		teamPage: pageBandSchema,
 		currentYear: requiredStringSchema,
 		years: z.array(
 			z.object({
@@ -340,6 +349,36 @@ export const siteSchema = z.object({
 			network: z.enum(['instagram', 'github'])
 		})
 	)
+})
+
+export const pagesSchema = z.object({
+	resources: z.object({
+		band: pageBandSchema,
+		searchPrompt: requiredStringSchema,
+		urgentContacts: z
+			.array(
+				z.object({
+					label: requiredStringSchema,
+					number: requiredStringSchema,
+					url: internalOrExternalUrlSchema,
+					note: optionalCmsStringSchema
+				})
+			)
+			.default([]),
+		updates: z
+			.array(
+				z.object({
+					kind: z.enum(['new', 'coming-soon']),
+					tag: optionalCmsStringSchema,
+					title: requiredStringSchema,
+					description: optionalCmsStringSchema,
+					url: optionalInternalOrExternalUrlSchema
+				})
+			)
+			.default([])
+	}),
+	blog: z.object({ band: pageBandSchema }),
+	contact: z.object({ band: pageBandSchema })
 })
 
 export const createAnnouncementsSchema = () =>

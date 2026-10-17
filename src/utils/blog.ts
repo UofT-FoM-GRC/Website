@@ -35,6 +35,13 @@ export function formatBlogMonth(monthKey: string) {
 	return blogMonthFormatter.format(new Date(`${monthKey}-01T00:00:00.000Z`))
 }
 
+/** The academic year (September to August) a date falls in, written like "2024–25". */
+export function academicYear(date: Date) {
+	const [year, month] = cmsDateKey(date).split('-').map(Number)
+	const start = month >= 9 ? year : year - 1
+	return `${start}–${String(start + 1).slice(2)}`
+}
+
 export function isExpiredOn(expiresOn: Date | undefined, now = new Date()) {
 	// CMS dates have no time. Keep a post current through the selected Toronto calendar day.
 	return Boolean(expiresOn && cmsDateKey(expiresOn) < torontoDate(now))
