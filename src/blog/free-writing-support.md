@@ -5,6 +5,7 @@ pubDate: 'Jan 4 2026'
 heroImage: '/assets/writing-logo.webp'
 heroImageAlt: 'Writing support logo'
 tags: ['other']
+topic: study-careers
 ---
 
 ## Boost Your Graduate Journey with Free NCFDD Programming at UofT

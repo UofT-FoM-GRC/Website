@@ -5,6 +5,7 @@ pubDate: 'Sep 3 2024'
 heroImage: 'https://www.teachermagazine.com/assets/images/teacher/_articleimagetransform855x313/Teaching_assistants.jpg'
 heroImageAlt: 'Teacher supporting a student in a classroom'
 tags: ['employment']
+topic: study-careers
 ---
 
 ## Teaching Assistant Positions Available

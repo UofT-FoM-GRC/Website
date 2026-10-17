@@ -298,11 +298,13 @@ test('existing repository-backed image paths still render on public routes', asy
 	await page.goto('/blog/biorender-for-students/')
 	await expect(page.getByRole('img', { name: 'BioRender logo', exact: true })).toHaveAttribute('src', /biorenderlogo/)
 
-	await page.goto('/resources/')
-	await expect(page.getByRole('img', { name: 'Employment resources', exact: true })).toHaveAttribute(
-		'src',
-		'/assets/uoft-placeholder-default.webp'
+	// Resource card images are now each resource page's sharing image.
+	await page.goto('/resources/employment/')
+	await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+		'content',
+		/\/assets\/uoft-placeholder-default\.webp$/
 	)
+	await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Employment resources')
 })
 
 test('CMS gives plain-language errors for excessive and unsupported image uploads', async ({ page }) => {

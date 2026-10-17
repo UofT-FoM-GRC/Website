@@ -1,54 +1,154 @@
 ---
 import { getCollection, getEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { resolveCmsAsset } from '../../utils/cmsAssets'
+import PageBand from '../../components/PageBand.astro'
+import RuledSection from '../../components/RuledSection.astro'
 
-const navigation = await getEntry('navigation', 'navigation')
-if (!navigation) throw new Error('Missing site navigation')
-// Cards follow the Resources Menu Links order that editors set by dragging in Advanced Site Settings.
-const bySlug = new Map((await getCollection('resources')).map((resource) => [resource.data.slug, resource]))
-const resources = navigation.data.resourceLinks
+const [allResources, navigation, pages] = await Promise.all([
+	getCollection('resources'),
+	getEntry('navigation', 'navigation'),
+	getEntry('pages', 'pages')
+])
+if (!navigation || !pages) throw new Error('Missing navigation or page content')
+const { band, searchPrompt, urgentContacts, updates } = pages.data.resources
+
+// Topics follow the Resources menu order, which editors set by dragging in Advanced Site Settings.
+const bySlug = new Map(allResources.map((resource) => [resource.data.slug, resource]))
+const topics = navigation.data.resourceLinks
 	.map(({ slug }) => bySlug.get(slug))
 	.filter((resource): resource is NonNullable<typeof resource> => Boolean(resource))
+const comingSoon = updates.filter(({ kind }) => kind === 'coming-soon').length
+const fresh = updates.length - comingSoon
+const updatesTag = [comingSoon && `${comingSoon} coming soon`, fresh && `${fresh} new`].filter(Boolean).join(' · ')
 ---
 
-<BaseLayout
-	title="Graduate student resources | Graduate Representation Committee"
-	description="Browse graduate student resources for employment, funding, wellness, housing, education, and more."
->
-	<main id="main-content" data-pagefind-body class="container mx-auto min-h-screen px-4 py-8">
-		<section>
-			<header class="mb-10 max-w-3xl">
-				<h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100">Graduate student resources</h1>
-				<p class="mt-3 text-slate-700 dark:text-slate-300">
-					Find University of Toronto and community resources organized by graduate-student need.
-				</p>
-			</header>
-			<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-				{
-					resources.map((resource) => (
-						<li class="card overflow-hidden rounded-lg bg-white shadow-md transition-colors duration-300 focus-within:ring-2 focus-within:ring-blue-500 hover:-translate-y-1 dark:bg-slate-800 dark:shadow-slate-900/50">
-							<a
-								href={`/resources/${resource.data.slug}/`}
-								class="block focus:outline-none focus-visible:ring-3 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+<BaseLayout title={`${band.label} | Graduate Representation Committee`} description={band.description}>
+	<main id="main-content" data-pagefind-body class="bg-[#F4F6FA] dark:bg-slate-900">
+		<PageBand {...band}>
+			<button
+				type="button"
+				x-data
+				@click="$dispatch('open-search', { opener: $el })"
+				class="mt-3 flex w-full max-w-[560px] items-center gap-3 rounded-[10px] bg-white px-[18px] py-3.5 text-left text-base text-[#5A6680] shadow-[0_2px_12px_rgb(10_20_40/0.18)] [text-shadow:none] hover:text-[#1E3765] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#F2C46B] dark:bg-slate-800 dark:text-slate-300"
+			>
+				<Icon name="mdi:magnify" class="h-5 w-5 shrink-0" aria-hidden="true" />
+				<span>{searchPrompt}</span>
+			</button>
+		</PageBand>
+
+		<div class="mx-auto flex max-w-[1100px] flex-col gap-11 px-5 py-12 md:px-6 md:py-14">
+			{
+				urgentContacts.length > 0 && (
+					<RuledSection id="urgent-help-heading" title="Need help now?" tag="Free and confidential">
+						<ul class="grid grid-cols-1 rounded-xl border border-[#D6DDE9] bg-white py-2 sm:grid-cols-2 sm:gap-y-5 sm:py-5 lg:grid-cols-4 dark:border-slate-700 dark:bg-slate-800">
+							{urgentContacts.map((contact) => (
+								<li class="flex flex-col gap-1.5 border-[#E3E8F0] px-5 py-3 not-first:border-t sm:py-1 sm:not-first:border-t-0 sm:even:border-l lg:not-first:border-l dark:border-slate-700">
+									<p class="font-mono text-[11px] tracking-[0.08em] text-[#0B6E8A] uppercase dark:text-sky-300">
+										{contact.label}
+									</p>
+									<a
+										href={contact.url}
+										class="text-2xl font-bold whitespace-nowrap text-[#1E3765] hover:underline dark:text-slate-100"
+									>
+										{contact.number}
+									</a>
+									{contact.note && (
+										<p class="text-sm leading-snug text-[#4B5872] dark:text-slate-400">{contact.note}</p>
+									)}
+								</li>
+							))}
+						</ul>
+					</RuledSection>
+				)
+			}
+
+			<RuledSection id="topics-heading" title="Browse by topic" tag={`${topics.length} topics`}>
+				<ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						topics.map((resource) => (
+							<li class="flex">
+								<a
+									href={`/resources/${resource.data.slug}/`}
+									class="group flex grow items-center gap-4 rounded-xl border border-[#D6DDE9] bg-white px-5 py-[18px] transition-[border-color,box-shadow] hover:border-[#0B6E8A] hover:shadow-[0_2px_12px_rgb(19_32_58/0.08)] focus-visible:border-[#0B6E8A] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-700 dark:bg-slate-800 dark:hover:border-sky-400"
+								>
+									<span class="flex grow flex-col gap-1">
+										<span class="text-[19px] leading-snug font-semibold text-[#1E3765] dark:text-slate-100">
+											{resource.data.cardTitle}
+										</span>
+										<span class="text-[15px] leading-snug text-[#4B5872] dark:text-slate-400">
+											{resource.data.description}
+										</span>
+									</span>
+									<span
+										class="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-[#EEF2F8] text-[#0B6E8A] dark:bg-slate-700 dark:text-sky-300"
+										aria-hidden="true"
+									>
+										<Icon name="mdi:arrow-right" class="h-4 w-4" />
+									</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</RuledSection>
+
+			{
+				updates.length > 0 && (
+					<RuledSection id="updates-heading" title="New and coming soon" tag={updatesTag} tone="ink">
+						<div class="relative">
+							<ul
+								tabindex="0"
+								aria-label="New and coming soon, scrolls sideways"
+								class="flex snap-x snap-mandatory gap-3.5 overflow-x-auto pr-16 pb-2.5 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A]"
 							>
-								<img
-									src={resolveCmsAsset(resource.data.cardImage)}
-									alt={resource.data.cardImageAlt}
-									width="720"
-									height="360"
-									loading="lazy"
-									decoding="async"
-									class="aspect-video w-full object-cover object-center"
-								/>
-								<div class="p-4">
-									<h2 class="mb-2 text-xl font-bold text-slate-900 dark:text-slate-100">{resource.data.cardTitle}</h2>
-								</div>
-							</a>
-						</li>
-					))
-				}
-			</ul>
-		</section>
+								{updates.map((item) => {
+									const soon = item.kind === 'coming-soon'
+									const Tag = item.url ? 'a' : 'div'
+									return (
+										<li class="flex w-[196px] shrink-0 snap-start">
+											<Tag
+												href={item.url}
+												class:list={[
+													'flex grow flex-col items-start gap-2 rounded-xl px-4 pt-4 pb-[18px]',
+													soon
+														? 'border-[1.5px] border-dashed border-[#B8C3D6] bg-[#F7F9FC] dark:border-slate-600 dark:bg-slate-800/60'
+														: 'border border-[#D6DDE9] bg-white dark:border-slate-700 dark:bg-slate-800',
+													item.url &&
+														'transition-[border-color,box-shadow] hover:border-[#0B6E8A] hover:shadow-[0_2px_12px_rgb(19_32_58/0.08)] motion-reduce:transition-none'
+												]}
+											>
+												<span
+													class:list={[
+														'rounded-full px-2.5 py-1 font-mono text-[11px] tracking-[0.08em] uppercase',
+														soon
+															? 'bg-[#F2C46B] text-[#13203A]'
+															: 'bg-[#E3EEF2] text-[#0B6E8A] dark:bg-slate-700 dark:text-sky-300'
+													]}
+												>
+													{soon ? 'Coming soon' : item.tag ? `New · ${item.tag}` : 'New'}
+												</span>
+												<span class="text-[17px] leading-snug font-semibold text-[#1E3765] dark:text-slate-100">
+													{item.title}
+												</span>
+												{item.description && (
+													<span class="text-sm leading-snug text-[#4B5872] dark:text-slate-400">
+														{item.description}
+													</span>
+												)}
+											</Tag>
+										</li>
+									)
+								})}
+							</ul>
+							<div
+								class="pointer-events-none absolute top-0 right-0 h-[calc(100%-10px)] w-[70px] bg-linear-to-r from-[#F4F6FA]/0 to-[#F4F6FA] to-70% dark:from-slate-900/0 dark:to-slate-900"
+								aria-hidden="true"
+							/>
+						</div>
+					</RuledSection>
+				)
+			}
+		</div>
 	</main>
 </BaseLayout>

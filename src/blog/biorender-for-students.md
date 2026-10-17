@@ -5,6 +5,7 @@ pubDate: 'Nov 13 2025'
 heroImage: '/assets/biorenderlogo.webp'
 heroImageAlt: 'BioRender logo'
 tags: ['other']
+topic: tools-perks
 ---
 
 ## Create innovative and eye-catching illustrations using BioRender

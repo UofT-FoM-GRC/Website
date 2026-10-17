@@ -11,6 +11,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 		heroImage: 'image',
 		heroImageAlt: 'string',
 		tags: 'select',
+		topic: 'select',
 		body: 'richtext'
 	},
 	typedResources: {
@@ -93,6 +94,16 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 				bio: 'text'
 			}
 		}
+	},
+	pages: {
+		resources: {
+			band: { label: 'string', title: 'string', description: 'text', image: 'image', imageAlt: 'string' },
+			searchPrompt: 'string',
+			urgentContacts: { label: 'string', number: 'string', url: 'string', note: 'string' },
+			updates: { kind: 'select', tag: 'string', title: 'string', description: 'string', url: 'string' }
+		},
+		blog: { band: { label: 'string', title: 'string', description: 'text', image: 'image', imageAlt: 'string' } },
+		contact: { band: { label: 'string', title: 'string', description: 'text', image: 'image', imageAlt: 'string' } }
 	},
 	navigation: {
 		brand: 'string',

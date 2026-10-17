@@ -126,6 +126,15 @@ collections:
           - { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards }
           - { label: Scholarship/Award/Grant Application Support, value: scholarship-award-grant-application-support }
           - { label: Other, value: other }
+      - label: Blog Page Topic
+        name: topic
+        widget: select
+        required: true
+        hint: The heading this post appears under on the Blog page.
+        options:
+          - { label: Funding & awards, value: funding-awards }
+          - { label: Free tools & perks, value: tools-perks }
+          - { label: Study & careers, value: study-careers }
       - {
           label: Body,
           name: body,
@@ -154,7 +163,7 @@ collections:
               label: Search and Sharing Summary,
               name: description,
               widget: text,
-              hint: One or two sentences shown in search results and link previews.
+              hint: 'One or two sentences shown in search results and link previews, and under the card title on the Resources page.'
             }
           - &resource_card_title {
               label: Resource Card Title,
@@ -167,7 +176,8 @@ collections:
               name: cardImage,
               widget: image,
               required: true,
-              accept: 'image/jpeg,image/png,image/webp'
+              accept: 'image/jpeg,image/png,image/webp',
+              hint: Shown as the preview picture when this page is shared in a message or on social media.
             }
           - &resource_card_image_alt {
               label: Resource Card Image Description,
@@ -558,7 +568,7 @@ collections:
             name: teamPage
             widget: object
             hint: The photo band at the top of the Team page.
-            fields:
+            fields: &page_band_fields
               - { label: Small Label, name: label, widget: string }
               - { label: Heading, name: title, widget: string }
               - { label: Short Description, name: description, widget: text }
@@ -618,6 +628,107 @@ collections:
                       required: false,
                       hint: "Optional. Two to four sentences in the member's own words. It appears over the member's photo when visitors hover over or tab to their card."
                     }
+  - name: page_headings
+    label: Resources, Blog and Contact Pages
+    files:
+      - label: Resources, Blog and Contact
+        name: pages
+        file: src/data/pages.json
+        preview_path: '/resources/'
+        fields:
+          - label: Resources Page
+            name: resources
+            widget: object
+            fields:
+              - {
+                  label: Page Heading,
+                  name: band,
+                  widget: object,
+                  hint: The photo band at the top of the page.,
+                  fields: *page_band_fields
+                }
+              - {
+                  label: Search Box Text,
+                  name: searchPrompt,
+                  widget: string,
+                  hint: Shown in the search box under the heading.
+                }
+              - label: Need Help Now
+                name: urgentContacts
+                widget: list
+                required: false
+                hint: Urgent phone numbers shown first on the Resources page. Drag to reorder. Check each number before publishing.
+                fields:
+                  - { label: Label, name: label, widget: string, hint: 'Example: Campus Safety · 24/7' }
+                  - { label: Number As Shown, name: number, widget: string, hint: 'Example: 416-978-2222' }
+                  - {
+                      label: Phone Link,
+                      name: url,
+                      widget: string,
+                      hint: 'Start with tel: and use digits only, for example tel:4169782222.',
+                      pattern:
+                        [
+                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                          'Use tel:, mailto:, an https URL or a site-relative URL.'
+                        ]
+                    }
+                  - { label: Note, name: note, widget: string, required: false }
+              - label: New and Coming Soon
+                name: updates
+                widget: list
+                required: false
+                hint: Small cards in a sideways-scrolling row at the bottom of the Resources page. The row is hidden while this list is empty.
+                fields:
+                  - {
+                      label: Kind,
+                      name: kind,
+                      widget: select,
+                      default: new,
+                      options: [{ label: New, value: new }, { label: Coming soon, value: coming-soon }]
+                    }
+                  - {
+                      label: Topic Tag,
+                      name: tag,
+                      widget: string,
+                      required: false,
+                      hint: 'Optional, for new items. Example: Housing.'
+                    }
+                  - { label: Title, name: title, widget: string }
+                  - { label: Short Description, name: description, widget: string, required: false }
+                  - {
+                      label: Link,
+                      name: url,
+                      widget: string,
+                      required: false,
+                      hint: 'Optional. Use https:// for other sites or /resources/housing for a page here.',
+                      pattern:
+                        [
+                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                          'Use an https URL, mailto:, tel:, or a site-relative URL.'
+                        ]
+                    }
+          - label: Blog Page
+            name: blog
+            widget: object
+            fields:
+              - {
+                  label: Page Heading,
+                  name: band,
+                  widget: object,
+                  hint: The photo band at the top of the Blog page.,
+                  fields: *page_band_fields
+                }
+          - label: Contact Page
+            name: contact
+            widget: object
+            fields:
+              - {
+                  label: Page Heading,
+                  name: band,
+                  widget: object,
+                  hint: The photo band at the top of the Contact page.,
+                  fields: *page_band_fields
+                }
   - name: advanced_site_settings
     label: Advanced Site Settings
     description: Navigation and contact/social settings for the whole site. These changes affect every page.

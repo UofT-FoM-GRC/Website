@@ -1,0 +1,36 @@
+---
+interface Props {
+	/** Id of the section heading; the section is labelled by it. */
+	id: string
+	title: string
+	/** Small uppercase note beside the heading, such as "Current team" or "9 topics". */
+	tag?: string
+	/** Blue marks current content; ink marks past or archived content. */
+	tone?: 'blue' | 'ink'
+	class?: string
+}
+
+const { id, title, tag, tone = 'blue', class: className } = Astro.props
+---
+
+<section
+	aria-labelledby={id}
+	class:list={[
+		'flex flex-col gap-6 border-l-[6px] pl-5 md:pl-7',
+		tone === 'ink' ? 'border-[#13203A] dark:border-slate-500' : 'border-[#1E3765] dark:border-[#7F9BD1]',
+		className
+	]}
+>
+	<div class="flex flex-col gap-2.5">
+		<div class="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+			<h2 id={id} class="scroll-mt-24 text-3xl font-bold text-[#1E3765] dark:text-slate-100">{title}</h2>
+			{
+				tag && (
+					<span class="font-mono text-xs tracking-[0.1em] text-[#5A6680] uppercase dark:text-slate-400">{tag}</span>
+				)
+			}
+		</div>
+		<div class="h-[5px] w-16 rounded-full bg-[#F2C46B]" aria-hidden="true"></div>
+	</div>
+	<slot />
+</section>

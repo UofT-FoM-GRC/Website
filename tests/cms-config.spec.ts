@@ -207,6 +207,7 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 		'Homepage Announcements',
 		'Homepage',
 		'Team and About Page',
+		'Resources, Blog and Contact Pages',
 		'Advanced Site Settings'
 	])
 	expect(getCollection(config, 'blog').preview_path).toBe('/blog/{{slug}}/')
@@ -216,6 +217,7 @@ test('Sveltia exposes task areas and route-specific site previews', () => {
 		['homepage_announcements', 'announcements', '/'],
 		['homepage', 'homepage', '/'],
 		['team_and_about', 'team', '/team/'],
+		['page_headings', 'pages', '/resources/'],
 		['advanced_site_settings', 'navigation', '/'],
 		['advanced_site_settings', 'site', '/']
 	] as const) {
@@ -526,6 +528,7 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 		['homepage_announcements', 'announcements', 'src/data/announcements.json'],
 		['homepage', 'homepage', 'src/data/homepage.json'],
 		['team_and_about', 'team', 'src/data/team.json'],
+		['page_headings', 'pages', 'src/data/pages.json'],
 		['advanced_site_settings', 'navigation', 'src/data/navigation.json'],
 		['advanced_site_settings', 'site', 'src/data/site.json']
 	] as const) {

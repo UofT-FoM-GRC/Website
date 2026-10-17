@@ -5,6 +5,7 @@ pubDate: 'Nov 30 2024'
 heroImage: '/assets/coursera-logo.webp'
 heroImageAlt: 'Coursera logo'
 tags: ['career-planning-exploration']
+topic: tools-perks
 ---
 
 ## Free Coursera access for U of T Medicine students

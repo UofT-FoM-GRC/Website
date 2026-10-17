@@ -4,6 +4,7 @@ import { BLOG_TAGS } from '../../consts'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ResourcePage from '../../components/ResourcePage.astro'
 import { isCurrentPost } from '../../utils/blog'
+import { resolveCmsAsset } from '../../utils/cmsAssets'
 
 export async function getStaticPaths() {
 	const resources = await getCollection('resources')
@@ -27,6 +28,11 @@ const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<BaseLayout title={resource.data.title} description={resource.data.description}>
+<BaseLayout
+	title={resource.data.title}
+	description={resource.data.description}
+	image={resolveCmsAsset(resource.data.cardImage)}
+	imageAlt={resource.data.cardImageAlt}
+>
 	<ResourcePage resource={resource} posts={posts} />
 </BaseLayout>

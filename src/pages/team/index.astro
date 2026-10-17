@@ -1,9 +1,10 @@
 ---
 import { getEntry } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
+import PageBand from '../../components/PageBand.astro'
+import RuledSection from '../../components/RuledSection.astro'
 import TeamMemberCard from '../../components/TeamMemberCard.astro'
 import TeamMemberChip from '../../components/TeamMemberChip.astro'
-import { resolveCmsAsset } from '../../utils/cmsAssets'
 import { executivesFirst, isAdvisor, shortYear } from '../../utils/team'
 
 const team = await getEntry('team', 'team')
@@ -23,43 +24,10 @@ const pastYears = years
 
 <BaseLayout title={teamPage.title} description={teamPage.description}>
 	<main id="main-content" data-pagefind-body class="bg-[#F4F6FA] dark:bg-slate-900">
-		<section
-			class="relative isolate flex min-h-[150px] items-center justify-center overflow-hidden px-6 py-7 text-center"
-		>
-			<img
-				src={resolveCmsAsset(teamPage.image)}
-				alt={teamPage.imageAlt}
-				width="1920"
-				height="1080"
-				fetchpriority="high"
-				class="absolute inset-0 -z-20 h-full w-full scale-105 object-cover object-[center_40%] blur-[2px]"
-			/>
-			<div class="absolute inset-0 -z-10 bg-[#1E3765]/75 dark:bg-[#1E3765]/80" aria-hidden="true"></div>
-			<div class="flex flex-col items-center gap-2 text-white [text-shadow:0_1px_12px_rgb(10_20_40/0.35)]">
-				<p class="font-mono text-xs font-medium tracking-[0.2em] text-balance text-[#EEF2F8] uppercase md:text-sm">
-					{teamPage.label}
-				</p>
-				<h1 class="text-3xl leading-tight font-bold md:text-[2.1rem]">{teamPage.title}</h1>
-				<p class="text-base text-balance text-[#F1F4FA] md:text-[17px]">{teamPage.description}</p>
-			</div>
-		</section>
+		<PageBand {...teamPage} />
 
 		<div class="mx-auto flex max-w-[908px] flex-col gap-11 px-5 py-12 md:px-6 md:py-14">
-			<section
-				aria-labelledby="current-team-heading"
-				class="flex flex-col gap-6 border-l-[6px] border-[#1E3765] pl-5 md:pl-7 dark:border-[#7F9BD1]"
-			>
-				<div class="flex flex-col gap-2.5">
-					<div class="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
-						<h2 id="current-team-heading" class="text-3xl font-bold text-[#1E3765] dark:text-slate-100">
-							{shortYear(currentYear)}
-						</h2>
-						<span class="font-mono text-xs tracking-[0.1em] text-[#5A6680] uppercase dark:text-slate-400"
-							>Current team</span
-						>
-					</div>
-					<div class="h-[5px] w-16 rounded-full bg-[#F2C46B]" aria-hidden="true"></div>
-				</div>
+			<RuledSection id="current-team-heading" title={shortYear(currentYear)} tag="Current team">
 				<div class="flex flex-col gap-9">
 					{
 						executives.length > 0 && (
@@ -96,20 +64,11 @@ const pastYears = years
 						)
 					}
 				</div>
-			</section>
+			</RuledSection>
 
 			{
 				pastYears.length > 0 && (
-					<section
-						aria-labelledby="past-teams-heading"
-						class="flex flex-col gap-6 border-l-[6px] border-[#13203A] pl-5 md:pl-7 dark:border-slate-500"
-					>
-						<div class="flex flex-col gap-2.5">
-							<h2 id="past-teams-heading" class="text-3xl font-bold text-[#1E3765] dark:text-slate-100">
-								Past teams
-							</h2>
-							<div class="h-[5px] w-16 rounded-full bg-[#F2C46B]" aria-hidden="true" />
-						</div>
+					<RuledSection id="past-teams-heading" title="Past teams" tone="ink">
 						<div class="flex flex-col gap-3">
 							{pastYears.map((year) => (
 								<details
@@ -168,7 +127,7 @@ const pastYears = years
 								</details>
 							))}
 						</div>
-					</section>
+					</RuledSection>
 				)
 			}
 		</div>

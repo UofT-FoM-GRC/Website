@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { isExpired } from '../src/utils/blog'
 
-const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/', '/team/']
+const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/', '/team/', '/contact/']
 
 test('key routes expose one main landmark and one page heading', async ({ page }) => {
 	for (const route of keyRoutes) {

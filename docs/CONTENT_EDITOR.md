@@ -6,7 +6,7 @@ Use <https://uoftfomgrc.ca/admin/>. Sign in with GitHub. Sveltia saves drafts on
 
 ## Edit content
 
-1. Open a task area: **Blog Posts**, **Resource Pages**, **Homepage Announcements**, **Homepage**, **Team and About Page**, or **Advanced Site Settings**. **Blog Posts** creates and edits posts; **Resource Pages** edits the eight existing pages.
+1. Open a task area: **Blog Posts**, **Resource Pages**, **Homepage Announcements**, **Homepage**, **Team and About Page**, **Resources, Blog and Contact Pages**, or **Advanced Site Settings**. **Blog Posts** creates and edits posts; **Resource Pages** edits the eight existing pages.
 2. Use labels, hints, lists, and image controls. Add meaningful image descriptions. Reorder lists with drag handles.
 3. Save. Incomplete drafts are allowed: missing required fields and invalid values are marked in the editor, and you can fix them later. A valid save creates or updates one draft pull request that can be revisited across sessions.
 4. When nothing is flagged, open **View Preview**. It points at the exact changed route in the Netlify deploy preview. Wait for **Building…** to finish; **Build Failed** means the preview needs a fix.
@@ -16,9 +16,18 @@ Use <https://uoftfomgrc.ca/admin/>. Sign in with GitHub. Sveltia saves drafts on
 
 The in-editor split preview is disabled. **View Preview** is the only authoritative preview. Saving a draft never changes the public site.
 
+## Resources, Blog and Contact Pages
+
+This area holds the photo band at the top of the Resources, Blog and Contact pages, plus:
+
+- **Resources Page:** the search box text, the **Need Help Now** phone numbers shown first (check each number before publishing), and **New and Coming Soon**, a sideways-scrolling row of small cards at the bottom of the page. That row stays hidden while its list is empty. The topic cards under **Browse by topic** come from the eight resource pages: each card shows the page's **Resource Card Title** and **Search and Sharing Summary**, in the **Resources Menu Links** order set in **Advanced Site Settings**.
+- **Contact Page:** only the photo band. The email, Instagram and GitHub cards come from **Contact and Social Links** in **Advanced Site Settings**.
+
+On the Blog page, each current post appears under its **Blog Page Topic**. Ended posts (archived or expired) are listed by academic year in the folded Archive at the bottom.
+
 ## Advanced Site Settings
 
-**Advanced Site Settings** affects every page. It holds the header brand and navigation links, the Resources link, and the contact email plus social links used in the homepage hero. Turn on **Coming Soon** for a navigation link whose page is not published yet: it shows the label with a "Soon" tag and no link. **Resources Menu Label** is the text of the Resources link in the top bar, and **Resources Menu Position** sets how many main links come before it. In URL fields use `https://` for external pages, `/about` for a page on this site, `mailto:grc.facmed@utoronto.ca` for email, `tel:+14161234567` for telephone, or `#contact` for a section of the current page. **Resources Menu Links** has one entry per fixed resource page; choose the page from the list instead of typing a route, and drag entries to set the order of the topic cards on the Resources page.
+**Advanced Site Settings** affects every page. It holds the header brand and navigation links, the Resources link, and the contact email plus social links used in the homepage hero and Contact page. Turn on **Coming Soon** for a navigation link whose page is not published yet: it shows the label with a "Soon" tag and no link. **Resources Menu Label** is the text of the Resources link in the top bar, and **Resources Menu Position** sets how many main links come before it. In URL fields use `https://` for external pages, `/about` for a page on this site, `mailto:grc.facmed@utoronto.ca` for email, `tel:+14161234567` for telephone, or `#contact` for a section of the current page. **Resources Menu Links** has one entry per fixed resource page; choose the page from the list instead of typing a route, and drag entries to set the order of the topic cards under **Browse by topic** on the Resources page.
 
 ## Guardrails
 
@@ -28,7 +37,9 @@ The in-editor split preview is disabled. **View Preview** is the only authoritat
 - Team years and members display in listed order; drag to reorder. **Current Team Year** must exactly match one listed **Academic Year** text, or the site build fails and publishing is blocked. Add photo and photo description together. A member without a photo shows their initials. **Pronouns** and **Bio** are optional; leave them empty unless the member supplied them. On the Team page, the current year shows photo cards, and a bio appears over the photo when a visitor hovers over or tabs to the card. Anyone whose **Position** includes "Advisor" is listed under Advisors as a small name card. Past years are folded; visitors can open as many as they like. **Team Page Heading** sets the photo band at the top of the Team page.
 - Homepage hero needs two to five lines. The first line is a small label above the heading, the second line is the page heading (keep it descriptive), and any further lines appear under it as a tagline.
 - Homepage announcements display only when **Show on Homepage** is enabled; list order controls display order. An active announcement requires an expiry date and stays up through that Toronto date, then hides at the next scheduled daily rebuild. Leave an announcement inactive to keep it as an unpublished training item.
-- Blog posts and active announcements expire automatically on their Toronto calendar date. Expired or archived content stays at its URL with a historical notice, leaves listings and search, and is marked `noindex`.
+- Blog posts and active announcements expire automatically on their Toronto calendar date. Expired or archived content stays at its URL with a historical notice, leaves topic listings, resource pages, search, feeds and the sitemap, and is marked `noindex`. Ended blog posts are still listed in the Blog page's folded Archive.
+- Every blog post needs a **Blog Page Topic**. A post saved without one appears under **More posts** at the end of the Blog page.
+- **Resource Card Image** is the preview picture shown when a resource page is shared in a message or on social media; it no longer appears on the Resources page itself.
 - External links need `https://`; email needs `mailto:`; phone needs `tel:`.
 
 ## Image workflow

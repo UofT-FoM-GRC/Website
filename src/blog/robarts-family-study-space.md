@@ -5,6 +5,7 @@ pubDate: 'Oct 30 2025'
 heroImage: '/assets/robarts-family-study-space.webp'
 heroImageAlt: 'Family study space at Robarts Library'
 tags: ['other']
+topic: study-careers
 ---
 
 ## Study space while caring for children

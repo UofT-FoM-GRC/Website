@@ -10,6 +10,7 @@ const practicePost = {
 		"description: 'A training post used to rehearse publishing without public clutter.'",
 		"pubDate: '2026-01-15'",
 		'tags: [other]',
+		'topic: tools-perks',
 		'---',
 		'',
 		'Body text for rehearsal.',
@@ -20,6 +21,17 @@ const practicePost = {
 const openBlogEntry = async (page: Page, entry: RegExp) => {
 	await page.getByRole('treeitem', { name: 'Blog Posts', exact: true }).click()
 	await page.getByText(entry).click()
+}
+
+// Sveltia draws long forms lazily as they scroll into view, so scroll the editor until the Body field exists.
+const revealBody = async (page: Page) => {
+	const body = page.locator('[data-key-path="body"]')
+	await page.locator('[data-key-path="title"]').hover()
+	for (let attempt = 0; attempt < 10 && (await body.count()) === 0; attempt += 1) {
+		await page.mouse.wheel(0, 600)
+		await page.waitForTimeout(200)
+	}
+	return body
 }
 
 const startPublishing = async (page: Page) => {
@@ -98,7 +110,7 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		const branch = `cms/blog/${practicePost.slug}`
 		const original = mock.branches.get(branch)?.get(`src/blog/${practicePost.slug}.md`)
 
-		const body = page.locator('[data-key-path="body"]')
+		const body = await revealBody(page)
 		await body.getByRole('button', { name: 'Insert' }).click()
 		await page.getByRole('menuitem', { name: 'Action link' }).click()
 		const actionDialog = page.getByRole('dialog', { name: 'Action link' })
@@ -127,6 +139,7 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 				"description: 'Regression fixture for writing after a leading action link.'",
 				"pubDate: '2026-01-15'",
 				'tags: [other]',
+				'topic: tools-perks',
 				'---',
 				''
 			].join('\n')
@@ -134,7 +147,7 @@ test.describe('editorial workflow against the mocked GitHub backend', () => {
 		await openMockedAdmin(page, (seeded) => seeded.seedDraft(emptyBodyPost))
 		await openBlogEntry(page, /^Empty body action link — /)
 
-		const body = page.locator('[data-key-path="body"]')
+		const body = await revealBody(page)
 		await body.getByRole('button', { name: 'Insert' }).click()
 		await page.getByRole('menuitem', { name: 'Action link' }).click()
 		const dialog = page.getByRole('dialog', { name: 'Action link' })

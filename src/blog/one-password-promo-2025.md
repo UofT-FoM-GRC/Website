@@ -5,6 +5,7 @@ pubDate: 'Nov 4 2025'
 heroImage: '/assets/1Password-logo.webp'
 heroImageAlt: '1Password logo'
 tags: ['other']
+topic: tools-perks
 ---
 
 :::callout{kind="information"}
