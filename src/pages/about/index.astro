@@ -1,60 +1,393 @@
 ---
 import { getEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
+import ContactLine from '../../components/ContactLine.astro'
+import SurveyFigure from '../../components/SurveyFigure.astro'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import { resolveCmsAsset } from '../../utils/cmsAssets'
+import { handleFrom, networkDetails } from '../../utils/contact'
+import { executivesFirst } from '../../utils/team'
 
-const team = await getEntry('team', 'team')
-if (!team) throw new Error('Missing team content')
-const { about } = team.data
+const [team, site] = await Promise.all([getEntry('team', 'team'), getEntry('site', 'site')])
+if (!team || !site) throw new Error('Missing team or site content')
+const { about, teamPage, years, currentYear } = team.data
+const { surveyFigure } = about
+
+// Faces of the current team beside the "Meet the team" button; the count bubble covers everyone else.
+const currentMembers = executivesFirst(years.find(({ year }) => year === currentYear)?.members ?? [])
+const faces = currentMembers.filter(({ image }) => image).slice(0, 6)
+const moreMembers = currentMembers.length - faces.length
+
+const { email } = site.data.contact
+const instagram = site.data.socialLinks.find(({ network }) => network === 'instagram')
+
+// One column per objective from the medium breakpoint up.
+const objectiveColumns = { 1: 'md:grid-cols-1', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3' }[about.objectives.length]
+
+// The first link in a pair is the filled button and the second the outlined one.
+const buttonClass = (index: number) =>
+	index === 0
+		? 'inline-flex min-h-11 items-center rounded-lg bg-[#1E3765] px-5 py-2 text-base font-semibold text-white no-underline transition-colors hover:bg-[#13203A] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:bg-sky-300 dark:text-slate-900 dark:hover:bg-sky-200 dark:focus-visible:outline-sky-300'
+		: 'inline-flex min-h-11 items-center rounded-lg border-[1.5px] border-[#1E3765] bg-white px-5 py-2 text-base font-semibold text-[#1E3765] no-underline transition-colors hover:bg-[#E3E9F3] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-300 dark:bg-transparent dark:text-slate-100 dark:hover:bg-slate-700 dark:focus-visible:outline-sky-300'
+
+// The yearly loop: four stops on a circle (top, right, bottom, left) with arrows between them, clockwise.
+const ring = { centre: 150, radius: 116, node: 25 }
+const stops = [
+	{ x: ring.centre, y: ring.centre - ring.radius },
+	{ x: ring.centre + ring.radius, y: ring.centre },
+	{ x: ring.centre, y: ring.centre + ring.radius },
+	{ x: ring.centre - ring.radius, y: ring.centre }
+]
+const arrows = [45, 135, 225, 315].map((angle) => {
+	const radians = ((angle - 90) * Math.PI) / 180
+	return {
+		x: (ring.centre + ring.radius * Math.cos(radians)).toFixed(1),
+		y: (ring.centre + ring.radius * Math.sin(radians)).toFixed(1),
+		angle
+	}
+})
 ---
 
 <BaseLayout title={about.title} description={about.description}>
-	<main id="main-content" data-pagefind-body>
-		<section id="about-hero" class="hero">
-			<div class="hero_container flex w-full flex-col items-center justify-center">
-				<img
-					src={resolveCmsAsset(about.heroImage)}
-					alt={about.heroImageAlt}
-					width="1920"
-					height="1080"
-					class="hero_image"
-					fetchpriority="high"
-				/>
-			</div>
-			<div class="hero_content prose md:prose-lg dark:prose-invert container mx-auto mt-4 max-w-[75ch] p-4">
-				<h1 class="hero_title my-4 text-center text-5xl font-bold text-slate-900 dark:text-slate-100">
-					{about.title}
-				</h1><p class="hero_description lead text-slate-700 dark:text-slate-300">{about.description}</p>
+	<main id="main-content" data-pagefind-body class="bg-white dark:bg-slate-900">
+		<!-- Headline, introduction and the 100-dot survey figure. -->
+		<section id="about-hero" aria-labelledby="about-heading">
+			<div
+				class:list={[
+					'mx-auto grid max-w-[1180px] gap-10 px-5 py-12 md:px-10 md:py-20 lg:gap-16',
+					{ 'lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-center xl:grid-cols-[minmax(0,1fr)_28rem]': surveyFigure.show }
+				]}
+			>
+				<div class="flex max-w-[38rem] flex-col items-start gap-5">
+					<p
+						class="font-mono text-xs font-medium tracking-[0.16em] text-[#0B6E8A] uppercase md:text-sm dark:text-sky-300"
+					>
+						{about.title}
+					</p>
+					<h1
+						id="about-heading"
+						class="text-[2.15rem] leading-[1.1] font-bold tracking-tight text-balance text-[#1E3765] md:text-5xl md:leading-[1.08] lg:text-[2.75rem] xl:text-5xl dark:text-slate-100"
+					>
+						{about.headline}
+					</h1>
+					<p class="text-lg leading-relaxed text-[#2E3A52] md:text-[19px] dark:text-slate-300">{about.description}</p>
+					<div class="mt-1 flex flex-wrap gap-3">
+						{
+							about.heroLinks.map((link, index) => (
+								<a href={link.url} class={buttonClass(index)}>
+									{link.label}
+								</a>
+							))
+						}
+					</div>
+				</div>
+				{surveyFigure.show && <SurveyFigure {...surveyFigure} />}
 			</div>
 		</section>
-		<section id="about-content" class="fade-in-section container mx-auto max-w-[75ch] px-4 py-8">
-			<div class="mb-8 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
-				<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">{about.purposeTitle}</h2>{
-					about.purposeParagraphs.map((paragraph) => <p class="mb-4 text-slate-700 dark:text-slate-300">{paragraph}</p>)
-				}<ul class="space-y-2 text-slate-700 dark:text-slate-300">
+
+		<!-- Purpose, then one large keyword per objective. Old links to /about#about-content land here. -->
+		<section id="about-content" aria-labelledby="purpose-heading" class="bg-[#1E3765] text-white">
+			<div class="mx-auto flex max-w-[1180px] flex-col gap-8 px-5 py-14 md:px-10 md:py-16">
+				<div class="grid gap-5 border-b border-white/25 pb-9 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-14">
+					<h2 id="purpose-heading" class="text-3xl leading-tight font-bold md:text-[2.5rem]">{about.purposeTitle}</h2>
+					<div class="flex max-w-[45rem] flex-col gap-4 text-lg leading-relaxed text-[#D3DDF0] md:text-[19px]">
+						{about.purposeParagraphs.map((paragraph) => <p class="m-0">{paragraph}</p>)}
+					</div>
+				</div>
+				<p class="m-0 text-lg font-semibold">{about.objectivesIntro}</p>
+				<ul data-objectives class:list={['m-0 grid list-none grid-cols-1 gap-8 p-0 md:gap-10', objectiveColumns]}>
 					{
 						about.objectives.map((objective) => (
-							<li class="flex items-start">
-								<>
-									<span class="mr-3 text-blue-600 dark:text-blue-400">✓</span>
-									<span>{objective}</span>
-								</>
+							<li class="flex flex-col gap-3">
+								<span class="objective-keyword leading-[0.95] font-bold tracking-tight">{objective.keyword}</span>
+								<span class="max-w-[20rem] text-lg leading-normal text-[#D3DDF0]">{objective.text}</span>
 							</li>
 						))
 					}
 				</ul>
 			</div>
-			<div class="mb-8 rounded-lg bg-white p-6 shadow-md transition-colors dark:bg-slate-800 dark:shadow-slate-900/50">
-				<h2 class="mb-4 text-center text-2xl font-bold text-slate-900 dark:text-slate-100">{about.workTitle}</h2>{
-					about.workParagraphs.map((paragraph) => <p class="text-slate-700 dark:text-slate-300">{paragraph}</p>)
-				}
+		</section>
+
+		<!-- What the GRC does each year, drawn as a loop from the medium breakpoint up and as numbered steps on phones. -->
+		<section id="our-work" aria-labelledby="work-heading" class="scroll-mt-16">
+			<div
+				class="mx-auto grid max-w-[1180px] gap-10 px-5 py-14 md:px-10 md:py-20 xl:grid-cols-[16rem_minmax(0,1fr)] xl:items-center xl:gap-12"
+			>
+				<div class="flex max-w-[38rem] flex-col gap-4">
+					<h2
+						id="work-heading"
+						class="text-3xl leading-tight font-bold text-[#1E3765] md:text-[2.5rem] dark:text-slate-100"
+					>
+						{about.workTitle}
+					</h2>
+					{
+						about.workParagraphs.map((paragraph) => (
+							<p class="m-0 text-lg leading-relaxed text-[#4B5872] dark:text-slate-300">{paragraph}</p>
+						))
+					}
+				</div>
+				<div class="work-loop">
+					<ol data-work-steps class="work-steps m-0 flex list-none flex-col p-0">
+						{
+							about.workSteps.map((step, index) => (
+								<li class="work-step relative flex gap-4 pb-7 last:pb-0">
+									<span
+										class="work-step-number flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1E3765] text-lg font-bold text-white dark:bg-sky-300 dark:text-slate-900"
+										aria-hidden="true"
+									>
+										{index + 1}
+									</span>
+									<div class="flex flex-col gap-1 pt-1.5">
+										<h3 class="m-0 text-xl leading-tight font-bold text-[#13203A] dark:text-slate-100">{step.title}</h3>
+										<p class="m-0 text-base leading-snug text-[#4B5872] dark:text-slate-300">{step.text}</p>
+									</div>
+								</li>
+							))
+						}
+					</ol>
+					<div class="work-ring relative hidden md:block">
+						<svg viewBox="0 0 300 300" class="block h-full w-full overflow-visible" aria-hidden="true">
+							<circle
+								cx={ring.centre}
+								cy={ring.centre}
+								r={ring.radius}
+								fill="none"
+								class="stroke-[#F2C46B]"
+								stroke-width="5"></circle>
+							{
+								arrows.map(({ x, y, angle }) => (
+									<path
+										d="M-11,-9 L7,0 L-11,9 Z"
+										transform={`translate(${x},${y}) rotate(${angle})`}
+										class="fill-[#F2C46B]"
+									/>
+								))
+							}
+							{
+								stops.map(({ x, y }, index) => (
+									<g>
+										<circle
+											cx={x}
+											cy={y}
+											r={ring.node}
+											stroke-width="5"
+											class="fill-[#1E3765] stroke-white dark:fill-sky-300 dark:stroke-slate-900"
+										/>
+										<text
+											x={x}
+											y={y}
+											dy="0.35em"
+											text-anchor="middle"
+											font-size="22"
+											font-weight="700"
+											class="fill-white dark:fill-slate-900"
+										>
+											{index + 1}
+										</text>
+									</g>
+								))
+							}
+						</svg>
+						<p class="absolute inset-0 m-0 flex flex-col items-center justify-center text-center">
+							<span class="text-2xl leading-tight font-bold text-[#1E3765] dark:text-slate-100">
+								{about.workCycleLabel}
+							</span>
+							<span class="text-base text-[#4B5872] dark:text-slate-400">{about.workCycleNote}</span>
+						</p>
+					</div>
+					<p class="mt-6 mb-0 flex items-center gap-3 text-base text-[#4B5872] md:hidden dark:text-slate-300">
+						<Icon name="mdi:autorenew" class="h-6 w-6 shrink-0 text-[#B8892D] dark:text-[#F2C46B]" aria-hidden="true" />
+						<span
+							><strong class="text-[#13203A] dark:text-slate-100">{about.workCycleLabel}</strong>, {
+								about.workCycleNote
+							}.</span
+						>
+					</p>
+				</div>
 			</div>
-			<!-- Old links to /about#about-team land here and point on to the Team page. -->
-			<p id="about-team" class="text-center">
-				<a href="/team" class="text-lg font-semibold text-blue-700 underline underline-offset-4 dark:text-blue-300"
-					>Meet the team &rarr;</a
+		</section>
+
+		<!-- One line on why the site exists, with links to the Resources and Blog pages. -->
+		<section aria-labelledby="resources-band-heading" class="bg-[#EEF2F8] dark:bg-slate-800">
+			<div
+				class="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 py-12 md:px-10 md:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+			>
+				<h2
+					id="resources-band-heading"
+					class="m-0 max-w-[44rem] text-2xl leading-snug font-semibold tracking-tight text-[#1E3765] md:text-[2rem] md:leading-tight dark:text-slate-100"
 				>
-			</p>
+					{about.resourcesBand.text}
+				</h2>
+				<div class="flex shrink-0 flex-wrap gap-3">
+					{
+						about.resourcesBand.links.map((link, index) => (
+							<a href={link.url} class={buttonClass(index)}>
+								{link.label}
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- The team and how to reach the GRC. Old links to /about#about-team land here. -->
+		<section id="about-team" aria-label="Team and contact" class="scroll-mt-16">
+			<div
+				class="mx-auto grid max-w-[1180px] gap-10 px-5 py-14 md:px-10 md:py-16 lg:grid-cols-2 lg:items-center lg:gap-16"
+			>
+				<div class="flex flex-col items-start gap-5">
+					{
+						faces.length > 0 && (
+							<div class="flex" aria-hidden="true">
+								{faces.map((member, index) => (
+									<img
+										src={member.image}
+										alt=""
+										width="64"
+										height="64"
+										loading="lazy"
+										class:list={[
+											'h-16 w-16 rounded-full border-4 border-white object-cover dark:border-slate-900',
+											{ '-ml-4': index > 0 }
+										]}
+									/>
+								))}
+								{moreMembers > 0 && (
+									<span class="-ml-4 flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-[#DCE4F1] text-base font-semibold text-[#1E3765] dark:border-slate-900 dark:bg-slate-700 dark:text-slate-200">
+										+{moreMembers}
+									</span>
+								)}
+							</div>
+						)
+					}
+					<h2 class="m-0 text-2xl leading-snug font-semibold text-[#13203A] md:text-[1.65rem] dark:text-slate-100">
+						{teamPage.description}
+					</h2>
+					<a href="/team" class={buttonClass(0)}>{teamPage.title}</a>
+				</div>
+				<div
+					class="flex flex-col gap-3 border-t border-[#D6DDE9] pt-8 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12 dark:border-slate-700"
+				>
+					<h2 class="m-0 text-xl leading-snug font-semibold text-[#13203A] md:text-[1.4rem] dark:text-slate-100">
+						{about.contactPrompt}
+					</h2>
+					<ul
+						data-about-contact
+						class="m-0 flex list-none flex-col gap-2 p-0 text-lg text-[#4B5872] dark:text-slate-300"
+					>
+						<ContactLine label="Email" href={`mailto:${email}`} text={email} note="We reply by email." />
+						{
+							instagram && (
+								<ContactLine
+									label={networkDetails.instagram.name}
+									href={instagram.url}
+									text={handleFrom(instagram.url, 'instagram')}
+									note={networkDetails.instagram.note}
+									external
+								/>
+							)
+						}
+					</ul>
+				</div>
+			</div>
 		</section>
 	</main>
 </BaseLayout>
+
+<style>
+	/* The keywords shrink with the window so "advocate." fits its column. */
+	.objective-keyword {
+		font-size: clamp(2.75rem, 4.4vw, 4rem);
+	}
+
+	/* On phones a gold line joins the numbered steps. */
+	.work-step:not(:last-child)::before {
+		content: '';
+		position: absolute;
+		top: 2.75rem;
+		bottom: 0.25rem;
+		left: calc(1.25rem - 1.5px);
+		width: 3px;
+		border-radius: 3px;
+		background: #f2c46b;
+	}
+
+	/*
+		From the medium breakpoint up the steps sit around the circle: 1 above, 2 to the right, 3 below and 4 to the left.
+		The list shares the outer grid (subgrid), so the circle fills the middle cell without being part of the list.
+	*/
+	@media (min-width: 48rem) {
+		.work-loop {
+			--ring: 17rem;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) var(--ring) minmax(0, 1fr);
+			grid-template-rows: auto var(--ring) auto;
+			column-gap: 1.75rem;
+			row-gap: 0.75rem;
+		}
+
+		.work-steps {
+			grid-column: 1 / -1;
+			grid-row: 1 / -1;
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+		}
+
+		.work-step {
+			display: block;
+			padding: 0;
+		}
+
+		.work-step::before,
+		.work-step-number {
+			display: none;
+		}
+
+		.work-step > div {
+			padding: 0;
+		}
+
+		.work-step:nth-child(1),
+		.work-step:nth-child(3) {
+			grid-column: 1 / -1;
+			justify-self: center;
+			max-width: 23rem;
+			text-align: center;
+		}
+
+		.work-step:nth-child(1) {
+			grid-row: 1;
+			align-self: end;
+		}
+
+		.work-step:nth-child(2) {
+			grid-column: 3;
+			grid-row: 2;
+			align-self: center;
+		}
+
+		.work-step:nth-child(3) {
+			grid-row: 3;
+			align-self: start;
+		}
+
+		.work-step:nth-child(4) {
+			grid-column: 1;
+			grid-row: 2;
+			align-self: center;
+			text-align: right;
+		}
+
+		.work-ring {
+			grid-column: 2;
+			grid-row: 2;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.work-loop {
+			--ring: 19rem;
+			column-gap: 2rem;
+		}
+	}
+</style>

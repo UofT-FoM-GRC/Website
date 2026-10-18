@@ -20,18 +20,27 @@ type TeamData = {
 
 const readTeam = () => JSON.parse(readFileSync(new URL('../src/data/team.json', import.meta.url), 'utf8')) as TeamData
 
+const validAbout = () => ({
+	title: 'About the GRC',
+	headline: 'Headline',
+	description: 'Description',
+	heroLinks: [{ label: 'See our work', url: '#our-work' }],
+	surveyFigure: { show: true, value: 50, statement: 'respondents said something.', source: 'Survey, 10 respondents.' },
+	purposeTitle: 'Purpose',
+	purposeParagraphs: ['Purpose paragraph'],
+	objectivesIntro: 'We aim to ensure that you:',
+	objectives: [{ keyword: 'inform.', text: 'Objective' }],
+	workTitle: 'Work',
+	workParagraphs: ['Work paragraph'],
+	workSteps: ['Survey', 'Compare', 'Report', 'Recommend'].map((title) => ({ title, text: `${title} text` })),
+	workCycleLabel: 'Each year',
+	workCycleNote: 'then it starts again',
+	resourcesBand: { text: 'Band text', links: [{ label: 'Browse resources', url: '/resources' }] },
+	contactPrompt: 'Questions?'
+})
+
 const validTeam = (): TeamData => ({
-	about: {
-		title: 'About the GRC',
-		description: 'Description',
-		heroImage: '/assets/about.webp',
-		heroImageAlt: 'Students meeting',
-		purposeTitle: 'Purpose',
-		purposeParagraphs: ['Purpose paragraph'],
-		objectives: ['Objective'],
-		workTitle: 'Work',
-		workParagraphs: ['Work paragraph']
-	},
+	about: validAbout(),
 	teamPage: {
 		label: 'Graduate Representation Committee',
 		title: 'Meet the team',
@@ -47,6 +56,7 @@ const validTeam = (): TeamData => ({
 })
 
 const isAdvisor = ({ position }: TeamMember) => /advisor/i.test(position)
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const shortYear = (year: string) => year.replace(/^(\d{4})\s*-\s*\d{2}(\d{2})$/, '$1–$2')
 
 test('team schema requires a current year selection', () => {
@@ -253,9 +263,120 @@ test('past teams are folded by year in stored order and can be opened together',
 	}
 })
 
+test('about schema keeps four loop steps, up to three objectives, a 0–100 figure and safe links', () => {
+	const withAbout = (about: Record<string, unknown>) => teamSchema.safeParse({ ...validTeam(), about })
+	const about = validAbout()
+
+	expect(withAbout(about).success).toBeTruthy()
+	expect(withAbout({ ...about, workSteps: about.workSteps.slice(0, 3) }).success).toBeFalsy()
+	expect(withAbout({ ...about, objectives: Array(4).fill(about.objectives[0]) }).success).toBeFalsy()
+	expect(withAbout({ ...about, surveyFigure: { ...about.surveyFigure, value: 101 } }).success).toBeFalsy()
+	expect(withAbout({ ...about, heroLinks: [{ label: 'Bad', url: 'javascript:alert(1)' }] }).success).toBeFalsy()
+	expect(
+		withAbout({ ...about, resourcesBand: { ...about.resourcesBand, links: Array(3).fill(about.heroLinks[0]) } }).success
+	).toBeFalsy()
+
+	// The figure stays hidden unless it is switched on.
+	const figureWithoutSwitch: Partial<About['surveyFigure']> = structuredClone(about.surveyFigure)
+	delete figureWithoutSwitch.show
+	const parsed = withAbout({ ...about, surveyFigure: figureWithoutSwitch })
+	expect(parsed.success).toBeTruthy()
+	if (parsed.success) expect(parsed.data.about.surveyFigure.show).toBe(false)
+})
+
+type About = ReturnType<typeof validAbout>
+
+test('about page shows the stored headline, survey figure, objectives, yearly loop and links in order', async ({
+	page
+}) => {
+	const about = readTeam().about as unknown as About
+	await page.goto('/about/')
+
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(about.headline)
+	await expect(page).toHaveTitle(new RegExp(about.title))
+	const hero = page.locator('#about-hero')
+	for (const link of about.heroLinks) {
+		await expect(hero.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
+	}
+
+	const figure = page.locator('[data-survey-figure]')
+	if (about.surveyFigure.show) {
+		await expect(figure.locator('[data-dot]')).toHaveCount(100)
+		await expect(figure.locator('[data-dot="filled"]')).toHaveCount(about.surveyFigure.value)
+		await expect(figure.locator('.sr-only')).toHaveText(`${about.surveyFigure.value} out of 100`)
+		await expect(figure).toContainText(about.surveyFigure.statement)
+		await expect(figure).toContainText(about.surveyFigure.source)
+	} else {
+		await expect(figure).toHaveCount(0)
+	}
+
+	await expect(page.locator('#purpose-heading')).toHaveText(about.purposeTitle)
+	await expect(page.locator('[data-objectives] li')).toHaveText(
+		about.objectives.map(({ keyword, text }) => new RegExp(`${escapeRegExp(keyword)}\\s*${escapeRegExp(text)}`))
+	)
+	await expect(page.locator('[data-work-steps] h3')).toHaveText(about.workSteps.map(({ title }) => title))
+	await expect(page.locator('#our-work')).toContainText(about.workCycleLabel)
+
+	for (const link of about.resourcesBand.links) {
+		await expect(page.getByRole('link', { name: link.label, exact: true })).toHaveAttribute('href', link.url)
+	}
+	await expect(page.locator('#about-team')).toContainText(about.contactPrompt)
+})
+
+test('about page keeps its old section links and its "See our work" button scrolls to the loop', async ({ page }) => {
+	await page.goto('/about/')
+	for (const id of ['about-hero', 'about-content', 'our-work', 'about-team']) {
+		await expect(page.locator(`#${id}`)).toHaveCount(1)
+	}
+	const toWork = page.locator('#about-hero a[href="#our-work"]')
+	test.skip((await toWork.count()) === 0, 'No headline button points to the Our Work section.')
+	await toWork.click()
+	await expect(page).toHaveURL(/#our-work$/)
+	await expect(page.locator('#work-heading')).toBeInViewport()
+})
+
+test('the yearly loop sits around the circle on wide screens and stacks in order on phones', async ({ page }) => {
+	await page.setViewportSize({ width: 1280, height: 900 })
+	await page.goto('/about/')
+	const steps = page.locator('[data-work-steps] > li')
+	const ring = page.locator('.work-ring')
+	await expect(ring).toBeVisible()
+	const [top, right, bottom, left] = await Promise.all([0, 1, 2, 3].map((index) => steps.nth(index).boundingBox()))
+	const circle = (await ring.boundingBox())!
+	expect(top!.y + top!.height).toBeLessThanOrEqual(circle.y + 1)
+	expect(right!.x).toBeGreaterThanOrEqual(circle.x + circle.width - 1)
+	expect(bottom!.y).toBeGreaterThanOrEqual(circle.y + circle.height - 1)
+	expect(left!.x + left!.width).toBeLessThanOrEqual(circle.x + 1)
+
+	await page.setViewportSize({ width: 390, height: 844 })
+	await expect(ring).toBeHidden()
+	const stacked = await steps.evaluateAll((items) => items.map((item) => item.getBoundingClientRect().top))
+	expect(stacked).toEqual([...stacked].sort((a, b) => a - b))
+	// Nothing on the page is wider than a phone screen.
+	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390)
+})
+
 test('about page links to the team page instead of listing members', async ({ page }) => {
 	await page.goto('/about/')
 	await expect(page.locator('[data-team-card], [data-team-chip]')).toHaveCount(0)
-	await page.getByRole('link', { name: /Meet the team/ }).click()
+	const team = readTeam()
+	const teamLinks = page.locator('main a[href="/team"]')
+	await expect(teamLinks.first()).toBeVisible()
+	await page.locator('#about-team').getByRole('link', { name: team.teamPage.title }).click()
 	await expect(page).toHaveURL(/\/team\/?$/)
+})
+
+test('about page contact lines use the site email and Instagram link', async ({ page }) => {
+	const site = JSON.parse(readFileSync(new URL('../src/data/site.json', import.meta.url), 'utf8')) as {
+		contact: { email: string }
+		socialLinks: { url: string; network: string }[]
+	}
+	await page.goto('/about/')
+	const contact = page.locator('[data-about-contact]')
+	await expect(contact.getByRole('link', { name: site.contact.email })).toHaveAttribute(
+		'href',
+		`mailto:${site.contact.email}`
+	)
+	const instagram = site.socialLinks.find(({ network }) => network === 'instagram')
+	if (instagram) await expect(contact.locator(`a[href="${instagram.url}"]`)).toHaveAttribute('target', '_blank')
 })

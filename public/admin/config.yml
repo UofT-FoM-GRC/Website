@@ -533,41 +533,146 @@ collections:
           - label: About Page
             name: about
             widget: object
+            hint: Everything on the About page at /about, from top to bottom.
             fields:
-              - { label: Page Title, name: title, widget: string }
-              - { label: Introduction, name: description, widget: text }
               - {
-                  label: Hero Image,
-                  name: heroImage,
-                  widget: image,
-                  required: true,
-                  accept: 'image/jpeg,image/png,image/webp'
+                  label: Page Title,
+                  name: title,
+                  widget: string,
+                  hint: Shown in the browser tab and as the small label above the headline.
                 }
-              - { label: Hero Image Description, name: heroImageAlt, widget: string, required: true }
+              - { label: Headline, name: headline, widget: string, hint: The large heading at the top of the page. }
+              - { label: Introduction, name: description, widget: text, hint: The paragraph under the headline. }
+              - label: Headline Buttons
+                name: heroLinks
+                widget: list
+                min: 1
+                max: 2
+                hint: 'One or two buttons under the introduction. The first is filled in and the second is outlined. Use #our-work as the URL to jump to the Our Work section.'
+                fields: &about_link_fields
+                  - { label: Label, name: label, widget: string }
+                  - {
+                      label: URL,
+                      name: url,
+                      widget: string,
+                      hint: 'Include https:// for external links, / for internal links, mailto: for email, tel: for telephone, or #fragment for a page section.',
+                      pattern:
+                        [
+                          '^(?:https?://|mailto:|tel:|/(?!/)|#)',
+                          'Use an https URL, mailto:, tel:, site-relative URL, or fragment.'
+                        ]
+                    }
+              - label: Survey Figure
+                name: surveyFigure
+                widget: object
+                hint: The grid of 100 dots beside the headline. Check the number with the Data Analysts before turning it on or changing it.
+                fields:
+                  - {
+                      label: Show Survey Figure,
+                      name: show,
+                      widget: boolean,
+                      default: false,
+                      required: false,
+                      hint: Turn off to hide the dots; the headline then spans the page.
+                    }
+                  - {
+                      label: Number Out Of 100,
+                      name: value,
+                      widget: number,
+                      value_type: int,
+                      min: 0,
+                      max: 100,
+                      hint: 'How many of the 100 dots are filled in, for example 71.'
+                    }
+                  - {
+                      label: Statement,
+                      name: statement,
+                      widget: text,
+                      hint: 'Reads on from the number, for example: survey respondents said they draw on more than their stipend to cover living costs.'
+                    }
+                  - {
+                      label: Source,
+                      name: source,
+                      widget: string,
+                      hint: 'Which survey and year the number comes from, and how many people answered.'
+                    }
               - { label: Purpose Heading, name: purposeTitle, widget: string }
               - {
                   label: Purpose Paragraphs,
                   name: purposeParagraphs,
                   widget: list,
+                  min: 1,
+                  hint: Shown beside the purpose heading on the blue band.,
                   field: { label: Paragraph, name: paragraph, widget: text }
                 }
               - {
-                  label: Objectives,
-                  name: objectives,
-                  widget: list,
-                  field: { label: Objective, name: objective, widget: string }
+                  label: Objectives Introduction,
+                  name: objectivesIntro,
+                  widget: string,
+                  hint: 'The line above the objectives, for example: Through our initiatives, we aim to ensure that you:'
                 }
+              - label: Objectives
+                name: objectives
+                widget: list
+                min: 1
+                max: 3
+                hint: Up to three, side by side. Each has one large keyword, as in "inform. listen. advocate.", and a sentence under it.
+                fields:
+                  - { label: Keyword, name: keyword, widget: string, hint: 'One short word, for example: inform.' }
+                  - { label: Objective, name: text, widget: text }
               - { label: Work Heading, name: workTitle, widget: string }
               - {
                   label: Work Paragraphs,
                   name: workParagraphs,
                   widget: list,
+                  min: 1,
+                  hint: Shown beside the yearly loop.,
                   field: { label: Paragraph, name: paragraph, widget: text }
+                }
+              - label: Yearly Loop Steps
+                name: workSteps
+                widget: list
+                min: 4
+                max: 4
+                hint: Exactly four steps around the circle, in order. Step 1 sits at the top, then they go clockwise.
+                fields:
+                  - { label: Step Name, name: title, widget: string }
+                  - { label: Step Description, name: text, widget: text }
+              - {
+                  label: Loop Centre Label,
+                  name: workCycleLabel,
+                  widget: string,
+                  hint: 'The words in the middle of the circle, for example: Each year'
+                }
+              - {
+                  label: Loop Centre Note,
+                  name: workCycleNote,
+                  widget: string,
+                  hint: 'The smaller line under it, for example: then it starts again'
+                }
+              - label: Resources Band
+                name: resourcesBand
+                widget: object
+                hint: The light band under the yearly loop.
+                fields:
+                  - { label: Text, name: text, widget: text }
+                  - label: Buttons
+                    name: links
+                    widget: list
+                    min: 1
+                    max: 2
+                    hint: One or two buttons. The first is filled in and the second is outlined.
+                    fields: *about_link_fields
+              - {
+                  label: Contact Question,
+                  name: contactPrompt,
+                  widget: string,
+                  hint: The question above the email address and Instagram link at the bottom of the page. The address and link come from Advanced Site Settings.
                 }
           - label: Team Page Heading
             name: teamPage
             widget: object
-            hint: The photo band at the top of the Team page.
+            hint: The photo band at the top of the Team page. Its Short Description and Heading also appear beside the team photos at the bottom of the About page.
             fields: &page_band_fields
               - { label: Small Label, name: label, widget: string }
               - { label: Heading, name: title, widget: string }

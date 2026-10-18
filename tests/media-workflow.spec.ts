@@ -208,14 +208,21 @@ test('team member image descriptions allow empty CMS values and report the neste
 	const baseTeam = {
 		about: {
 			title: 'About',
+			headline: 'Headline',
 			description: 'Description',
-			heroImage: '/assets/about.webp',
-			heroImageAlt: 'Students meeting',
+			heroLinks: [{ label: 'Meet the team', url: '/team' }],
+			surveyFigure: { show: false, value: 0, statement: 'Statement', source: 'Source' },
 			purposeTitle: 'Purpose',
 			purposeParagraphs: ['Purpose paragraph'],
-			objectives: ['Objective'],
+			objectivesIntro: 'Objectives',
+			objectives: [{ keyword: 'inform.', text: 'Objective' }],
 			workTitle: 'Work',
-			workParagraphs: ['Work paragraph']
+			workParagraphs: ['Work paragraph'],
+			workSteps: ['One', 'Two', 'Three', 'Four'].map((title) => ({ title, text: title })),
+			workCycleLabel: 'Each year',
+			workCycleNote: 'Note',
+			resourcesBand: { text: 'Text', links: [{ label: 'Resources', url: '/resources' }] },
+			contactPrompt: 'Questions?'
 		},
 		teamPage: {
 			label: 'Graduate Representation Committee',

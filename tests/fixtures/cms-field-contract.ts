@@ -72,14 +72,21 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 	team: {
 		about: {
 			title: 'string',
+			headline: 'string',
 			description: 'text',
-			heroImage: 'image',
-			heroImageAlt: 'string',
+			heroLinks: { label: 'string', url: 'string' },
+			surveyFigure: { show: 'boolean', value: 'number', statement: 'text', source: 'string' },
 			purposeTitle: 'string',
 			purposeParagraphs: { paragraph: 'text' },
-			objectives: { objective: 'string' },
+			objectivesIntro: 'string',
+			objectives: { keyword: 'string', text: 'text' },
 			workTitle: 'string',
-			workParagraphs: { paragraph: 'text' }
+			workParagraphs: { paragraph: 'text' },
+			workSteps: { title: 'string', text: 'text' },
+			workCycleLabel: 'string',
+			workCycleNote: 'string',
+			resourcesBand: { text: 'text', links: { label: 'string', url: 'string' } },
+			contactPrompt: 'string'
 		},
 		teamPage: { label: 'string', title: 'string', description: 'text', image: 'image', imageAlt: 'string' },
 		currentYear: 'string',

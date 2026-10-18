@@ -1,23 +1,81 @@
 {
 	"about": {
 		"title": "About the GRC",
+		"headline": "We listen, we gather the numbers, and we bring them to the table.",
 		"description": "The Graduate Representation Committee (GRC) is a group of graduate students who represent the interests of all graduate students in the University of Toronto Faculty of Medicine.",
-		"heroImage": "GRC_Hero.png",
-		"heroImageAlt": "Graduate Representation Committee members",
-		"purposeTitle": "Our Purpose and Objectives",
+		"heroLinks": [
+			{
+				"label": "See our work",
+				"url": "#our-work"
+			},
+			{
+				"label": "Meet the team",
+				"url": "/team"
+			}
+		],
+		"surveyFigure": {
+			"show": true,
+			"value": 71,
+			"statement": "survey respondents said they draw on more than their stipend to cover living costs.",
+			"source": "From last year's GRC Finance and Living Survey (2025/26, 244 respondents)."
+		},
+		"purposeTitle": "Our purpose and objectives",
 		"purposeParagraphs": [
-			"The GRC is dedicated to keeping you informed about important faculty and university policies that affect your graduate experience. We actively seek your feedback to ensure our advocacy aligns with your needs and sentiments.",
-			"Through our initiatives, we aim to ensure that you:"
+			"The GRC is dedicated to keeping you informed about important faculty and university policies that affect your graduate experience. We actively seek your feedback to ensure our advocacy aligns with your needs and sentiments."
 		],
+		"objectivesIntro": "Through our initiatives, we aim to ensure that you:",
 		"objectives": [
-			"Are well-informed about policies and resources impacting your graduate life.",
-			"Feel heard and know that your opinions contribute to improving our graduate community.",
-			"Experience positive changes through our advocacy and policy efforts."
+			{
+				"keyword": "inform.",
+				"text": "Are well-informed about policies and resources impacting your graduate life."
+			},
+			{
+				"keyword": "listen.",
+				"text": "Feel heard and know that your opinions contribute to improving our graduate community."
+			},
+			{
+				"keyword": "advocate.",
+				"text": "Experience positive changes through our advocacy and policy efforts."
+			}
 		],
-		"workTitle": "Our Work",
+		"workTitle": "Our work",
 		"workParagraphs": [
-			"The GRC primarily focuses on student stipends and the Faculty of Medicine Harmonized Base Funding Agreement (HBFA). Each year, we conduct the \"GRC Finance and Living Survey\" to gather data on your finances, living conditions, career prospects, and well-being. This data, combined with Statistics Canada metrics on Toronto's cost of living, helps us create the \"GRC Finance and Living Report\". This report highlights the realities of graduate student life and includes our recommendations for HBFA changes."
-		]
+			"The GRC primarily focuses on student stipends and the Faculty of Medicine Harmonized Base Funding Agreement (HBFA)."
+		],
+		"workSteps": [
+			{
+				"title": "Survey",
+				"text": "We conduct the GRC Finance and Living Survey to gather data on your finances, living conditions, career prospects, and well-being."
+			},
+			{
+				"title": "Compare",
+				"text": "We combine this data with Statistics Canada metrics on Toronto's cost of living."
+			},
+			{
+				"title": "Report",
+				"text": "The GRC Finance and Living Report highlights the realities of graduate student life."
+			},
+			{
+				"title": "Recommend",
+				"text": "The report includes our recommendations for HBFA changes."
+			}
+		],
+		"workCycleLabel": "Each year",
+		"workCycleNote": "then it starts again",
+		"resourcesBand": {
+			"text": "You asked for one place to find every resource. This site is becoming that place.",
+			"links": [
+				{
+					"label": "Browse resources",
+					"url": "/resources"
+				},
+				{
+					"label": "Read the blog",
+					"url": "/blog"
+				}
+			]
+		},
+		"contactPrompt": "Questions, ideas or concerns about graduate life in the Faculty of Medicine?"
 	},
 	"teamPage": {
 		"label": "Graduate Representation Committee",

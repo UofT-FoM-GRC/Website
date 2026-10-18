@@ -237,7 +237,7 @@ Configure Sveltia internal-media transformations:
 - reject unsupported or excessive inputs with a plain-language message;
 - retain existing assets and paths unless a content migration requires replacement.
 
-Every CMS image control pairs image source with required image description. The schema enforces the pair for hero, landing-card, resource-block, rich-text, homepage, About, and team images.
+Every CMS image control pairs image source with required image description. The schema enforces the pair for hero, landing-card, resource-block, rich-text, homepage, and team images.
 
 ## Content lifecycle and discovery
 

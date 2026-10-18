@@ -161,12 +161,6 @@ test('every CMS image field accepts routine raster formats and has an image-desc
 			imageRequired: true
 		},
 		{
-			fields: getField(getCollection(config, 'team_and_about').files![0].fields, 'about').fields!,
-			image: 'heroImage',
-			description: 'heroImageAlt',
-			imageRequired: true
-		},
-		{
 			fields: getField(getField(getCollection(config, 'team_and_about').files![0].fields, 'years').fields!, 'members')
 				.fields!,
 			image: 'image',

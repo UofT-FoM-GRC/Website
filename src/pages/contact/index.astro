@@ -3,21 +3,13 @@ import { getEntry } from 'astro:content'
 import { Icon } from 'astro-icon/components'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import PageBand from '../../components/PageBand.astro'
+import { handleFrom, networkDetails } from '../../utils/contact'
 
 const [pages, site] = await Promise.all([getEntry('pages', 'pages'), getEntry('site', 'site')])
 if (!pages || !site) throw new Error('Missing page or site content')
 const { band } = pages.data.contact
 const { email } = site.data.contact
 
-const networkDetails = {
-	instagram: { name: 'Instagram', icon: 'mdi:instagram', note: 'Updates, reminders and event photos.' },
-	github: { name: 'GitHub', icon: 'mdi:github', note: 'The code behind this website.' }
-} as const
-// Show the handle or organization name from the link, for example @grc_uoftfacmed.
-const handleFrom = (url: string, network: keyof typeof networkDetails) => {
-	const last = url.replace(/\/+$/, '').split('/').at(-1) ?? url
-	return network === 'instagram' ? `@${last}` : last
-}
 const channels = [
 	{
 		name: 'Email',
