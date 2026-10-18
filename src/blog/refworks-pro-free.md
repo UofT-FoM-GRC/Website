@@ -5,6 +5,7 @@ pubDate: 'Nov 30 2024'
 heroImage: '/assets/refworks-banner.webp'
 heroImageAlt: 'RefWorks logo on a banner'
 tags: ['other']
+topic: study-careers
 ---
 
 :::callout{kind="information"}

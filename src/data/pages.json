@@ -1,0 +1,178 @@
+{
+	"resources": {
+		"band": {
+			"label": "Resources",
+			"title": "Find what you need",
+			"description": "Free U of T services for Faculty of Medicine grad students, in one place.",
+			"image": "FoM_Sky.png",
+			"imageAlt": "Corner of the Medical Sciences Building against a blue sky"
+		},
+		"searchPrompt": "Search resources, e.g. tax clinic, therapy, housing",
+		"urgentContacts": [
+			{
+				"label": "Crisis line · 24/7",
+				"number": "9-8-8",
+				"url": "tel:988",
+				"note": "Suicide Crisis Helpline. Call or text any time, anywhere in Canada."
+			},
+			{
+				"label": "Campus Safety · 24/7",
+				"number": "416-978-2222",
+				"url": "tel:416-978-2222",
+				"note": "Emergencies at St. George and Scarborough. Mississauga: 905-569-4333."
+			},
+			{
+				"label": "TELUS Health · 24/7",
+				"number": "1-844-451-9700",
+				"url": "tel:1-844-451-9700",
+				"note": "Free, confidential support for students. International: 001-416-380-6578."
+			},
+			{
+				"label": "FoM grad students",
+				"number": "416-978-8030",
+				"url": "tel:416-978-8030",
+				"note": "Temerty On-Site Counselling, option 5. Free, same or next day."
+			}
+		],
+		"updates": [
+			{
+				"kind": "coming-soon",
+				"title": "Stipend calculator",
+				"description": "Compare your stipend with Toronto costs."
+			},
+			{
+				"kind": "coming-soon",
+				"title": "Canada 101",
+				"description": "SIN, banking, UHIP, renting and taxes."
+			},
+			{
+				"kind": "coming-soon",
+				"title": "UofT 101",
+				"description": "Your first weeks as a grad student."
+			},
+			{
+				"kind": "new",
+				"tag": "Health",
+				"title": "Temerty On-Site Counselling",
+				"description": "Free same- or next-day sessions for FoM grad students.",
+				"url": "https://rhse.temertymedicine.utoronto.ca/site-counselling"
+			},
+			{
+				"kind": "new",
+				"tag": "Health",
+				"title": "24-hour emergency help",
+				"description": "Crisis and safety numbers, on or off campus.",
+				"url": "https://www.studentlife.utoronto.ca/task/get-24-hour-emergency-help-on-or-off-campus/"
+			},
+			{
+				"kind": "new",
+				"tag": "Health",
+				"title": "OISE Psychology Clinic",
+				"description": "Therapy with trainees. Fee reductions available.",
+				"url": "https://www.oise.utoronto.ca/psychology-clinic/adult-services"
+			},
+			{
+				"kind": "new",
+				"tag": "Housing",
+				"title": "Off-Campus Housing Finder",
+				"description": "Listings, roommates and scam warnings.",
+				"url": "https://offcampushousing.utoronto.ca/"
+			},
+			{
+				"kind": "new",
+				"tag": "Housing",
+				"title": "University Family Housing",
+				"description": "For students with partners or children.",
+				"url": "https://universityfamilyhousing.utoronto.ca/"
+			},
+			{
+				"kind": "new",
+				"tag": "Housing",
+				"title": "UTSC grad townhouses",
+				"description": "8-month contracts. 2026–27 is waitlist-only.",
+				"url": "https://www.utsc.utoronto.ca/residences/graduate-applicants"
+			},
+			{
+				"kind": "new",
+				"tag": "Basic needs",
+				"title": "UTSU Food Bank",
+				"description": "Free, Fridays by appointment.",
+				"url": "https://www.utsu.ca/food-bank/"
+			},
+			{
+				"kind": "new",
+				"tag": "Writing",
+				"title": "GCAC",
+				"description": "Free writing and speaking courses and workshops.",
+				"url": "https://www.gcac.utoronto.ca/"
+			},
+			{
+				"kind": "new",
+				"tag": "Writing",
+				"title": "GCAC Writing Centre",
+				"description": "Free 40-minute consultations.",
+				"url": "https://www.gcac.utoronto.ca/writing-centre/"
+			},
+			{
+				"kind": "new",
+				"tag": "Careers",
+				"title": "CEE career advising",
+				"description": "30-minute appointments via Folio.",
+				"url": "https://www.studentlife.utoronto.ca/service/career-advising-appointments/"
+			},
+			{
+				"kind": "new",
+				"tag": "Careers",
+				"title": "Flexible Futures",
+				"description": "Career workshops for grad students.",
+				"url": "https://www.studentlife.utoronto.ca/program/flexible-futures-programming-for-graduate-students/"
+			},
+			{
+				"kind": "new",
+				"tag": "Careers",
+				"title": "CGPD",
+				"description": "SGS professional development for grad students.",
+				"url": "https://www.cgpd.utoronto.ca/"
+			},
+			{
+				"kind": "new",
+				"tag": "Careers",
+				"title": "Temerty Careers & PD",
+				"description": "myIDP, Career Chats and more.",
+				"url": "https://rhse.temertymedicine.utoronto.ca/careers-and-professional-development"
+			},
+			{
+				"kind": "new",
+				"tag": "Perks",
+				"title": "AI Kitchen & Tools",
+				"description": "Free Microsoft Copilot Chat with your U of T sign-in.",
+				"url": "https://ai.utoronto.ca/ai-kitchen/"
+			},
+			{
+				"kind": "new",
+				"tag": "Perks",
+				"title": "AGO",
+				"description": "Free admission for Ontario residents under 25.",
+				"url": "https://ago.ca/visit"
+			}
+		]
+	},
+	"blog": {
+		"band": {
+			"label": "GRC Blog",
+			"title": "News, perks and how-tos",
+			"description": "Short posts on funding, free tools and student life at U of T.",
+			"image": "FoM_Sky.png",
+			"imageAlt": "Corner of the Medical Sciences Building against a blue sky"
+		}
+	},
+	"contact": {
+		"band": {
+			"label": "Contact",
+			"title": "Get in touch",
+			"description": "Questions, ideas or concerns about graduate life in the Faculty of Medicine? Here's how to reach us.",
+			"image": "FoM_Sky.png",
+			"imageAlt": "Corner of the Medical Sciences Building against a blue sky"
+		}
+	}
+}

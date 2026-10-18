@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { isExpired } from '../src/utils/blog'
 
-const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/', '/team/']
+const keyRoutes = ['/', '/blog/', '/resources/', '/resources/employment/', '/about/', '/team/', '/contact/']
 
 test('key routes expose one main landmark and one page heading', async ({ page }) => {
 	for (const route of keyRoutes) {
@@ -47,8 +47,10 @@ test('search dialog restores focus and a past team year opens', async ({ page })
 	await searchButton.click()
 	const dialog = page.getByRole('dialog', { name: 'Search this site' })
 	await expect(dialog).toBeVisible()
-	await expect(page.getByRole('button', { name: 'Close search' })).toBeFocused()
+	// Focus moves into the dialog at once (the close button) and on to the search box as soon as search loads,
+	// often within a few milliseconds, so check where it lands rather than the brief first stop.
 	await expect(page.locator('.pagefind-ui__search-input')).toBeFocused()
+	await expect(dialog.locator('.pagefind-ui__search-input')).toHaveCount(1)
 	await page.keyboard.press('Escape')
 	await expect(dialog).toBeHidden()
 	await expect(searchButton).toBeFocused()

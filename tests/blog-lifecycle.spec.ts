@@ -79,15 +79,25 @@ test('blog schema rejects tomorrow and expiry before publication with field-spec
 	}
 })
 
-test('historical blog routes stay public but leave every discovery surface', async ({ page, request }) => {
+test('historical blog routes stay public, appear only in the Blog archive, and leave search, feeds and sitemaps', async ({
+	page,
+	request
+}) => {
 	await page.goto('/blog/ims-career-mentorship-2024/')
 	await expect(page.getByText('Archived post.')).toBeVisible()
 	await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,follow')
 	await expect(page.locator('main')).toHaveAttribute('data-pagefind-ignore', '')
 	await expect(page.locator('main')).not.toHaveAttribute('data-pagefind-body', '')
 
+	// On the Blog page, ended posts appear only in the folded archive, which stays out of site search.
 	await page.goto('/blog/')
-	await expect(page.getByText('IMS Career Mentorship Program 2024-2025')).toHaveCount(0)
+	await expect(page.getByText('IMS Career Mentorship Program 2024-2025')).toHaveCount(1)
+	await expect(page.locator('[data-pagefind-ignore] details[data-archive-year="2024–25"]')).toContainText(
+		'IMS Career Mentorship Program 2024-2025'
+	)
+	for (const topic of await page.locator('section[aria-labelledby^="topic-"]').all()) {
+		await expect(topic).not.toContainText('IMS Career Mentorship Program 2024-2025')
+	}
 	await page.goto('/resources/career-planning-exploration/')
 	await expect(page.getByText('IMS Career Mentorship Program 2024-2025')).toHaveCount(0)
 

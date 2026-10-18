@@ -5,6 +5,7 @@ pubDate: 'Dec 2 2024'
 heroImage: '/assets/matlab-banner.webp'
 heroImageAlt: 'MATLAB logo on a blue banner'
 tags: ['other']
+topic: tools-perks
 ---
 
 :::callout{kind="information"}

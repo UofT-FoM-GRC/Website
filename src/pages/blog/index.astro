@@ -1,53 +1,121 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import BlogPostCard from '../../components/BlogPostCard.astro'
-import { blogMonthKey, formatBlogMonth, isCurrentPost } from '../../utils/blog'
+import BlogTopicCard from '../../components/BlogTopicCard.astro'
+import FormattedDate from '../../components/FormattedDate.astro'
+import PageBand from '../../components/PageBand.astro'
+import PageSection from '../../components/PageSection.astro'
+import { BLOG_TOPICS } from '../../consts'
+import { academicYear, isCurrentPost } from '../../utils/blog'
 
-const posts = (await getCollection('blog'))
-	.filter((post) => isCurrentPost(post))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+const pages = await getEntry('pages', 'pages')
+if (!pages) throw new Error('Missing page content')
+const { band } = pages.data.blog
 
-// Group posts by month and year
-const groupedPosts = posts.reduce(
-	(acc, post) => {
-		const key = blogMonthKey(post.data.pubDate)
-		if (!acc[key]) acc[key] = []
-		acc[key].push(post)
-		return acc
-	},
-	{} as Record<string, typeof posts>
-)
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+const current = posts.filter((post) => isCurrentPost(post))
+const ended = posts.filter((post) => !isCurrentPost(post))
 
-// Sort keys in descending order (newest first)
-const sortedKeys = Object.keys(groupedPosts).sort((a, b) => b.localeCompare(a))
+// Posts sit under their topic heading; a post saved without a topic falls under "More posts" at the end.
+const topicGroups = [
+	...BLOG_TOPICS.map(({ value, label }) => ({
+		id: `topic-${value}`,
+		label,
+		posts: current.filter((post) => post.data.topic === value)
+	})),
+	{ id: 'topic-more', label: 'More posts', posts: current.filter((post) => !post.data.topic) }
+].filter(({ posts }) => posts.length > 0)
+
+// Ended posts (archived or past their expiry date) fold into the archive by academic year, newest first.
+const archiveYears = [...new Set(ended.map((post) => academicYear(post.data.pubDate)))].map((year) => ({
+	year,
+	posts: ended.filter((post) => academicYear(post.data.pubDate) === year)
+}))
+const countLabel = (count: number, noun: string) => `${count} ${noun}${count === 1 ? '' : 's'}`
 ---
 
-<BaseLayout
-	title="News and updates | Graduate Representation Committee"
-	description="Current news, events, and resources from the University of Toronto Faculty of Medicine Graduate Representation Committee."
->
-	<main id="main-content" data-pagefind-body class="container mx-auto min-h-screen px-4 py-8">
-		<header class="mb-10 max-w-3xl">
-			<h1 class="text-4xl font-bold text-slate-900 dark:text-slate-100">News and updates</h1>
-			<p class="mt-3 text-slate-700 dark:text-slate-300">
-				Current opportunities, resources, and updates for Faculty of Medicine graduate students.
-			</p>
-		</header>
-		{
-			sortedKeys.map((key) => {
-				const sectionTitle = formatBlogMonth(key)
-				return (
-					<section class="mb-12">
-						<h2 class="mb-6 text-2xl font-bold text-slate-900 dark:text-slate-100">{sectionTitle}</h2>
-						<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-							{groupedPosts[key].map((post) => (
-								<BlogPostCard post={post} />
+<BaseLayout title={`${band.label} | Graduate Representation Committee`} description={band.description}>
+	<main id="main-content" data-pagefind-body class="bg-[#F4F6FA] dark:bg-slate-900">
+		<PageBand {...band} />
+
+		<div class="mx-auto flex max-w-[1100px] flex-col gap-11 px-5 py-10 md:px-6 md:py-12">
+			<nav aria-label="Blog topics" class="flex flex-wrap items-center gap-2.5">
+				<span class="mr-1.5 font-mono text-xs tracking-[0.1em] text-[#5A6680] uppercase dark:text-slate-400"
+					>Jump to</span
+				>
+				{
+					[
+						...topicGroups.map(({ id, label, posts }) => ({ id, label, count: posts.length })),
+						...(ended.length > 0 ? [{ id: 'archive-heading', label: 'Archive', count: ended.length }] : [])
+					].map(({ id, label, count }) => (
+						<a
+							href={`#${id}`}
+							class="rounded-full border border-[#D6DDE9] bg-white px-[15px] py-[7px] text-[15px] font-semibold text-[#1E3765] transition-[border-color] hover:border-[#0B6E8A] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+						>
+							{label} <span class="font-mono text-xs font-normal text-[#5A6680] dark:text-slate-400">{count}</span>
+						</a>
+					))
+				}
+			</nav>
+
+			{
+				topicGroups.map(({ id, label, posts }) => (
+					<PageSection id={id} title={label} tag={countLabel(posts.length, 'post')}>
+						<ul class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+							{posts.map((post) => (
+								<BlogTopicCard post={post} />
 							))}
 						</ul>
-					</section>
+					</PageSection>
+				))
+			}
+
+			{
+				archiveYears.length > 0 && (
+					<PageSection id="archive-heading" title="Archive" tag="Ended posts, by year">
+						{/* Ended posts stay out of site search, as on their own pages. */}
+						<div class="flex flex-col gap-3" data-pagefind-ignore>
+							{archiveYears.map(({ year, posts }) => (
+								<details
+									data-archive-year={year}
+									class="group/year overflow-hidden rounded-xl border border-[#D6DDE9] bg-white dark:border-slate-700 dark:bg-slate-800"
+								>
+									<summary class="flex cursor-pointer list-none items-center gap-4 px-5 py-4 hover:bg-[#F8FAFD] focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-[#0B6E8A] dark:hover:bg-slate-700/60 [&::-webkit-details-marker]:hidden">
+										<span class="text-[19px] font-semibold text-[#1E3765] dark:text-slate-100">{year}</span>
+										<span class="font-mono text-xs tracking-[0.08em] text-[#5A6680] uppercase dark:text-slate-400">
+											{countLabel(posts.length, 'ended post')}
+										</span>
+										<span class="grow" />
+										<span
+											class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EEF2F8] text-[#1E3765] transition-transform duration-200 group-open/year:rotate-180 motion-reduce:transition-none dark:bg-slate-700 dark:text-slate-200"
+											aria-hidden="true"
+										>
+											<Icon name="mdi:chevron-down" class="h-5 w-5" />
+										</span>
+									</summary>
+									<ul class="px-5 pb-2.5">
+										{posts.map((post) => (
+											<li class="flex flex-col gap-x-3.5 gap-y-0.5 border-t border-[#EEF1F6] py-2.5 sm:flex-row sm:items-center dark:border-slate-700">
+												<span class="w-28 shrink-0 font-mono text-xs text-[#5A6680] dark:text-slate-400">
+													<FormattedDate date={post.data.pubDate} />
+												</span>
+												<a
+													href={`/blog/${post.id}/`}
+													class="grow text-base leading-snug font-semibold text-[#13203A] hover:underline dark:text-slate-100"
+												>
+													{post.data.title}
+												</a>
+												<span class="text-sm text-[#5A6680] dark:text-slate-400">Ended</span>
+											</li>
+										))}
+									</ul>
+								</details>
+							))}
+						</div>
+					</PageSection>
 				)
-			})
-		}
+			}
+		</div>
 	</main>
 </BaseLayout>

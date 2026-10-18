@@ -5,6 +5,7 @@ pubDate: 'Sep 7 2024'
 heroImage: '/assets/linkedin-learning.webp'
 heroImageAlt: 'LinkedIn Learning logo'
 tags: ['continuing-education']
+topic: study-careers
 ---
 
 ## Unlock LinkedIn Learning with your Faculty status

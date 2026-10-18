@@ -32,9 +32,8 @@ const { title, description, image, imageAlt, article, pubDate, updatedDate, noin
 				} catch {
 					// Storage can be disabled by browser privacy settings.
 				}
-				// Follow the device's light or dark setting; an older saved choice from the retired toggle still wins.
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-				document.documentElement.classList.toggle('dark', stored ? stored === 'dark' : prefersDark)
+				// Light by default; the sun/moon switch in the top bar saves a visitor's choice.
+				document.documentElement.classList.toggle('dark', stored === 'dark')
 			}
 
 			initializeTheme()

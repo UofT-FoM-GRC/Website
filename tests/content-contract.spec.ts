@@ -181,16 +181,26 @@ test('every inventoried resource route keeps sections, cards, links, images, lis
 	}
 })
 
-test('resource landing cards retain their routes, images, and image descriptions', async ({ page }) => {
+test('resource landing cards retain their routes and summaries, and each card image becomes the page sharing image', async ({
+	page
+}) => {
 	await expectPublishedRoute(page, '/resources/')
 	for (const contract of contentContract.resources) {
 		const resource = resourceFixture(contract.fixture)
-		const card = page.getByRole('link', { name: new RegExp(resource.cardTitle) })
+		const card = page
+			.locator('section[aria-labelledby="topics-heading"]')
+			.getByRole('link', { name: new RegExp(resource.cardTitle) })
 		await expect(card).toHaveAttribute('href', contract.route)
-		await expect(card.getByRole('img', { name: resource.cardImageAlt, exact: true })).toHaveAttribute(
-			'src',
+		await expect(card).toContainText(resource.description)
+	}
+	for (const contract of contentContract.resources) {
+		const resource = resourceFixture(contract.fixture)
+		await page.goto(contract.route)
+		await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+			'content',
 			new RegExp(resource.cardImage.split('/').at(-1)!.split('.')[0])
 		)
+		await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', resource.cardImageAlt)
 	}
 })
 

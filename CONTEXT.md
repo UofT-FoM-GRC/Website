@@ -21,10 +21,10 @@ Make a reviewed content draft public. Publishing is distinct from saving a draft
 An author may publish their own reviewed content draft without approval from another person.
 
 **Archive**:
-Remove published content from listings and discovery while preserving access through its stable public address. Archiving is not deletion.
+Remove published content from current listings and discovery (site search, feeds, sitemaps and resource pages) while preserving access through its stable public address. Archived blog posts are still listed, by academic year, in the Blog page's folded archive. Archiving is not deletion.
 
 **Expiry**:
-Automatic removal of time-limited content from listings and discovery after its selected Toronto calendar date. Expired content remains available through its stable public address.
+Automatic removal of time-limited content from current listings and discovery after its selected Toronto calendar date. Expired content remains available through its stable public address, and expired blog posts join the Blog page's archive.
 
 ## Content
 
