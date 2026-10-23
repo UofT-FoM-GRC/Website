@@ -277,14 +277,36 @@ export const teamSchema = z
 	.object({
 		about: z.object({
 			title: requiredStringSchema,
+			headline: requiredStringSchema,
 			description: requiredStringSchema,
-			heroImage: requiredStringSchema,
-			heroImageAlt: requiredStringSchema,
+			// The first link is a filled button and the second an outlined one.
+			heroLinks: z.array(linkSchema).min(1).max(2),
+			// The 100-dot survey figure beside the headline; switched off, the headline spans the page.
+			surveyFigure: z.object({
+				show: z.boolean().default(false),
+				value: z.number().int().min(0).max(100),
+				statement: requiredStringSchema,
+				source: requiredStringSchema
+			}),
 			purposeTitle: requiredStringSchema,
-			purposeParagraphs: z.array(requiredStringSchema),
-			objectives: z.array(requiredStringSchema),
+			purposeParagraphs: z.array(requiredStringSchema).min(1),
+			objectivesIntro: requiredStringSchema,
+			// One column per objective under a large keyword, as in the GRC motto "inform. listen. advocate."
+			objectives: z
+				.array(z.object({ keyword: requiredStringSchema, text: requiredStringSchema }))
+				.min(1)
+				.max(3),
 			workTitle: requiredStringSchema,
-			workParagraphs: z.array(requiredStringSchema)
+			workParagraphs: z.array(requiredStringSchema).min(1),
+			// The yearly loop has four stops: top, right, bottom and left of the circle.
+			workSteps: z.array(z.object({ title: requiredStringSchema, text: requiredStringSchema })).length(4),
+			workCycleLabel: requiredStringSchema,
+			workCycleNote: requiredStringSchema,
+			resourcesBand: z.object({
+				text: requiredStringSchema,
+				links: z.array(linkSchema).min(1).max(2)
+			}),
+			contactPrompt: requiredStringSchema
 		}),
 		teamPage: pageBandSchema,
 		currentYear: requiredStringSchema,

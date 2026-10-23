@@ -1,0 +1,27 @@
+---
+interface Props {
+	/** The channel, such as Email or Instagram. */
+	label: string
+	href: string
+	/** The address or handle shown as the link. */
+	text: string
+	/** A short sentence after the link. */
+	note: string
+	/** Opens in a new tab, for social networks. */
+	external?: boolean
+}
+
+const { label, href, text, note, external = false } = Astro.props
+const newTab = external ? { target: '_blank', rel: 'noopener noreferrer' } : {}
+---
+
+<!-- One line such as "Email grc.facmed@utoronto.ca. We reply by email." -->
+<li>
+	<span class="font-semibold text-[#13203A] dark:text-slate-100">{label}</span>
+	<a
+		href={href}
+		{...newTab}
+		class="font-semibold break-all text-[#0B6E8A] underline underline-offset-4 hover:text-[#1E3765] dark:text-sky-300 dark:hover:text-sky-200"
+		>{text}{external && <span class="sr-only"> (opens in a new tab)</span>}</a
+	>. {note}
+</li>

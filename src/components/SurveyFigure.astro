@@ -1,0 +1,46 @@
+---
+interface Props {
+	/** How many of the 100 dots are filled in. */
+	value: number
+	/** Reads on from the number, for example "survey respondents said …". */
+	statement: string
+	/** Which survey, which year and how many people answered. */
+	source: string
+}
+
+const { value, statement, source } = Astro.props
+// Filled dots come first, read left to right and top to bottom.
+const dots = Array.from({ length: 100 }, (_, index) => index < value)
+---
+
+<!-- A grid of 100 dots with the figure, its statement and its source under it. -->
+<figure
+	data-survey-figure
+	class="m-0 flex w-full max-w-[28rem] flex-col gap-5 rounded-[20px] bg-[#F4F6FA] p-6 sm:p-8 dark:bg-slate-800"
+>
+	<div class="grid max-w-[21rem] grid-cols-10 gap-[6px] sm:gap-[9px]" aria-hidden="true">
+		{
+			dots.map((filled) => (
+				<span
+					data-dot={filled ? 'filled' : 'empty'}
+					class:list={[
+						'block aspect-square rounded-full',
+						filled
+							? 'bg-[#1E3765] dark:bg-sky-300'
+							: 'border-[1.5px] border-[#D6DDE9] bg-[#EEF2F8] dark:border-slate-600 dark:bg-slate-700'
+					]}
+				/>
+			))
+		}
+	</div>
+	<figcaption class="flex flex-col gap-3">
+		<p class="m-0 flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+			<span class="text-6xl leading-none font-bold tracking-tight text-[#1E3765] dark:text-white" aria-hidden="true"
+				>{value}<span class="text-3xl">/100</span></span
+			>
+			<span class="sr-only">{value} out of 100</span>
+			<span class="max-w-[17rem] text-lg leading-snug text-[#13203A] dark:text-slate-100">{statement}</span>
+		</p>
+		<p class="m-0 text-sm leading-snug text-[#5A6680] dark:text-slate-400">{source}</p>
+	</figcaption>
+</figure>
