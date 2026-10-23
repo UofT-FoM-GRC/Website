@@ -22,18 +22,14 @@ const heroSocialLinks = [
 	...site.data.socialLinks.map((link) => ({ ...link, icon: socialIcon[link.network], external: true })),
 	{ label: 'Email the GRC', url: `mailto:${site.data.contact.email}`, icon: 'mdi:email-outline', external: false }
 ]
-// Small buttons under the social links: the first is filled in and the rest are outlined, as on mood board option B.
-// A coming-soon button keeps the same look with a "Soon" tag, but is not a link.
+// Small buttons under the social links. A button with a link is filled in so it stands out;
+// a coming-soon button is lighter, shows a "Soon" tag and is not a link.
 const pillClass =
 	'inline-flex min-h-10 items-center gap-2 rounded-lg border-[1.5px] px-4 py-2 text-[15px] leading-none font-semibold no-underline'
-const pillLook = (index: number) =>
-	index === 0
-		? 'border-[#1E3765] bg-[#1E3765] text-white dark:border-white dark:bg-white dark:text-[#1E3765]'
-		: 'border-[#1E3765] bg-white/60 text-[#1E3765] dark:border-white dark:bg-white/10 dark:text-white'
-const pillHover = (index: number) => [
-	'transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] motion-reduce:transition-none dark:focus-visible:outline-white',
-	index === 0 ? 'hover:bg-[#13203A] dark:hover:bg-[#EEF2F8]' : 'hover:bg-white dark:hover:bg-white/25'
-]
+const linkedPill =
+	'border-[#1E3765] bg-[#1E3765] text-white transition-colors hover:bg-[#13203A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] motion-reduce:transition-none dark:border-white dark:bg-white dark:text-[#1E3765] dark:hover:bg-[#EEF2F8] dark:focus-visible:outline-white'
+const comingSoonPill =
+	'cursor-default border-[#1E3765]/25 bg-white/45 text-[#4B5872] dark:border-white/35 dark:bg-white/5 dark:text-[#D6DDE9]'
 ---
 
 <BaseLayout title={site.data.title} description={site.data.description}>
@@ -103,16 +99,16 @@ const pillHover = (index: number) => [
 							aria-label="Highlights"
 							class="mt-1 flex flex-wrap justify-center gap-2.5 [text-shadow:none]"
 						>
-							{highlights.map((button, index) => (
+							{highlights.map((button) => (
 								<li>
 									{button.url && !button.comingSoon ? (
-										<a href={button.url} class:list={[pillClass, pillLook(index), pillHover(index)]}>
+										<a href={button.url} class:list={[pillClass, linkedPill]}>
 											{button.label}
 										</a>
 									) : (
-										<span data-coming-soon class:list={[pillClass, pillLook(index), 'cursor-default']}>
+										<span data-coming-soon class:list={[pillClass, comingSoonPill]}>
 											{button.label}
-											<span class="rounded-full bg-[#F2C46B] px-1.5 py-0.5 text-[10px] leading-none font-semibold tracking-wide text-[#13203A] uppercase">
+											<span class="rounded-full bg-[#F6DCA4] px-1.5 py-0.5 text-[10px] leading-none font-semibold tracking-wide text-[#5C4510] uppercase">
 												<span class="sr-only">coming </span>Soon
 											</span>
 										</span>
