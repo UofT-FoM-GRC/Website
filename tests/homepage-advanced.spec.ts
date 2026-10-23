@@ -85,8 +85,11 @@ test('homepage hero buttons sit under the social links in order, and coming-soon
 		if (button.comingSoon ?? true) {
 			await expect(item.getByRole('link')).toHaveCount(0)
 			await expect(item).toContainText('Soon')
+			await expect(item.locator('[data-coming-soon]')).not.toHaveCSS('background-color', 'rgb(30, 55, 101)')
 		} else {
+			// Only buttons that go somewhere are filled in with UofT blue.
 			await expect(item.getByRole('link', { name: button.label })).toHaveAttribute('href', button.url!)
+			await expect(item.getByRole('link')).toHaveCSS('background-color', 'rgb(30, 55, 101)')
 			await expect(item).not.toContainText('Soon')
 		}
 	}

@@ -528,7 +528,7 @@ collections:
             required: false
             min: 0
             max: 3
-            hint: 'Up to three small buttons under the social links. The first is filled in and the rest are outlined. Drag to set the order.'
+            hint: 'Up to three small buttons under the social links. Buttons with a link are filled in; coming-soon buttons are lighter. Drag to set the order.'
             fields:
               - { label: Label, name: label, widget: string, hint: 'Example: Survey results' }
               - {
