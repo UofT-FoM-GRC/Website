@@ -254,12 +254,11 @@ const pageBandSchema = z.object({
 	imageAlt: requiredStringSchema
 })
 
-// A box under the homepage tagline for something the GRC is about to release.
+// A small button under the homepage social links, such as the survey results or the Resources page.
 const homepageHighlightSchema = z
 	.object({
 		label: requiredStringSchema,
-		note: optionalCmsStringSchema,
-		// A coming-soon box shows a "Coming soon" tag and is not a link until its page exists.
+		// A coming-soon button shows a "Soon" tag and is not a link until its page exists.
 		comingSoon: z.boolean().default(true),
 		url: optionalInternalOrExternalUrlSchema
 	})

@@ -22,6 +22,18 @@ const heroSocialLinks = [
 	...site.data.socialLinks.map((link) => ({ ...link, icon: socialIcon[link.network], external: true })),
 	{ label: 'Email the GRC', url: `mailto:${site.data.contact.email}`, icon: 'mdi:email-outline', external: false }
 ]
+// Small buttons under the social links: the first is filled in and the rest are outlined, as on mood board option B.
+// A coming-soon button keeps the same look with a "Soon" tag, but is not a link.
+const pillClass =
+	'inline-flex min-h-10 items-center gap-2 rounded-lg border-[1.5px] px-4 py-2 text-[15px] leading-none font-semibold no-underline'
+const pillLook = (index: number) =>
+	index === 0
+		? 'border-[#1E3765] bg-[#1E3765] text-white dark:border-white dark:bg-white dark:text-[#1E3765]'
+		: 'border-[#1E3765] bg-white/60 text-[#1E3765] dark:border-white dark:bg-white/10 dark:text-white'
+const pillHover = (index: number) => [
+	'transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] motion-reduce:transition-none dark:focus-visible:outline-white',
+	index === 0 ? 'hover:bg-[#13203A] dark:hover:bg-[#EEF2F8]' : 'hover:bg-white dark:hover:bg-white/25'
+]
 ---
 
 <BaseLayout title={site.data.title} description={site.data.description}>
@@ -68,46 +80,6 @@ const heroSocialLinks = [
 				</p>
 				<h1 class="text-4xl leading-tight font-bold text-balance md:text-5xl">{heroHeading}</h1>
 				{heroTaglines.map((line) => <p class="text-lg text-[#2E3A52] md:text-xl dark:text-[#F1F4FA]">{line}</p>)}
-				{
-					highlights.length > 0 && (
-						<ul
-							data-highlights
-							aria-label="Coming up from the GRC"
-							class="mt-4 flex w-full max-w-[34rem] flex-col gap-3 [text-shadow:none] sm:flex-row sm:justify-center"
-						>
-							{highlights.map((box) => (
-								<li class="flex sm:w-64">
-									{box.url && !box.comingSoon ? (
-										<a
-											href={box.url}
-											class="flex grow flex-col items-start gap-1.5 rounded-xl border-[1.5px] border-[#1E3765]/40 bg-white/85 px-5 py-4 text-left no-underline transition-colors hover:border-[#1E3765] hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] motion-reduce:transition-none dark:border-white/60 dark:bg-white/10 dark:hover:border-white dark:hover:bg-white/20 dark:focus-visible:outline-white"
-										>
-											<span class="text-lg leading-snug font-semibold text-[#1E3765] dark:text-white">{box.label}</span>
-											{box.note && (
-												<span class="text-sm leading-snug text-[#2E3A52] dark:text-[#EEF2F8]">{box.note}</span>
-											)}
-										</a>
-									) : (
-										<div
-											data-coming-soon
-											class="flex grow flex-col items-start gap-1.5 rounded-xl border-[1.5px] border-dashed border-[#1E3765]/40 bg-white/75 px-5 py-4 text-left dark:border-white/50 dark:bg-white/10"
-										>
-											{box.comingSoon && (
-												<span class="rounded-full bg-[#F2C46B] px-2.5 py-0.5 font-mono text-[11px] leading-normal font-medium tracking-[0.08em] text-[#13203A] uppercase">
-													Coming soon
-												</span>
-											)}
-											<span class="text-lg leading-snug font-semibold text-[#1E3765] dark:text-white">{box.label}</span>
-											{box.note && (
-												<span class="text-sm leading-snug text-[#2E3A52] dark:text-[#EEF2F8]">{box.note}</span>
-											)}
-										</div>
-									)}
-								</li>
-							))}
-						</ul>
-					)
-				}
 				<ul class="mt-3 flex gap-3 [text-shadow:none]" aria-label="GRC social media and email">
 					{
 						heroSocialLinks.map((link) => (
@@ -124,6 +96,32 @@ const heroSocialLinks = [
 						))
 					}
 				</ul>
+				{
+					highlights.length > 0 && (
+						<ul
+							data-highlights
+							aria-label="Highlights"
+							class="mt-1 flex flex-wrap justify-center gap-2.5 [text-shadow:none]"
+						>
+							{highlights.map((button, index) => (
+								<li>
+									{button.url && !button.comingSoon ? (
+										<a href={button.url} class:list={[pillClass, pillLook(index), pillHover(index)]}>
+											{button.label}
+										</a>
+									) : (
+										<span data-coming-soon class:list={[pillClass, pillLook(index), 'cursor-default']}>
+											{button.label}
+											<span class="rounded-full bg-[#F2C46B] px-1.5 py-0.5 text-[10px] leading-none font-semibold tracking-wide text-[#13203A] uppercase">
+												<span class="sr-only">coming </span>Soon
+											</span>
+										</span>
+									)}
+								</li>
+							))}
+						</ul>
+					)
+				}
 			</div>
 		</section>
 	</main>

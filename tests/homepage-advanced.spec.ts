@@ -6,7 +6,7 @@ type Link = { label: string; url: string }
 
 type Homepage = {
 	hero: { image: string; imageAlt: string; lines: string[] }
-	highlights?: Array<{ label: string; note?: string; comingSoon?: boolean; url?: string }>
+	highlights?: Array<{ label: string; comingSoon?: boolean; url?: string }>
 }
 
 type Navigation = {
@@ -49,55 +49,53 @@ test('homepage hero lines require two to five entries', () => {
 	expect(issuePaths(homepageSchema.safeParse(withLines(6)))).toEqual(['hero.lines'])
 })
 
-test('homepage highlight boxes are optional, at most three, and need a safe link once they stop being coming soon', () => {
+test('homepage hero buttons are optional, at most three, and need a safe link once they stop being coming soon', () => {
 	const withHighlights = (highlights: unknown) => homepageSchema.safeParse({ ...homepage, highlights })
-	const box = { label: '2025-26 survey results' }
+	const button = { label: 'Survey results' }
 
 	const empty = homepageSchema.safeParse({ hero: homepage.hero })
 	expect(empty.success).toBeTruthy()
 	if (empty.success) expect(empty.data.highlights).toEqual([])
 
-	// A new box starts as coming soon.
-	const parsed = withHighlights([box])
+	// A new button starts as coming soon.
+	const parsed = withHighlights([button])
 	expect(parsed.success).toBeTruthy()
 	if (parsed.success) expect(parsed.data.highlights[0].comingSoon).toBe(true)
 
-	expect(issuePaths(withHighlights(Array(4).fill(box)))).toEqual(['highlights'])
-	expect(issuePaths(withHighlights([{ ...box, comingSoon: false }]))).toEqual(['highlights.0.url'])
-	expect(withHighlights([{ ...box, comingSoon: false, url: '/survey' }]).success).toBeTruthy()
-	expect(issuePaths(withHighlights([{ ...box, comingSoon: false, url: 'javascript:alert(1)' }]))).toEqual([
+	expect(issuePaths(withHighlights(Array(4).fill(button)))).toEqual(['highlights'])
+	expect(issuePaths(withHighlights([{ ...button, comingSoon: false }]))).toEqual(['highlights.0.url'])
+	expect(withHighlights([{ ...button, comingSoon: false, url: '/resources' }]).success).toBeTruthy()
+	expect(issuePaths(withHighlights([{ ...button, comingSoon: false, url: 'javascript:alert(1)' }]))).toEqual([
 		'highlights.0.url'
 	])
 })
 
-test('homepage highlight boxes appear under the tagline in order, and coming-soon boxes are not links', async ({
+test('homepage hero buttons sit under the social links in order, and coming-soon buttons are not links', async ({
 	page
 }) => {
 	const highlights = homepage.highlights ?? []
 	await page.goto('/')
-	const boxes = page.locator('[data-highlights] > li')
-	await expect(boxes).toHaveCount(highlights.length)
-	test.skip(highlights.length === 0, 'No highlight boxes are stored.')
+	const buttons = page.locator('[data-highlights] > li')
+	await expect(buttons).toHaveCount(highlights.length)
+	test.skip(highlights.length === 0, 'No hero buttons are stored.')
 
-	for (const [index, box] of highlights.entries()) {
-		const item = boxes.nth(index)
-		await expect(item).toContainText(box.label)
-		if (box.note) await expect(item).toContainText(box.note)
-		if (box.comingSoon ?? true) {
+	for (const [index, button] of highlights.entries()) {
+		const item = buttons.nth(index)
+		await expect(item).toContainText(button.label)
+		if (button.comingSoon ?? true) {
 			await expect(item.getByRole('link')).toHaveCount(0)
-			await expect(item).toContainText('Coming soon')
+			await expect(item).toContainText('Soon')
 		} else {
-			await expect(item.getByRole('link')).toHaveAttribute('href', box.url!)
-			await expect(item).not.toContainText('Coming soon')
+			await expect(item.getByRole('link', { name: button.label })).toHaveAttribute('href', button.url!)
+			await expect(item).not.toContainText('Soon')
 		}
 	}
 
-	// The boxes sit between the tagline and the social links.
-	const tagline = await page.getByText(homepage.hero.lines.at(-1)!, { exact: true }).boundingBox()
-	const first = await boxes.first().boundingBox()
 	const social = await page.getByRole('list', { name: 'GRC social media and email' }).boundingBox()
-	expect(first!.y).toBeGreaterThan(tagline!.y)
-	expect(social!.y).toBeGreaterThan(first!.y)
+	const first = await buttons.first().boundingBox()
+	expect(first!.y).toBeGreaterThan(social!.y + social!.height - 1)
+	// Small buttons, not cards.
+	expect(first!.height).toBeLessThan(56)
 })
 
 test('navigation links accept internal, https, mail, telephone, and fragment destinations', () => {

@@ -10,14 +10,17 @@
 	},
 	"highlights": [
 		{
-			"label": "2025-26 survey results",
-			"note": "What you told us in last year's Finance and Living Survey",
+			"label": "Survey results",
 			"comingSoon": true
 		},
 		{
-			"label": "2026-27 survey launch",
-			"note": "Your answers shape what we advocate for",
+			"label": "2026-27 survey",
 			"comingSoon": true
+		},
+		{
+			"label": "Resources",
+			"comingSoon": false,
+			"url": "/resources"
 		}
 	]
 }

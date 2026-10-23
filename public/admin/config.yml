@@ -522,29 +522,22 @@ collections:
                   hint: 'Line 1 is the small label above the heading, line 2 is the main page heading (keep it descriptive), and any further lines appear under it as a tagline.',
                   field: { label: Line, name: line, widget: string }
                 }
-          - label: Highlight Boxes
+          - label: Hero Buttons
             name: highlights
             widget: list
             required: false
             min: 0
             max: 3
-            hint: 'Up to three boxes under the tagline, for things the GRC is about to release. Drag to set the order.'
+            hint: 'Up to three small buttons under the social links. The first is filled in and the rest are outlined. Drag to set the order.'
             fields:
-              - { label: Title, name: label, widget: string, hint: 'Example: 2025-26 survey results' }
-              - {
-                  label: Short Note,
-                  name: note,
-                  widget: string,
-                  required: false,
-                  hint: One short line under the title.
-                }
+              - { label: Label, name: label, widget: string, hint: 'Example: Survey results' }
               - {
                   label: Coming Soon,
                   name: comingSoon,
                   widget: boolean,
                   default: true,
                   required: false,
-                  hint: 'While on, the box shows a "Coming soon" tag and is not a link. Turn it off and add a Link once the page is ready.'
+                  hint: 'While on, the button shows a "Soon" tag and is not a link. Turn it off and add a Link once the page is ready.'
                 }
               - {
                   label: Link,

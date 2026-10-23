@@ -68,7 +68,7 @@ export const cmsFieldContract: Record<string, FieldShape> = {
 	announcements: { items: { title: 'string', text: 'text', url: 'string', expiresOn: 'datetime', active: 'boolean' } },
 	homepage: {
 		hero: { image: 'image', imageAlt: 'string', lines: { line: 'string' } },
-		highlights: { label: 'string', note: 'string', comingSoon: 'boolean', url: 'string' }
+		highlights: { label: 'string', comingSoon: 'boolean', url: 'string' }
 	},
 	team: {
 		about: {
