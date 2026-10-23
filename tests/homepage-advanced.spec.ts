@@ -6,6 +6,7 @@ type Link = { label: string; url: string }
 
 type Homepage = {
 	hero: { image: string; imageAlt: string; lines: string[] }
+	highlights?: Array<{ label: string; comingSoon?: boolean; url?: string }>
 }
 
 type Navigation = {
@@ -46,6 +47,55 @@ test('homepage hero lines require two to five entries', () => {
 	expect(homepageSchema.safeParse(withLines(2)).success).toBeTruthy()
 	expect(homepageSchema.safeParse(withLines(5)).success).toBeTruthy()
 	expect(issuePaths(homepageSchema.safeParse(withLines(6)))).toEqual(['hero.lines'])
+})
+
+test('homepage hero buttons are optional, at most three, and need a safe link once they stop being coming soon', () => {
+	const withHighlights = (highlights: unknown) => homepageSchema.safeParse({ ...homepage, highlights })
+	const button = { label: 'Survey results' }
+
+	const empty = homepageSchema.safeParse({ hero: homepage.hero })
+	expect(empty.success).toBeTruthy()
+	if (empty.success) expect(empty.data.highlights).toEqual([])
+
+	// A new button starts as coming soon.
+	const parsed = withHighlights([button])
+	expect(parsed.success).toBeTruthy()
+	if (parsed.success) expect(parsed.data.highlights[0].comingSoon).toBe(true)
+
+	expect(issuePaths(withHighlights(Array(4).fill(button)))).toEqual(['highlights'])
+	expect(issuePaths(withHighlights([{ ...button, comingSoon: false }]))).toEqual(['highlights.0.url'])
+	expect(withHighlights([{ ...button, comingSoon: false, url: '/resources' }]).success).toBeTruthy()
+	expect(issuePaths(withHighlights([{ ...button, comingSoon: false, url: 'javascript:alert(1)' }]))).toEqual([
+		'highlights.0.url'
+	])
+})
+
+test('homepage hero buttons sit under the social links in order, and coming-soon buttons are not links', async ({
+	page
+}) => {
+	const highlights = homepage.highlights ?? []
+	await page.goto('/')
+	const buttons = page.locator('[data-highlights] > li')
+	await expect(buttons).toHaveCount(highlights.length)
+	test.skip(highlights.length === 0, 'No hero buttons are stored.')
+
+	for (const [index, button] of highlights.entries()) {
+		const item = buttons.nth(index)
+		await expect(item).toContainText(button.label)
+		if (button.comingSoon ?? true) {
+			await expect(item.getByRole('link')).toHaveCount(0)
+			await expect(item).toContainText('Soon')
+		} else {
+			await expect(item.getByRole('link', { name: button.label })).toHaveAttribute('href', button.url!)
+			await expect(item).not.toContainText('Soon')
+		}
+	}
+
+	const social = await page.getByRole('list', { name: 'GRC social media and email' }).boundingBox()
+	const first = await buttons.first().boundingBox()
+	expect(first!.y).toBeGreaterThan(social!.y + social!.height - 1)
+	// Small buttons, not cards.
+	expect(first!.height).toBeLessThan(56)
 })
 
 test('navigation links accept internal, https, mail, telephone, and fragment destinations', () => {

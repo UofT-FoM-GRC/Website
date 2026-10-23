@@ -254,12 +254,27 @@ const pageBandSchema = z.object({
 	imageAlt: requiredStringSchema
 })
 
+// A small button under the homepage social links, such as the survey results or the Resources page.
+const homepageHighlightSchema = z
+	.object({
+		label: requiredStringSchema,
+		// A coming-soon button shows a "Soon" tag and is not a link until its page exists.
+		comingSoon: z.boolean().default(true),
+		url: optionalInternalOrExternalUrlSchema
+	})
+	.superRefine((box, context) => {
+		if (!box.comingSoon && !box.url) {
+			context.addIssue({ code: 'custom', path: ['url'], message: 'Add a link, or turn Coming Soon back on.' })
+		}
+	})
+
 export const homepageSchema = z.object({
 	hero: z.object({
 		image: requiredStringSchema,
 		imageAlt: requiredStringSchema,
 		lines: z.array(requiredStringSchema).min(2).max(5)
-	})
+	}),
+	highlights: z.array(homepageHighlightSchema).max(3).default([])
 })
 
 const teamMemberImageSchema = z

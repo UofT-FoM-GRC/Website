@@ -7,5 +7,20 @@
 			"Graduate Representation Committee",
 			"inform. listen. advocate."
 		]
-	}
+	},
+	"highlights": [
+		{
+			"label": "Survey results",
+			"comingSoon": true
+		},
+		{
+			"label": "2026-27 survey",
+			"comingSoon": true
+		},
+		{
+			"label": "Resources",
+			"comingSoon": false,
+			"url": "/resources"
+		}
+	]
 }

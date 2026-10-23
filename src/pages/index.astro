@@ -13,7 +13,7 @@ const [homepage, site, announcements] = await Promise.all([
 	getEntry('announcements', 'announcements')
 ])
 if (!homepage || !site || !announcements) throw new Error('Missing homepage settings')
-const { hero } = homepage.data
+const { hero, highlights } = homepage.data
 // Hero lines: the first is a small label above the heading, the second is the page heading, and any others sit below it.
 const [heroLabel, heroHeading, ...heroTaglines] = hero.lines
 const visibleAnnouncements = announcements.data.items.filter((item) => isAnnouncementVisible(item))
@@ -21,6 +21,18 @@ const socialIcon = { instagram: 'mdi:instagram', github: 'mdi:github' } as const
 const heroSocialLinks = [
 	...site.data.socialLinks.map((link) => ({ ...link, icon: socialIcon[link.network], external: true })),
 	{ label: 'Email the GRC', url: `mailto:${site.data.contact.email}`, icon: 'mdi:email-outline', external: false }
+]
+// Small buttons under the social links: the first is filled in and the rest are outlined, as on mood board option B.
+// A coming-soon button keeps the same look with a "Soon" tag, but is not a link.
+const pillClass =
+	'inline-flex min-h-10 items-center gap-2 rounded-lg border-[1.5px] px-4 py-2 text-[15px] leading-none font-semibold no-underline'
+const pillLook = (index: number) =>
+	index === 0
+		? 'border-[#1E3765] bg-[#1E3765] text-white dark:border-white dark:bg-white dark:text-[#1E3765]'
+		: 'border-[#1E3765] bg-white/60 text-[#1E3765] dark:border-white dark:bg-white/10 dark:text-white'
+const pillHover = (index: number) => [
+	'transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1E3765] motion-reduce:transition-none dark:focus-visible:outline-white',
+	index === 0 ? 'hover:bg-[#13203A] dark:hover:bg-[#EEF2F8]' : 'hover:bg-white dark:hover:bg-white/25'
 ]
 ---
 
@@ -84,6 +96,32 @@ const heroSocialLinks = [
 						))
 					}
 				</ul>
+				{
+					highlights.length > 0 && (
+						<ul
+							data-highlights
+							aria-label="Highlights"
+							class="mt-1 flex flex-wrap justify-center gap-2.5 [text-shadow:none]"
+						>
+							{highlights.map((button, index) => (
+								<li>
+									{button.url && !button.comingSoon ? (
+										<a href={button.url} class:list={[pillClass, pillLook(index), pillHover(index)]}>
+											{button.label}
+										</a>
+									) : (
+										<span data-coming-soon class:list={[pillClass, pillLook(index), 'cursor-default']}>
+											{button.label}
+											<span class="rounded-full bg-[#F2C46B] px-1.5 py-0.5 text-[10px] leading-none font-semibold tracking-wide text-[#13203A] uppercase">
+												<span class="sr-only">coming </span>Soon
+											</span>
+										</span>
+									)}
+								</li>
+							))}
+						</ul>
+					)
+				}
 			</div>
 		</section>
 	</main>
