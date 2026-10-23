@@ -129,3 +129,18 @@ test('the sitemap lists the Team and Contact pages', async ({ request }) => {
 	expect(sitemap).toContain('https://uoftfomgrc.ca/team/')
 	expect(sitemap).toContain('https://uoftfomgrc.ca/contact/')
 })
+
+test('international students topic has its own page, linked from Browse by topic', async ({ page }) => {
+	const resource = readJson<{ title: string; sections: { id: string; title: string; cards: unknown[] }[] }>(
+		'../src/data/resources/international-students.json'
+	)
+	await page.goto('/resources/')
+	await page.locator('section[aria-labelledby="topics-heading"] a[href="/resources/international-students/"]').click()
+	await expect(page).toHaveURL(/\/resources\/international-students\/$/)
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(resource.title)
+	for (const section of resource.sections) {
+		const sectionLocator = page.locator(`main > section#${section.id}`)
+		await expect(sectionLocator.getByRole('heading', { level: 2 })).toHaveText(section.title)
+		await expect(sectionLocator.locator('article')).toHaveCount(section.cards.length)
+	}
+})

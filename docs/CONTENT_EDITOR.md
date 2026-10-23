@@ -6,7 +6,7 @@ Use <https://uoftfomgrc.ca/admin/>. Sign in with GitHub. Sveltia saves drafts on
 
 ## Edit content
 
-1. Open a task area: **Blog Posts**, **Resource Pages**, **Homepage Announcements**, **Homepage**, **Team and About Page**, **Resources, Blog and Contact Pages**, or **Advanced Site Settings**. **Blog Posts** creates and edits posts; **Resource Pages** edits the eight existing pages.
+1. Open a task area: **Blog Posts**, **Resource Pages**, **Homepage Announcements**, **Homepage**, **Team and About Page**, **Resources, Blog and Contact Pages**, or **Advanced Site Settings**. **Blog Posts** creates and edits posts; **Resource Pages** edits the nine existing pages.
 2. Use labels, hints, lists, and image controls. Add meaningful image descriptions. Reorder lists with drag handles.
 3. Save. Incomplete drafts are allowed: missing required fields and invalid values are marked in the editor, and you can fix them later. A valid save creates or updates one draft pull request that can be revisited across sessions.
 4. When nothing is flagged, open **View Preview**. It points at the exact changed route in the Netlify deploy preview. Wait for **Building…** to finish; **Build Failed** means the preview needs a fix.
@@ -31,7 +31,7 @@ The in-editor split preview is disabled. **View Preview** is the only authoritat
 
 This area holds the photo band at the top of the Resources, Blog and Contact pages, plus:
 
-- **Resources Page:** the search box text, the **Need Help Now** phone numbers shown first (check each number before publishing), and **New and Coming Soon**, a sideways-scrolling row of small cards at the bottom of the page. That row stays hidden while its list is empty. The topic cards under **Browse by topic** come from the eight resource pages: each card shows the page's **Resource Card Title** and **Search and Sharing Summary**, in the **Resources Menu Links** order set in **Advanced Site Settings**.
+- **Resources Page:** the search box text, the **Need Help Now** phone numbers shown first (check each number before publishing), and **New and Coming Soon**, a sideways-scrolling row of small cards at the bottom of the page. That row stays hidden while its list is empty. The topic cards under **Browse by topic** come from the nine resource pages: each card shows the page's **Resource Card Title** and **Search and Sharing Summary**, in the **Resources Menu Links** order set in **Advanced Site Settings**.
 - **Contact Page:** only the photo band. The email, Instagram and GitHub cards come from **Contact and Social Links** in **Advanced Site Settings**.
 
 On the Blog page, each current post appears under its **Blog Page Topic**. Ended posts (archived or expired) are listed by academic year in the folded Archive at the bottom.

@@ -1,0 +1,188 @@
+{
+	"slug": "international-students",
+	"title": "International Students",
+	"description": "Arriving in Canada, health coverage, community, awards and taxes for international graduate students.",
+	"cardTitle": "International Students",
+	"cardImage": "/assets/uoft-placeholder-default.webp",
+	"cardImageAlt": "International student resources",
+	"sections": [
+		{
+			"id": "getting-settled",
+			"title": "Getting Settled",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Your First Weeks in Canada",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "The Centre for International Experience checklist: print your UHIP card, get your TCard and Social Insurance Number, open a bank account and choose a phone plan."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Upon Arrival checklist →",
+									"url": "https://internationalexperience.utoronto.ca/international-student-services/resource-and-information-hub/upon-arrival"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "International Graduate Student Portal",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "The School of Graduate Studies guide to study permits, arriving and orientation, and on-campus supports for graduate students."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "SGS International Portal →",
+									"url": "https://www.sgs.utoronto.ca/international-portal/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "health-coverage",
+			"title": "Health Coverage (UHIP)",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Using UHIP",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "UHIP is your basic health insurance. Clinics in the Preferred Provider Network bill UHIP directly; elsewhere, you pay upfront and submit a claim. UHIP doesn’t cover prescriptions or vaccinations, but the UTGSU health and dental plan may."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Healthcare at U of T →",
+									"url": "https://internationalexperience.utoronto.ca/international-student-services/university-health-insurance-plan-uhip/healthcare-at-uoft-uhip"
+								},
+								{
+									"label": "What UHIP covers →",
+									"url": "https://internationalexperience.utoronto.ca/international-student-services/university-health-insurance-plan-uhip/healthcare-at-uoft-uhip/what-is-covered"
+								},
+								{
+									"label": "UTGSU health & dental plan →",
+									"url": "https://utgsu.ca/health-and-dental/benefits/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "community",
+			"title": "Community & Support",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "IMS International Community",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "A student-led group for international students in Institute of Medical Science programs, with events and peer support. The IMS welcome package is useful for any new international student."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "IMS international resources →",
+									"url": "https://ims.utoronto.ca/international-student-resources"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "UTGSU International Students’ Caucus",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "The caucus of the graduate students’ union that represents international graduate students."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "UTGSU caucuses →",
+									"url": "https://utgsu.ca/caucuses"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "awards",
+			"title": "Awards Open to International Students",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Finding Awards",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "In the Graduate Award Explorer, filter by “Open to International” to see awards you can apply for. The School of Graduate Studies awards database lists more."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Graduate Award Explorer →",
+									"url": "https://uoftscholarships.smartsimple.com/ex/ex_viewreport.jsp?key=&token=%40HwoGSxocZERdRRtfRxxZQFdTZFVyEnpuEg~~"
+								},
+								{
+									"label": "SGS awards database →",
+									"url": "https://www.sgs.utoronto.ca/awards/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "taxes",
+			"title": "Taxes",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Filing Taxes in Canada",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "International students may need to file a Canadian tax return each spring. The School of Graduate Studies explains T2202 tuition slips and points to free tax clinics run by the CRA and UTSU."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "SGS tax information →",
+									"url": "https://www.sgs.utoronto.ca/awards-funding/financial-aid-advising/financial-wellness-resources/taxes/"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -224,6 +224,68 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "more-options",
+			"title": "More Housing Options",
+			"intro": [],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "Off-Campus Housing Finder",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Rental listings, a roommate finder and tips for spotting rental scams."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Search listings →",
+									"url": "https://offcampushousing.utoronto.ca/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "University Family Housing",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Apartments for U of T students with partners or children."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Family housing →",
+									"url": "https://universityfamilyhousing.utoronto.ca/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "UTSC Graduate Townhouses",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Townhouses at the Scarborough campus on 8-month contracts. The 2026–27 cycle is waitlist-only."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Graduate applicants →",
+									"url": "https://www.utsc.utoronto.ca/residences/graduate-applicants"
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }

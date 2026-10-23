@@ -124,7 +124,8 @@ collections:
           - { label: Health & Wellness, value: health-wellness }
           - { label: Housing, value: housing }
           - { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards }
-          - { label: Scholarship/Award/Grant Application Support, value: scholarship-award-grant-application-support }
+          - { label: Writing & Application Support, value: scholarship-award-grant-application-support }
+          - { label: International Students, value: international-students }
           - { label: Other, value: other }
       - label: Blog Page Topic
         name: topic
@@ -453,8 +454,13 @@ collections:
         preview_path: '/resources/{{slug}}/'
         fields: *typed_resource_fields
       - name: scholarship-award-grant-application-support
-        label: Application Support Resources
+        label: Writing & Application Support
         file: src/data/resources/scholarship-award-grant-application-support.json
+        preview_path: '/resources/{{slug}}/'
+        fields: *typed_resource_fields
+      - name: international-students
+        label: International Students
+        file: src/data/resources/international-students.json
         preview_path: '/resources/{{slug}}/'
         fields: *typed_resource_fields
   - name: homepage_announcements
@@ -910,8 +916,8 @@ collections:
           - label: Resources Menu Links
             name: resourceLinks
             widget: list
-            min: 8
-            max: 8
+            min: 9
+            max: 9
             hint: One entry per resource page. Drag to set the order of the topic cards on the Resources page. Each resource page may appear once.
             fields:
               [
@@ -928,10 +934,8 @@ collections:
                       { label: Health & Wellness, value: health-wellness },
                       { label: Housing, value: housing },
                       { label: 'Scholarships, Bursaries & Awards', value: scholarships-bursaries-awards },
-                      {
-                        label: Scholarship/Award/Grant Application Support,
-                        value: scholarship-award-grant-application-support
-                      },
+                      { label: Writing & Application Support, value: scholarship-award-grant-application-support },
+                      { label: International Students, value: international-students },
                       { label: Other, value: other }
                     ]
                 }

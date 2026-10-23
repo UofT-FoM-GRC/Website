@@ -1,10 +1,10 @@
 {
 	"slug": "scholarship-award-grant-application-support",
-	"title": "Application Support Resources",
-	"description": "Writing, editing, and application-support resources for scholarships, awards, and grants.",
-	"cardTitle": "Scholarship/Award/Grant Application Support",
+	"title": "Writing & Application Support",
+	"description": "Writing centres, courses and feedback for papers, theses, and scholarship and grant applications.",
+	"cardTitle": "Writing & Application Support",
 	"cardImage": "/assets/uoft-placeholder-default.webp",
-	"cardImageAlt": "Application support resources",
+	"cardImageAlt": "Writing and application support resources",
 	"sections": [
 		{
 			"id": "writing-centres",
