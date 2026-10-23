@@ -254,12 +254,28 @@ const pageBandSchema = z.object({
 	imageAlt: requiredStringSchema
 })
 
+// A box under the homepage tagline for something the GRC is about to release.
+const homepageHighlightSchema = z
+	.object({
+		label: requiredStringSchema,
+		note: optionalCmsStringSchema,
+		// A coming-soon box shows a "Coming soon" tag and is not a link until its page exists.
+		comingSoon: z.boolean().default(true),
+		url: optionalInternalOrExternalUrlSchema
+	})
+	.superRefine((box, context) => {
+		if (!box.comingSoon && !box.url) {
+			context.addIssue({ code: 'custom', path: ['url'], message: 'Add a link, or turn Coming Soon back on.' })
+		}
+	})
+
 export const homepageSchema = z.object({
 	hero: z.object({
 		image: requiredStringSchema,
 		imageAlt: requiredStringSchema,
 		lines: z.array(requiredStringSchema).min(2).max(5)
-	})
+	}),
+	highlights: z.array(homepageHighlightSchema).max(3).default([])
 })
 
 const teamMemberImageSchema = z

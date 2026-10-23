@@ -7,5 +7,17 @@
 			"Graduate Representation Committee",
 			"inform. listen. advocate."
 		]
-	}
+	},
+	"highlights": [
+		{
+			"label": "2025-26 survey results",
+			"note": "What you told us in last year's Finance and Living Survey",
+			"comingSoon": true
+		},
+		{
+			"label": "2026-27 survey launch",
+			"note": "Your answers shape what we advocate for",
+			"comingSoon": true
+		}
+	]
 }

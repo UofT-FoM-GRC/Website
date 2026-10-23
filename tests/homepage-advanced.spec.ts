@@ -6,6 +6,7 @@ type Link = { label: string; url: string }
 
 type Homepage = {
 	hero: { image: string; imageAlt: string; lines: string[] }
+	highlights?: Array<{ label: string; note?: string; comingSoon?: boolean; url?: string }>
 }
 
 type Navigation = {
@@ -46,6 +47,57 @@ test('homepage hero lines require two to five entries', () => {
 	expect(homepageSchema.safeParse(withLines(2)).success).toBeTruthy()
 	expect(homepageSchema.safeParse(withLines(5)).success).toBeTruthy()
 	expect(issuePaths(homepageSchema.safeParse(withLines(6)))).toEqual(['hero.lines'])
+})
+
+test('homepage highlight boxes are optional, at most three, and need a safe link once they stop being coming soon', () => {
+	const withHighlights = (highlights: unknown) => homepageSchema.safeParse({ ...homepage, highlights })
+	const box = { label: '2025-26 survey results' }
+
+	const empty = homepageSchema.safeParse({ hero: homepage.hero })
+	expect(empty.success).toBeTruthy()
+	if (empty.success) expect(empty.data.highlights).toEqual([])
+
+	// A new box starts as coming soon.
+	const parsed = withHighlights([box])
+	expect(parsed.success).toBeTruthy()
+	if (parsed.success) expect(parsed.data.highlights[0].comingSoon).toBe(true)
+
+	expect(issuePaths(withHighlights(Array(4).fill(box)))).toEqual(['highlights'])
+	expect(issuePaths(withHighlights([{ ...box, comingSoon: false }]))).toEqual(['highlights.0.url'])
+	expect(withHighlights([{ ...box, comingSoon: false, url: '/survey' }]).success).toBeTruthy()
+	expect(issuePaths(withHighlights([{ ...box, comingSoon: false, url: 'javascript:alert(1)' }]))).toEqual([
+		'highlights.0.url'
+	])
+})
+
+test('homepage highlight boxes appear under the tagline in order, and coming-soon boxes are not links', async ({
+	page
+}) => {
+	const highlights = homepage.highlights ?? []
+	await page.goto('/')
+	const boxes = page.locator('[data-highlights] > li')
+	await expect(boxes).toHaveCount(highlights.length)
+	test.skip(highlights.length === 0, 'No highlight boxes are stored.')
+
+	for (const [index, box] of highlights.entries()) {
+		const item = boxes.nth(index)
+		await expect(item).toContainText(box.label)
+		if (box.note) await expect(item).toContainText(box.note)
+		if (box.comingSoon ?? true) {
+			await expect(item.getByRole('link')).toHaveCount(0)
+			await expect(item).toContainText('Coming soon')
+		} else {
+			await expect(item.getByRole('link')).toHaveAttribute('href', box.url!)
+			await expect(item).not.toContainText('Coming soon')
+		}
+	}
+
+	// The boxes sit between the tagline and the social links.
+	const tagline = await page.getByText(homepage.hero.lines.at(-1)!, { exact: true }).boundingBox()
+	const first = await boxes.first().boundingBox()
+	const social = await page.getByRole('list', { name: 'GRC social media and email' }).boundingBox()
+	expect(first!.y).toBeGreaterThan(tagline!.y)
+	expect(social!.y).toBeGreaterThan(first!.y)
 })
 
 test('navigation links accept internal, https, mail, telephone, and fragment destinations', () => {
