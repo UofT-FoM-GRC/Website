@@ -112,6 +112,300 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "food",
+			"title": "Food Support",
+			"intro": [
+				"Free food on and near the St. George campus. Hours change each term, so check each page before you go."
+			],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "UTSU Food Bank",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Free groceries for St. George students, Fridays by appointment. Bookings open each Wednesday morning. You need a Daily Bread client ID; bring your TCard and reusable bags."
+						},
+						{
+							"type": "contact",
+							"addressLines": [
+								"Student Commons, Room 136",
+								"230 College St. (Huron St. entrance)"
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Book an appointment →",
+									"url": "https://www.utsu.ca/food-bank/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "UTSU Lunch Lift",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "A free prepared frozen meal every Tuesday at lunchtime, first come, first served. Not running in the summer."
+						},
+						{
+							"type": "contact",
+							"addressLines": [
+								"Student Commons, Community Kitchen (Room 329)",
+								"230 College St."
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "About Lunch Lift →",
+									"url": "https://www.utsu.ca/lunch-lift/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "U of T Food Coalition",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "A free weekly meal on St. George campus, started by U of T PhD students and co-funded by the graduate students’ union. Check Instagram for this week’s time and place."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "@uoftfoodcoalition on Instagram →",
+									"url": "https://www.instagram.com/uoftfoodcoalition/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Daily Bread Food Bank",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Find a food bank near where you live. This is also where you get the Daily Bread client ID the UTSU Food Bank asks for."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Find a food bank →",
+									"url": "https://www.dailybread.ca/need-food/programs-by-location/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "211 Ontario",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "A directory of free and low-cost meals, food banks and food delivery across Toronto."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Free and low-cost meals near campus →",
+									"url": "https://211ontario.ca/results/?topicPath=73&latitude=43.661678&longitude=-79.382842"
+								},
+								{
+									"label": "Food banks in Toronto →",
+									"url": "https://211ontario.ca/results/?searchLocation=Toronto&topicPath=70&latitude=43.63830947876&longitude=-79.425552368164&sd=5&ss=Distance"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "SGS Emergency Grant",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "If an unexpected expense leaves you short of money for food or rent, the School of Graduate Studies offers emergency grants. Talk to your department or SGS financial advising first. Applications aren’t accepted August 1 to October 30."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "About the emergency grant →",
+									"url": "https://www.sgs.utoronto.ca/awards/sgs-emergency-grant"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "getting-around",
+			"title": "Getting Around",
+			"intro": [
+				"Student transit discounts and other ways to get to campus. Most transit discounts are for full-time students."
+			],
+			"columns": 3,
+			"cards": [
+				{
+					"title": "TTC Student Monthly Pass",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Full-time U of T students can buy a discounted TTC monthly pass. First get a TTC Post-Secondary Photo ID card at Bathurst Station or when the TTC visits campus each fall, then have the student fare set on your PRESTO card at Shoppers Drug Mart. Paying per ride costs the regular adult fare."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "TTC Post-Secondary Photo ID →",
+									"url": "https://www.ttc.ca/Fares-and-passes/Fares-types-and-discounts/TTC-Post-Secondary-Photo-ID-Card"
+								},
+								{
+									"label": "PRESTO for students →",
+									"url": "https://prestocard.ca/en/learn/students"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "GO Transit & UP Express",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Full-time students save 40% on GO trains and buses and on the UP Express to Pearson airport. Apply online for a GO Student ID each school year and add it to your PRESTO card."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "GO student discount →",
+									"url": "https://www.gotransit.com/en/student-savings/post-secondary-discount"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Bike Share Toronto",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "U of T students get 20% off an annual Bike Share membership, half-price e-bike minutes and no unlock fees."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "U of T Bike Share discount →",
+									"url": "https://transportation.utoronto.ca/bike-share-discount"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Cycling & Getting Around Campus",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Bike racks and lanes, City bike lockers near campus, nearby subway stops and car share, from U of T Transportation Services."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Getting around St. George →",
+									"url": "https://transportation.utoronto.ca/getting-around/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "TravelSafer",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "A free escort from Campus Safety to anywhere on campus or a nearby TTC station, 24/7. Request one in the UofT Safety App or by phone."
+						},
+						{
+							"type": "contact",
+							"facts": [
+								{
+									"label": "Campus Safety:",
+									"value": "416-978-7233",
+									"url": "tel:416-978-7233"
+								}
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "About TravelSafer →",
+									"url": "https://www.campussafety.utoronto.ca/travel-safer"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "perks",
+			"title": "Free Tools & Perks",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "U of T AI Kitchen & Tools",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "U of T-approved AI tools. Microsoft Copilot Chat is free with your U of T sign-in."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Explore the AI Kitchen →",
+									"url": "https://ai.utoronto.ca/ai-kitchen/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Art Gallery of Ontario",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Free admission for Ontario residents under 25."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Plan a visit →",
+									"url": "https://ago.ca/visit"
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }

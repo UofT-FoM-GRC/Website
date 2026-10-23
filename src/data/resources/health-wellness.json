@@ -7,6 +7,57 @@
 	"cardImageAlt": "Health and wellness resources",
 	"sections": [
 		{
+			"id": "urgent-help",
+			"title": "Urgent Help, 24/7",
+			"intro": [],
+			"columns": 1,
+			"cards": [
+				{
+					"title": "Emergency & Crisis Lines",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "If you or someone else is in danger, call 911. These lines are free and answer around the clock."
+						},
+						{
+							"type": "contact",
+							"facts": [
+								{
+									"label": "Emergency:",
+									"value": "911",
+									"url": "tel:911"
+								},
+								{
+									"label": "Campus Safety (St. George):",
+									"value": "416-978-2222",
+									"url": "tel:416-978-2222"
+								},
+								{
+									"label": "Suicide Crisis Helpline:",
+									"value": "9-8-8",
+									"url": "tel:988"
+								},
+								{
+									"label": "TELUS Health Student Support:",
+									"value": "1-844-451-9700",
+									"url": "tel:1-844-451-9700"
+								}
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "More 24-hour help on and off campus →",
+									"url": "https://www.studentlife.utoronto.ca/task/get-24-hour-emergency-help-on-or-off-campus/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
 			"id": "events",
 			"title": "Upcoming Health & Wellness Events",
 			"intro": ["Stay updated with health and wellness events at UofT through our Events Calendar on Folio."],
@@ -235,6 +286,70 @@
 								{
 									"label": "View Registration Instructions →",
 									"url": "https://studentlife.utoronto.ca/service/accessibility-services-registration-and-documentation-requirements/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "counselling",
+			"title": "Counselling & Therapy",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Temerty On-Site Counselling",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Free, confidential counselling for Faculty of Medicine graduate students, with same- or next-day appointments."
+						},
+						{
+							"type": "contact",
+							"facts": [
+								{
+									"label": "Book by phone:",
+									"value": "416-978-8030, option 5",
+									"url": "tel:416-978-8030"
+								}
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "About On-Site Counselling →",
+									"url": "https://rhse.temertymedicine.utoronto.ca/site-counselling"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "OISE Psychology Clinic",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Therapy and assessment for adults with supervised trainees. Fee reductions are available, there may be a waitlist, and the clinic runs roughly September to June."
+						},
+						{
+							"type": "contact",
+							"facts": [
+								{
+									"label": "Intake:",
+									"value": "416-978-0654",
+									"url": "tel:416-978-0654"
+								}
+							]
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Adult services →",
+									"url": "https://www.oise.utoronto.ca/psychology-clinic/adult-services"
 								}
 							]
 						}

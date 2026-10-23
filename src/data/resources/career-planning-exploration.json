@@ -157,6 +157,86 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "graduate-careers",
+			"title": "For Graduate Students",
+			"intro": [],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Temerty Careers & Professional Development",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Faculty of Medicine career programs, including myIDP, Career Chats and the Life Sciences Career Development Society."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Temerty careers →",
+									"url": "https://rhse.temertymedicine.utoronto.ca/careers-and-professional-development"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Career Advising Appointments",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "30-minute career advising sessions for students and recent alumni, booked through Folio."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Book an appointment →",
+									"url": "https://www.studentlife.utoronto.ca/service/career-advising-appointments/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Flexible Futures",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Career workshops for graduate students. Check the page for upcoming dates and book through Folio."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Flexible Futures workshops →",
+									"url": "https://www.studentlife.utoronto.ca/program/flexible-futures-programming-for-graduate-students/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Centre for Graduate Professional Development",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "School of Graduate Studies workshops and resources for building professional skills."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Visit CGPD →",
+									"url": "https://www.cgpd.utoronto.ca/"
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }

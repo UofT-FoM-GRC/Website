@@ -68,7 +68,8 @@ test('published blog URLs and resource routes cannot be removed through routine 
 		'housing',
 		'other',
 		'scholarships-bursaries-awards',
-		'scholarship-award-grant-application-support'
+		'scholarship-award-grant-application-support',
+		'international-students'
 	])
 
 	const sections = getField(getCollection(config, 'resources').files![0].fields, 'sections')

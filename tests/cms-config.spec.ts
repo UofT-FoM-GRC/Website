@@ -23,7 +23,8 @@ const resourceCategories = [
 	{ label: 'Health & Wellness', value: 'health-wellness' },
 	{ label: 'Housing', value: 'housing' },
 	{ label: 'Scholarships, Bursaries & Awards', value: 'scholarships-bursaries-awards' },
-	{ label: 'Scholarship/Award/Grant Application Support', value: 'scholarship-award-grant-application-support' },
+	{ label: 'Writing & Application Support', value: 'scholarship-award-grant-application-support' },
+	{ label: 'International Students', value: 'international-students' },
 	{ label: 'Other', value: 'other' }
 ]
 
@@ -322,7 +323,7 @@ test('resource navigation selects each fixed resource record exactly once in men
 	expect(navigation, 'Missing navigation configuration').toBeDefined()
 	const resourceLinks = getField(navigation!.fields, 'resourceLinks')
 
-	expect(resourceLinks).toMatchObject({ widget: 'list', min: 8, max: 8 })
+	expect(resourceLinks).toMatchObject({ widget: 'list', min: 9, max: 9 })
 	expect(resourceLinks.hint, 'resource menu hint').toMatch(/drag/i)
 	expect(resourceLinks.hint, 'resource menu hint').toMatch(/order/i)
 
@@ -506,7 +507,8 @@ test('Sveltia task areas retain current file paths and data field trees', () => 
 		'housing',
 		'other',
 		'scholarships-bursaries-awards',
-		'scholarship-award-grant-application-support'
+		'scholarship-award-grant-application-support',
+		'international-students'
 	])
 	expect(getField(blog.fields!, 'tags').options).toEqual(resourceCategories)
 	for (const file of resources.files!) {

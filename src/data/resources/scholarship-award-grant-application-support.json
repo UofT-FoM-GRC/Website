@@ -1,10 +1,10 @@
 {
 	"slug": "scholarship-award-grant-application-support",
-	"title": "Application Support Resources",
-	"description": "Writing, editing, and application-support resources for scholarships, awards, and grants.",
-	"cardTitle": "Scholarship/Award/Grant Application Support",
+	"title": "Writing & Application Support",
+	"description": "Writing centres, courses and feedback for papers, theses, and scholarship and grant applications.",
+	"cardTitle": "Writing & Application Support",
 	"cardImage": "/assets/uoft-placeholder-default.webp",
-	"cardImageAlt": "Application support resources",
+	"cardImageAlt": "Writing and application support resources",
 	"sections": [
 		{
 			"id": "writing-centres",
@@ -249,6 +249,52 @@
 								{
 									"label": "View Resources →",
 									"url": "https://studentlife.utoronto.ca/task_levels/centre-for-learning-strategy-support/"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "gcac",
+			"title": "Graduate Centre for Academic Communication (GCAC)",
+			"intro": [
+				"Free writing and speaking support from the School of Graduate Studies, just for graduate students."
+			],
+			"columns": 2,
+			"cards": [
+				{
+					"title": "Courses & Workshops",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Free non-credit courses and workshops on academic writing and speaking, including writing NSERC, CIHR and SSHRC proposals."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Browse GCAC courses →",
+									"url": "https://www.gcac.utoronto.ca/"
+								}
+							]
+						}
+					]
+				},
+				{
+					"title": "Writing Centre",
+					"blocks": [
+						{
+							"type": "text",
+							"body": "Free 40-minute one-on-one writing consultations for graduate students."
+						},
+						{
+							"type": "links",
+							"items": [
+								{
+									"label": "Book a consultation →",
+									"url": "https://www.gcac.utoronto.ca/writing-centre/"
 								}
 							]
 						}

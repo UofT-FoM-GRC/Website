@@ -43,7 +43,7 @@
 			"slug": "scholarships-bursaries-awards"
 		},
 		{
-			"label": "Scholarship/Award/Grant Application Support",
+			"label": "Writing & Application Support",
 			"slug": "scholarship-award-grant-application-support"
 		},
 		{
@@ -53,6 +53,10 @@
 		{
 			"label": "Career Planning/Exploration",
 			"slug": "career-planning-exploration"
+		},
+		{
+			"label": "International Students",
+			"slug": "international-students"
 		},
 		{
 			"label": "Other",

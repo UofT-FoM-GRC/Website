@@ -156,7 +156,7 @@ Template controls button styling. Editors do not select colors or spacing.
 
 ## Resource-page model and editor
 
-Retain all eight fixed resource routes and this hierarchy:
+Retain all nine fixed resource routes and this hierarchy:
 
 `resource page → resource section → card grid → resource card → content blocks`
 

@@ -30,7 +30,8 @@ export function prettifyTag(tag: BlogTag) {
 		'continuing-education': 'Continuing Education',
 		housing: 'Housing',
 		'scholarships-bursaries-awards': 'Scholarships, Bursaries, and Awards',
-		'scholarship-award-grant-application-support': 'Scholarship/Award/Grant Application Support',
+		'scholarship-award-grant-application-support': 'Writing & Application Support',
+		'international-students': 'International Students',
 		other: 'Other'
 	}[tag]
 }

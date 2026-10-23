@@ -10,6 +10,7 @@ export const blogTagSchema = z.enum([
 	'housing',
 	'scholarships-bursaries-awards',
 	'scholarship-award-grant-application-support',
+	'international-students',
 	'other'
 ])
 export type BlogTag = z.infer<typeof blogTagSchema>

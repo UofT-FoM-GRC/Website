@@ -43,7 +43,7 @@ This Netlify site uses a Legacy Free usage-based plan with one concurrent build.
 - Homepage loads at <https://uoftfomgrc.ca>.
 - Desktop and mobile navigation work.
 - Blog index and changed post load; images and alternative text are correct.
-- All eight resource pages load; changed card links work.
+- All nine resource pages load; changed card links work.
 - About page loads; changed team year/member order, names, positions, photos, and alternative text are correct.
 - Search opens and returns a known term.
 - Light and dark themes work.

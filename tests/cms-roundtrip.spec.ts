@@ -472,7 +472,7 @@ test('text-and-link resource pages open, reorder, and save typed blocks in CMS',
 	await openTestBackend(page, testSandboxName)
 
 	await openResourcePage(page, 'Career Planning & Exploration Resources')
-	await page.getByText('3 Page Sections', { exact: true }).click()
+	await page.getByText('4 Page Sections', { exact: true }).click()
 	await page
 		.getByRole('group', { name: /Page Sections/ })
 		.getByRole('button', { name: 'Expand' })
@@ -487,10 +487,15 @@ test('text-and-link resource pages open, reorder, and save typed blocks in CMS',
 		page.evaluate(readTestFile, { path: 'src/data/resources/career-planning-exploration.json', testRepositoryName })
 	await expect
 		.poll(async () => JSON.parse(await saved()).sections.map((section: { id: string }) => section.id))
-		.toEqual(['resources', 'events', 'tools'])
+		.toEqual(['resources', 'events', 'tools', 'graduate-careers'])
 	expect(JSON.parse(await saved()).sections[0].cards[0]).toHaveProperty('blocks')
 
-	for (const title of ['Continuing Education', 'Miscellaneous Resources', 'Application Support Resources']) {
+	for (const title of [
+		'Continuing Education',
+		'Miscellaneous Resources',
+		'Writing & Application Support',
+		'International Students'
+	]) {
 		await openResourcePage(page, title)
 	}
 })
@@ -501,7 +506,7 @@ test('contact-rich resource pages open, reorder, and save typed blocks in CMS', 
 	await openTestBackend(page, testSandboxName)
 
 	await openResourcePage(page, 'Housing')
-	await page.getByText('2 Page Sections', { exact: true }).click()
+	await page.getByText('3 Page Sections', { exact: true }).click()
 	await page
 		.getByRole('group', { name: /Page Sections/ })
 		.getByRole('button', { name: 'Expand' })
@@ -515,7 +520,7 @@ test('contact-rich resource pages open, reorder, and save typed blocks in CMS', 
 	const saved = () => page.evaluate(readTestFile, { path: 'src/data/resources/housing.json', testRepositoryName })
 	await expect
 		.poll(async () => JSON.parse(await saved()).sections.map((section: { id: string }) => section.id))
-		.toEqual(['graduate', 'emergency'])
+		.toEqual(['graduate', 'emergency', 'more-options'])
 	expect(JSON.parse(await saved()).sections[0].cards[0]).toHaveProperty('blocks')
 	expect(
 		JSON.parse(await saved()).sections[1].cards[1].blocks.some(

@@ -14,7 +14,7 @@ There is no long-lived `dev` branch and no manual release step. Developer source
 | Location                      | CMS content                                                      | Render owner                      |
 | ----------------------------- | ---------------------------------------------------------------- | --------------------------------- |
 | `src/blog/*.md`               | Blog frontmatter (including Blog page topic) and Markdown body   | Blog layouts/cards                |
-| `src/data/resources/*.json`   | Eight fixed resource URLs, cards, links, order                   | `ResourcePage.astro`              |
+| `src/data/resources/*.json`   | Nine fixed resource URLs, cards, links, order                    | `ResourcePage.astro`              |
 | `src/data/homepage.json`      | Full-screen hero image, image description, and text lines        | Homepage                          |
 | `src/data/announcements.json` | Homepage announcements, expiry, and display order                | Homepage                          |
 | `src/data/team.json`          | About wording, current/past team years, members, photos, order   | About and Team pages              |
@@ -22,7 +22,7 @@ There is no long-lived `dev` branch and no manual release step. Developer source
 | `src/data/navigation.json`    | Header navigation, Resources link, resource topic order          | Header, Resources page            |
 | `src/data/site.json`          | Site metadata, public contact email, social links                | Homepage hero, Contact page       |
 
-`src/schemas.ts` validates every data source through Astro collections in `src/content.config.ts`. Immutable resource slugs match blog tag IDs and preserve all eight URLs. Resource-menu entries store a resource slug, not a copied URL, so menu links cannot drift from resource routes.
+`src/schemas.ts` validates every data source through Astro collections in `src/content.config.ts`. Immutable resource slugs match blog tag IDs and preserve all nine URLs. Resource-menu entries store a resource slug, not a copied URL, so menu links cannot drift from resource routes.
 
 `src/utils/cmsAssets.ts` maps existing source images to emitted URLs. New CMS images live in `public/assets/` and are referenced directly. Current imagery remains visible; future images need no code work.
 
