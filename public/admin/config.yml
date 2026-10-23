@@ -594,7 +594,7 @@ collections:
                       label: Source,
                       name: source,
                       widget: string,
-                      hint: 'Which survey and year the number comes from, and how many people answered.'
+                      hint: 'Which survey and year the number comes from, and how many people answered, for example: 2025-26 GRC Finance and Living Survey (244 respondents)'
                     }
               - { label: Purpose Heading, name: purposeTitle, widget: string }
               - {
