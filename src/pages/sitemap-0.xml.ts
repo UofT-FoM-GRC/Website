@@ -24,6 +24,7 @@ export const GET: APIRoute = async () => {
 		'/blog/',
 		'/resources/',
 		'/contact/',
+		'/survey/2025-26/',
 		...resources.map((resource) => `/resources/${resource.data.slug}/`),
 		...blogs.filter((post) => isCurrentPost(post)).map((post) => `/blog/${post.id}/`)
 	]

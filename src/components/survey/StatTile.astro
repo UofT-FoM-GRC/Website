@@ -1,0 +1,21 @@
+---
+interface Props {
+	/** The figure as it should read, such as "73%" or "1 in 2". */
+	value: string
+	/** Reads on from the figure. */
+	statement: string
+	/** Where to check it in the full report, such as "Figure 18". */
+	source: string
+	/** Optional comparison line under the statement, such as "Up from 8% in 2024". */
+	change?: string
+}
+
+const { value, statement, source, change } = Astro.props
+---
+
+<div data-stat class="flex flex-col gap-3 rounded-2xl bg-[#F4F6FA] p-6 dark:bg-slate-800">
+	<p class="m-0 text-5xl leading-none font-bold tracking-tight text-[#1E3765] dark:text-white">{value}</p>
+	<p class="m-0 text-lg leading-snug text-[#13203A] dark:text-slate-100">{statement}</p>
+	{change && <p class="m-0 text-base font-semibold text-[#2E3A52] dark:text-slate-300">{change}</p>}
+	<p class="m-0 mt-auto text-sm text-[#5A6680] dark:text-slate-400">Report: {source}</p>
+</div>

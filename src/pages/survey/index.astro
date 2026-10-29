@@ -1,0 +1,19 @@
+---
+// /survey forwards straight to the latest results until a page for the 2026-27 survey itself is built here.
+// The menu and homepage button link to the results page directly; this catches people who type /survey.
+const target = '/survey/2025-26/'
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>2025-26 Survey Results | Graduate Representation Committee</title>
+		<meta http-equiv="refresh" content={`0;url=${target}`} />
+		<meta name="robots" content="noindex" />
+		<link rel="canonical" href={new URL(target, Astro.site).href} />
+	</head>
+	<body>
+		<a href={target}>See the 2025-26 survey results</a>
+	</body>
+</html>

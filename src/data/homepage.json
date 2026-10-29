@@ -11,7 +11,8 @@
 	"highlights": [
 		{
 			"label": "Survey results",
-			"comingSoon": true
+			"comingSoon": false,
+			"url": "/survey/2025-26"
 		},
 		{
 			"label": "2026-27 survey",
