@@ -7,7 +7,8 @@ const { href, class: className, ...props } = Astro.props
 
 const { pathname } = Astro.url
 const subpath = pathname.match(/[^\/]+/g)
-const isActive = href === pathname || href === '/' + subpath?.[0]
+// A link is current on its own page (with or without the trailing slash) and, for one-segment links, on pages under it.
+const isActive = href === pathname || href === pathname.replace(/\/$/, '') || href === '/' + subpath?.[0]
 ---
 
 <a

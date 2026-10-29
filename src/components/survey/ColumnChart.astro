@@ -1,0 +1,129 @@
+---
+interface Props {
+	/** Id for the chart title; the figure is labelled by it. */
+	id: string
+	title: string
+	/** One line under the title: what is counted and over which years. */
+	subtitle: string
+	/** One column per point, oldest first. Values are percentages. `shortLabel` replaces the label on phones. */
+	points: { label: string; shortLabel?: string; value: number }[]
+	/** Header for the label column in the table view, such as "Survey year". */
+	labelHeading: string
+	/** Header for the value column in the table view. */
+	valueHeading: string
+	/** Where the numbers come from, shown under the chart. */
+	source: string
+	/** Small print under the chart, such as how the years are counted. */
+	note?: string
+}
+
+const { id, title, subtitle, points, labelHeading, valueHeading, source, note } = Astro.props
+
+// Only the first, highest and latest columns carry a number on the cap; hover or the table gives the rest.
+const peak = points.reduce((best, point, index) => (point.value > points[best].value ? index : best), 0)
+const labelled = new Set([0, peak, points.length - 1])
+const gridlines = [100, 75, 50, 25, 0]
+const description = `${title}: ${points.map(({ label, value }) => `${label}, ${value}%`).join('; ')}.`
+---
+
+<!-- A single-series column chart drawn in HTML, with a hover tooltip on each column and a table view. -->
+<figure data-survey-chart={id} aria-labelledby={id} class="m-0 flex flex-col gap-5">
+	<figcaption class="flex flex-col gap-1">
+		<span id={id} class="text-xl leading-snug font-bold text-[#13203A] dark:text-slate-100">{title}</span>
+		<span class="text-base text-[#4B5872] dark:text-slate-400">{subtitle}</span>
+	</figcaption>
+
+	<div role="img" aria-label={description} class="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-2">
+		<!-- Y axis ticks, aligned with the gridlines. -->
+		<div class="relative h-56 sm:h-64" aria-hidden="true">
+			{
+				gridlines.map((tick) => (
+					<span
+						class="absolute right-0 translate-y-1/2 text-xs text-[#5A6680] tabular-nums dark:text-slate-400"
+						style={`bottom: ${tick}%`}
+					>
+						{tick}%
+					</span>
+				))
+			}
+		</div>
+		<div class="relative h-56 sm:h-64" aria-hidden="true">
+			{
+				gridlines.map((tick) => (
+					<span
+						class:list={[
+							'absolute inset-x-0 h-px',
+							tick === 0 ? 'bg-[#8792A8] dark:bg-slate-500' : 'bg-[#E3E8F0] dark:bg-slate-700'
+						]}
+						style={`bottom: ${tick}%`}
+					/>
+				))
+			}
+			<div class="absolute inset-0 flex items-end">
+				{
+					points.map((point, index) => (
+						<div class="group relative flex h-full flex-1 items-end justify-center">
+							<div class="relative w-full max-w-6" style={`height: ${point.value}%`}>
+								<span class="absolute inset-0 rounded-t-[4px] bg-[#1E3765] transition-opacity group-hover:opacity-80 motion-reduce:transition-none dark:bg-sky-300" />
+								{labelled.has(index) && (
+									<span class="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-semibold whitespace-nowrap text-[#13203A] group-hover:invisible dark:text-slate-100">
+										{point.value}%
+									</span>
+								)}
+								<span class="pointer-events-none absolute bottom-[calc(100%+0.375rem)] left-1/2 z-10 hidden -translate-x-1/2 rounded-md bg-[#13203A] px-2.5 py-1.5 text-sm whitespace-nowrap text-white shadow-md group-hover:block dark:bg-slate-100 dark:text-slate-900">
+									{point.label}: <strong>{point.value}%</strong>
+								</span>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+		<span aria-hidden="true"></span>
+		<div class="flex pt-2" aria-hidden="true">
+			{
+				points.map((point) => (
+					<span class="flex-1 text-center text-xs text-[#5A6680] tabular-nums sm:text-sm dark:text-slate-400">
+						<span class="sm:hidden">{point.shortLabel ?? point.label}</span>
+						<span class="hidden sm:inline">{point.label}</span>
+					</span>
+				))
+			}
+		</div>
+	</div>
+
+	<details class="group/table rounded-lg border border-[#D6DDE9] dark:border-slate-700">
+		<summary
+			class="flex min-h-11 cursor-pointer items-center px-4 text-[15px] font-semibold text-[#1E3765] hover:bg-[#F4F6FA] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] dark:text-sky-300 dark:hover:bg-slate-800"
+		>
+			Show as table
+		</summary>
+		<div class="overflow-x-auto px-4 pb-4">
+			<table class="w-full border-collapse text-left text-[15px] text-[#13203A] dark:text-slate-100">
+				<thead>
+					<tr class="border-b border-[#D6DDE9] dark:border-slate-700">
+						<th scope="col" class="py-2 pr-4 font-semibold">{labelHeading}</th>
+						<th scope="col" class="py-2 text-right font-semibold">{valueHeading}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{
+						points.map((point) => (
+							<tr class="border-b border-[#EEF2F8] last:border-0 dark:border-slate-800">
+								<th scope="row" class="py-1.5 pr-4 font-normal">
+									{point.label}
+								</th>
+								<td class="py-1.5 text-right tabular-nums">{point.value}%</td>
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+	</details>
+
+	<p class="m-0 flex flex-col gap-1 text-sm leading-snug text-[#5A6680] dark:text-slate-400">
+		{note && <span>{note}</span>}
+		<span>Source: {source}</span>
+	</p>
+</figure>

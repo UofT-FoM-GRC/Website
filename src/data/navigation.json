@@ -11,8 +11,8 @@
 		},
 		{
 			"label": "Survey & Report",
-			"url": "/survey",
-			"comingSoon": true
+			"url": "/survey/2025-26",
+			"comingSoon": false
 		},
 		{
 			"label": "Blog",

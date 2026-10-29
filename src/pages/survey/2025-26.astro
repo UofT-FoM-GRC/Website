@@ -1,0 +1,565 @@
+---
+import { getEntry } from 'astro:content'
+import { Icon } from 'astro-icon/components'
+import BarList from '../../components/survey/BarList.astro'
+import ColumnChart from '../../components/survey/ColumnChart.astro'
+import LevelBars from '../../components/survey/LevelBars.astro'
+import StatTile from '../../components/survey/StatTile.astro'
+import PageSection from '../../components/PageSection.astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+// Results of the 2025-26 Graduate Student Survey. Every number on this page is in the full report
+// (public/reports/2025-26-graduate-student-survey-report.pdf); each one names the figure or page to check it against.
+// Percentages are rounded. A new year's results get their own page, such as /survey/2026-27.
+
+const site = await getEntry('site', 'site')
+if (!site) throw new Error('Missing site content')
+const { email } = site.data.contact
+const instagram = site.data.socialLinks.find(({ network }) => network === 'instagram')
+
+const reportUrl = '/reports/2025-26-graduate-student-survey-report.pdf'
+
+const sections = [
+	{ id: 'at-a-glance', label: 'At a glance' },
+	{ id: 'money', label: 'Money' },
+	{ id: 'well-being', label: 'Well-being' },
+	{ id: 'resources', label: 'Resources' },
+	{ id: 'international', label: 'International students' },
+	{ id: 'asks', label: 'Our asks' },
+	{ id: 'method', label: 'How we ran it' }
+]
+
+const headline = [
+	{
+		value: '73%',
+		statement: "can't cover their day-to-day living costs with their stipend alone",
+		source: 'Figure 18, students in funded programs'
+	},
+	{
+		value: '69%',
+		statement: 'of students with extra work rank extra income as their top reason for it',
+		source: 'Figure 16'
+	},
+	{ value: '1 in 2', statement: 'face some level of food insecurity', source: 'Figure 19' },
+	{ value: '38%', statement: 'rate their mental health poor or very poor', source: 'Figure 22' }
+]
+
+const better = [
+	{ text: 'Food, housing and health-care insecurity held steady compared with 2024.', source: 'Page 2' },
+	{
+		text: '46% found it easy to find information about student resources, up from about 40% in 2024.',
+		source: 'Page 23, Figure 24'
+	},
+	{ text: '73% knew their living allowance went up, after a record low in 2024.', source: 'Figure 9' }
+]
+
+const worse = [
+	{ text: '15% rate their mental health very poor, up from 8% in 2024.', source: 'Figure 22' },
+	{ text: 'More students live with parents or relatives, and fewer with a partner.', source: 'Page 18, Figure 17' },
+	{ text: 'PhD students in later years of their programs report poorer mental health.', source: 'Figure 23' }
+]
+
+// Figure 18: share answering "No" among students who answered Yes or No, by survey year.
+const livingCosts = [
+	{ label: '2017', value: 73 },
+	{ label: '2018', value: 82 },
+	{ label: '2019', value: 86 },
+	{ label: '2020', value: 81 },
+	{ label: '2021', value: 84 },
+	{ label: '2022', value: 85 },
+	{ label: '2023', value: 84 },
+	{ label: '2024', value: 74 },
+	{ label: '2025', value: 73 }
+].map((point) => ({ ...point, shortLabel: `’${point.label.slice(2)}` }))
+
+// Figures 19 to 21, 2025 bars. Health care leaves out the few who preferred not to say, as Figure 21 does.
+const insecurity: { label: string; none: number; levels: [number, number, number] }[] = [
+	{ label: 'Food', none: 49.6, levels: [38.1, 9.8, 2.5] },
+	{ label: 'Housing', none: 72.95, levels: [19.26, 7.38, 0.41] },
+	{ label: 'Health care', none: 33.9, levels: [32.64, 27.62, 5.86] }
+]
+
+// Figure 25, lowest first, so the least-known services lead.
+const awareness = [
+	{ label: 'OISE Psychology Clinic therapy', value: 7 },
+	{ label: 'Coursera and other learning platforms, free for students', value: 16 },
+	{ label: 'UTSU Tax Clinics, free 1-on-1 tax filing', value: 21 },
+	{ label: 'Centre for Graduate Mentorship and Supervision (CGMS)', value: 57 },
+	{ label: 'CLNx career services', value: 61 },
+	{ label: 'How to book a U of T Health & Wellness appointment', value: 63 },
+	{ label: 'TA job postings online', value: 70 },
+	{ label: 'Centre for Learning Strategy Support (CLSS)', value: 76 },
+	{ label: 'Free peer-reviewed articles through the library', value: 95 },
+	{ label: 'Sports & Recreation centres, at no extra charge', value: 95 }
+]
+
+// Page 23.
+const gaps = [
+	'More than half knew about the Centre for Graduate Mentorship and Supervision, but fewer than 1% used it.',
+	'About 75% knew about the Centre for Learning Strategy Support, and about 6% used it.',
+	'61% knew about CLNx career services, and about 18% used them.',
+	'Periodic health visits were the only U of T Health & Wellness service most students knew about.'
+]
+
+// Page 24: themes in the written answers to "why weren't these resources known to you?".
+const reasons = [
+	{
+		value: '78%',
+		title: 'Hard-to-use university websites',
+		text: 'Broken links, the same information spread over many sites, and needing the right search words.'
+	},
+	{
+		value: '40%',
+		title: 'Too many emails',
+		text: 'Resource news buried in long emails and mixed in with event announcements.'
+	},
+	{
+		value: '30%',
+		title: 'Never told',
+		text: 'Resources were never mentioned, or only once at orientation, among everything else.'
+	}
+]
+
+// Pages 29 and 30.
+const international = [
+	{
+		title: 'Paying before the first stipend',
+		text: 'Moving costs, housing deposits and visa fees all come due before any stipend arrives.'
+	},
+	{
+		title: "Learning U of T's systems",
+		text: 'Little practical help at the start with ACORN, Quercus and the other platforms.'
+	},
+	{
+		title: 'Settling into Canada',
+		text: 'Getting a SIN, opening a bank account, using transit and understanding UHIP.'
+	}
+]
+
+// The report's recommendations: pages 3, 24, 25, 29 and 30.
+const asks = [
+	{
+		title: 'One place for every resource',
+		text: 'A searchable hub with direct, up-to-date links, especially for mental health and insurance.',
+		link: { label: 'Our Resources page', url: '/resources' }
+	},
+	{
+		title: 'Clear news about funding',
+		text: 'Departments telling students about living allowance increases in emails, orientation and department meetings.'
+	},
+	{
+		title: 'Fewer, clearer emails',
+		text: 'Resource news kept apart from event announcements, with short messages and seasonal reminders, such as tax clinics at tax time.'
+	},
+	{
+		title: 'Reminders beyond orientation',
+		text: 'Regular reminders, brief presentations in departments and a one-page resource guide every semester.'
+	},
+	{
+		title: 'Help before the first stipend',
+		text: 'A start-up advance or an earlier first stipend payment, with tuition due dates that match stipend dates.'
+	},
+	{
+		title: 'A guide for new arrivals',
+		text: 'Practical help with U of T systems, and a "Canada 101" pre-arrival guide to SIN, banking, transit and UHIP.',
+		link: { label: 'International Students page', url: '/resources/international-students' }
+	}
+]
+
+const departments = [
+	'Biochemistry',
+	'Immunology',
+	'Institute of Medical Science',
+	'Laboratory Medicine & Pathobiology',
+	'Medical Biophysics',
+	'Molecular Genetics',
+	'Nutritional Sciences',
+	'Pharmacology & Toxicology',
+	'Physiology'
+]
+
+const filledButton =
+	'inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#1E3765] px-5 py-2 text-base font-semibold text-white no-underline transition-colors hover:bg-[#13203A] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:bg-sky-300 dark:text-slate-900 dark:hover:bg-sky-200 dark:focus-visible:outline-sky-300'
+const outlinedButton =
+	'inline-flex min-h-11 items-center gap-2 rounded-lg border-[1.5px] border-[#1E3765] bg-white px-5 py-2 text-base font-semibold text-[#1E3765] no-underline transition-colors hover:bg-[#E3E9F3] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-300 dark:bg-transparent dark:text-slate-100 dark:hover:bg-slate-700 dark:focus-visible:outline-sky-300'
+const textLink =
+	'font-semibold text-[#0B6E8A] underline decoration-1 underline-offset-[3px] hover:text-[#1E3765] dark:text-sky-300 dark:hover:text-sky-200'
+const sourceNote = 'm-0 text-sm text-[#5A6680] dark:text-slate-400'
+---
+
+<BaseLayout
+	title="2025-26 Survey Results | Graduate Representation Committee"
+	description="Results of the 2025-26 Graduate Student Survey of Temerty Faculty of Medicine graduate students in the nine HBFA departments: money, well-being, resources and our recommendations."
+>
+	<main id="main-content" data-pagefind-body class="bg-white dark:bg-slate-900">
+		<!-- Headline, the download button and links to each section. -->
+		<section aria-labelledby="survey-heading" class="border-b border-[#E3E8F0] dark:border-slate-800">
+			<div class="mx-auto flex max-w-[1180px] flex-col items-start gap-5 px-5 py-12 md:px-10 md:py-16">
+				<p
+					class="m-0 font-mono text-xs font-medium tracking-[0.16em] text-[#0B6E8A] uppercase md:text-sm dark:text-sky-300"
+				>
+					2025-26 Graduate Student Survey
+				</p>
+				<h1
+					id="survey-heading"
+					class="m-0 max-w-[48rem] text-[2.15rem] leading-[1.1] font-bold tracking-tight text-balance text-[#1E3765] md:text-5xl dark:text-slate-100"
+				>
+					What 244 graduate students told us
+				</h1>
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] md:text-[19px] dark:text-slate-300">
+					Each year we ask graduate students in the nine HBFA departments how their funding, housing and well-being are
+					really going. These are the main results from the survey that ran from December 2025 to January 2026.
+				</p>
+				<div class="mt-1 flex flex-wrap gap-3">
+					<a href={reportUrl} class={filledButton} data-report-link>
+						<Icon name="mdi:file-download-outline" class="h-5 w-5" aria-hidden="true" />
+						Download the full report (PDF)
+					</a>
+					<a href="#asks" class={outlinedButton}>Read our asks</a>
+				</div>
+				<p class={sourceNote}>PDF, 32 pages. Figure and page numbers on this page refer to the full report.</p>
+				<nav aria-label="On this page" class="mt-3 w-full">
+					<ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+						{
+							sections.map((section) => (
+								<li>
+									<a
+										href={`#${section.id}`}
+										class="inline-flex min-h-10 items-center rounded-full border border-[#D6DDE9] px-4 text-[15px] font-semibold text-[#1E3765] no-underline transition-colors hover:border-[#0B6E8A] hover:bg-[#F4F6FA] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-slate-700 dark:text-slate-100 dark:hover:border-sky-400 dark:hover:bg-slate-800"
+									>
+										{section.label}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+			</div>
+		</section>
+
+		<div class="mx-auto flex max-w-[1180px] flex-col gap-16 px-5 py-12 md:gap-20 md:px-10 md:py-16">
+			<PageSection id="at-a-glance" title="At a glance" tag="244 respondents">
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					{headline.map((stat) => <StatTile {...stat} />)}
+				</div>
+				<div class="grid gap-8 md:grid-cols-2 md:gap-10">
+					<div class="flex flex-col gap-4">
+						<h3 class="m-0 text-xl font-bold text-[#13203A] dark:text-slate-100">What got better</h3>
+						<ul data-better class="m-0 flex list-none flex-col gap-4 p-0">
+							{
+								better.map((item) => (
+									<li class="flex gap-3">
+										<Icon
+											name="mdi:arrow-up-circle-outline"
+											class="mt-0.5 h-6 w-6 shrink-0 text-[#0B6E8A] dark:text-sky-300"
+											aria-hidden="true"
+										/>
+										<span class="flex flex-col gap-0.5">
+											<span class="text-[17px] leading-snug text-[#13203A] dark:text-slate-100">{item.text}</span>
+											<span class={sourceNote}>Report: {item.source}</span>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+					<div class="flex flex-col gap-4">
+						<h3 class="m-0 text-xl font-bold text-[#13203A] dark:text-slate-100">What didn't</h3>
+						<ul data-worse class="m-0 flex list-none flex-col gap-4 p-0">
+							{
+								worse.map((item) => (
+									<li class="flex gap-3">
+										<Icon
+											name="mdi:arrow-down-circle-outline"
+											class="mt-0.5 h-6 w-6 shrink-0 text-[#B8892D] dark:text-[#F2C46B]"
+											aria-hidden="true"
+										/>
+										<span class="flex flex-col gap-0.5">
+											<span class="text-[17px] leading-snug text-[#13203A] dark:text-slate-100">{item.text}</span>
+											<span class={sourceNote}>Report: {item.source}</span>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				</div>
+			</PageSection>
+
+			<PageSection id="money" title="Money">
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">
+					Most students still need more than their stipend to get by. The share dropped in 2024 and held there in 2025,
+					but nearly three in four still can't cover their day-to-day costs with their stipend alone.
+				</p>
+				<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12">
+					<ColumnChart
+						id="living-costs-chart"
+						title="Can't cover day-to-day living costs with their stipend alone"
+						subtitle="Share of respondents in funded programs, by survey year"
+						points={livingCosts}
+						labelHeading="Survey year"
+						valueHeading="Can't cover costs"
+						note="Each year is when that survey ran: 2025 is the 2025-26 survey. The question: “Can you support all of your day-to-day living expenses exclusively from your stipendiary funding?”"
+						source="full report, Figure 18 (page 20)"
+					/>
+					<div class="flex flex-col gap-4">
+						<StatTile
+							value="69%"
+							statement="of students with extra work rank extra income as their top reason for it, ahead of work experience or personal interest"
+							source="Figure 16"
+						/>
+						<StatTile
+							value="51%"
+							statement="disagree that their stipend adequately pays them for their work"
+							change="22% agree"
+							source="Figure 11"
+						/>
+					</div>
+				</div>
+			</PageSection>
+
+			<PageSection id="well-being" title="Well-being">
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">
+					Food, housing and health-care insecurity held steady from 2024, but they haven't gone away. Two in three
+					students face some health-care insecurity, and mental health ratings got worse.
+				</p>
+				<LevelBars
+					id="insecurity-chart"
+					title="Food, housing and health-care insecurity in 2025-26"
+					subtitle="Share of respondents, by level"
+					levels={['Marginal', 'Moderate', 'Severe']}
+					noneLabel="None"
+					rows={insecurity}
+					note="Rounded, so a row may not add up to 100%."
+					source="full report, Figures 19, 20 and 21 (pages 20 and 21)"
+				/>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					<StatTile value="38%" statement="rate their mental health poor or very poor" source="Figure 22" />
+					<StatTile
+						value="15%"
+						statement="rate their mental health very poor"
+						change="Up from 8% in 2024"
+						source="Figure 22"
+					/>
+					<div class="flex flex-col justify-center gap-3 rounded-2xl border border-[#D6DDE9] p-6 dark:border-slate-700">
+						<p class="m-0 text-lg leading-snug text-[#13203A] dark:text-slate-100">
+							PhD students in later years of their programs report poorer mental health.
+						</p>
+						<p class={sourceNote}>Report: Figure 23</p>
+					</div>
+				</div>
+				<p
+					class="m-0 flex items-start gap-3 rounded-xl bg-[#EEF2F8] p-5 text-base text-[#13203A] dark:bg-slate-800 dark:text-slate-100"
+				>
+					<Icon
+						name="mdi:heart-outline"
+						class="mt-0.5 h-6 w-6 shrink-0 text-[#1E3765] dark:text-sky-300"
+						aria-hidden="true"
+					/>
+					<span
+						>If you're struggling now, urgent help and counselling are on our <a
+							href="/resources/health-wellness"
+							class={textLink}>Health & Wellness page</a
+						>.</span
+					>
+				</p>
+			</PageSection>
+
+			<PageSection id="resources" title="Resources">
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">
+					Finding information got a little easier: 46% said it was easy, up from about 40% in 2024, and fewer found it
+					difficult (24%, down from about 28%). But many free services are still unknown to most students.
+				</p>
+				<p class={sourceNote}>Report: page 23, Figure 24</p>
+				<BarList
+					id="awareness-chart"
+					title="Knew the service was there"
+					subtitle="Share of respondents, 2025-26"
+					rows={awareness}
+					labelHeading="Service"
+					valueHeading="Knew about it"
+					note="Sports & Recreation includes students who knew the centres but not everything they offer."
+					source="full report, Figure 25 (page 26)"
+				/>
+				<div class="grid gap-10 lg:grid-cols-2 lg:gap-12">
+					<div class="flex flex-col gap-4">
+						<h3 class="m-0 text-xl font-bold text-[#13203A] dark:text-slate-100">Knowing isn't the same as using</h3>
+						<ul
+							class="m-0 flex list-disc flex-col gap-3 pl-5 text-[17px] leading-snug text-[#13203A] marker:text-[#0B6E8A] dark:text-slate-100 dark:marker:text-sky-300"
+						>
+							{gaps.map((gap) => <li>{gap}</li>)}
+						</ul>
+						<p class={sourceNote}>Report: pages 23 and 24</p>
+					</div>
+					<div class="flex flex-col gap-4">
+						<h3 class="m-0 text-xl font-bold text-[#13203A] dark:text-slate-100">Why students miss them</h3>
+						<ul data-reasons class="m-0 flex list-none flex-col gap-4 p-0">
+							{
+								reasons.map((reason) => (
+									<li class="grid grid-cols-[4.5rem_minmax(0,1fr)] items-baseline gap-3">
+										<span class="text-3xl font-bold text-[#1E3765] dark:text-white">{reason.value}</span>
+										<span class="flex flex-col gap-0.5">
+											<span class="text-[17px] font-semibold text-[#13203A] dark:text-slate-100">{reason.title}</span>
+											<span class="text-base leading-snug text-[#4B5872] dark:text-slate-300">{reason.text}</span>
+										</span>
+									</li>
+								))
+							}
+						</ul>
+						<p class={sourceNote}>
+							Report: page 24. Shares of the written answers that explained why students hadn't heard of resources; one
+							answer can give more than one reason.
+						</p>
+					</div>
+				</div>
+				<div>
+					<a href="/resources" class={filledButton}>
+						Browse resources
+						<Icon name="mdi:arrow-right" class="h-5 w-5" aria-hidden="true" />
+					</a>
+				</div>
+			</PageSection>
+
+			<PageSection id="international" title="International students">
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">
+					International students told us the first year is the hardest. Their written answers kept coming back to three
+					things. Satisfaction with department help moving to Canada hasn't improved, and frustration with award
+					opportunities keeps growing.
+				</p>
+				<ol class="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
+					{
+						international.map((item, index) => (
+							<li class="flex flex-col gap-3 rounded-2xl border border-[#D6DDE9] p-6 dark:border-slate-700">
+								<span
+									class="flex h-10 w-10 items-center justify-center rounded-full bg-[#1E3765] text-lg font-bold text-white dark:bg-sky-300 dark:text-slate-900"
+									aria-hidden="true"
+								>
+									{index + 1}
+								</span>
+								<h3 class="m-0 text-xl leading-tight font-bold text-[#13203A] dark:text-slate-100">{item.title}</h3>
+								<p class="m-0 text-base leading-snug text-[#4B5872] dark:text-slate-300">{item.text}</p>
+							</li>
+						))
+					}
+				</ol>
+				<p class={sourceNote}>Report: pages 29 and 30, Figures 28 and 29</p>
+				<div>
+					<a href="/resources/international-students" class={outlinedButton}>
+						Resources for international students
+						<Icon name="mdi:arrow-right" class="h-5 w-5" aria-hidden="true" />
+					</a>
+				</div>
+			</PageSection>
+
+			<PageSection id="asks" title="What we're asking for">
+				<p class="m-0 max-w-[44rem] text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">
+					These recommendations come from the full report.
+				</p>
+				<ul data-asks class="m-0 grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
+					{
+						asks.map((ask) => (
+							<li class="flex flex-col gap-3 rounded-2xl bg-[#F4F6FA] p-6 dark:bg-slate-800">
+								<h3 class="m-0 text-xl leading-tight font-bold text-[#13203A] dark:text-slate-100">{ask.title}</h3>
+								<p class="m-0 text-base leading-snug text-[#4B5872] dark:text-slate-300">{ask.text}</p>
+								{ask.link && (
+									<a href={ask.link.url} class:list={['mt-auto inline-flex items-center gap-1.5 text-base', textLink]}>
+										{ask.link.label}
+										<Icon name="mdi:arrow-right" class="h-4 w-4" aria-hidden="true" />
+									</a>
+								)}
+							</li>
+						))
+					}
+				</ul>
+				<p class={sourceNote}>Report: pages 3, 24, 25, 29 and 30</p>
+			</PageSection>
+
+			<PageSection id="method" title="How we ran it">
+				<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-12">
+					<div class="flex flex-col gap-4">
+						<ul
+							class="m-0 flex list-disc flex-col gap-3 pl-5 text-[17px] leading-snug text-[#13203A] marker:text-[#0B6E8A] dark:text-slate-100 dark:marker:text-sky-300"
+						>
+							<li>A Google Forms survey, open from December 2025 to January 2026.</li>
+							<li>
+								Shared through department and faculty emails, GRC social media, graduate student associations and short
+								presentations in required seminars and courses.
+							</li>
+							<li>244 responses from the nine departments in the Harmonized Base Funding Agreement (HBFA).</li>
+							<li>
+								Results from earlier surveys are included so we can show trends: 3,757 responses across 2017 to 2025.
+							</li>
+							<li>
+								Answers were cleaned in Python and analysed in R. Written answers were grouped into themes with help
+								from an AI model.
+							</li>
+							<li>
+								People choose whether to take part, so read these numbers as a strong signal rather than a census.
+							</li>
+						</ul>
+						<p class={sourceNote}>Report: pages 2 and 4</p>
+						<details class="rounded-lg border border-[#D6DDE9] dark:border-slate-700">
+							<summary
+								class="flex min-h-11 cursor-pointer items-center px-4 text-[15px] font-semibold text-[#1E3765] hover:bg-[#F4F6FA] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] dark:text-sky-300 dark:hover:bg-slate-800"
+							>
+								The nine HBFA departments
+							</summary>
+							<ul
+								class="m-0 grid list-none gap-x-6 gap-y-1.5 px-4 pt-1 pb-4 text-[15px] text-[#13203A] sm:grid-cols-2 dark:text-slate-100"
+							>
+								{departments.map((department) => <li>{department}</li>)}
+							</ul>
+						</details>
+					</div>
+					<div
+						class="flex flex-col items-start gap-4 rounded-2xl bg-[#1E3765] p-7 text-white lg:self-start dark:bg-slate-800"
+					>
+						<Icon name="mdi:file-document-outline" class="h-9 w-9 text-[#F2C46B]" aria-hidden="true" />
+						<h3 class="m-0 text-2xl leading-tight font-bold">Read the full report</h3>
+						<p class="m-0 text-base leading-snug text-[#D3DDF0] dark:text-slate-300">
+							All 30 figures, the themes from students' written answers and every recommendation.
+						</p>
+						<a
+							href={reportUrl}
+							class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-white px-5 py-2 text-base font-semibold text-[#1E3765] no-underline transition-colors hover:bg-[#EEF2F8] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none"
+						>
+							<Icon name="mdi:file-download-outline" class="h-5 w-5" aria-hidden="true" />
+							Download the report (PDF)
+						</a>
+						<p class="m-0 text-sm text-[#D3DDF0] dark:text-slate-400">
+							Questions about the results? Email <a
+								href={`mailto:${email}`}
+								class="font-semibold text-white underline underline-offset-[3px]">{email}</a
+							>.
+						</p>
+					</div>
+				</div>
+			</PageSection>
+		</div>
+
+		<!-- Points to next year's survey without promising a date. -->
+		<section aria-labelledby="next-survey-heading" class="bg-[#F4F6FA] dark:bg-slate-800">
+			<div
+				class="mx-auto flex max-w-[1180px] flex-col gap-3 px-5 py-12 md:flex-row md:items-center md:justify-between md:px-10"
+			>
+				<div class="flex flex-col gap-1.5">
+					<h2 id="next-survey-heading" class="m-0 text-2xl font-bold text-[#1E3765] dark:text-slate-100">
+						The 2026-27 survey is coming
+					</h2>
+					<p class="m-0 text-base text-[#4B5872] dark:text-slate-300">
+						More answers make a stronger case. We'll post on Instagram when it opens.
+					</p>
+				</div>
+				{
+					instagram && (
+						<a href={instagram.url} target="_blank" rel="noopener noreferrer" class={outlinedButton}>
+							<Icon name="mdi:instagram" class="h-5 w-5" aria-hidden="true" />
+							Follow us on Instagram
+							<span class="sr-only"> (opens in a new tab)</span>
+						</a>
+					)
+				}
+			</div>
+		</section>
+	</main>
+</BaseLayout>
