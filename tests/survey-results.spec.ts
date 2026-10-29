@@ -32,18 +32,27 @@ test('the report PDF is published', async ({ request }) => {
 	expect(response.headers()['content-type']).toContain('application/pdf')
 })
 
-test('each survey chart has a table view with the same values', async ({ page }) => {
+test('every results section has the same shape, and each bar matches the figure beside it', async ({ page }) => {
 	await page.goto(resultsRoute)
-	const expected: Record<string, number> = { 'living-costs-chart': 9, 'insecurity-chart': 3, 'awareness-chart': 10 }
-	for (const [id, rows] of Object.entries(expected)) {
-		const chart = page.locator(`[data-survey-chart="${id}"]`)
-		await expect(chart.getByRole('img')).toHaveAttribute('aria-label', /.+/)
-		await chart.locator('summary', { hasText: 'Show as table' }).click()
-		await expect(chart.locator('tbody tr')).toHaveCount(rows)
+	const sections = page.locator('[data-survey-section]')
+	await expect(sections).toHaveCount(6)
+	for (const section of await sections.all()) {
+		await expect(section.getByRole('heading', { level: 2 })).toHaveCount(1)
+		expect(await section.locator('[data-finding]').count()).toBeGreaterThan(0)
 	}
-	const livingCosts = page.locator('[data-survey-chart="living-costs-chart"] tbody tr').last()
-	await expect(livingCosts).toContainText('2025')
-	await expect(livingCosts).toContainText('73%')
+
+	// A bar is drawn only for a share of respondents, and its length is the figure shown in the same row.
+	for (const row of await page.locator('[data-finding]:has([data-bar])').all()) {
+		const percent = await row.locator('[data-bar]').getAttribute('data-bar')
+		await expect(row.locator('> span').first()).toHaveText(`${percent}%`)
+	}
+
+	// The less-known services lead; the rest open from "See all 10 services".
+	const allServices = page.locator('details[data-all-services]')
+	await allServices.locator('summary').click()
+	await expect(
+		page.locator('section[aria-labelledby="resources"] [data-finding]', { hasText: 'Report: Figure 25' })
+	).toHaveCount(10)
 })
 
 test('the Survey & Report menu item and the Survey results button open the results page', async ({ page }) => {

@@ -1,0 +1,35 @@
+---
+interface Props {
+	/** Id of the section heading; the section is labelled by it and the "On this page" links jump to it. */
+	id: string
+	title: string
+	/** One or two sentences: what this section found. */
+	summary: string
+	/** Where to check the summary in the full report, such as "Pages 29 and 30". */
+	source?: string
+}
+
+const { id, title, summary, source } = Astro.props
+---
+
+<!--
+	Every results section has the same shape: the heading and a short summary on the left (it stays in view
+	on wide screens), and the findings on the right as rows. On phones the two stack.
+-->
+<section
+	aria-labelledby={id}
+	data-survey-section
+	class="grid gap-8 border-t border-[#E3E8F0] pt-12 lg:grid-cols-[19rem_minmax(0,1fr)] lg:gap-16 dark:border-slate-800"
+>
+	<div class="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
+		<div class="flex flex-col gap-2.5">
+			<h2 id={id} class="m-0 scroll-mt-24 text-3xl font-bold text-[#1E3765] dark:text-slate-100">{title}</h2>
+			<div class="h-[5px] w-16 rounded-full bg-[#F2C46B]" aria-hidden="true"></div>
+		</div>
+		<p class="m-0 text-lg leading-relaxed text-[#2E3A52] dark:text-slate-300">{summary}</p>
+		{source && <p class="m-0 text-sm text-[#5A6680] dark:text-slate-400">Report: {source}</p>}
+	</div>
+	<div class="flex min-w-0 flex-col gap-10">
+		<slot />
+	</div>
+</section>

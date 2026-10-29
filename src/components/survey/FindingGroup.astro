@@ -1,0 +1,24 @@
+---
+interface Props {
+	/** Small label over a group of rows, such as "Mental health". Leave it out for a section with one group. */
+	label?: string
+	/** Small print under the group, such as how a share is counted. */
+	note?: string
+}
+
+const { label, note } = Astro.props
+---
+
+<div class="flex flex-col">
+	{
+		label && (
+			<h3 class="m-0 pb-1 font-mono text-xs font-medium tracking-[0.12em] text-[#0B6E8A] uppercase dark:text-sky-300">
+				{label}
+			</h3>
+		)
+	}
+	<ul class="m-0 list-none divide-y divide-[#E3E8F0] p-0 dark:divide-slate-800">
+		<slot />
+	</ul>
+	{note && <p class="m-0 pt-3 text-sm leading-snug text-[#5A6680] dark:text-slate-400">{note}</p>}
+</div>
