@@ -1,27 +1,28 @@
 {
-	"hero": {
-		"image": "FoM_Sky.png",
-		"imageAlt": "Corner of the Medical Sciences Building against a blue sky",
-		"lines": [
-			"Faculty of Medicine · University of Toronto",
-			"Graduate Representation Committee",
-			"inform. listen. advocate."
-		]
-	},
-	"highlights": [
-		{
-			"label": "Survey results",
-			"comingSoon": false,
-			"url": "/survey/2025-26"
-		},
-		{
-			"label": "2026-27 survey",
-			"comingSoon": true
-		},
-		{
-			"label": "Resources",
-			"comingSoon": false,
-			"url": "/resources"
-		}
-	]
+  "hero": {
+    "image": "FoM_Sky.png",
+    "imageAlt": "Corner of the Medical Sciences Building against a blue sky",
+    "lines": [
+      "Faculty of Medicine · University of Toronto",
+      "Graduate Representation Committee",
+      "inform. listen. advocate."
+    ]
+  },
+  "highlights": [
+    {
+      "label": "Survey results",
+      "comingSoon": false,
+      "url": "/survey/2025-26"
+    },
+    {
+      "label": "2026-27 survey",
+      "comingSoon": false,
+      "url": "https://forms.gle/WKkJuzj2VXyR3c4P7"
+    },
+    {
+      "label": "Resources",
+      "comingSoon": false,
+      "url": "/resources"
+    }
+  ]
 }
