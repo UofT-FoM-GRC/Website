@@ -184,15 +184,29 @@ const disclosure =
 		<!-- Headline, the download button and links to each section. -->
 		<section aria-labelledby="survey-heading" class="border-b border-[#E3E8F0] dark:border-slate-800">
 			<div class="mx-auto flex max-w-[1180px] flex-col items-start gap-5 px-5 py-12 md:px-10 md:py-16">
-				<a
-					href={surveyUrl}
-					data-survey-link
-					class="inline-flex min-h-10 items-center gap-2.5 rounded-full border border-[#0B6E8A] bg-[#E8F3F6] px-4 py-1.5 text-[15px] font-semibold text-[#0B6E8A] no-underline transition-colors hover:bg-[#D5EAF0] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#0B6E8A] motion-reduce:transition-none dark:border-sky-300 dark:bg-slate-800 dark:text-sky-300 dark:hover:bg-slate-700"
+				<!-- While the survey is open it leads the page, ahead of last year's results. -->
+				<div
+					data-survey-callout
+					class="mb-3 flex w-full flex-col gap-4 rounded-2xl bg-[#1E3765] p-5 text-white sm:flex-row sm:items-center sm:justify-between md:px-7 md:py-6 dark:border dark:border-slate-700 dark:bg-slate-800"
 				>
-					<span class="h-2 w-2 shrink-0 rounded-full bg-[#0B6E8A] dark:bg-sky-300" aria-hidden="true"></span>
-					The 2026-27 survey is open. Take it now
-					<Icon name="mdi:arrow-right" class="h-4 w-4 shrink-0" aria-hidden="true" />
-				</a>
+					<div class="flex flex-col gap-1">
+						<p class="m-0 font-mono text-xs font-medium tracking-[0.16em] text-[#F2C46B] uppercase md:text-sm">
+							Now open
+						</p>
+						<p class="m-0 text-2xl leading-tight font-bold">The 2026-27 survey is open</p>
+						<p class="m-0 text-base text-[#D3DDF0]">
+							About 20 to 25 minutes. No names or email addresses are collected.
+						</p>
+					</div>
+					<a
+						href={surveyUrl}
+						data-survey-link
+						class="inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-lg bg-white px-5 py-2 text-base font-semibold text-[#1E3765] no-underline transition-colors hover:bg-[#EEF2F8] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none sm:self-center"
+					>
+						Take the 2026-27 survey
+						<Icon name="mdi:arrow-right" class="h-5 w-5" aria-hidden="true" />
+					</a>
+				</div>
 				<p
 					class="m-0 font-mono text-xs font-medium tracking-[0.16em] text-[#0B6E8A] uppercase md:text-sm dark:text-sky-300"
 				>
@@ -209,11 +223,10 @@ const disclosure =
 					really going. These are the main results from the survey that ran from December 2025 to January 2026.
 				</p>
 				<div class="mt-1 flex flex-wrap gap-3">
-					<a href={reportUrl} class={filledButton} data-report-link>
+					<a href={reportUrl} class={outlinedButton} data-report-link>
 						<Icon name="mdi:file-download-outline" class="h-5 w-5" aria-hidden="true" />
 						Download the full report (PDF)
 					</a>
-					<a href="#asks" class={outlinedButton}>Read our asks</a>
 				</div>
 				<p class={sourceNote}>PDF, 32 pages. Figure and page numbers on this page refer to the full report.</p>
 				<nav aria-label="On this page" class="mt-3 w-full">
@@ -463,7 +476,7 @@ const disclosure =
 					</ul>
 				</details>
 				<div class="flex flex-col items-start gap-3">
-					<a href={reportUrl} class={filledButton}>
+					<a href={reportUrl} class={outlinedButton}>
 						<Icon name="mdi:file-download-outline" class="h-5 w-5" aria-hidden="true" />
 						Download the full report (PDF)
 					</a>
