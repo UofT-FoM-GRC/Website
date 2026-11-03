@@ -10,13 +10,14 @@
 	},
 	"highlights": [
 		{
-			"label": "Survey results",
+			"label": "Take the 2026-27 survey",
 			"comingSoon": false,
-			"url": "/survey/2025-26"
+			"url": "https://docs.google.com/forms/d/e/1FAIpQLSc3IWR4KKBGWqb1qGO-RTXRbAjgKDlE3n34QXjt4QIW7jpwlw/viewform"
 		},
 		{
-			"label": "2026-27 survey",
-			"comingSoon": true
+			"label": "2025-26 survey results",
+			"comingSoon": false,
+			"url": "/survey/2025-26"
 		},
 		{
 			"label": "Resources",

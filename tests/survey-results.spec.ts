@@ -55,14 +55,16 @@ test('every results section has the same shape, and each bar matches the figure 
 	).toHaveCount(10)
 })
 
-test('the Survey & Report menu item and the Survey results button open the results page', async ({ page }) => {
+test('the Survey & Report menu item and the results button open the results page', async ({ page }) => {
 	const menuItem = navigation.links.find(({ label }) => label === 'Survey & Report')!
 	expect(menuItem.comingSoon ?? false).toBe(false)
-	const button = homepage.highlights.find(({ label }) => label === 'Survey results')!
+	const button = homepage.highlights.find(({ url }) => url === '/survey/2025-26')!
 	expect(button.comingSoon).toBe(false)
+	// The results button says which year's results they are, so it isn't mistaken for the open survey.
+	expect(button.label).toContain('2025-26')
 
 	await page.goto('/')
-	await page.locator('[data-highlights] a', { hasText: 'Survey results' }).click()
+	await page.locator('[data-highlights] a[href="/survey/2025-26"]').click()
 	await expect(page).toHaveURL(new RegExp(`${resultsRoute}?$`))
 
 	await page.goto('/about/')
@@ -78,6 +80,21 @@ test('the Survey & Report menu item and the Survey results button open the resul
 			.getByRole('link', { name: 'Survey & Report', exact: true })
 			.filter({ visible: true })
 	).toHaveAttribute('aria-current', 'page')
+})
+
+test('the open 2026-27 survey is linked from the homepage and the results page', async ({ page }) => {
+	const surveyForm = /^https:\/\/docs\.google\.com\/forms\/d\/e\/[\w-]+\/viewform$/
+	const button = homepage.highlights.find(({ label }) => label.includes('2026-27 survey'))!
+	expect(button.comingSoon).toBe(false)
+	expect(button.url).toMatch(surveyForm)
+
+	await page.goto('/')
+	await expect(page.locator('[data-highlights] a', { hasText: '2026-27 survey' })).toHaveAttribute('href', button.url!)
+
+	await page.goto(resultsRoute)
+	const links = page.locator('a[data-survey-link]')
+	await expect(links).toHaveCount(2)
+	for (const link of await links.all()) await expect(link).toHaveAttribute('href', button.url!)
 })
 
 test('/survey forwards to the latest results and the sitemap lists them', async ({ page, request }) => {
