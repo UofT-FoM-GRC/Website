@@ -12,13 +12,9 @@ On Monday, November 23, GRC members presented to the chairs of the Temerty Facul
 
 The chairs were engaged, asked thoughtful questions, and talked with us about possible next steps. We'll share updates as those conversations continue.
 
-## Thank you
-
 Thank you to everyone on the team who presented, with a special shoutout to Michael, Jia and Ellie. Thank you also to everyone on the GRC who worked on survey outreach, data analysis and sharing resources this year.
 
 Most of all, thank you to the 244 of you who filled out last year's survey. Your answers made this conversation possible.
-
-## Add your voice
 
 The 2026-27 Graduate Student Survey is open now. It takes 20 to 25 minutes, and no names or email addresses are collected.
 
