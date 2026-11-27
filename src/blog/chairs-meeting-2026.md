@@ -2,8 +2,8 @@
 title: 'Taking Your Survey Results to the Department Chairs'
 description: 'GRC members brought what 244 graduate students told us in the 2025-26 survey to the department chairs at Temerty Medicine'
 pubDate: 'Nov 26 2026'
-heroImage: '/assets/chairs-meeting-2026.webp'
-heroImageAlt: 'Four GRC members standing together outside the meeting room after presenting to the department chairs, November 23, 2026'
+heroImage: '/assets/chairs-meeting-2026-thumbs-up.webp'
+heroImageAlt: 'Four GRC members giving a thumbs up outside the meeting room after presenting to the department chairs, November 23, 2026'
 tags: ['other']
 topic: funding-awards
 ---
