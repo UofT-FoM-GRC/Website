@@ -10,15 +10,18 @@ topic: funding-awards
 
 On Monday, November 23, GRC members presented to the chairs of the Temerty Faculty of Medicine's graduate departments, along with other members of departmental leadership. We brought what you told us in the 2025-26 Graduate Student Survey, from stipends that don't cover day-to-day living costs to gaps in health care, food and housing.
 
-The chairs were engaged, asked thoughtful questions, and talked with us about possible next steps. We'll share updates as those conversations continue.
+The chairs were engaged, asked thoughtful questions, and talked with us about possible next steps, including:
 
-## Thank you
+- More GRC involvement in departmental orientations and resource presentations
+- Making the survey more comprehensive, and finding new ways to help students reach the resources available to them
+- Possible partnerships with family clinics to improve health care access for graduate students
+- A new question in next year's survey about resources you need but can't access
+
+None of these have been decided yet. We'll share updates as those conversations continue.
 
 Thank you to everyone on the team who presented, with a special shoutout to Michael, Jia and Ellie. Thank you also to everyone on the GRC who worked on survey outreach, data analysis and sharing resources this year.
 
 Most of all, thank you to the 244 of you who filled out last year's survey. Your answers made this conversation possible.
-
-## Add your voice
 
 The 2026-27 Graduate Student Survey is open now. It takes 20 to 25 minutes, and no names or email addresses are collected.
 
